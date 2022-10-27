@@ -1,0 +1,25 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = 140
+tab_width = 4
+trim_trailing_whitespace = true
+
+[{*.yaml,*.yml,*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,jest.config}]
+indent_size = 2
+
+[{*.ts,*.tsx,*.js,*.jsx}]
+ij_typescript_enforce_trailing_comma = whenmultiline
+ij_typescript_use_double_quotes = false
+ij_typescript_use_semicolon_after_statement = false
+ij_typescript_spaces_within_imports = false
+
+ij_html_quote_style = single
+ij_html_new_line_before_first_attribute = when multiline
+ij_html_new_line_after_last_attribute = when multiline
+ij_html_attribute_wrap = split_into_lines
