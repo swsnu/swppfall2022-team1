@@ -7,4 +7,6 @@ export const UdongColors = {
     Secondary: '#F5AB3D',
     SecondaryBright: '#FBEEDA',
     Warning: '#BD1313',
+    Black: '#000000',
+    White: '#FFFFFF',
 }
