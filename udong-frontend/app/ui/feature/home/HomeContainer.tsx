@@ -61,7 +61,9 @@ export const HomeContainer = () => {
             </HStack>
 
             <Spacer height={16}/>
-            <UdongTextField defaultValue={''}/>
+            <HStack>
+                <UdongTextField defaultValue={''}/>
+            </HStack>
         </VStack>
     )
 }
