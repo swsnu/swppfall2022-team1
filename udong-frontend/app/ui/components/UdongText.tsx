@@ -21,6 +21,18 @@ interface TextProps {
     textDecoration?: Property.TextDecoration
 }
 
+/**
+ *
+ *
+ * <UdongText
+ *      style={'ListTitle'}
+ *      color={UdongColors.Primary}
+ * >
+ *      Hello World
+ * </UdongText>
+ *
+ *
+ * */
 export const UdongText = (props: UdongTextProps & CSSProperties) => {
     const { children, style } = props
 

@@ -51,6 +51,15 @@ interface UdongChipProps {
     text: string
 }
 
+/**
+ *
+ * <UdongChip
+ *      style={'primary'}
+ *      onClick={() => console.log('hello world')}
+ *      text={'hello world'}
+ * />
+ *
+ */
 export const UdongChip = (props: UdongChipProps) => {
     const { style, onClick, text } = props
     const { backgroundColor, textColor, borderColor } = getColorProps(style)

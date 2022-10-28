@@ -21,6 +21,13 @@ type Props = {
     height?: never
     width: Property.Width<string | number>
 })
+
+/**
+ * <Spacer height={16}/> (VStack 내에서)
+ * <Spacer width={16}/> (HStack 내에서)
+ *
+ * <Spacer height={8} backgroundColor={UdongColors.GrayNormal}/> (divider처럼 쓰기)
+ * */
 export const Spacer = (props: Props) => {
     const { marginBottom, marginTop, marginRight, marginLeft } = props
     const { paddingRight, paddingLeft } = props

@@ -7,6 +7,12 @@ interface TempUdongTextField {
     width?: number | string
 }
 
+/**
+ *
+ * <UdongTextField defaultValue={''}/>
+ *
+ * */
+// TODO: needs developing & testing
 export const UdongTextField = (props: TempUdongTextField) => {
     const { defaultValue, width } = props
     const [value, setValue] = useState(defaultValue)

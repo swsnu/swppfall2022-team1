@@ -16,6 +16,10 @@ interface StackProps {
     bottom?: Property.Bottom | number
 }
 
+/**
+ * <VStack>{children}</VStack> (vertical 하게 컴포넌트 쌓기)
+ * <HStack>{children}</HStack> (horizontal 하게 컴포넌트 쌓기)
+ * */
 const Stack = styled.div<StackProps>((props: StackProps) => {
     return {
         backgroundColor: props.backgroundColor,
