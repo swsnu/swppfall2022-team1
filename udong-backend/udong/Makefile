@@ -11,10 +11,10 @@ check_format:
 	black --diff --check $(shell git ls-files '*.py')
 
 check_type:
-	mypy udong 
+	mypy . 
 
 test:
-	coverage run --branch --source='./udong' ./udong/manage.py test
+	coverage run --branch --source='.' manage.py test
 	coverage report -m
 
 test_html:
