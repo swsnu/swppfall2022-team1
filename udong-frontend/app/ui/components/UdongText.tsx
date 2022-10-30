@@ -102,7 +102,7 @@ export const UdongText = (props: UdongTextProps & CSSProperties) => {
     return (
         <p
             style={{
-                fontFamily: 'sans-serif',
+                fontFamily: 'SourceSansPro',
                 fontSize: textProps().fontSize,
                 fontWeight: textProps().fontWeight,
                 textDecoration: textProps().textDecoration,

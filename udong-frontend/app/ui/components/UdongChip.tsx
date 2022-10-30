@@ -2,7 +2,7 @@ import { UdongColors } from '../theme/ColorPalette'
 import { HStack } from './Stack'
 import { UdongText } from './UdongText'
 
-type ColorStyle = 'primary' | 'secondary' | 'gray' | 'line'
+type UdongChipColorStyle = 'primary' | 'secondary' | 'gray' | 'line'
 
 interface ColorProps {
     backgroundColor: string
@@ -10,7 +10,7 @@ interface ColorProps {
     textColor: string
 }
 
-const getColorProps = (style: ColorStyle): ColorProps => {
+const getColorProps = (style: UdongChipColorStyle): ColorProps => {
     switch (style) {
         case 'primary':
             return {
@@ -46,7 +46,7 @@ const getColorProps = (style: ColorStyle): ColorProps => {
 }
 
 interface UdongChipProps {
-    style: ColorStyle
+    style: UdongChipColorStyle
     onClick: () => void
     text: string
 }
@@ -75,7 +75,7 @@ export const UdongChip = (props: UdongChipProps) => {
     >
         <UdongText
             style={'ListContentS'}
-            margin={4}
+            margin={2}
             color={textColor}
         >
             {text}
