@@ -1,3 +1,6 @@
+import { useRouter } from 'next/router'
+import { useCallback } from 'react'
+
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
 import { UdongButton } from '../../components/UdongButton'
@@ -5,8 +8,22 @@ import { UdongChip } from '../../components/UdongChip'
 import { UdongText } from '../../components/UdongText'
 import { UdongTextField } from '../../components/UdongTextField'
 import { UdongColors } from '../../theme/ColorPalette'
+import { FeedView } from './feed/FeedView'
+import { HomeTabType, HomeTabView } from './HomeTabView'
+import { MyDongView } from './mydong/MyDongView'
 
-export const HomeContainer = () => {
+interface HomeContainerProps {
+    tab: HomeTabType
+}
+
+export const HomeContainer = (props: HomeContainerProps) => {
+    const { tab } = props
+    const router = useRouter()
+
+    const handleCurrentTab = useCallback((selectedTab: HomeTabType) => {
+        router.replace(`/?tab=${selectedTab}`)
+    }, [])
+
     return (
         <VStack paddingHorizontal={16}>
             <UdongText
@@ -64,6 +81,19 @@ export const HomeContainer = () => {
             <HStack>
                 <UdongTextField defaultValue={''}/>
             </HStack>
+
+            <Spacer height={24}/>
+            <HomeTabView
+                selectedTab={tab}
+                setSelectedTab={handleCurrentTab}
+            />
+
+            <Spacer height={24}/>
+            {tab === 'feed' ?
+                <FeedView/>
+                :
+                <MyDongView/>
+            }
         </VStack>
     )
 }
