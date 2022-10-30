@@ -88,7 +88,7 @@ export const HomeContainer = (props: HomeContainerProps) => {
                 setSelectedTab={handleCurrentTab}
             />
 
-            <Spacer height={24}/>
+            <Spacer height={45}/>
             {tab === 'feed' ?
                 <FeedView/>
                 :
