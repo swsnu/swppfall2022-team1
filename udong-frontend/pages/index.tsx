@@ -1,13 +1,19 @@
+import { useRouter } from 'next/router'
+
 import { HomeContainer } from '../app/ui/feature/home/HomeContainer'
 
 export const HomePage = () => {
-    // TODO: query params - mydong, feed
-    return (
-        <div>
-            <h1>Hello World</h1>
-            <HomeContainer />
-        </div>
-    )
+    const router = useRouter()
+    const { tab } = router.query
+
+    switch (tab) {
+        case 'feed':
+            return <HomeContainer tab={'feed'}/>
+        case 'mydong':
+            return <HomeContainer tab={'mydong'}/>
+        default:
+            return <HomeContainer tab={'feed'}/>
+    }
 }
 
 export default HomePage
