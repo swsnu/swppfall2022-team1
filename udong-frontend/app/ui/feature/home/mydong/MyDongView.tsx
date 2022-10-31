@@ -12,6 +12,13 @@ import { ClubItem } from './ClubItem'
 import { CreateClubModal } from './CreateClubModal'
 import { RegisterClubModal } from './RegisterClubModal'
 
+const dummyData = [
+    { imageSrc: dummy.src, name: '우리 동아리' },
+    { imageSrc: waffle.src, name: '와플스튜디오' },
+]
+
+const duplicatedDummyData = [...dummyData].concat(dummyData).concat(dummyData).concat(dummyData)
+
 export const MyDongView = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
@@ -53,42 +60,13 @@ export const MyDongView = () => {
                 setIsOpen={setIsCreateModalOpen}
             />
 
-            <ClubItem
-                imageSrc={dummy.src}
-                name={'우리 동아리'}
-            />
-            <ClubItem
-                imageSrc={waffle.src}
-                name={'와플 스튜디오'}
-            />
-            <ClubItem
-                imageSrc={dummy.src}
-                name={'우리 동아리'}
-            />
-            <ClubItem
-                imageSrc={waffle.src}
-                name={'와플 스튜디오'}
-            />
-            <ClubItem
-                imageSrc={dummy.src}
-                name={'우리 동아리'}
-            />
-            <ClubItem
-                imageSrc={waffle.src}
-                name={'와플 스튜디오'}
-            />
-            <ClubItem
-                imageSrc={dummy.src}
-                name={'우리 동아리'}
-            />
-            <ClubItem
-                imageSrc={waffle.src}
-                name={'와플 스튜디오'}
-            />
-            <ClubItem
-                imageSrc={dummy.src}
-                name={'우리 동아리'}
-            />
+            {duplicatedDummyData.map((item, index) => {
+                return <ClubItem
+                    key={`${item.name} / ${index}`}
+                    imageSrc={item.imageSrc}
+                    name={item.name}
+                />
+            })}
         </ClubGridLayout>
     </VStack>
 }

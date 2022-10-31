@@ -1,11 +1,10 @@
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
-import { UdongImage } from '../../../components/UdongImage'
 import { UdongModal } from '../../../components/UdongModal'
 import { UdongText } from '../../../components/UdongText'
 import { UdongTextField } from '../../../components/UdongTextField'
-import close from '../../../icons/IcClose.png'
+import { CloseModalButton } from './CloseModalButton'
 
 interface CreateClubModalProps {
     isOpen: boolean
@@ -18,18 +17,7 @@ export const CreateClubModal = (props: CreateClubModalProps) => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
     >
-        <VStack
-            width={'100%'}
-            alignItems={'end'}
-            style={{ padding: '25px 25px 0 25px' }}
-        >
-            <UdongImage
-                src={close.src}
-                height={15}
-                width={15}
-                onClick={() => setIsOpen(false)}
-            />
-        </VStack>
+        <CloseModalButton setIsOpen={setIsOpen}/>
 
         <VStack
             style={{ padding: '7px 90px 20px 90px' }}
