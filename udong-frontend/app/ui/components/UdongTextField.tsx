@@ -30,6 +30,7 @@ export const UdongTextField = (props: TempUdongTextField) => {
             backgroundColor: UdongColors.GrayBright,
             borderRadius: 14,
         }}
+        width={width ?? '100%'}
     >
         <input
             type={'text'}
