@@ -1,6 +1,8 @@
+import { EventContainer } from '../../app/ui/feature/club/event/EventContainer'
+
 export const ClubPage = () => {
     // TODO: query params - board, event (+ view), tag, info
-    return <h1>동아리!</h1>
+    return <EventContainer/>
 }
 
 export default ClubPage
