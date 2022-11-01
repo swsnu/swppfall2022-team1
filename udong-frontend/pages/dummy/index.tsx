@@ -90,6 +90,7 @@ export const DummyPage = () => {
             days={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
             data={[[0, 0, 1, 1], [2, 2, 1, 0], [0, 0, 1, 1], [2, 1, 1, 0], [2, 1, 1, 0]]}
             startTime={6}
+            setHover={console.log}
         />
     </VStack>
 }

@@ -27,9 +27,10 @@ const HeaderCell = styled(Cell)({
 const BodyCell = (props: ({
     backgroundOpacity: number
     borderBottomStyle: 'solid' | 'dashed'
+    onHover: () => void
     children?: ReactNode
 })) => {
-    const { backgroundOpacity, borderBottomStyle, children } = props
+    const { backgroundOpacity, borderBottomStyle, children, onHover } = props
     return (
         <Cell
             style={{
@@ -41,6 +42,7 @@ const BodyCell = (props: ({
                 position: 'relative',
                 color: UdongColors.GrayNormal,
             }}
+            onMouseOver={onHover}
         >
             <div
                 style={{
@@ -62,13 +64,13 @@ interface TimeTableProps {
     days: string[]
     startTime: number
     data: number[][]
+    setHover: (colIdx: number, rowIdx: number) => void
 }
 
 export const TimeTable = (props: TimeTableProps) => {
-    const { days, startTime, data } = props
+    const { days, startTime, data, setHover } = props
 
     const maxFn = (arr: number[]) => arr.reduce((a, b) => Math.max(a, b), 0)
-
     const mxCnt = maxFn(data.map(colData => maxFn(colData)))
 
     return (
@@ -82,16 +84,18 @@ export const TimeTable = (props: TimeTableProps) => {
                                 rowIdx % 2 === 0
                                     ? (
                                         <BodyCell
-                                            key={colIdx}
+                                            key={rowIdx}
                                             borderBottomStyle='dashed'
                                             backgroundOpacity={cnt / mxCnt / 2}
+                                            onHover={() => setHover(colIdx, rowIdx)}
                                         >
                                             {startTime + (rowIdx / 2)}
                                         </BodyCell>
                                     ) : <BodyCell
-                                        key={colIdx}
+                                        key={rowIdx}
                                         borderBottomStyle='solid'
                                         backgroundOpacity={cnt / mxCnt / 2}
+                                        onHover={() => setHover(colIdx, rowIdx)}
                                     />
                             ))
                         }
