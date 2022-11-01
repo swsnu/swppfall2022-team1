@@ -3,9 +3,9 @@ import { useCallback } from 'react'
 
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
-import { FeedView } from './feed/FeedView'
+import { FeedContainer } from './feed/FeedContainer'
 import { HomeTabType, HomeTabView } from './HomeTabView'
-import { MyDongView } from './mydong/MyDongView'
+import { MyDongContainer } from './mydong/MyDongContainer'
 
 interface HomeContainerProps {
     tab: HomeTabType
@@ -30,9 +30,9 @@ export const HomeContainer = (props: HomeContainerProps) => {
 
             <Spacer height={45}/>
             {tab === 'feed' ?
-                <FeedView/>
+                <FeedContainer/>
                 :
-                <MyDongView/>
+                <MyDongContainer/>
             }
         </VStack>
     )
