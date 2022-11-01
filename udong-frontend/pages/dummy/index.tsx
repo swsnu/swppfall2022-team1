@@ -7,6 +7,7 @@ import { UdongChip } from '../../app/ui/components/UdongChip'
 import { UdongModal } from '../../app/ui/components/UdongModal'
 import { UdongText } from '../../app/ui/components/UdongText'
 import { UdongTextField } from '../../app/ui/components/UdongTextField'
+import { TimeTable } from '../../app/ui/feature/shared/TimeTable'
 import { UdongColors } from '../../app/ui/theme/ColorPalette'
 
 export const DummyPage = () => {
@@ -85,6 +86,11 @@ export const DummyPage = () => {
         >
             <p>hell oworld</p>
         </UdongModal>
+        <TimeTable
+            days={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
+            data={[[0, 0, 1, 1], [2, 2, 1, 0], [0, 0, 1, 1], [2, 1, 1, 0], [2, 1, 1, 0]]}
+            startTime={6}
+        />
     </VStack>
 }
 
