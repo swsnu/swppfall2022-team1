@@ -1,5 +1,7 @@
+import { PostCreateContainer } from '../../../../app/ui/feature/club/post/PostCreateContainer'
+
 export const PostCreatePage = () => {
-    return <h1>create new post!</h1>
+    return <PostCreateContainer/>
 }
 
 export default PostCreatePage

@@ -19,7 +19,7 @@ const dummyData = [
 
 const duplicatedDummyData = [...dummyData].concat(dummyData).concat(dummyData).concat(dummyData)
 
-export const MyDongView = () => {
+export const MyDongContainer = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
