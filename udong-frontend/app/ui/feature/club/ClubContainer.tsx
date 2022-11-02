@@ -42,7 +42,7 @@ export const ClubContainer = (props: ClubContainerProps) => {
             selectedTab={tab}
             setSelectedTab={handleCurrentTab}
         />
-        <Spacer height={45}/>
+        <Spacer height={20}/>
 
         {getCurrentContainer()}
     </VStack>
