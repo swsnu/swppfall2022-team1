@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        
+      - name: Go to frontend directory
+        run: cd udong-frontend
 
       - name: Setup node
         uses: actions/setup-node@v2
