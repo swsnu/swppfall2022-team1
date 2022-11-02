@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import { ReactNode } from 'react'
 
 import { HStack, VStack } from '../../components/Stack'
 import { UdongColors } from '../../theme/ColorPalette'
@@ -17,6 +16,9 @@ const Cell = styled.div({
     borderRightWidth: 0.5,
     borderLeftStyle: 'solid',
     borderRightStyle: 'solid',
+    userSelect: 'none',
+    WebkitUserSelect: 'none',
+    cursor: 'default',
 })
 
 const HeaderCell = styled(Cell)({
@@ -35,9 +37,9 @@ const BodyCell = (props: ({
     borderBottomStyle: 'solid' | 'dashed'
     onHover: () => void
     onClick: () => void
-    children?: ReactNode
+    text: string
 })) => {
-    const { backgroundOpacity, borderBottomStyle, selected, children, onHover } = props
+    const { backgroundOpacity, borderBottomStyle, text, selected, onHover, onClick } = props
     return (
         <Cell
             style={{
@@ -50,8 +52,7 @@ const BodyCell = (props: ({
                 color: UdongColors.GrayNormal,
             }}
             onMouseOver={onHover}
-            onMouseDown={console.log}
-            onMouseUp={console.log}
+            onClick={onClick}
         >
             <div
                 style={{
@@ -65,7 +66,9 @@ const BodyCell = (props: ({
                     zIndex: 0,
                 }}
             />
-            {children}
+            <p style={{ margin: 0, zIndex: 30, position: 'relative', cursor: 'default' }} >
+                {text}
+            </p>
         </Cell>
     )
 }
@@ -76,10 +79,11 @@ interface TimeTableProps {
     data: number[][]
     selected: boolean[][]
     onHover: (idx: CellIdx | null) => void
+    onClick: (idx: CellIdx) => void
 }
 
 export const TimeTable = (props: TimeTableProps) => {
-    const { days, startTime, data, selected, onHover } = props
+    const { days, startTime, data, selected, onHover, onClick } = props
 
     const maxFn = (arr: number[]) => arr.reduce((a, b) => Math.max(a, b), 0)
     const mxCnt = maxFn(data.map(colData => maxFn(colData)))
@@ -88,6 +92,7 @@ export const TimeTable = (props: TimeTableProps) => {
         <HStack
             width={64 * days.length}
             onMouseLeave={() => onHover(null)}
+            style={{ cursor: 'default' }}
         >
             {
                 data.map((colData, colIdx) => (
@@ -100,16 +105,10 @@ export const TimeTable = (props: TimeTableProps) => {
                                     borderBottomStyle={rowIdx % 2 ? 'solid' : 'dashed'}
                                     backgroundOpacity={cnt / mxCnt / 2}
                                     onHover={() => onHover({ col: colIdx, row: rowIdx })}
+                                    onClick={() => onClick({ col: colIdx, row: rowIdx })}
                                     selected={selected[colIdx][rowIdx]}
-                                >
-                                    {
-                                        rowIdx % 2
-                                            ? null
-                                            : <p style={{ margin: 0, zIndex: 30, position: 'relative' }}>
-                                                {startTime + (rowIdx / 2)}
-                                            </p>
-                                    }
-                                </BodyCell>
+                                    text={rowIdx % 2 ? '' : `${startTime + (rowIdx / 2)}`}
+                                />
                             ))
                         }
                     </VStack>

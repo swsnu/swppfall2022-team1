@@ -7,13 +7,13 @@ import { UdongChip } from '../../app/ui/components/UdongChip'
 import { UdongModal } from '../../app/ui/components/UdongModal'
 import { UdongText } from '../../app/ui/components/UdongText'
 import { UdongTextField } from '../../app/ui/components/UdongTextField'
-import { TimeTable } from '../../app/ui/feature/shared/TimeTable'
+import { CellIdx, TimeTable } from '../../app/ui/feature/shared/TimeTable'
 import { UdongColors } from '../../app/ui/theme/ColorPalette'
 
 export const DummyPage = () => {
     const [isOpen, setIsOpen] = useState(false)
 
-    const [hoverIdx, setHoverIdx] = useState<[number, number] | null>(null)
+    const [hoverIdx, setHoverIdx] = useState<CellIdx | null>(null)
     console.log(hoverIdx)
 
     return <VStack paddingHorizontal={32}>
@@ -101,6 +101,7 @@ export const DummyPage = () => {
             ]}
             startTime={6}
             onHover={setHoverIdx}
+            onClick={console.log}
         />
     </VStack>
 }
