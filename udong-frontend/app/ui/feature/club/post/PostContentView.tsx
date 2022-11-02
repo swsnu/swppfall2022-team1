@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import { useRef, useState } from 'react'
+import {  Dispatch, SetStateAction, useRef }  from 'react'
 import ReactQuill from 'react-quill'
 
 import { Spacer } from '../../../components/Spacer'
@@ -8,7 +8,12 @@ import { UdongColors } from '../../../theme/ColorPalette'
 
 import 'react-quill/dist/quill.snow.css'
 
-export const PostContentView = () => {
+interface IProps {
+    contents: string
+    setContents: Dispatch<SetStateAction<string>>
+}
+
+export const PostContentView = (props: IProps) => {
 
     const ReactQuill = dynamic(() => import('react-quill'), {
         ssr: false,
@@ -16,7 +21,6 @@ export const PostContentView = () => {
     })
 
     const quill = useRef<ReactQuill>()
-    const [contents, setContents] = useState<string>('')
 
     return <VStack>
         <Spacer
