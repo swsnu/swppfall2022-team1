@@ -4,6 +4,34 @@ import { UdongButton } from '../../../components/UdongButton'
 import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { TagItem } from './TagItem'
 
+interface TagItemType {
+    name: string
+    isUserIncluded: boolean
+}
+
+const tags: Array<TagItemType> = [
+    {
+        name: '제발 종강 주세요 제발료',
+        isUserIncluded: false,
+    },
+    {
+        name: '자일리톨',
+        isUserIncluded: false,
+    },
+    {
+        name: '치키치키차카차카초코초코초',
+        isUserIncluded: false,
+    },
+    {
+        name: '태그 이름 이렇게 길게 지으면 계정 정지시킬겁니다 진짜 주의해주세요 이번만 경고로 넘어가겠습니다 다음부터는 얄짤 없을테...',
+        isUserIncluded: false,
+    },
+    {
+        name: '푸룬 말린거 팝니다',
+        isUserIncluded: false,
+    },
+]
+
 export const TagContainer = () => {
     return <VStack>
         <HStack justifyContent={'end'}>
@@ -65,29 +93,12 @@ export const TagContainer = () => {
             isUserIncluded={false}
         />
 
-        <TagItem
-            name={'제발 종강 주세요 제발료'}
-            isUserIncluded={false}
-        />
-
-        <TagItem
-            name={'자일리톨'}
-            isUserIncluded={false}
-        />
-
-        <TagItem
-            name={'치키치키차카차카초코초코초'}
-            isUserIncluded={false}
-        />
-
-        <TagItem
-            name={'태그 이름 이렇게 길게 지으면 계정 정지시킬겁니다 진짜 주의해주세요 이번만 경고로 넘어가겠습니다 다음부터는 얄짤 없을테...'}
-            isUserIncluded={false}
-        />
-
-        <TagItem
-            name={'푸룬 말린거 팝니다'}
-            isUserIncluded={false}
-        />
+        {tags.map((tag) => {
+            return <TagItem
+                key={tag.name}
+                name={tag.name}
+                isUserIncluded={tag.isUserIncluded}
+            />
+        })}
     </VStack>
 }
