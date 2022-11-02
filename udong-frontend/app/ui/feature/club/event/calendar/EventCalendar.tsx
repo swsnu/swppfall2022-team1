@@ -1,52 +1,98 @@
-import { EventObject } from '@toast-ui/calendar/types/types/events'
+import ToastUIReactCalendar from '@toast-ui/react-calendar'
 import dynamic from 'next/dynamic'
-import React, { useEffect, useState } from 'react'
+import React, { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
-import { VStack } from '../../../../components/Stack'
+import { HStack, VStack } from '../../../../components/Stack'
+import { UdongButton } from '../../../../components/UdongButton'
+import { UdongImage } from '../../../../components/UdongImage'
+import { UdongText } from '../../../../components/UdongText'
+import arrow from '../../../../icons/IcShortArrow.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
+import { EventType } from './EventCalendarView'
 
-const Calendar = dynamic(() => import('./TUICalendar').then((mod)=>mod.Calender), { ssr: false, loading: () => <>loading...</> } )
+const Calendar = dynamic(() => import('./TUICalendar').then((mod)=>mod.Calender), { ssr: false } )
 
-const dummyEvents = [
-    {
-        id: '1',
-        title: 'event1',
-        start: '2022-11-01T10:00:00',
-        end: '2022-11-03T11:00:00',
-    },
-    {
-        id: '2',
-        title: 'event2',
-        start: '2022-11-01T10:00:00',
-        end: '2022-11-03T11:00:00',
-    },
-    {
-        id: '3',
-        title: 'event3',
-        start: '2022-11-01T12:00:00',
-        end: '2022-11-07T11:00:00',
-    },
-    {
-        id: '4',
-        title: 'event4',
-        start: '2022-10-25T10:00:00',
-        end: '2022-11-02T11:00:00',
-    },
-]
+interface EventCalendarProps {
+    events: EventType[]
+    onClickEvent: (eventId: string) => void
+}
 
-export const EventCalendar = () => {
-    const [events, setEvents] = useState<EventObject[]>([])
+export const EventCalendar = ({ events, onClickEvent } : EventCalendarProps) => {
+    const [date, setDate] = useState<{ year: number, month: number }>()
+    const calendarRef = useRef<ToastUIReactCalendar>(null)
+
+    const syncDate = () => {
+        if (calendarRef.current) {
+            setDate({ year: calendarRef.current.getInstance()!.getDate().getFullYear(),
+                month: calendarRef.current.getInstance()!.getDate().getMonth() })}
+    }
 
     useEffect(() => {
-        setEvents(dummyEvents)
-    }, [])
+        syncDate()
+    }, [calendarRef.current])
 
-    return <VStack>
+    return <VStack width={'100%'}>
         <Spacer
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
-        <Calendar events={events}/>
+        <HStack
+            paddingHorizontal={15}
+            paddingVertical={15}
+            gap={15}
+            alignItems={'center'}
+        >
+            <UdongButton
+                style={'fill'}
+                onClick={()=> {
+                    calendarRef.current?.getInstance()?.today()
+                    syncDate()
+                }}
+            >Today</UdongButton>
+            <UdongButton
+                style={'line'}
+                borderRadius={'15px'}
+                padding={'8px 8px'}
+                color={UdongColors.GrayNormal}
+                onClick={()=> {
+                    calendarRef.current?.getInstance()?.prev()
+                    syncDate()
+                }}
+            >
+                <UdongImage
+                    src={arrow.src}
+                    height={10}
+                    width={10}
+                    style={{ transform: 'scaleX(-1)' }}
+                />
+            </UdongButton>
+            {date ? <UdongText
+                style={'GeneralTitle'}
+                width={'60px'}
+                textAlign={'center'}
+            >{date.year}.{date.month !== undefined ? date.month + 1 : undefined}</UdongText> : <></>}
+            <UdongButton
+                style={'line'}
+                borderRadius={'15px'}
+                padding={'8px 8px'}
+                color={UdongColors.GrayNormal}
+                onClick={()=> {
+                    calendarRef.current?.getInstance()?.next()
+                    syncDate()
+                }}
+            >
+                <UdongImage
+                    src={arrow.src}
+                    height={10}
+                    width={10}
+                />
+            </UdongButton>
+        </HStack>
+        <Calendar
+            events={events}
+            calendarRef={calendarRef}
+            onClickEvent={onClickEvent}
+        />
     </VStack>
 }
