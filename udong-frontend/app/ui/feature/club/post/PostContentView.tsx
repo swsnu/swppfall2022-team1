@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import { useRef, useState } from 'react'
 import ReactQuill from 'react-quill'
 
@@ -8,6 +9,12 @@ import { UdongColors } from '../../../theme/ColorPalette'
 import 'react-quill/dist/quill.snow.css'
 
 export const PostContentView = () => {
+
+    const ReactQuill = dynamic(() => import('react-quill'), {
+        ssr: false,
+        loading: () => <p>Loading ...</p>,
+    })
+
     const quill = useRef<ReactQuill>()
     const [contents, setContents] = useState<string>('')
 
