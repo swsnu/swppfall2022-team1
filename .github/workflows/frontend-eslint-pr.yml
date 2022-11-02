@@ -1,7 +1,9 @@
 name: ESLint check on PR
 
 on:
-  pull_request
+  pull_request:
+    paths:
+      - 'udong-frontend/**'
 
 jobs:
   eslint:
