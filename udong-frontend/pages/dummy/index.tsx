@@ -102,6 +102,7 @@ export const DummyPage = () => {
             startTime={6}
             onHover={setHoverIdx}
             onClick={console.log}
+            onDrag={console.log}
         />
     </VStack>
 }
