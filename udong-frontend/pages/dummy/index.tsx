@@ -92,6 +92,13 @@ export const DummyPage = () => {
         <TimeTable
             days={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
             data={[[0, 0, 1, 1], [2, 2, 1, 0], [0, 0, 1, 1], [2, 1, 1, 0], [2, 1, 1, 0]]}
+            selected={[
+                [false, false, false, false],
+                [false, false, false, false],
+                [false, false, true, false],
+                [false, false, false, false],
+                [false, false, false, false],
+            ]}
             startTime={6}
             onHover={setHoverIdx}
         />

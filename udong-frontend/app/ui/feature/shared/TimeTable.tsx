@@ -25,12 +25,13 @@ const HeaderCell = styled(Cell)({
 })
 
 const BodyCell = (props: ({
-    backgroundOpacity: number
+    backgroundOpacity?: number
+    selected?: boolean
     borderBottomStyle: 'solid' | 'dashed'
     onHover: () => void
     children?: ReactNode
 })) => {
-    const { backgroundOpacity, borderBottomStyle, children, onHover } = props
+    const { backgroundOpacity, borderBottomStyle, selected, children, onHover } = props
     return (
         <Cell
             style={{
@@ -51,8 +52,9 @@ const BodyCell = (props: ({
                     right: 0,
                     top: 0,
                     bottom: 0,
-                    backgroundColor: UdongColors.Primary,
-                    opacity: backgroundOpacity,
+                    backgroundColor: selected ? UdongColors.Secondary : UdongColors.Primary,
+                    opacity: selected ? 1 : backgroundOpacity,
+                    zIndex: 0,
                 }}
             />
             {children}
@@ -64,11 +66,12 @@ interface TimeTableProps {
     days: string[]
     startTime: number
     data: number[][]
+    selected: boolean[][]
     onHover: (idx: [number, number] | null) => void
 }
 
 export const TimeTable = (props: TimeTableProps) => {
-    const { days, startTime, data, onHover } = props
+    const { days, startTime, data, selected, onHover } = props
 
     const maxFn = (arr: number[]) => arr.reduce((a, b) => Math.max(a, b), 0)
     const mxCnt = maxFn(data.map(colData => maxFn(colData)))
@@ -84,22 +87,21 @@ export const TimeTable = (props: TimeTableProps) => {
                         <HeaderCell key={colIdx}>{days[colIdx]}</HeaderCell>
                         {
                             colData.map((cnt, rowIdx) => (
-                                rowIdx % 2 === 0
-                                    ? (
-                                        <BodyCell
-                                            key={rowIdx}
-                                            borderBottomStyle='dashed'
-                                            backgroundOpacity={cnt / mxCnt / 2}
-                                            onHover={() => onHover([colIdx, rowIdx])}
-                                        >
-                                            {startTime + (rowIdx / 2)}
-                                        </BodyCell>
-                                    ) : <BodyCell
-                                        key={rowIdx}
-                                        borderBottomStyle='solid'
-                                        backgroundOpacity={cnt / mxCnt / 2}
-                                        onHover={() => onHover([colIdx, rowIdx])}
-                                    />
+                                <BodyCell
+                                    key={rowIdx}
+                                    borderBottomStyle={rowIdx % 2 ? 'solid' : 'dashed'}
+                                    backgroundOpacity={cnt / mxCnt / 2}
+                                    onHover={() => onHover([colIdx, rowIdx])}
+                                    selected={selected[colIdx][rowIdx]}
+                                >
+                                    {
+                                        rowIdx % 2
+                                            ? null
+                                            : <p style={{ margin: 0, zIndex: 30, position: 'relative' }}>
+                                                {startTime + (rowIdx / 2)}
+                                            </p>
+                                    }
+                                </BodyCell>
                             ))
                         }
                     </VStack>
