@@ -64,17 +64,20 @@ interface TimeTableProps {
     days: string[]
     startTime: number
     data: number[][]
-    setHover: (colIdx: number, rowIdx: number) => void
+    onHover: (idx: [number, number] | null) => void
 }
 
 export const TimeTable = (props: TimeTableProps) => {
-    const { days, startTime, data, setHover } = props
+    const { days, startTime, data, onHover } = props
 
     const maxFn = (arr: number[]) => arr.reduce((a, b) => Math.max(a, b), 0)
     const mxCnt = maxFn(data.map(colData => maxFn(colData)))
 
     return (
-        <HStack>
+        <HStack
+            width={64 * days.length}
+            onMouseLeave={() => onHover(null)}
+        >
             {
                 data.map((colData, colIdx) => (
                     <VStack key={colIdx}>
@@ -87,7 +90,7 @@ export const TimeTable = (props: TimeTableProps) => {
                                             key={rowIdx}
                                             borderBottomStyle='dashed'
                                             backgroundOpacity={cnt / mxCnt / 2}
-                                            onHover={() => setHover(colIdx, rowIdx)}
+                                            onHover={() => onHover([colIdx, rowIdx])}
                                         >
                                             {startTime + (rowIdx / 2)}
                                         </BodyCell>
@@ -95,7 +98,7 @@ export const TimeTable = (props: TimeTableProps) => {
                                         key={rowIdx}
                                         borderBottomStyle='solid'
                                         backgroundOpacity={cnt / mxCnt / 2}
-                                        onHover={() => setHover(colIdx, rowIdx)}
+                                        onHover={() => onHover([colIdx, rowIdx])}
                                     />
                             ))
                         }
