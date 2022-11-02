@@ -13,7 +13,7 @@ interface IProps {
     setContents: Dispatch<SetStateAction<string>>
 }
 
-export const PostContentView = (props: IProps) => {
+export const PostContentView = ({ contents, setContents }: IProps) => {
 
     const ReactQuill = dynamic(() => import('react-quill'), {
         ssr: false,
@@ -21,6 +21,10 @@ export const PostContentView = (props: IProps) => {
     })
 
     const quill = useRef<ReactQuill>()
+
+    const onChange = (text: string) => {
+        setContents(text)
+    }
 
     return <VStack>
         <Spacer
@@ -36,7 +40,7 @@ export const PostContentView = (props: IProps) => {
                 }
             }}
             value = {contents}
-            onChange = {setContents}
+            onChange = {onChange}
             theme = {'snow'}
         />
         <p>edit에서도 재사용할 예정이니 input하는 거 외에 다른 거 X (raw한 컴포넌트)</p>
