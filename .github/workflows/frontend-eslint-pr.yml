@@ -1,6 +1,9 @@
 name: ESLint check on PR
 
 on:
+  push:
+    branches:
+      - 'front/**'
   pull_request:
     paths-ignore:
       - 'udong-backend/**'
