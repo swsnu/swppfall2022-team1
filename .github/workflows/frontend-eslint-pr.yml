@@ -2,8 +2,8 @@ name: ESLint check on PR
 
 on:
   pull_request:
-    paths:
-      - 'udong-frontend/**'
+    paths-ignore:
+      - 'udong-backend/**'
 
 jobs:
   eslint:
