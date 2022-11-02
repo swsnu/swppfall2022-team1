@@ -4,6 +4,10 @@ on:
   pull_request:
     paths-ignore:
       - 'udong-backend/**'
+      
+defaults:
+  run:
+    working-directory: ./udong-frontend
 
 jobs:
   eslint:
@@ -13,9 +17,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
-      - name: Go to frontend directory
-        run: cd udong-frontend
-
       - name: Setup node
         uses: actions/setup-node@v2
         with:
@@ -27,6 +28,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - uses: reviewdog/action-eslint@v1
+      - name: Review dog
+        uses: reviewdog/action-eslint@v1
         with:
           reporter: github-pr-review
