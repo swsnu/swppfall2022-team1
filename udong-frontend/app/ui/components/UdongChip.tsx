@@ -4,6 +4,8 @@ import { UdongText } from './UdongText'
 
 type UdongChipColorStyle = 'primary' | 'secondary' | 'gray' | 'line'
 
+const MAX_WIDTH = 300
+
 interface ColorProps {
     backgroundColor: string
     borderColor: string
@@ -47,7 +49,7 @@ const getColorProps = (style: UdongChipColorStyle): ColorProps => {
 
 interface UdongChipProps {
     style: UdongChipColorStyle
-    onClick: () => void
+    onClick?: () => void
     text: string
 }
 
@@ -70,6 +72,7 @@ export const UdongChip = (props: UdongChipProps) => {
         style={{
             borderRadius: 18,
             border: `1px solid ${borderColor}`,
+            maxWidth: MAX_WIDTH,
         }}
         onClick={onClick}
     >
@@ -77,6 +80,10 @@ export const UdongChip = (props: UdongChipProps) => {
             style={'ListContentS'}
             margin={2}
             color={textColor}
+            textOverflow={'ellipsis'}
+            whiteSpace={'nowrap'}
+            overflow={'hidden'}
+            maxWidth={MAX_WIDTH - 32}
         >
             {text}
         </UdongText>
