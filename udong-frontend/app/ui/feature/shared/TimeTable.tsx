@@ -4,6 +4,11 @@ import { ReactNode } from 'react'
 import { HStack, VStack } from '../../components/Stack'
 import { UdongColors } from '../../theme/ColorPalette'
 
+export type CellIdx = {
+    col: number
+    row: number
+}
+
 const Cell = styled.div({
     width: 64,
     verticalAlign: 'middle',
@@ -29,6 +34,7 @@ const BodyCell = (props: ({
     selected?: boolean
     borderBottomStyle: 'solid' | 'dashed'
     onHover: () => void
+    onClick: () => void
     children?: ReactNode
 })) => {
     const { backgroundOpacity, borderBottomStyle, selected, children, onHover } = props
@@ -44,6 +50,8 @@ const BodyCell = (props: ({
                 color: UdongColors.GrayNormal,
             }}
             onMouseOver={onHover}
+            onMouseDown={console.log}
+            onMouseUp={console.log}
         >
             <div
                 style={{
@@ -67,7 +75,7 @@ interface TimeTableProps {
     startTime: number
     data: number[][]
     selected: boolean[][]
-    onHover: (idx: [number, number] | null) => void
+    onHover: (idx: CellIdx | null) => void
 }
 
 export const TimeTable = (props: TimeTableProps) => {
@@ -91,7 +99,7 @@ export const TimeTable = (props: TimeTableProps) => {
                                     key={rowIdx}
                                     borderBottomStyle={rowIdx % 2 ? 'solid' : 'dashed'}
                                     backgroundOpacity={cnt / mxCnt / 2}
-                                    onHover={() => onHover([colIdx, rowIdx])}
+                                    onHover={() => onHover({ col: colIdx, row: rowIdx })}
                                     selected={selected[colIdx][rowIdx]}
                                 >
                                     {
