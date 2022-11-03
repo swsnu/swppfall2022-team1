@@ -32,6 +32,15 @@ const HeaderCell = styled(Cell)({
     lineHeight: 2,
 })
 
+const CellBg = styled.div({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    mixBlendMode: 'multiply',
+})
+
 const BodyCell = (props: ({
     backgroundOpacity?: number
     selected?: boolean
@@ -40,8 +49,9 @@ const BodyCell = (props: ({
     onClick: () => void
     onMouseDown: (e: MouseEvent<HTMLDivElement>) => void
     text: string
+    gray?: boolean
 })) => {
-    const { backgroundOpacity, borderBottomStyle, text, selected, onHover, onClick, onMouseDown } = props
+    const { backgroundOpacity, borderBottomStyle, text, selected, gray, onHover, onClick, onMouseDown } = props
     return (
         <Cell
             style={{
@@ -57,18 +67,14 @@ const BodyCell = (props: ({
             onClick={onClick}
             onMouseDown={onMouseDown}
         >
-            <div
+            <CellBg
                 style={{
-                    position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
                     backgroundColor: selected ? UdongColors.Secondary : UdongColors.Primary,
                     opacity: selected ? 1 : backgroundOpacity,
                     zIndex: 0,
                 }}
             />
+            {gray && <CellBg style={{ backgroundColor: UdongColors.GrayBright, zIndex: 10 }} />}
             <p style={{ margin: 0, zIndex: 30, position: 'relative', cursor: 'default' }} >
                 {text}
             </p>
@@ -81,13 +87,14 @@ interface TimeTableProps {
     startTime: number
     data: number[][]
     selected: boolean[][]
+    gray?: boolean[][]
     onHover: (idx: CellIdx | null) => void
     onClick: (idx: CellIdx) => void
     onDrag: (startIdx: CellIdx, endIdx: CellIdx) => void
 }
 
 export const TimeTable = (props: TimeTableProps) => {
-    const { days, startTime, data, selected, onHover, onClick, onDrag } = props
+    const { days, startTime, data, selected, gray, onHover, onClick, onDrag } = props
 
     const [dragCellIdx, setDragCellIdx] = useState<CellIdx|null>(null)
     const ref = useRef<HTMLDivElement>(null)
@@ -148,6 +155,7 @@ export const TimeTable = (props: TimeTableProps) => {
                                     onClick={() => onClick({ col: colIdx, row: rowIdx })}
                                     onMouseDown={() => setDragCellIdx({ col: colIdx, row: rowIdx })}
                                     selected={selected[colIdx][rowIdx]}
+                                    gray={gray && gray[colIdx][rowIdx]}
                                     text={rowIdx % 2 ? '' : `${startTime + (rowIdx / 2)}`}
                                 />
                             ))

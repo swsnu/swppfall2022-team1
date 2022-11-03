@@ -99,6 +99,13 @@ export const DummyPage = () => {
                 [false, false, false, false],
                 [false, false, false, false],
             ]}
+            gray={[
+                [true, false, false, false],
+                [true, false, false, false],
+                [false, false, false, false],
+                [true, true, false, false],
+                [true, true, false, false],
+            ]}
             startTime={6}
             onHover={setHoverIdx}
             onClick={(idx) => console.log('click', idx)}
