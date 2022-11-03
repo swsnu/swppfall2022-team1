@@ -7,10 +7,14 @@ import { UdongChip } from '../../app/ui/components/UdongChip'
 import { UdongModal } from '../../app/ui/components/UdongModal'
 import { UdongText } from '../../app/ui/components/UdongText'
 import { UdongTextField } from '../../app/ui/components/UdongTextField'
+import { CellIdx, TimeTable } from '../../app/ui/feature/shared/TimeTable'
 import { UdongColors } from '../../app/ui/theme/ColorPalette'
 
 export const DummyPage = () => {
     const [isOpen, setIsOpen] = useState(false)
+
+    const [hoverIdx, setHoverIdx] = useState<CellIdx | null>(null)
+    console.log('hover', hoverIdx)
 
     return <VStack paddingHorizontal={32}>
         <h1>This page introduces how to use the custom-made components.</h1>
@@ -85,6 +89,35 @@ export const DummyPage = () => {
         >
             <p>hell oworld</p>
         </UdongModal>
+        <TimeTable
+            days={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
+            data={[
+                [0, 0, 1, 1, 0, 1, 1, 1],
+                [2, 2, 1, 0, 0, 1, 1, 1],
+                [0, 0, 1, 1, 0, 1, 1, 1],
+                [2, 1, 1, 0, 0, 1, 1, 1],
+                [2, 1, 1, 0, 0, 1, 1, 1],
+            ]}
+            selected={[
+                [false, false, false, false, false, false, false, false],
+                [false, false, false, false, false, false, false, false],
+                [false, false, true, false, false, false, false, false],
+                [false, false, false, false, false, false, false, false],
+                [false, false, false, false, false, false, false, false],
+            ]}
+            gray={[
+                [true, false, false, false, false, false, false, false],
+                [true, false, false, false, false, false, false, false],
+                [false, false, false, false, false, false, false, false],
+                [true, true, false, false, false, false, false, false],
+                [true, true, false, false, false, false, false, false],
+            ]}
+            startTime={6}
+            style={{ marginTop: 20 }}
+            onHover={setHoverIdx}
+            onClick={(idx) => console.log('click', idx)}
+            onDrag={(s, e) => console.log('drag', s, e)}
+        />
     </VStack>
 }
 
