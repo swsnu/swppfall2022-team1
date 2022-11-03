@@ -4,13 +4,16 @@ import { MouseEvent, useEffect, useRef, useState } from 'react'
 import { HStack, VStack } from '../../components/Stack'
 import { UdongColors } from '../../theme/ColorPalette'
 
+const CELL_WIDTH = 64
+const CELL_HEIGHT = 32
+
 export type CellIdx = {
     col: number
     row: number
 }
 
 const Cell = styled.div({
-    width: 64,
+    width: CELL_WIDTH,
     verticalAlign: 'middle',
     borderColor: UdongColors.GrayNormal,
     borderLeftWidth: 0.5,
@@ -23,7 +26,7 @@ const Cell = styled.div({
 })
 
 const HeaderCell = styled(Cell)({
-    height: 32,
+    height: CELL_HEIGHT,
     backgroundColor: UdongColors.SecondaryBright,
     borderTopWidth: 1,
     borderBottomWidth: 1,
@@ -55,7 +58,7 @@ const BodyCell = (props: ({
     return (
         <Cell
             style={{
-                height: 16,
+                height: CELL_HEIGHT / 2,
                 borderBottomWidth: 1,
                 borderBottomStyle,
                 fontSize: 10,
@@ -108,8 +111,8 @@ export const TimeTable = (props: TimeTableProps) => {
                 const startCellIdx = dragCellIdx
                 const rect = ref.current.getBoundingClientRect()
                 const endCellIdx = {
-                    col: Math.floor(((e as unknown as MouseEvent).clientX - rect.left) / 64),
-                    row: Math.floor(((e as unknown as MouseEvent).clientY - rect.top) / 16) - 2,
+                    col: Math.floor(((e as unknown as MouseEvent).clientX - rect.left) / CELL_WIDTH),
+                    row: Math.floor(((e as unknown as MouseEvent).clientY - rect.top) / (CELL_HEIGHT / 2)) - 2,
                 }
                 onDrag(startCellIdx, endCellIdx)
             }
@@ -136,7 +139,7 @@ export const TimeTable = (props: TimeTableProps) => {
 
     return (
         <HStack
-            width={64 * days.length}
+            width={CELL_WIDTH * days.length}
             onMouseLeave={() => onHover(null)}
             style={{ cursor: 'default' }}
             ref={ref}
