@@ -28,12 +28,15 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Change directory
-      run: cd udong
     - name: Check Format by black
-      run: black --diff --check $(git ls-files '*.py')
+      run: |
+        cd udong
+        black --diff --check $(git ls-files '*.py')
     - name: Check Type by mypy
-      run: mypy .
+      run: |
+        cd udong
+        mypy .
     - name: Run Tests
       run: |
+        cd udong
         python manage.py test
