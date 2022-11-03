@@ -9,6 +9,6 @@ class Event(models.Model):
     club_id = models.ForeignKey(
         Club, on_delete=models.CASCADE, related_name="event_set"
     )
-    name = models.CharField(max_length=255, null=False, blank=False)
+    name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
