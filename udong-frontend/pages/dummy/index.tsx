@@ -91,20 +91,26 @@ export const DummyPage = () => {
         </UdongModal>
         <TimeTable
             days={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
-            data={[[0, 0, 1, 1], [2, 2, 1, 0], [0, 0, 1, 1], [2, 1, 1, 0], [2, 1, 1, 0]]}
+            data={[
+                [0, 0, 1, 1, 0, 1, 1, 1],
+                [2, 2, 1, 0, 0, 1, 1, 1],
+                [0, 0, 1, 1, 0, 1, 1, 1],
+                [2, 1, 1, 0, 0, 1, 1, 1],
+                [2, 1, 1, 0, 0, 1, 1, 1]
+            ]}
             selected={[
-                [false, false, false, false],
-                [false, false, false, false],
-                [false, false, true, false],
-                [false, false, false, false],
-                [false, false, false, false],
+                [false, false, false, false, false, false, false, false],
+                [false, false, false, false, false, false, false, false],
+                [false, false, true, false, false, false, false, false],
+                [false, false, false, false, false, false, false, false],
+                [false, false, false, false, false, false, false, false],
             ]}
             gray={[
-                [true, false, false, false],
-                [true, false, false, false],
-                [false, false, false, false],
-                [true, true, false, false],
-                [true, true, false, false],
+                [true, false, false, false, false, false, false, false],
+                [true, false, false, false, false, false, false, false],
+                [false, false, false, false, false, false, false, false],
+                [true, true, false, false, false, false, false, false],
+                [true, true, false, false, false, false, false, false],
             ]}
             startTime={6}
             style={{ marginTop: 20 }}

@@ -39,7 +39,6 @@ const CellBg = styled.div({
     right: 0,
     top: -0.5,
     bottom: -0.5,
-    mixBlendMode: 'multiply',
 })
 
 const BodyCell = (props: ({
@@ -75,7 +74,18 @@ const BodyCell = (props: ({
                     zIndex: 0,
                 }}
             />
-            {gray && <CellBg style={{ backgroundColor: UdongColors.GrayBright, zIndex: 10 }} />}
+            {gray && <CellBg
+                style={{
+                    background: `repeating-linear-gradient(
+                        56deg,
+                        transparent,
+                        transparent 8px,
+                        ${UdongColors.GrayNormal} 8px,
+                        ${UdongColors.GrayNormal} 9px
+                    )`,
+                    zIndex: 10,
+                }}
+            />}
             <p style={{ margin: 0, zIndex: 30, position: 'relative', cursor: 'default' }} >
                 {text}
             </p>
