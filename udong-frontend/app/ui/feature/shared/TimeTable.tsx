@@ -142,21 +142,24 @@ export const TimeTable = (props: TimeTableProps) => {
             ref={ref}
         >
             {
-                data.map((colData, colIdx) => (
-                    <VStack key={colIdx}>
-                        <HeaderCell key={colIdx}>{days[colIdx]}</HeaderCell>
+                data.map((colData, col) => (
+                    <VStack key={col}>
+                        <HeaderCell key={col}>{days[col]}</HeaderCell>
                         {
-                            colData.map((cnt, rowIdx) => (
+                            colData.map((cnt, row) => (
                                 <BodyCell
-                                    key={rowIdx}
-                                    borderBottomStyle={rowIdx % 2 ? 'solid' : 'dashed'}
+                                    key={row}
+                                    borderBottomStyle={row % 2 ? 'solid' : 'dashed'}
                                     backgroundOpacity={cnt / mxCnt / 2}
-                                    onHover={() => onHover({ col: colIdx, row: rowIdx })}
-                                    onClick={() => onClick({ col: colIdx, row: rowIdx })}
-                                    onMouseDown={() => setDragCellIdx({ col: colIdx, row: rowIdx })}
-                                    selected={selected[colIdx][rowIdx]}
-                                    gray={gray && gray[colIdx][rowIdx]}
-                                    text={rowIdx % 2 ? '' : `${startTime + (rowIdx / 2)}`}
+                                    onHover={() => onHover({ col, row })}
+                                    onClick={() => onClick({ col, row })}
+                                    onMouseDown={() => {
+                                        setDragCellIdx({ col, row })
+                                        onDrag({ col, row }, { col, row })
+                                    }}
+                                    selected={selected[col][row]}
+                                    gray={gray && gray[col][row]}
+                                    text={row % 2 ? '' : `${startTime + (row / 2)}`}
                                 />
                             ))
                         }
