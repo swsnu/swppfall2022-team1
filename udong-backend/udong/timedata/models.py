@@ -18,7 +18,7 @@ class Time(models.Model):
 
     # Date
     start_date = models.DateTimeField(null=True)
-    end_time = models.DateTimeField(null=True)
+    end_date = models.DateTimeField(null=True)
 
     # Weekday
     repeat_start = models.DateField(null=True)
