@@ -136,8 +136,12 @@ export const TimeTable = (props: TimeTableProps) => {
 
         let timeout: ReturnType<typeof setTimeout> | null = null
         const mouseMoveHandler = (e: Event) => {
-            if (timeout) {clearTimeout(timeout)}
-            timeout = setTimeout(() => handler(e), 100)
+            if (!timeout) {
+                timeout = setTimeout(() => {
+                    handler(e)
+                    timeout = null
+                }, 100)
+            }
         }
 
         document.body.addEventListener('mouseup', mouseUpHandler)
