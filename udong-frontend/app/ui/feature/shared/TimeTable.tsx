@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { MouseEvent, useEffect, useRef, useState } from 'react'
+import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react'
 
 import { HStack, VStack } from '../../components/Stack'
 import { UdongColors } from '../../theme/ColorPalette'
@@ -16,10 +16,10 @@ const Cell = styled.div({
     width: CELL_WIDTH,
     verticalAlign: 'middle',
     borderColor: UdongColors.GrayNormal,
-    borderLeftWidth: 0.5,
-    borderRightWidth: 0.5,
-    borderLeftStyle: 'solid',
-    borderRightStyle: 'solid',
+    borderStyle: 'solid',
+    borderLeftWidth: 0,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
     userSelect: 'none',
     WebkitUserSelect: 'none',
     cursor: 'default',
@@ -29,8 +29,6 @@ const HeaderCell = styled(Cell)({
     height: CELL_HEIGHT,
     backgroundColor: UdongColors.SecondaryBright,
     borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderStyle: 'solid',
     textAlign: 'center',
     lineHeight: 2,
 })
@@ -39,8 +37,8 @@ const CellBg = styled.div({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: 0,
-    bottom: 0,
+    top: -0.5,
+    bottom: -0.5,
     mixBlendMode: 'multiply',
 })
 
@@ -59,8 +57,8 @@ const BodyCell = (props: ({
         <Cell
             style={{
                 height: CELL_HEIGHT / 2,
-                borderBottomWidth: 1,
                 borderBottomStyle,
+                borderTopWidth: 0,
                 fontSize: 10,
                 paddingLeft: 2,
                 position: 'relative',
@@ -91,13 +89,14 @@ interface TimeTableProps {
     data: number[][]
     selected: boolean[][]
     gray?: boolean[][]
+    style?: CSSProperties
     onHover: (idx: CellIdx | null) => void
     onClick: (idx: CellIdx) => void
     onDrag: (startIdx: CellIdx, endIdx: CellIdx) => void
 }
 
 export const TimeTable = (props: TimeTableProps) => {
-    const { days, startTime, data, selected, gray, onHover, onClick, onDrag } = props
+    const { days, startTime, data, selected, gray, style, onHover, onClick, onDrag } = props
 
     const [dragCellIdx, setDragCellIdx] = useState<CellIdx|null>(null)
     const ref = useRef<HTMLDivElement>(null)
@@ -141,7 +140,14 @@ export const TimeTable = (props: TimeTableProps) => {
         <HStack
             width={CELL_WIDTH * days.length}
             onMouseLeave={() => onHover(null)}
-            style={{ cursor: 'default' }}
+            style={{
+                cursor: 'default',
+                borderColor: UdongColors.GrayNormal,
+                borderStyle: 'solid',
+                borderWidth: 0,
+                borderLeftWidth: 1,
+                ...style,
+            }}
             ref={ref}
         >
             {

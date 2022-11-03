@@ -107,6 +107,7 @@ export const DummyPage = () => {
                 [true, true, false, false],
             ]}
             startTime={6}
+            style={{ marginTop: 20 }}
             onHover={setHoverIdx}
             onClick={(idx) => console.log('click', idx)}
             onDrag={(s, e) => console.log('drag', s, e)}
