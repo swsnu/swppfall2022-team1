@@ -21,3 +21,12 @@ class Post(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Enrollment(models.Model):
+    post_id = models.ForeignKey(
+        Post, primary_key=True, on_delete=models.CASCADE, related_name="enrollment"
+    )
+    closed = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
