@@ -90,7 +90,7 @@ export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps 
             theme={theme}
             month={month}
             onClickEvent={(eventInfo) => {
-                onClickEvent(eventInfo.event.id)
+                onClickEvent(eventInfo.event.body)
             }}
         />
     )
