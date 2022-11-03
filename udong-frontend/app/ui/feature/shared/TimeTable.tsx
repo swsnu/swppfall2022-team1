@@ -112,7 +112,12 @@ export const TimeTable = (props: TimeTableProps) => {
             handler(e)
             setDragCellIdx(null)
         }
-        const mouseMoveHandler = handler
+
+        let timeout: ReturnType<typeof setTimeout> | null = null
+        const mouseMoveHandler = (e: Event) => {
+            if (timeout) {clearTimeout(timeout)}
+            timeout = setTimeout(() => handler(e), 100)
+        }
 
         document.body.addEventListener('mouseup', mouseUpHandler)
         document.body.addEventListener('mousemove', mouseMoveHandler)

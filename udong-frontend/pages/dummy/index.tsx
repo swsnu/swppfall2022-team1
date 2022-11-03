@@ -14,7 +14,7 @@ export const DummyPage = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     const [hoverIdx, setHoverIdx] = useState<CellIdx | null>(null)
-    console.log(hoverIdx)
+    console.log('hover', hoverIdx)
 
     return <VStack paddingHorizontal={32}>
         <h1>This page introduces how to use the custom-made components.</h1>
@@ -101,8 +101,8 @@ export const DummyPage = () => {
             ]}
             startTime={6}
             onHover={setHoverIdx}
-            onClick={console.log}
-            onDrag={console.log}
+            onClick={(idx) => console.log('click', idx)}
+            onDrag={(s, e) => console.log('drag', s, e)}
         />
     </VStack>
 }
