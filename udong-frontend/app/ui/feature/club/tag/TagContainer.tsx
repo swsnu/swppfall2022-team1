@@ -38,7 +38,6 @@ export const TagContainer = () => {
             <UdongButton
                 style={'line'}
                 onClick={() => console.log('create post')}
-                width={120}
             >
                 태그 추가하기
             </UdongButton>

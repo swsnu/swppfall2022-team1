@@ -20,16 +20,14 @@ export const BoardContainer = () => {
         <UdongSearchBar/>
         <Spacer height={8}/>
 
-        <PostItem/>
-        <PostItem/>
-        <PostItem/>
-        <PostItem/>
+        <PostItem isClubBoard={true}/>
+        <PostItem isClubBoard={true}/>
+        <PostItem isClubBoard={true}/>
+        <PostItem isClubBoard={true}/>
         {/* 코드 중복 잘 것 같아서 주석 달기*/}
-        <PostItem/>
-        <PostItem/>
-        <PostItem/>
-        <PostItem/>
-        <PostItem/>
-        <PostItem/>
+        <PostItem isClubBoard={true}/>
+        <PostItem isClubBoard={true}/>
+        <PostItem isClubBoard={true}/>
+        <PostItem isClubBoard={true}/>
     </VStack>
 }

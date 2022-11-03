@@ -1,5 +1,7 @@
+import { PostDetailContainer } from '../../../../app/ui/feature/club/post/detail/PostDetailContainer'
+
 export const PostDetailPage = () => {
-    return <h1>Post detail!!!</h1>
+    return <PostDetailContainer/>
 }
 
 export default PostDetailPage
