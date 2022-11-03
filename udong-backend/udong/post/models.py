@@ -26,7 +26,7 @@ class Post(models.Model):
 
 
 class Enrollment(models.Model):
-    post_id = models.ForeignKey(
+    post_id = models.OneToOneField(
         Post, primary_key=True, on_delete=models.CASCADE, related_name="enrollment"
     )
     closed = models.BooleanField()
@@ -35,7 +35,7 @@ class Enrollment(models.Model):
 
 
 class Scheduling(models.Model):
-    post_id = models.ForeignKey(
+    post_id = models.OneToOneField(
         Post, primary_key=True, on_delete=models.CASCADE, related_name="scheduling"
     )
     type = models.CharField(max_length=1, choices=[("D", "Date"), ("W", "Weekday")])
