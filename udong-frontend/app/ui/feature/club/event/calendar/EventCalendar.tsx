@@ -1,6 +1,6 @@
 import ToastUIReactCalendar from '@toast-ui/react-calendar'
 import dynamic from 'next/dynamic'
-import React, { RefObject, useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -29,8 +29,9 @@ export const EventCalendar = ({ events, onClickEvent } : EventCalendarProps) => 
     }
 
     useEffect(() => {
-        syncDate()
-    }, [calendarRef.current])
+        const today = new Date()
+        setDate({ year: today.getFullYear(), month: today.getMonth() })
+    }, [])
 
     return <VStack width={'100%'}>
         <Spacer
