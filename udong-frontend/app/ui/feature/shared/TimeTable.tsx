@@ -17,9 +17,7 @@ const Cell = styled.div({
     verticalAlign: 'middle',
     borderColor: UdongColors.GrayNormal,
     borderStyle: 'solid',
-    borderLeftWidth: 0,
-    borderBottomWidth: 1,
-    borderRightWidth: 1,
+    borderWidth: 0.5,
     userSelect: 'none',
     WebkitUserSelect: 'none',
     cursor: 'default',
@@ -28,36 +26,37 @@ const Cell = styled.div({
 const HeaderCell = styled(Cell)({
     height: CELL_HEIGHT,
     backgroundColor: UdongColors.SecondaryBright,
-    borderTopWidth: 1,
     textAlign: 'center',
     lineHeight: 2,
 })
 
 const CellBg = styled.div({
     position: 'absolute',
-    left: 0,
-    right: 0,
+    left: -0.5,
+    right: -0.5,
     top: -0.5,
     bottom: -0.5,
+    borderColor: UdongColors.GrayNormal,
+    borderStyle: 'solid',
+    borderWidth: 0.5,
 })
 
 const BodyCell = (props: ({
     backgroundColor: string
     backgroundOpacity: number
-    borderBottomStyle: 'solid' | 'dashed'
+    isUpper: boolean
     onHover?: () => void
     onClick?: () => void
     onMouseDown?: (e: MouseEvent<HTMLDivElement>) => void
     text: string
     gray?: boolean
 })) => {
-    const { backgroundColor, backgroundOpacity, borderBottomStyle, text, gray, onHover, onClick, onMouseDown } = props
+    const { backgroundColor, backgroundOpacity, isUpper, text, gray, onHover, onClick, onMouseDown } = props
     return (
         <Cell
             style={{
                 height: CELL_HEIGHT / 2,
-                borderBottomStyle,
-                borderTopWidth: 0,
+                borderColor: 'transparent',
                 fontSize: 10,
                 paddingLeft: 2,
                 position: 'relative',
@@ -69,7 +68,15 @@ const BodyCell = (props: ({
         >
             <CellBg
                 style={{
+                    borderTopStyle: isUpper ? 'solid' : 'dashed',
+                    borderBottomStyle: isUpper ? 'dashed' : 'solid',
+                    zIndex: 30,
+                }}
+            />
+            <CellBg
+                style={{
                     backgroundColor,
+                    borderColor: 'transparent',
                     opacity: backgroundOpacity,
                     zIndex: 0,
                 }}
@@ -165,14 +172,13 @@ export const TimeTable = (props: TimeTableProps) => {
 
     return (
         <HStack
-            width={CELL_WIDTH * days.length}
+            width={(CELL_WIDTH * days.length) + 1}
             onMouseLeave={onHover && (() => onHover(null))}
             style={{
                 cursor: 'default',
                 borderColor: UdongColors.GrayNormal,
                 borderStyle: 'solid',
-                borderWidth: 0,
-                borderLeftWidth: 1,
+                borderWidth: 0.5,
                 ...style,
             }}
             ref={ref}
@@ -188,7 +194,7 @@ export const TimeTable = (props: TimeTableProps) => {
                                     : selected[col][row]
                                 return <BodyCell
                                     key={row}
-                                    borderBottomStyle={row % 2 ? 'solid' : 'dashed'}
+                                    isUpper={row % 2 == 0}
                                     backgroundColor={cellSelected ? (selectColor ?? UdongColors.Secondary) : UdongColors.Primary}
                                     backgroundOpacity={cellSelected ? 1 : cnt / mxCnt / 2}
                                     onHover={onHover && (() => onHover({ col, row }))}
