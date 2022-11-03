@@ -119,9 +119,11 @@ export const TimeTable = (props: TimeTableProps) => {
             if(dragCellIdx && ref.current) {
                 const startCellIdx = dragCellIdx
                 const rect = ref.current.getBoundingClientRect()
+                const endCol = Math.floor(((e as unknown as MouseEvent).clientX - rect.left) / CELL_WIDTH)
+                const endRow = Math.floor(((e as unknown as MouseEvent).clientY - rect.top) / (CELL_HEIGHT / 2)) - 2
                 const endCellIdx = {
-                    col: Math.floor(((e as unknown as MouseEvent).clientX - rect.left) / CELL_WIDTH),
-                    row: Math.floor(((e as unknown as MouseEvent).clientY - rect.top) / (CELL_HEIGHT / 2)) - 2,
+                    col: Math.min(Math.max(endCol, 0), data.length - 1),
+                    row: Math.min(Math.max(endRow, 0), data[0].length - 1),
                 }
                 onDrag(startCellIdx, endCellIdx)
             }
