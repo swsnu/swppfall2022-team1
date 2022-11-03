@@ -41,10 +41,15 @@ class Scheduling(models.Model):
     type = models.CharField(max_length=1, choices=[("D", "Date"), ("W", "Weekday")])
     start_time = models.TimeField()
     end_time = models.TimeField()
+
+    # Date
     dates = models.JSONField(null=True)
+
+    # Weekday
     weekdays = ArrayField(models.BooleanField(), null=True)
     repeat_start = models.DateField(null=True)
     repeat_end = models.DateField(null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
