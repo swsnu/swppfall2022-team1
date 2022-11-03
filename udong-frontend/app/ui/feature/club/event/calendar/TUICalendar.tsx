@@ -1,7 +1,8 @@
 import '@toast-ui/calendar/dist/toastui-calendar.css'
 import { EventObject } from '@toast-ui/calendar/types/types/events'
 import ToastUIReactCalendar from '@toast-ui/react-calendar'
-import React from 'react'
+import randomSeed from 'random-seed'
+import React, { useEffect, useState } from 'react'
 
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { EventType } from './EventCalendarView'
@@ -41,6 +42,7 @@ const theme = {
             footerHeight: 25,
         },
     },
+
 }
 
 const month = {
@@ -49,9 +51,9 @@ const month = {
 
 const randomPrimaryColor = (seed: number) => {
     if (seed % 2){
-        return `hsl(234,50%,${45 + (Math.random() * 20)}%)`
+        return `hsl(234,50%,${45 + (seed * 0.2)}%)`
     } else {
-        return `hsl(234,50%,${80 + (Math.random() * 15)}%)`
+        return `hsl(234,50%,${80 + (seed * 0.15)}%)`
     }
 }
 
@@ -62,27 +64,33 @@ interface CalenderProps {
 }
 
 export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps ) => {
-    let coloredEvents: EventObject[] = []
+    const [calendarEvents, setCalendarEvents] = useState<EventObject[]>([])
+    const seedGenerator = randomSeed.create()
 
-    events.forEach((event, i)=>{
-        event.times.forEach((time: { start: string, end: string }) => {
-            coloredEvents = [...coloredEvents,
-                {
-                    id: `${i}`, calendarId: '0', title: event.title, body: `${event.id}`,
-                    backgroundColor: randomPrimaryColor(parseInt(event.id)), borderColor: 'rgba(0,0,0,0)',
-                    color: parseInt(event.id) % 2 ? 'white' : 'black',
-                    start: time.start, end: time.end,
-                }]
-        },
-        )
-    })
+    useEffect(()=>{
+        let coloredEvents: EventObject[] = []
+        events.forEach((event, i)=>{
+            event.times.forEach((time: { start: string, end: string }) => {
+                const seed = seedGenerator.range(100)
+                coloredEvents = [...coloredEvents,
+                    {
+                        id: `${i}`, calendarId: '0', title: event.title, body: `${event.id}`,
+                        backgroundColor: randomPrimaryColor(seed), borderColor: 'rgba(0,0,0,0)',
+                        color: seed % 2 ? 'white' : 'black',
+                        start: time.start, end: time.end,
+                    }]
+            },
+            )
+        })
+        setCalendarEvents(coloredEvents)
+    }, [])
 
     return (
         <ToastUIReactCalendar
             ref={calendarRef}
             view={'month'}
             calendars={calendars}
-            events={coloredEvents}
+            events={calendarEvents}
             isReadOnly={true}
             useDetailPopup={false}
             useFormPopup={false}
