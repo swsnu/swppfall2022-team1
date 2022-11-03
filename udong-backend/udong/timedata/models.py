@@ -1,6 +1,7 @@
 from django.db import models
 from event.models import Event
 from post.models import Scheduling
+from user.models import User
 
 # Create your models here.
 
@@ -26,5 +27,20 @@ class Time(models.Model):
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class AvailableTime(models.Model):
+    # id: auto-generated
+    user_id = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="available_time_set"
+    )
+    scheduling_id = models.ForeignKey(
+        Scheduling, on_delete=models.CASCADE, related_name="available_time_set"
+    )
+    date = models.DateField(null=True)
+    weekday = models.IntegerField(null=True)
+    time = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
