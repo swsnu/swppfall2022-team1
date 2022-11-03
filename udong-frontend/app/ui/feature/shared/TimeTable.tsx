@@ -42,8 +42,8 @@ const CellBg = styled.div({
 })
 
 const BodyCell = (props: ({
-    backgroundOpacity?: number
-    selected?: boolean
+    backgroundColor: string
+    backgroundOpacity: number
     borderBottomStyle: 'solid' | 'dashed'
     onHover: () => void
     onClick: () => void
@@ -51,7 +51,7 @@ const BodyCell = (props: ({
     text: string
     gray?: boolean
 })) => {
-    const { backgroundOpacity, borderBottomStyle, text, selected, gray, onHover, onClick, onMouseDown } = props
+    const { backgroundColor, backgroundOpacity, borderBottomStyle, text, gray, onHover, onClick, onMouseDown } = props
     return (
         <Cell
             style={{
@@ -69,8 +69,8 @@ const BodyCell = (props: ({
         >
             <CellBg
                 style={{
-                    backgroundColor: selected ? UdongColors.Secondary : UdongColors.Primary,
-                    opacity: selected ? 1 : backgroundOpacity,
+                    backgroundColor,
+                    opacity: backgroundOpacity,
                     zIndex: 0,
                 }}
             />
@@ -99,6 +99,7 @@ interface TimeTableProps {
     data: number[][]
     selected: boolean[][]
     gray?: boolean[][]
+    selectColor?: string
     style?: CSSProperties
     onHover: (idx: CellIdx | null) => void
     onClick: (idx: CellIdx) => void
@@ -106,39 +107,49 @@ interface TimeTableProps {
 }
 
 export const TimeTable = (props: TimeTableProps) => {
-    const { days, startTime, data, selected, gray, style, onHover, onClick, onDrag } = props
+    const { days, startTime, data, selected, gray, selectColor, style, onHover, onClick, onDrag } = props
 
-    const [dragCellIdx, setDragCellIdx] = useState<CellIdx|null>(null)
+    const [startCellIdx, setStartCellIdx] = useState<CellIdx|null>(null)
+    const [endCellIdx, setEndCellIdx] = useState<CellIdx|null>(null)
     const ref = useRef<HTMLDivElement>(null)
 
     const maxFn = (arr: number[]) => arr.reduce((a, b) => Math.max(a, b), 0)
     const mxCnt = maxFn(data.map(colData => maxFn(colData)))
 
+    const calculateInDrag = (cellIdx: CellIdx) => {
+        if(!startCellIdx || !endCellIdx) {return false}
+        const mnCol = Math.min(startCellIdx?.col, endCellIdx?.col)
+        const mxCol = Math.max(startCellIdx?.col, endCellIdx?.col)
+        const mnRow = Math.min(startCellIdx?.row, endCellIdx?.row)
+        const mxRow = Math.max(startCellIdx?.row, endCellIdx?.row)
+        return mnCol <= cellIdx.col  && cellIdx.col <= mxCol && mnRow <= cellIdx.row  && cellIdx.row <= mxRow
+    }
+
     useEffect(() => {
-        const handler = (e: Event) => {
-            if(dragCellIdx && ref.current) {
-                const startCellIdx = dragCellIdx
-                const rect = ref.current.getBoundingClientRect()
-                const endCol = Math.floor(((e as unknown as MouseEvent).clientX - rect.left) / CELL_WIDTH)
-                const endRow = Math.floor(((e as unknown as MouseEvent).clientY - rect.top) / (CELL_HEIGHT / 2)) - 2
-                const endCellIdx = {
-                    col: Math.min(Math.max(endCol, 0), data.length - 1),
-                    row: Math.min(Math.max(endRow, 0), data[0].length - 1),
-                }
-                onDrag(startCellIdx, endCellIdx)
+        const calculateCellIdx = (e: Event): CellIdx|null => {
+            if(!ref.current) {return null}
+            const rect = ref.current.getBoundingClientRect()
+            const endCol = Math.floor(((e as unknown as MouseEvent).clientX - rect.left) / CELL_WIDTH)
+            const endRow = Math.floor(((e as unknown as MouseEvent).clientY - rect.top) / (CELL_HEIGHT / 2)) - 2
+            return {
+                col: Math.min(Math.max(endCol, 0), data.length - 1),
+                row: Math.min(Math.max(endRow, 0), data[0].length - 1),
             }
         }
 
         const mouseUpHandler = (e: Event) => {
-            handler(e)
-            setDragCellIdx(null)
+            if(startCellIdx) {
+                const c = calculateCellIdx(e)
+                if(c) {onDrag(startCellIdx, c)}
+            }
+            setStartCellIdx(null)
         }
 
         let timeout: ReturnType<typeof setTimeout> | null = null
         const mouseMoveHandler = (e: Event) => {
             if (!timeout) {
                 timeout = setTimeout(() => {
-                    handler(e)
+                    setEndCellIdx(calculateCellIdx(e))
                     timeout = null
                 }, 100)
             }
@@ -171,22 +182,25 @@ export const TimeTable = (props: TimeTableProps) => {
                     <VStack key={col}>
                         <HeaderCell key={col}>{days[col]}</HeaderCell>
                         {
-                            colData.map((cnt, row) => (
-                                <BodyCell
+                            colData.map((cnt, row) => {
+                                const cellSelected = (startCellIdx && calculateInDrag({ col, row }))
+                                    ? !selected[startCellIdx.col][startCellIdx.row]
+                                    : selected[col][row]
+                                return <BodyCell
                                     key={row}
                                     borderBottomStyle={row % 2 ? 'solid' : 'dashed'}
-                                    backgroundOpacity={cnt / mxCnt / 2}
+                                    backgroundColor={cellSelected ? (selectColor ?? UdongColors.Secondary) : UdongColors.Primary}
+                                    backgroundOpacity={cellSelected ? 1 : cnt / mxCnt / 2}
                                     onHover={() => onHover({ col, row })}
                                     onClick={() => onClick({ col, row })}
                                     onMouseDown={() => {
-                                        setDragCellIdx({ col, row })
-                                        onDrag({ col, row }, { col, row })
+                                        setStartCellIdx({ col, row })
+                                        setEndCellIdx({ col, row })
                                     }}
-                                    selected={selected[col][row]}
                                     gray={gray && gray[col][row]}
                                     text={row % 2 ? '' : `${startTime + (row / 2)}`}
                                 />
-                            ))
+                            })
                         }
                     </VStack>
                 ))
