@@ -45,9 +45,9 @@ const BodyCell = (props: ({
     backgroundColor: string
     backgroundOpacity: number
     borderBottomStyle: 'solid' | 'dashed'
-    onHover: () => void
-    onClick: () => void
-    onMouseDown: (e: MouseEvent<HTMLDivElement>) => void
+    onHover?: () => void
+    onClick?: () => void
+    onMouseDown?: (e: MouseEvent<HTMLDivElement>) => void
     text: string
     gray?: boolean
 })) => {
@@ -101,8 +101,8 @@ interface TimeTableProps {
     gray?: boolean[][]
     selectColor?: string
     style?: CSSProperties
-    onHover: (idx: CellIdx | null) => void
-    onClick: (idx: CellIdx) => void
+    onHover?: (idx: CellIdx | null) => void
+    onClick?: (idx: CellIdx) => void
     onDrag: (startIdx: CellIdx, endIdx: CellIdx) => void
 }
 
@@ -166,7 +166,7 @@ export const TimeTable = (props: TimeTableProps) => {
     return (
         <HStack
             width={CELL_WIDTH * days.length}
-            onMouseLeave={() => onHover(null)}
+            onMouseLeave={onHover && (() => onHover(null))}
             style={{
                 cursor: 'default',
                 borderColor: UdongColors.GrayNormal,
@@ -191,8 +191,8 @@ export const TimeTable = (props: TimeTableProps) => {
                                     borderBottomStyle={row % 2 ? 'solid' : 'dashed'}
                                     backgroundColor={cellSelected ? (selectColor ?? UdongColors.Secondary) : UdongColors.Primary}
                                     backgroundOpacity={cellSelected ? 1 : cnt / mxCnt / 2}
-                                    onHover={() => onHover({ col, row })}
-                                    onClick={() => onClick({ col, row })}
+                                    onHover={onHover && (() => onHover({ col, row }))}
+                                    onClick={onClick && (() => onClick({ col, row }))}
                                     onMouseDown={() => {
                                         setStartCellIdx({ col, row })
                                         setEndCellIdx({ col, row })
