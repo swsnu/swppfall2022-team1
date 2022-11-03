@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from user.models import User
 from event.models import Event
@@ -28,5 +29,20 @@ class Enrollment(models.Model):
         Post, primary_key=True, on_delete=models.CASCADE, related_name="enrollment"
     )
     closed = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Scheduling(models.Model):
+    post_id = models.ForeignKey(
+        Post, primary_key=True, on_delete=models.CASCADE, related_name="scheduling"
+    )
+    type = models.CharField(max_length=1, choices=[("D", "Date"), ("W", "Weekday")])
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    dates = models.JSONField(null=True)
+    weekdays = ArrayField(models.BooleanField(), null=True)
+    repeat_start = models.DateField(null=True)
+    repeat_end = models.DateField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
