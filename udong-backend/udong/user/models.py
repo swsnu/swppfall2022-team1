@@ -17,10 +17,10 @@ class User(models.Model):
 class UserClub(models.Model):
     # id: auto-generated
     user_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_club"
+        User, on_delete=models.CASCADE, related_name="user_club_set"
     )
     club_id = models.ForeignKey(
-        Club, on_delete=models.CASCADE, related_name="club_user"
+        Club, on_delete=models.CASCADE, related_name="club_user_set"
     )
     auth = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
