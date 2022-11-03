@@ -2,6 +2,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from user.models import User
 from event.models import Event
+from tag.models import Tag
 
 # Create your models here.
 
@@ -44,5 +45,17 @@ class Scheduling(models.Model):
     weekdays = ArrayField(models.BooleanField(), null=True)
     repeat_start = models.DateField(null=True)
     repeat_end = models.DateField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class PostTag(models.Model):
+    # id: auto-generated
+    post_id = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="post_tag_set"
+    )
+    tag_id = models.ForeignKey(
+        Tag, on_delete=models.CASCADE, related_name="tag_post_set"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
