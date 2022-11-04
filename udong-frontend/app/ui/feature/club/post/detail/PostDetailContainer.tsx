@@ -69,8 +69,10 @@ export const PostDetailContainer = () => {
         <Spacer height={45}/>
 
         <VStack alignItems={'center'}>
-            <UdongText style={'ListContentUnderscore'}>MT</UdongText>
-            <Spacer height={15}/>
+            <VStack onClick={() => router.push('/club/1/event/1')}>
+                <UdongText style={'ListContentUnderscore'}>MT</UdongText>
+                <Spacer height={15}/>
+            </VStack>
 
             <HStack justifyContent={'center'}>
                 {tags.map((tag) => {
