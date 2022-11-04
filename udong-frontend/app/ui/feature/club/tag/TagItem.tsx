@@ -22,7 +22,6 @@ export const TagItem = (props: TagItemProps) => {
     const handleOnClickEdit = useCallback((e: React.MouseEvent) => {
         e.stopPropagation()
         showEditModal(true)
-        console.log('hell')
     }, [showEditModal])
 
     return <VStack>
