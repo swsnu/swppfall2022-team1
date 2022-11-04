@@ -2,8 +2,7 @@ name: ESLint check on PR
 
 on:
   pull_request:
-    paths-ignore:
-      - 'udong-backend/**'
+    types: [opened, synchronize, reopened]
       
 defaults:
   run:
