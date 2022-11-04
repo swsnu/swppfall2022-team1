@@ -34,7 +34,7 @@ export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
             backgroundColor: style === 'fill' ? (color ?? UdongColors.Primary) : UdongColors.White,
             border: `1px solid ${color ?? UdongColors.Primary}`,
             borderRadius: 10,
-            padding: '8px 12px',
+            padding: '8px 16px',
             color: style === 'line' ? (color ?? UdongColors.Primary) : UdongColors.White,
             fontSize: 16,
             ...props,

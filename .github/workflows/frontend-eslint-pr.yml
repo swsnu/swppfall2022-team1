@@ -1,7 +1,7 @@
 name: ESLint check on PR
 
 on:
-  push:
+  pull_request:
     paths-ignore:
       - 'udong-backend/**'
       
@@ -33,3 +33,5 @@ jobs:
         with:
           reporter: github-pr-review
           workdir: ./udong-frontend
+          level: error
+          fail_on_error: true
