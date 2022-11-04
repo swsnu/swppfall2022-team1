@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { Spacer } from '../../app/ui/components/Spacer'
+
 import { HStack, VStack } from '../../app/ui/components/Stack'
 import { UdongButton } from '../../app/ui/components/UdongButton'
 import { UdongChip } from '../../app/ui/components/UdongChip'
@@ -16,12 +17,11 @@ export const DummyPage = () => {
     const [hoverIdx, setHoverIdx] = useState<CellIdx | null>(null)
     console.log('hover', hoverIdx)
 
-    return <VStack paddingHorizontal={32}>
+    return <VStack paddingHorizontal={ 32}>
         <h1>This page introduces how to use the custom-made components.</h1>
 
         <UdongText
-            style={'ListTitle'}
-            color={UdongColors.Primary}
+            style={'ListTitle'} color={UdongColors.Primary}
         >
             Home containerrrrrr
         </UdongText>
