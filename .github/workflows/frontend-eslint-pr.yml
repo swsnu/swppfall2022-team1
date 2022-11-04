@@ -37,3 +37,4 @@ jobs:
           reporter: github-pr-review
           workdir: ./udong-frontend
           level: error
+          fail_on_error: true
