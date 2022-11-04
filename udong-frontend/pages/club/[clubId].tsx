@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 
 import { ClubContainer } from '../../app/ui/feature/club/ClubContainer'
+import { CLUB_TAB } from '../../app/ui/feature/club/ClubTabView'
 
 export const ClubPage = () => {
     const router = useRouter()
@@ -12,16 +13,16 @@ export const ClubPage = () => {
     }
 
     switch (tab) {
-        case 'board':
-            return <ClubContainer tab={'board'}/>
-        case 'event':
-            return <ClubContainer tab={'event'}/>
-        case 'tag':
-            return <ClubContainer tab={'tag'}/>
-        case 'info':
-            return <ClubContainer tab={'info'}/>
+        case CLUB_TAB.BOARD:
+            return <ClubContainer tab={CLUB_TAB.BOARD}/>
+        case CLUB_TAB.EVENT:
+            return <ClubContainer tab={CLUB_TAB.EVENT}/>
+        case CLUB_TAB.TAG:
+            return <ClubContainer tab={CLUB_TAB.TAG}/>
+        case CLUB_TAB.INFO:
+            return <ClubContainer tab={CLUB_TAB.INFO}/>
         default:
-            return <ClubContainer tab={'board'}/>
+            return <ClubContainer tab={CLUB_TAB.BOARD}/>
     }
 }
 
