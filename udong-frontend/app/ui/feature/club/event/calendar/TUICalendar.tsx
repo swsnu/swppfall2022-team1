@@ -5,7 +5,7 @@ import randomSeed from 'random-seed'
 import React, { useEffect, useState } from 'react'
 
 import { UdongColors } from '../../../../theme/ColorPalette'
-import { EventType } from './EventCalendarView'
+import { EventType } from '../EventContainer'
 
 const calendars = [
     {
