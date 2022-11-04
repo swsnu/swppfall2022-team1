@@ -8,10 +8,10 @@ from user.models import User
 
 class Time(models.Model):
     # id: auto-generated
-    event_id = models.ForeignKey(
+    event = models.ForeignKey(
         Event, null=True, on_delete=models.SET_NULL, related_name="time_set"
     )
-    scheduling_id = models.ForeignKey(
+    scheduling = models.ForeignKey(
         Scheduling, null=True, on_delete=models.SET_NULL, related_name="time_set"
     )
     type = models.CharField(max_length=1, choices=[("D", "Date"), ("W", "Weekday")])
@@ -33,10 +33,10 @@ class Time(models.Model):
 
 class AvailableTime(models.Model):
     # id: auto-generated
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="available_time_set"
     )
-    scheduling_id = models.ForeignKey(
+    scheduling = models.ForeignKey(
         Scheduling, on_delete=models.CASCADE, related_name="available_time_set"
     )
     date = models.DateField(null=True)

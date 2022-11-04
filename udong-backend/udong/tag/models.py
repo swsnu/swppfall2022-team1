@@ -7,7 +7,7 @@ from user.models import User
 
 class Tag(models.Model):
     # id: auto-generated
-    club_id = models.ForeignKey(Club, on_delete=models.CASCADE, related_name="tag_set")
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name="tag_set")
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -15,11 +15,9 @@ class Tag(models.Model):
 
 class UserTag(models.Model):
     # id: auto-generated
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_tag_set"
     )
-    tag_id = models.ForeignKey(
-        Tag, on_delete=models.CASCADE, related_name="tag_user_set"
-    )
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name="tag_user_set")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

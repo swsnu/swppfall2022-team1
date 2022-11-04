@@ -9,10 +9,10 @@ from tag.models import Tag
 
 class Post(models.Model):
     # id: auto-generated
-    author_id = models.ForeignKey(
+    author = models.ForeignKey(
         User, null=True, on_delete=models.SET_NULL, related_name="post_set"
     )
-    event_id = models.ForeignKey(
+    event = models.ForeignKey(
         Event, null=True, on_delete=models.SET_NULL, related_name="post_set"
     )
     title = models.CharField(max_length=255)
@@ -26,7 +26,7 @@ class Post(models.Model):
 
 
 class Enrollment(models.Model):
-    post_id = models.OneToOneField(
+    post = models.OneToOneField(
         Post, primary_key=True, on_delete=models.CASCADE, related_name="enrollment"
     )
     closed = models.BooleanField()
@@ -35,7 +35,7 @@ class Enrollment(models.Model):
 
 
 class Scheduling(models.Model):
-    post_id = models.OneToOneField(
+    post = models.OneToOneField(
         Post, primary_key=True, on_delete=models.CASCADE, related_name="scheduling"
     )
     type = models.CharField(max_length=1, choices=[("D", "Date"), ("W", "Weekday")])
@@ -57,11 +57,9 @@ class Scheduling(models.Model):
 
 class PostTag(models.Model):
     # id: auto-generated
-    post_id = models.ForeignKey(
+    post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="post_tag_set"
     )
-    tag_id = models.ForeignKey(
-        Tag, on_delete=models.CASCADE, related_name="tag_post_set"
-    )
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name="tag_post_set")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -6,9 +6,7 @@ from club.models import Club
 
 class Event(models.Model):
     # id: auto-generated
-    club_id = models.ForeignKey(
-        Club, on_delete=models.CASCADE, related_name="event_set"
-    )
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name="event_set")
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
