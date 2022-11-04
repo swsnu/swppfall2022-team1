@@ -47,6 +47,7 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                             <UdongText
                                 style={'Header'}
                                 color={UdongColors.Primary}
+                                nonText={true}
                             >{clubName}</UdongText>
                         </HStack>
                         : null
