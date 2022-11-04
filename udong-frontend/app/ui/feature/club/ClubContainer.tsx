@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
 import { BoardContainer } from './board/BoardContainer'
-import { ClubTabType, ClubTabView } from './ClubTabView'
+import { CLUB_TAB, ClubTabType, ClubTabView } from './ClubTabView'
 import { EventContainer } from './event/EventContainer'
 import { InfoContainer } from './info/InfoContainer'
 import { TagContainer } from './tag/TagContainer'
@@ -22,13 +22,13 @@ export const ClubContainer = (props: ClubContainerProps) => {
     }, [])
 
     const getCurrentContainer = () => {
-        if (tab === 'board') {
+        if (tab === CLUB_TAB.BOARD) {
             return <BoardContainer/>
-        } else if (tab === 'event') {
+        } else if (tab === CLUB_TAB.EVENT) {
             return <EventContainer/>
-        } else if (tab === 'tag') {
+        } else if (tab === CLUB_TAB.TAG) {
             return <TagContainer/>
-        } else if (tab === 'info') {
+        } else if (tab === CLUB_TAB.INFO) {
             return <InfoContainer/>
         } else {
             return <h1>board</h1>

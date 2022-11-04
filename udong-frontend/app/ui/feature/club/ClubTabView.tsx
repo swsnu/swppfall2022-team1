@@ -4,7 +4,13 @@ import { Spacer } from '../../components/Spacer'
 import { HStack } from '../../components/Stack'
 import { UdongTab } from '../../components/UdongTab'
 
-export type ClubTabType = 'board' | 'event' | 'tag' | 'info'
+export type ClubTabType = CLUB_TAB
+export enum CLUB_TAB {
+    BOARD = 'board',
+    EVENT = 'event',
+    TAG = 'tag',
+    INFO = 'info'
+}
 
 interface ClubTabViewProps {
     selectedTab: ClubTabType
@@ -24,32 +30,32 @@ export const ClubTabView = (props: ClubTabViewProps) => {
     >
         <UdongTab
             text={'게시판'}
-            selected={selectedTab === 'board'}
-            onClick={() => handleOnTabClick('board')}
+            selected={selectedTab === CLUB_TAB.BOARD}
+            onClick={() => handleOnTabClick(CLUB_TAB.BOARD)}
         />
 
         <Spacer width={40}/>
 
         <UdongTab
             text={'행사'}
-            selected={selectedTab === 'event'}
-            onClick={() => handleOnTabClick('event')}
+            selected={selectedTab === CLUB_TAB.EVENT}
+            onClick={() => handleOnTabClick(CLUB_TAB.EVENT)}
         />
 
         <Spacer width={40}/>
 
         <UdongTab
             text={'태그'}
-            selected={selectedTab === 'tag'}
-            onClick={() => handleOnTabClick('tag')}
+            selected={selectedTab === CLUB_TAB.TAG}
+            onClick={() => handleOnTabClick(CLUB_TAB.TAG)}
         />
 
         <Spacer width={40}/>
 
         <UdongTab
             text={'정보'}
-            selected={selectedTab === 'info'}
-            onClick={() => handleOnTabClick('info')}
+            selected={selectedTab === CLUB_TAB.INFO}
+            onClick={() => handleOnTabClick(CLUB_TAB.INFO)}
         />
     </HStack>
 }

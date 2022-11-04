@@ -30,3 +30,8 @@ a {
     background: black;
   }
 }
+
+.toastui-calendar-grid-cell-date .toastui-calendar-weekday-grid-date.toastui-calendar-weekday-grid-date-decorator {
+    background-color: #3945AC !important;
+}
+
