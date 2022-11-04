@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { Spacer } from '../../app/ui/components/Spacer'
+
 import { HStack, VStack } from '../../app/ui/components/Stack'
 import { UdongButton } from '../../app/ui/components/UdongButton'
 import { UdongChip } from '../../app/ui/components/UdongChip'
@@ -20,8 +21,7 @@ export const DummyPage = () => {
         <h1>This page introduces how to use the custom-made components.</h1>
 
         <UdongText
-            style={'ListTitle'}
-            color={UdongColors.Primary}
+            style={'ListTitle'} color={UdongColors.Primary}
         >
             Home containerrrrrr
         </UdongText>
@@ -78,10 +78,8 @@ export const DummyPage = () => {
         <Spacer height={24}/>
 
         <UdongButton
-            style={'fill'}
-            onClick={() => setIsOpen(true)}
-        >
-            Open MOdal
+            style={'fill'} onClick={() => setIsOpen(true)}
+        >Open MOdal
         </UdongButton>
         <UdongModal
             isOpen={isOpen}
