@@ -7,6 +7,7 @@ import { UdongChip } from '../../../../components/UdongChip'
 import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
+import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
 import { PostDetailCommentsView } from './PostDetailCommentsView'
 import { PostDetailContentView } from './PostDetailContentView'
 import { PostDetailEnrollmentView } from './PostDetailEnrollmentView'
@@ -112,7 +113,8 @@ export const PostDetailContainer = () => {
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
-
         <PostDetailCommentsView/>
+
+        <ScrollToTopButton/>
     </VStack>
 }

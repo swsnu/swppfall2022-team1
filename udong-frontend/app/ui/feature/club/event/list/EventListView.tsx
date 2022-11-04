@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 
 import { HStack, VStack } from '../../../../components/Stack'
+import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
 import { EventType } from '../EventContainer'
 import { EventList } from './EventList'
 
@@ -31,5 +32,7 @@ export const EventListView = ({ events }: EventListViewProps) => {
                 onClickEvent={onClickEvent}
             />
         </HStack>
+
+        <ScrollToTopButton/>
     </VStack>
 }

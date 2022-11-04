@@ -2,6 +2,7 @@ import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
 import { UdongSearchBar } from '../../../components/UdongSearchBar'
+import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 import { TagItem } from './TagItem'
 
 interface TagItemType {
@@ -99,5 +100,7 @@ export const TagContainer = () => {
                 isUserIncluded={tag.isUserIncluded}
             />
         })}
+
+        <ScrollToTopButton/>
     </VStack>
 }
