@@ -31,10 +31,22 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+# Rest Framework
+REST_FRAMEWORK = {
+    # Authentication
+    "UNAUTHENTICATED_USER": "user.models.DummyUser"
+}
 
 # Application definition
 
 INSTALLED_APPS = [
+    "user.apps.UserConfig",
+    "club.apps.ClubConfig",
+    "post.apps.PostConfig",
+    "comment.apps.CommentConfig",
+    "event.apps.EventConfig",
+    "tag.apps.TagConfig",
+    "timedata.apps.TimedataConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
