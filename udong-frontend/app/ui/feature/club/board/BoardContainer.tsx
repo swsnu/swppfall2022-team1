@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router'
+
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -5,11 +7,12 @@ import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { PostItem } from '../../shared/PostItem'
 
 export const BoardContainer = () => {
+    const router = useRouter()
     return <VStack>
         <HStack justifyContent={'end'}>
             <UdongButton
                 style={'line'}
-                onClick={() => console.log('create post')}
+                onClick={() => router.push('/club/1/post/create')}
                 width={120}
             >
                 글쓰기

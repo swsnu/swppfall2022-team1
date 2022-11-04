@@ -4,7 +4,7 @@ import { UdongColors } from '../theme/ColorPalette'
 import { HStack } from './Stack'
 import { UdongImage } from './UdongImage'
 
-interface TempUdongTextField {
+interface UdongTextFieldProps {
     defaultValue: string
     width?: number | string
     imageSrc?: string
@@ -16,7 +16,7 @@ interface TempUdongTextField {
  *
  * */
 // TODO: needs developing & testing
-export const UdongTextField = (props: TempUdongTextField) => {
+export const UdongTextField = (props: UdongTextFieldProps) => {
     const { defaultValue, width, imageSrc } = props
     const [value, setValue] = useState(defaultValue)
 
