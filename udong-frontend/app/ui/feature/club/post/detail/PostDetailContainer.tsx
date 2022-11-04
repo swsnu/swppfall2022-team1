@@ -9,6 +9,8 @@ import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { PostDetailCommentsView } from './PostDetailCommentsView'
 import { PostDetailContentView } from './PostDetailContentView'
+import { PostDetailEnrollmentView } from './PostDetailEnrollmentView'
+import { PostDetailSchedulingView } from './PostDetailSchedulingView'
 
 const tags = [
     {
@@ -35,6 +37,8 @@ const tags = [
 
 export const PostDetailContainer = () => {
     const router = useRouter()
+    const isEnrollment = true
+    const isScheduling = false
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
@@ -89,6 +93,19 @@ export const PostDetailContainer = () => {
             backgroundColor={UdongColors.GrayBright}
         />
         <PostDetailContentView/>
+
+        {isEnrollment && <PostDetailEnrollmentView/>}
+
+        {isScheduling && <PostDetailSchedulingView/>}
+
+        <HStack>
+            <UdongText style={'ListContentXS'}>2022.09.10</UdongText>
+            <Spacer width={10}/>
+            <UdongText style={'ListContentXS'}>박지연</UdongText>
+        </HStack>
+
+        <Spacer height={10}/>
+
         <Spacer
             height={1}
             backgroundColor={UdongColors.GrayBright}

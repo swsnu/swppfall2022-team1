@@ -1,12 +1,8 @@
-import { Spacer } from '../../../../components/Spacer'
-import { HStack, VStack } from '../../../../components/Stack'
-import { UdongButton } from '../../../../components/UdongButton'
+import { VStack } from '../../../../components/Stack'
 import { UdongText } from '../../../../components/UdongText'
-import { UdongColors } from '../../../../theme/ColorPalette'
 
 export const PostDetailContentView = () => {
-    return <VStack>
-        <Spacer height={30}/>
+    return <VStack paddingVertical={30}>
         <UdongText
             style={'GeneralContent'}
             whiteSpace={'pre-line'}
@@ -25,62 +21,5 @@ export const PostDetailContentView = () => {
             많은 참석 부탁드립니다.
             이상입니다.`}
         </UdongText>
-
-        <Spacer height={60}/>
-        <VStack alignItems={'center'}>
-            <UdongText
-                style={'GeneralContent'}
-                color={UdongColors.Primary}
-            >
-                현재 n명 지원
-            </UdongText>
-        </VStack>
-
-        <Spacer height={30}/>
-        <HStack justifyContent={'space-between'}>
-            <HStack
-                flex={1}
-                style={{ marginLeft: 'auto' }}
-            />
-
-            <HStack flex={1}>
-                <UdongButton
-                    style={'fill'}
-                    onClick={() => console.log('현황 보기')}
-                >
-                    현황 보기
-                </UdongButton>
-
-                <Spacer width={60}/>
-
-                <UdongButton
-                    style={'fill'}
-                    onClick={() => console.log('지원')}
-                >
-                    지원하기
-                </UdongButton>
-            </HStack>
-
-            <HStack
-                flex={1}
-                style={{ marginRight: 'auto' }}
-                justifyContent={'end'}
-            >
-                <UdongButton
-                    style={'line'}
-                    onClick={() => console.log('마감')}
-                >
-                    마감하기
-                </UdongButton>
-            </HStack>
-        </HStack>
-
-        <HStack>
-            <UdongText style={'ListContentXS'}>2022.09.10</UdongText>
-            <Spacer width={10}/>
-            <UdongText style={'ListContentXS'}>박지연</UdongText>
-        </HStack>
-
-        <Spacer height={10}/>
     </VStack>
 }
