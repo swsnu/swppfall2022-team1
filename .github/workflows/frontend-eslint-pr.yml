@@ -36,3 +36,4 @@ jobs:
         with:
           reporter: github-pr-review
           workdir: ./udong-frontend
+          level: error
