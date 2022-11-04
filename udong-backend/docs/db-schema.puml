@@ -1,0 +1,178 @@
+@startuml Udong
+hide circle
+
+skinparam linetype ortho
+
+entity User {
+  *id: int <<generated>>
+  --
+  *google: varchar
+  *image: varchar
+  *Timetable: varchar
+  *name: varchar
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity Club {
+  *id: int <<generated>>
+  --
+  *name: varchar
+  *code: char
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity UserClub {
+  *id: int <<generated>>
+  --
+  *user_id: int <<FK>>
+  *club_id: int <<FK>>
+  *auth: varchar
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity Event {
+  *id: int <<generated>>
+  --
+  *club_id: int <<FK>>
+  *name: varchar
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity Time {
+  *id: int <<generated>>
+  --
+  event_id: int <<FK>>
+  scheduling_id: int <<FK>>
+  *type: "Date" | "Weekday"
+  // Date
+  start_date: dateTime
+  end_date: dateTime
+  // Weekday
+  repeat_start: date
+  repeat_end: date
+  weekday: int
+  start_time: time
+  end_time: time
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity Tag {
+  *id: int <<generated>>
+  --
+  *club_id: int <<FK>>
+  *name: varchar
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity UserTag {
+  *id: int <<generated>>
+  --
+  *user_id: int <<FK>>
+  *tag_id: int <<FK>>
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity Post {
+  *id: int <<generated>>
+  --
+  *author_id: int <<FK>>
+  *event_id: int <<FK>>
+  *title: varchar
+  *content: longtext
+  *images: varchar[]
+  *type: "Announcement" | "Participation" | "Time"
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity Enrollment {
+  *post_id: int <<FK>>
+  --
+  *closed: boolean
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity Scheduling {
+  *post_id: int <<FK>>
+  --
+  *type: "Date" | "Weekday"
+  *start_time: time
+  *end_time: time
+  // Date
+  dates: json
+  // Weekday
+  weekdays: char
+  repeat_start: date
+  repeat_end: date
+  *closed: boolean
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity Participation {
+  *id: int <<generated>>
+  --
+  *user_id: int <<FK>>
+  *enrollment_id: int <<FK>>
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity AvailableTime {
+  *id: int <<generated>>
+  --
+  *user_id: int <<FK>>
+  *scheduling_id: int <<FK>>
+  *time: text
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity Comment {
+  *id: int <<genearated>>
+  --
+  *user_id: int <<FK>>
+  *post_id: int <<FK>>
+  *content: varchar
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+entity PostTag {
+  *id: int <<generated>>
+  --
+  *post_id: int <<FK>>
+  *tag_id: int <<FK>>
+  *created_at: dateTime
+  *updated_at: dateTime
+}
+
+User ||--o{ UserClub
+Club ||--o{ UserClub
+Club ||--o{ Event
+Time }o-left-|| Event
+User ||--o{ UserTag
+Tag ||--o{ UserTag
+Event ||-down-o{ Post
+Post }o-up-|| User
+Enrollment |o-up-|| Post
+Scheduling |o-up-|| Post
+Scheduling ||--o{ Time
+User ||--o{ Participation
+Enrollment ||--o{ Participation
+User ||--o{ AvailableTime
+AvailableTime }o---|| Scheduling
+User ||--o{ Comment
+Post ||--o{ PostTag
+Tag }o-up-|| Club
+Tag ||--o{ PostTag
+Post ||--o{ Comment
+@enduml
