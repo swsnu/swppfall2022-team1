@@ -1,8 +1,6 @@
 import { useRouter } from 'next/router'
 
-import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
-import { UdongColors } from '../../../../theme/ColorPalette'
 import { EventType } from '../EventContainer'
 import { EventList } from './EventList'
 

@@ -1,6 +1,6 @@
 import { VStack } from '../../../../components/Stack'
 import { UdongText } from '../../../../components/UdongText'
-import { EventType } from './EventCalendarView'
+import { EventType } from '../EventContainer'
 import UnsettledEvent from './UnsettledEvent'
 
 interface UnsettledEventListProps {

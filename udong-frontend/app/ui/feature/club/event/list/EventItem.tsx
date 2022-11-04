@@ -1,8 +1,5 @@
-import { useMemo } from 'react'
-
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
-import { UdongChip } from '../../../../components/UdongChip'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { EventType } from '../EventContainer'
