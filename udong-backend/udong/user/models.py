@@ -22,6 +22,6 @@ class UserClub(models.Model):
     club_id = models.ForeignKey(
         Club, on_delete=models.CASCADE, related_name="club_user_set"
     )
-    auth = models.CharField(max_length=20)
+    auth = models.CharField(max_length=1, choices=[("M", "Member"), ("A", "Admin")])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
