@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongChip } from '../../../components/UdongChip'
@@ -11,10 +13,18 @@ import { UdongColors } from '../../../theme/ColorPalette'
 interface TagItemProps {
     name: string
     isUserIncluded: boolean
+    showEditModal: (showModal: boolean) => void
 }
 
 export const TagItem = (props: TagItemProps) => {
-    const { name, isUserIncluded } = props
+    const { name, isUserIncluded, showEditModal } = props
+
+    const handleOnClickEdit = useCallback((e: React.MouseEvent) => {
+        e.stopPropagation()
+        showEditModal(true)
+        console.log('hell')
+    }, [showEditModal])
+
     return <VStack>
         <Spacer
             height={1}
@@ -48,11 +58,13 @@ export const TagItem = (props: TagItemProps) => {
                 </UdongText>
 
                 <Spacer width={30}/>
-                <UdongImage
-                    src={edit.src}
-                    height={20}
-                    width={20}
-                />
+                <VStack onClick={handleOnClickEdit}>
+                    <UdongImage
+                        src={edit.src}
+                        height={20}
+                        width={20}
+                    />
+                </VStack>
                 <Spacer width={10}/>
                 <UdongImage
                     src={trash.src}

@@ -17,5 +17,7 @@ export const InfoContainer = () => {
 
             <ClubMembersView/>
         </HStack>
+
+        <Spacer height={20}/>
     </VStack>
 }

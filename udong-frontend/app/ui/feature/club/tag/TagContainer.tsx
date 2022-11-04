@@ -7,6 +7,7 @@ import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 import { UserListModal } from '../../shared/UserListModal'
 import { TagItem } from './TagItem'
+import { TagUpsertModal } from './TagUpsertModal'
 
 interface TagItemType {
     name: string
@@ -35,12 +36,14 @@ const tags: Array<TagItemType> = [
 const dummy = [...tags].concat(tags.slice(1)).concat(tags.slice(1)).concat(tags.slice(1)).concat(tags.slice(1))
 
 export const TagContainer = () => {
+    const [showUpsertModal, setShowUpsertModal] = useState(false)
     const [showMembers, setShowMembers] = useState(false)
+
     return <VStack>
         <HStack justifyContent={'end'}>
             <UdongButton
                 style={'line'}
-                onClick={() => console.log('create post')}
+                onClick={() => setShowUpsertModal(true)}
             >
                 태그 추가하기
             </UdongButton>
@@ -58,6 +61,7 @@ export const TagContainer = () => {
                 <TagItem
                     name={tag.name}
                     isUserIncluded={tag.isUserIncluded}
+                    showEditModal={setShowUpsertModal}
                 />
             </VStack>
         })}
@@ -65,6 +69,12 @@ export const TagContainer = () => {
         <UserListModal
             isOpen={showMembers}
             setIsOpen={setShowMembers}
+            title={'2022년 겨울 공연 2팀'}
+        />
+
+        <TagUpsertModal
+            isOpen={showUpsertModal}
+            setIsOpen={setShowUpsertModal}
             title={'2022년 겨울 공연 2팀'}
         />
 
