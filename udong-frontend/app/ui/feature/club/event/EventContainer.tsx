@@ -93,7 +93,7 @@ export const EventContainer = () => {
 
     const handleCurrentView = useCallback((selectedTab: EventTabType) => {
         router.replace(`/club/1/?tab=event&view=${selectedTab}`)
-    }, [])
+    }, [router])
 
     const getCurrentTab = () => {
         if (view === EVENT_TAB.LIST){

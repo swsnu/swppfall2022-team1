@@ -2,7 +2,7 @@ import '@toast-ui/calendar/dist/toastui-calendar.css'
 import { EventObject } from '@toast-ui/calendar/types/types/events'
 import ToastUIReactCalendar from '@toast-ui/react-calendar'
 import randomSeed from 'random-seed'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { EventType } from '../EventContainer'
@@ -65,7 +65,7 @@ interface CalenderProps {
 
 export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps ) => {
     const [calendarEvents, setCalendarEvents] = useState<EventObject[]>([])
-    const seedGenerator = randomSeed.create()
+    const seedGenerator = useMemo(() => randomSeed.create(), [])
 
     useEffect(()=>{
         let coloredEvents: EventObject[] = []
@@ -83,7 +83,7 @@ export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps 
             )
         })
         setCalendarEvents(coloredEvents)
-    }, [])
+    }, [events, seedGenerator])
 
     return (
         <ToastUIReactCalendar

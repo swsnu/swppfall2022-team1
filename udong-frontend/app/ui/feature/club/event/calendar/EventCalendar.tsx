@@ -1,3 +1,4 @@
+import ToastUICalendar from '@toast-ui/calendar'
 import ToastUIReactCalendar from '@toast-ui/react-calendar'
 import dynamic from 'next/dynamic'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
@@ -22,8 +23,11 @@ export const EventCalendar = ({ events, onClickEvent } : EventCalendarProps) => 
 
     const syncDate = () => {
         if (calendarRef.current) {
-            setDate({ year: calendarRef.current.getInstance()!.getDate().getFullYear(),
-                month: calendarRef.current.getInstance()!.getDate().getMonth() })}
+            const calendar = calendarRef.current.getInstance()
+            if (calendar){
+                setDate({ year: calendar.getDate().getFullYear(),
+                    month: calendar.getDate().getMonth() })}
+        }
     }
 
     const Calendar = useMemo(() => dynamic(() => import('./TUICalendar').then((mod)=>mod.Calender),
