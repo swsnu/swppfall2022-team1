@@ -50,6 +50,7 @@ class Scheduling(models.Model):
     repeat_start = models.DateField(null=True)
     repeat_end = models.DateField(null=True)
 
+    closed = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
