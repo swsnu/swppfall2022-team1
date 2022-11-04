@@ -1,11 +1,11 @@
 import { Spacer } from '../../../components/Spacer'
-import { HStack, VStack } from '../../../components/Stack'
+import { HStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
 import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { PostItem } from '../../shared/PostItem'
 
 export const BoardContainer = () => {
-    return <VStack>
+    return <div>
         <HStack justifyContent={'end'}>
             <UdongButton
                 style={'line'}
@@ -29,5 +29,5 @@ export const BoardContainer = () => {
         <PostItem isClubBoard={true}/>
         <PostItem isClubBoard={true}/>
         <PostItem isClubBoard={true}/>
-    </VStack>
+    </div>
 }
