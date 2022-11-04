@@ -6,6 +6,7 @@ import { VStack } from '../../components/Stack'
 import { BoardContainer } from './board/BoardContainer'
 import { ClubTabType, ClubTabView } from './ClubTabView'
 import { EventContainer } from './event/EventContainer'
+import { EventTabType } from './event/EventTabView'
 import { InfoContainer } from './info/InfoContainer'
 import { TagContainer } from './tag/TagContainer'
 

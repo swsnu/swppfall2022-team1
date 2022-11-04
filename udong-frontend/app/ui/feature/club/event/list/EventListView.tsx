@@ -4,14 +4,13 @@ import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { EventType } from '../EventContainer'
-import { EventCalendar } from './EventCalendar'
-import UnsettledEventList from './UnsettledEventList'
+import { EventList } from './EventList'
 
-interface EventCalendarViewProps {
+interface EventListViewProps{
     events: EventType[]
 }
 
-export const EventCalendarView = ({ events }: EventCalendarViewProps) => {
+export const EventListView = ({ events }: EventListViewProps) => {
     const router = useRouter()
     const { clubId } = router.query
 
@@ -33,12 +32,8 @@ export const EventCalendarView = ({ events }: EventCalendarViewProps) => {
             justifyContent={'space-between'}
             gap={50}
         >
-            <EventCalendar
+            <EventList
                 events={events.filter((event) => event.times.length > 0)}
-                onClickEvent={onClickEvent}
-            />
-            <UnsettledEventList
-                events={events.filter((event) => event.times.length == 0)}
                 onClickEvent={onClickEvent}
             />
         </HStack>
