@@ -28,13 +28,13 @@ export const PostContentView = ({ contents, setContents }: IProps) => {
             container: [
                 [{ 'font': [] }], // font
                 [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // header
-                ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'], // tool formula: optional 
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }], // list, indent 
-                ['link', 'image', 'video'], 
-                [{ 'align': [] }, { 'color': [] }, { 'background': [] }], 
+                ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'], // tool formula: optional
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }], // list, indent
+                ['link', 'image', 'video'],
+                [{ 'align': [] }, { 'color': [] }, { 'background': [] }],
                 ['clean'], // clear toolbar setting
             ],
-        },  
+        },
     }
     ), [])
 
@@ -44,10 +44,10 @@ export const PostContentView = ({ contents, setContents }: IProps) => {
         'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', 'formula',
         'list', 'bullet', 'indent',
         'link', 'image', 'video',
-        'align', 'color', 'background',        
+        'align', 'color', 'background',
     ]
 
-    return <VStack>
+    return <VStack paddingHorizontal={16}>
         <Spacer
             height={1}
             backgroundColor={UdongColors.GrayDark}
