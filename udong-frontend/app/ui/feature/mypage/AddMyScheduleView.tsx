@@ -27,7 +27,7 @@ export const AddMyScheduleView = () => {
             <UdongText style={'GeneralTitle'}><span style={{ color: UdongColors.Primary }}>고정 시간표</span>를 입력해주세요</UdongText>
             <Spacer width={30}/>
             <UdongButton
-                onClick={() => console.log(timetable)}
+                onClick={() => console.log(timetable)} // eslint-disable-line no-console
                 style={'fill'}
             >저장하기</UdongButton>
         </HStack>
