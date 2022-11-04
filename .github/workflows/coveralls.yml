@@ -1,0 +1,55 @@
+name: coveralls
+
+on:
+  push:
+    branches:
+    - '**/**'
+
+jobs:
+  coveralls:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10.4'
+
+    - name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Setup ruby
+      uses: ruby/setup-ruby@v1
+
+    - name: Install ruby dependency
+      run: |
+        gem install coveralls-lcov
+
+    - name: Install python dependencies
+      run: |
+        cd ./udong-backend
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install coveralls
+
+    - name: Install node dependencies
+      run: |
+        cd ./udong-frontend
+        yarn install
+        yarn global add coveralls
+
+    - name: Test
+      run: |
+        cd ./udong-frontend
+        yarn test --coverage --watchAll=false
+        coveralls-lcov -v -n coverage/lcov.info > coverage.json
+
+        cd ../udong-backend
+        coverage run --source='.' manage.py test
+        coverage xml
+
+        coveralls --merge=../frontend/coverage.json
