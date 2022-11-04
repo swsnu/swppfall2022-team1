@@ -103,7 +103,7 @@ const BodyCell = (props: ({
 interface TimeTableProps {
     days: string[]
     startTime: number
-    data: number[][]
+    data?: number[][]
     selected: boolean[][]
     gray?: boolean[][]
     selectColor?: string
@@ -114,14 +114,16 @@ interface TimeTableProps {
 }
 
 export const TimeTable = (props: TimeTableProps) => {
-    const { days, startTime, data, selected, gray, selectColor, style, onHover, onClick, onDrag } = props
+    const { days, startTime, data: rawData, selected, gray, selectColor, style, onHover, onClick, onDrag } = props
+
+    const data = rawData ?? selected.map(row => Array(row.length).fill(false))
 
     const [startCellIdx, setStartCellIdx] = useState<CellIdx|null>(null)
     const [endCellIdx, setEndCellIdx] = useState<CellIdx|null>(null)
     const ref = useRef<HTMLDivElement>(null)
 
     const maxFn = (arr: number[]) => arr.reduce((a, b) => Math.max(a, b), 0)
-    const mxCnt = maxFn(data.map(colData => maxFn(colData)))
+    const mxCnt = Math.max(1, maxFn(data.map(colData => maxFn(colData))))
 
     const calculateInDrag = (cellIdx: CellIdx) => {
         if(!startCellIdx || !endCellIdx) {return false}
@@ -158,7 +160,7 @@ export const TimeTable = (props: TimeTableProps) => {
                 timeout = setTimeout(() => {
                     setEndCellIdx(calculateCellIdx(e))
                     timeout = null
-                }, 100)
+                }, 50)
             }
         }
 

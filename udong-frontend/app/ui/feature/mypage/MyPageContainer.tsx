@@ -9,7 +9,7 @@ export const MyPageContainer = () => {
 
         <HStack
             justifyContent={'center'}
-            alignItems={'center'}
+            alignItems={'start'}
         >
             <MyProfileView/>
 
