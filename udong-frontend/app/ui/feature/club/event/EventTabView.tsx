@@ -21,7 +21,7 @@ export const EventTabView = (props: EventTabViewProps) => {
         setSelectedTab(view)
     }, [setSelectedTab])
 
-    return <HStack height={30}>
+    return <HStack height={35}>
         <button
             disabled={selectedTab === EVENT_TAB.CALENDAR}
             onClick={() => handleOnViewClick(EVENT_TAB.CALENDAR)}

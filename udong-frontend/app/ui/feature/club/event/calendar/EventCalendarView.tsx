@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import React from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -22,7 +23,7 @@ export const EventCalendarView = ({ events }: EventCalendarViewProps) => {
     return <VStack>
         <Spacer
             height={1}
-            backgroundColor={UdongColors.GrayDark}
+            backgroundColor={UdongColors.GrayBright}
         />
         <HStack
             width={'100%'}

@@ -35,10 +35,6 @@ export const EventCalendar = ({ events, onClickEvent } : EventCalendarProps) => 
     }, [])
 
     return <VStack width={'100%'}>
-        <Spacer
-            height={1}
-            backgroundColor={UdongColors.GrayBright}
-        />
         <HStack
             paddingHorizontal={15}
             paddingVertical={15}

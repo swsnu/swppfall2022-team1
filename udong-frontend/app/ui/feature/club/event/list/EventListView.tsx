@@ -19,10 +19,6 @@ export const EventListView = ({ events }: EventListViewProps) => {
     }
 
     return <VStack>
-        <Spacer
-            height={1}
-            backgroundColor={UdongColors.GrayDark}
-        />
         <HStack
             width={'100%'}
             style={{

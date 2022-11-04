@@ -121,10 +121,9 @@ export const EventContainer = () => {
     }
 
     return <VStack paddingHorizontal={16}>
-        <Spacer height={70}/>
+        <Spacer height={20}/>
         {getCurrentTab()}
-        <Spacer height={45}/>
+        <Spacer height={15}/>
         {getCurrentContainer()}
     </VStack>
-
 }
