@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 
+import UdongLoader from '../../app/ui/components/UdongLoader'
 import { ClubContainer } from '../../app/ui/feature/club/ClubContainer'
 import { CLUB_TAB } from '../../app/ui/feature/club/ClubTabView'
 
@@ -9,7 +10,7 @@ export const ClubPage = () => {
     const { tab } = router.query
 
     if (!isReady){
-        return <p>Loading...</p>
+        return <UdongLoader/>
     }
 
     switch (tab) {
