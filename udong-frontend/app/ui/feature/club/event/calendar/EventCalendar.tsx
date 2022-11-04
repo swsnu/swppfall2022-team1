@@ -2,10 +2,10 @@ import ToastUIReactCalendar from '@toast-ui/react-calendar'
 import dynamic from 'next/dynamic'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
-import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongImage } from '../../../../components/UdongImage'
+import UdongLoader from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
 import arrow from '../../../../icons/IcShortArrow.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
@@ -27,7 +27,8 @@ export const EventCalendar = ({ events, onClickEvent } : EventCalendarProps) => 
     }
 
     const Calendar = useMemo(() => dynamic(() => import('./TUICalendar').then((mod)=>mod.Calender),
-        { ssr: false, loading: () => <p>Calendar Loading...</p> }), [])
+        { ssr: false, loading: () =>
+            <UdongLoader/> }), [])
 
     useEffect(() => {
         const today = new Date()

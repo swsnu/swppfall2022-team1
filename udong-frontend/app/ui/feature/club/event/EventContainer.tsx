@@ -3,6 +3,7 @@ import React, { useCallback } from 'react'
 
 import { Spacer } from '../../../components/Spacer'
 import { VStack } from '../../../components/Stack'
+import UdongLoader from '../../../components/UdongLoader'
 import { EventCalendarView } from './calendar/EventCalendarView'
 import { EVENT_TAB, EventTabType, EventTabView } from './EventTabView'
 import { EventListView } from './list/EventListView'
@@ -117,7 +118,7 @@ export const EventContainer = () => {
     }
 
     if (!isReady){
-        return <p>Loading...</p>
+        return <UdongLoader/>
     }
 
     return <VStack paddingHorizontal={16}>
