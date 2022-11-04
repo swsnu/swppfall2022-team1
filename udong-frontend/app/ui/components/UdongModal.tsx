@@ -33,10 +33,11 @@ export const UdongModal = (props: UdongModalProps) => {
 
 const ModalBackground = styled.div({
     display: 'flex',
-    position: 'absolute',
-    width: '100%',
+    position: 'fixed',
+    width: '100vw',
     height: '100vh',
     top: 0,
+    left: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
 })
 

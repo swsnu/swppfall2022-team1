@@ -61,6 +61,5 @@ export const TagItem = (props: TagItemProps) => {
                 />
             </HStack>
         </HStack>
-
     </VStack>
 }
