@@ -40,6 +40,7 @@ export const ClubProfileView = () => {
 
         <ProfileView
             name={'SWPP'}
+            showCameraButton={true}
             showEditButton={true}
             showAccessCode={true}
             bottomItem={
