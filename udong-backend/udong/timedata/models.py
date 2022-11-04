@@ -39,8 +39,6 @@ class AvailableTime(models.Model):
     scheduling = models.ForeignKey(
         Scheduling, on_delete=models.CASCADE, related_name="available_time_set"
     )
-    date = models.DateField(null=True)
-    weekday = models.IntegerField(null=True)
-    time = models.TimeField()
+    time = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
