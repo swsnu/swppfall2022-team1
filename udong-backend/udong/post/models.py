@@ -1,4 +1,3 @@
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from user.models import User
 from event.models import Event
@@ -46,7 +45,7 @@ class Scheduling(models.Model):
     dates = models.JSONField(null=True)
 
     # Weekday
-    weekdays = ArrayField(models.BooleanField(), null=True)
+    weekdays = models.CharField(max_length=7)
     repeat_start = models.DateField(null=True)
     repeat_end = models.DateField(null=True)
 
