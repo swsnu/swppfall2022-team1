@@ -4,9 +4,6 @@ on:
   pull_request:
     paths-ignore:
       - 'udong-backend/**'
-  push:
-    paths-ignore:
-      - 'udong-backend/**'
       
 defaults:
   run:
