@@ -70,7 +70,7 @@ export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps 
     useEffect(()=>{
         let coloredEvents: EventObject[] = []
         events.forEach((event, i)=>{
-            event.times.forEach((time: { start: string, end: string }) => {
+            event.times.forEach((time: { start: Date, end: Date }) => {
                 const seed = seedGenerator.range(100)
                 coloredEvents = [...coloredEvents,
                     {
