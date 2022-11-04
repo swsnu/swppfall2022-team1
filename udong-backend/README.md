@@ -6,8 +6,8 @@ Please make the virtual environment and install some library.
 
 ```bash
 virtualenv --python=python3.10.4 ~/.virtualenv/django-env
-source django-env/bin/activate
-pip install requirements.txt
+source ~/.virtualenv/django-env/bin/activate
+pip install -r requirements.txt
 ```
 
 ## Run server
