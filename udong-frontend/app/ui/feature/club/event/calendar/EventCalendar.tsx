@@ -9,9 +9,7 @@ import { UdongImage } from '../../../../components/UdongImage'
 import { UdongText } from '../../../../components/UdongText'
 import arrow from '../../../../icons/IcShortArrow.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
-import { EventType } from './EventCalendarView'
-
-const Calendar = dynamic(() => import('./TUICalendar').then((mod)=>mod.Calender), { ssr: false } )
+import { EventType } from '../EventContainer'
 
 interface EventCalendarProps {
     events: EventType[]
@@ -27,6 +25,9 @@ export const EventCalendar = ({ events, onClickEvent } : EventCalendarProps) => 
             setDate({ year: calendarRef.current.getInstance()!.getDate().getFullYear(),
                 month: calendarRef.current.getInstance()!.getDate().getMonth() })}
     }
+
+    const Calendar = useMemo(() => dynamic(() => import('./TUICalendar').then((mod)=>mod.Calender),
+        { ssr: false, loading: () => <p>Calendar Loading...</p> }), [])
 
     useEffect(() => {
         const today = new Date()
