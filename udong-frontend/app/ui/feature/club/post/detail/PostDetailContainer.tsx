@@ -1,9 +1,12 @@
+import { useRouter } from 'next/router'
+
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
+import { UdongButton } from '../../../../components/UdongButton'
 import { UdongChip } from '../../../../components/UdongChip'
+import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
-import { DetailPageHeader } from '../../../shared/DetailPageHeader'
 import { PostDetailCommentsView } from './PostDetailCommentsView'
 import { PostDetailContentView } from './PostDetailContentView'
 
@@ -31,11 +34,33 @@ const tags = [
 ]
 
 export const PostDetailContainer = () => {
+    const router = useRouter()
+
     return <VStack paddingHorizontal={16}>
-        <DetailPageHeader
-            type={'post'}
+        <UdongHeader
             title={'MT 수요조사입니다'}
-            subtitle={'인원 모집 중입니다'}
+            onGoBack={() => router.back()}
+            rightButtons={<>
+                <UdongButton
+                    style={'line'}
+                    color={UdongColors.Primary}
+                    height={40}
+                    onClick={() => router.push('/club/1/post/1/edit')}
+                >
+                    수정하기
+                </UdongButton>
+
+                <Spacer width={15}/>
+
+                <UdongButton
+                    style={'line'}
+                    color={UdongColors.Warning}
+                    height={40}
+                    onClick={() => {return}}
+                >
+                    삭제하기
+                </UdongButton>
+            </>}
         />
         <Spacer height={45}/>
 

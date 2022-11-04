@@ -7,13 +7,21 @@ import { UdongChip } from '../../app/ui/components/UdongChip'
 import { UdongModal } from '../../app/ui/components/UdongModal'
 import { UdongText } from '../../app/ui/components/UdongText'
 import { UdongTextField } from '../../app/ui/components/UdongTextField'
-import { CellIdx, TimeTable } from '../../app/ui/feature/shared/TimeTable'
+import { DraggableTimeTable } from '../../app/ui/feature/shared/DraggableTimeTable'
+import { CellIdx } from '../../app/ui/feature/shared/TimeTable'
 import { UdongColors } from '../../app/ui/theme/ColorPalette'
 
 export const DummyPage = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     const [hoverIdx, setHoverIdx] = useState<CellIdx | null>(null)
+    const [selected, setSelected] = useState([
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+    ])
     console.log('hover', hoverIdx)
 
     return <VStack paddingHorizontal={32}>
@@ -89,7 +97,7 @@ export const DummyPage = () => {
         >
             <p>hell oworld</p>
         </UdongModal>
-        <TimeTable
+        <DraggableTimeTable
             days={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
             data={[
                 [0, 0, 1, 1, 0, 1, 1, 1],
@@ -97,13 +105,6 @@ export const DummyPage = () => {
                 [0, 0, 1, 1, 0, 1, 1, 1],
                 [2, 1, 1, 0, 0, 1, 1, 1],
                 [2, 1, 1, 0, 0, 1, 1, 1],
-            ]}
-            selected={[
-                [false, false, false, false, false, false, false, false],
-                [false, false, false, false, false, false, false, false],
-                [false, false, true, false, false, false, false, false],
-                [false, false, false, false, false, false, false, false],
-                [false, false, false, false, false, false, false, false],
             ]}
             gray={[
                 [true, false, false, false, false, false, false, false],
@@ -116,7 +117,8 @@ export const DummyPage = () => {
             style={{ marginTop: 20 }}
             onHover={setHoverIdx}
             onClick={(idx) => console.log('click', idx)}
-            onDrag={(s, e) => console.log('drag', s, e)}
+            selected={selected}
+            setSelected={setSelected}
         />
     </VStack>
 }

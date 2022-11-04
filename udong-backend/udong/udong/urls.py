@@ -14,8 +14,53 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.conf import settings
+from django.urls import path, include, re_path, URLPattern, URLResolver
+from typing import List, Union
+from rest_framework import routers
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
-urlpatterns = [
+
+router = routers.DefaultRouter()
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Udong",
+        default_version="v1",
+        description="API docs for Udong",
+        terms_of_service="https://www.google.com/policies/terms/",
+    ),
+    public=False,
+    permission_classes=[permissions.AllowAny],
+)
+
+urlpatterns: List[Union[URLPattern, URLResolver]] = [
     path("admin/", admin.site.urls),
 ]
+
+if settings.DEBUG:
+    # django-debug-toolbar
+    urlpatterns += [
+        path("__debug__/", include("debug_toolbar.urls")),
+    ]
+
+    # swagger
+    urlpatterns += [
+        re_path(
+            r"^swagger(?P<format>\.json|\.yaml)$",
+            schema_view.without_ui(cache_timeout=0),
+            name="schema-json",
+        ),
+        re_path(
+            r"^swagger/$",
+            schema_view.with_ui("swagger", cache_timeout=0),
+            name="schema-swagger-ui",
+        ),
+        re_path(
+            r"^redoc/$",
+            schema_view.with_ui("redoc", cache_timeout=0),
+            name="schema-redoc",
+        ),
+    ]
