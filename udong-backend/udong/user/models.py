@@ -6,7 +6,7 @@ from club.models import Club
 
 class User(models.Model):
     # id: auto-generated
-    google = models.TextField()
+    google = models.CharField(max_length=25)
     image = models.TextField()
     time_table = models.TextField()
     name = models.CharField(max_length=255)
