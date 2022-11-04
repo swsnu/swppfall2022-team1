@@ -4,7 +4,12 @@ import { ClubContainer } from '../../app/ui/feature/club/ClubContainer'
 
 export const ClubPage = () => {
     const router = useRouter()
+    const { isReady } = router
     const { tab } = router.query
+
+    if (!isReady){
+        return <p>Loading...</p>
+    }
 
     switch (tab) {
         case 'board':
