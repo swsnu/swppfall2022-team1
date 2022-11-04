@@ -54,6 +54,6 @@ jobs:
         coverage run --source='.' manage.py test
         coverage xml
 
-        coveralls --merge=../../udong-frontend/coverage.json
+        coveralls --merge=../../udong-frontend/coverage.json --service=github
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
