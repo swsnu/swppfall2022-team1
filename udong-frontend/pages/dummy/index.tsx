@@ -27,8 +27,7 @@ export const DummyPage = () => {
         </UdongText>
 
         <VStack gap={16}>
-            <UdongButton
-                onClick={() => console.log('hello world')}
+            <UdongButton onClick={() => console.log('hello world')}
                 style={'fill'}
             >
                 제출 제출
