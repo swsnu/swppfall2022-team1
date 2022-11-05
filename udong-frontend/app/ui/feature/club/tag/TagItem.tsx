@@ -13,16 +13,22 @@ import { UdongColors } from '../../../theme/ColorPalette'
 interface TagItemProps {
     name: string
     isUserIncluded: boolean
-    showEditModal: (showModal: boolean) => void
+    showEditModal: (showEditModal: boolean) => void
+    onClickDelete: (showDeleteModal: boolean) => void
 }
 
 export const TagItem = (props: TagItemProps) => {
-    const { name, isUserIncluded, showEditModal } = props
+    const { name, isUserIncluded, showEditModal, onClickDelete } = props
 
-    const handleOnClickEdit = useCallback((e: React.MouseEvent) => {
+    const handleOnClickEdit = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
         showEditModal(true)
     }, [showEditModal])
+
+    const handleOnClickDelete = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation()
+        onClickDelete(true)
+    }, [onClickDelete])
 
     return <VStack>
         <Spacer
@@ -64,12 +70,15 @@ export const TagItem = (props: TagItemProps) => {
                         width={20}
                     />
                 </VStack>
+
                 <Spacer width={10}/>
-                <UdongImage
-                    src={trash.src}
-                    height={20}
-                    width={20}
-                />
+                <VStack onClick={handleOnClickDelete}>
+                    <UdongImage
+                        src={trash.src}
+                        height={20}
+                        width={20}
+                    />
+                </VStack>
             </HStack>
         </HStack>
     </VStack>

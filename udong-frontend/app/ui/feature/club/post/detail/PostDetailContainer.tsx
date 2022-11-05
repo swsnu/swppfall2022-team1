@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -7,6 +8,7 @@ import { UdongChip } from '../../../../components/UdongChip'
 import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
+import { DeleteModal } from '../../../shared/DeleteModal'
 import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
 import { PostDetailCommentsView } from './PostDetailCommentsView'
 import { PostDetailContentView } from './PostDetailContentView'
@@ -40,6 +42,7 @@ export const PostDetailContainer = () => {
     const router = useRouter()
     const isEnrollment = true
     const isScheduling = false
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
@@ -61,7 +64,7 @@ export const PostDetailContainer = () => {
                     style={'line'}
                     color={UdongColors.Warning}
                     height={40}
-                    onClick={() => {return}}
+                    onClick={() => setShowDeleteModal(true)}
                 >
                     삭제하기
                 </UdongButton>
@@ -116,5 +119,12 @@ export const PostDetailContainer = () => {
         <PostDetailCommentsView/>
 
         <ScrollToTopButton/>
+
+        <DeleteModal
+            deleteObjectText={'게시글'}
+            warningText={'경고 문구'}
+            isOpen={showDeleteModal}
+            setIsOpen={setShowDeleteModal}
+        />
     </VStack>
 }

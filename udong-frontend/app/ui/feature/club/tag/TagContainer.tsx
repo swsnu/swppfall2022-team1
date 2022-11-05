@@ -4,6 +4,7 @@ import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
 import { UdongSearchBar } from '../../../components/UdongSearchBar'
+import { DeleteModal } from '../../shared/DeleteModal'
 import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 import { UserListModal } from '../../shared/UserListModal'
 import { TagItem } from './TagItem'
@@ -38,6 +39,7 @@ const dummy = [...tags].concat(tags.slice(1)).concat(tags.slice(1)).concat(tags.
 export const TagContainer = () => {
     const [showUpsertModal, setShowUpsertModal] = useState(false)
     const [showMembers, setShowMembers] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     return <VStack>
         <HStack justifyContent={'end'}>
@@ -62,6 +64,7 @@ export const TagContainer = () => {
                     name={tag.name}
                     isUserIncluded={tag.isUserIncluded}
                     showEditModal={setShowUpsertModal}
+                    onClickDelete={setShowDeleteModal}
                 />
             </VStack>
         })}
@@ -76,6 +79,13 @@ export const TagContainer = () => {
             isOpen={showUpsertModal}
             setIsOpen={setShowUpsertModal}
             title={'2022년 겨울 공연 2팀'}
+        />
+
+        <DeleteModal
+            deleteObjectText={'태그'}
+            warningText={'경고 문구'}
+            isOpen={showDeleteModal}
+            setIsOpen={setShowDeleteModal}
         />
 
         <ScrollToTopButton/>
