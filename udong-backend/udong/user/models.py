@@ -1,5 +1,6 @@
 from django.db import models
 from club.models import Club
+from typing import Any
 
 # Create your models here.
 
@@ -25,3 +26,9 @@ class UserClub(models.Model):
     auth = models.CharField(max_length=1, choices=[("M", "Member"), ("A", "Admin")])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+# Dummy user (Use when login is not implemented)
+class DummyUser(User):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(pk=1, *args, **kwargs)
