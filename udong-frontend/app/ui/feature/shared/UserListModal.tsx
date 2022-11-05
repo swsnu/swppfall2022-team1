@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
 import { UdongImage } from '../../components/UdongImage'
@@ -18,6 +20,12 @@ interface UserListModalProps {
 
 export const UserListModal = (props: UserListModalProps) => {
     const { isOpen, setIsOpen, title } = props
+
+    const handleOnClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        setIsOpen(false)
+        e.stopPropagation()
+    }, [])
+
     return <UdongModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -31,12 +39,12 @@ export const UserListModal = (props: UserListModalProps) => {
             <VStack
                 width={'100%'}
                 alignItems={'end'}
+                onClick={handleOnClick}
             >
                 <UdongImage
                     src={close.src}
                     height={15}
                     width={15}
-                    onClick={() => setIsOpen(false)}
                 />
             </VStack>
             <Spacer height={5}/>
