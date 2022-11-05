@@ -3,6 +3,7 @@ from user.models import User, UserClub
 from club.models import Club
 from event.models import Event
 from timedata.models import Time
+from tag.models import Tag
 from datetime import datetime
 
 # Refresh DB
@@ -43,3 +44,7 @@ time2 = Time.objects.create(
     start_date=datetime(2022, 11, 1),
     end_date=datetime(2022, 11, 2),
 )
+
+# Create dummy tag
+tag1 = Tag.objects.create(club=club1, name="genius")
+tag1 = Tag.objects.create(club=club1, name="winner")
