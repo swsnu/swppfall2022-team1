@@ -4,8 +4,8 @@ from user.models import User
 
 class UserSerializer(serializers.ModelSerializer[User]):
     time_table = serializers.CharField(default="")
-    created_at = serializers.DateTimeField(required=False)
-    updated_at = serializers.DateTimeField(required=False)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = User
