@@ -50,6 +50,9 @@ jobs:
       run: |
         cd ./udong-frontend
         yarn test --coverage --watchAll=false
+        echo "jest done"
+        ls
+        ls -l coverage
         coveralls-lcov -v -n coverage/lcov.info > coverage.json
 
         cd ../udong-backend/udong
