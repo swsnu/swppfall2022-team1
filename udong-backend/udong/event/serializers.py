@@ -4,8 +4,8 @@ from timedata.models import Time
 
 class EventTimeSerializer(serializers.ModelSerializer[Time]):
     type = serializers.CharField(source="get_type_display")
-    created_at = serializers.DateTimeField(required=False)
-    updated_at = serializers.DateTimeField(required=False)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Time

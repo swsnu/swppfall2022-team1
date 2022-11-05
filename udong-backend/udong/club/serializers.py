@@ -10,8 +10,8 @@ from event.serializers import EventTimeSerializer
 
 class ClubSerializer(serializers.ModelSerializer[Club]):
     code = serializers.CharField(max_length=10, default="swppfall")
-    created_at = serializers.DateTimeField(required=False)
-    updated_at = serializers.DateTimeField(required=False)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Club
@@ -27,8 +27,8 @@ class ClubSerializer(serializers.ModelSerializer[Club]):
 class ClubUserSerializer(serializers.ModelSerializer[UserClub]):
     user = UserSerializer()
     auth = serializers.CharField(source="get_auth_display")
-    created_at = serializers.DateTimeField(required=False)
-    updated_at = serializers.DateTimeField(required=False)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = UserClub
@@ -43,8 +43,8 @@ class ClubUserSerializer(serializers.ModelSerializer[UserClub]):
 class ClubEventSerializer(serializers.ModelSerializer[Event]):
     name = serializers.CharField(max_length=255)
     time = serializers.SerializerMethodField(read_only=True)
-    created_at = serializers.DateTimeField(required=False)
-    updated_at = serializers.DateTimeField(required=False)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Event
@@ -61,8 +61,8 @@ class ClubEventSerializer(serializers.ModelSerializer[Event]):
 
 class ClubTagSerializer(serializers.ModelSerializer[Tag]):
     name = serializers.CharField(max_length=255)
-    created_at = serializers.DateTimeField(required=False)
-    updated_at = serializers.DateTimeField(required=False)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Tag
