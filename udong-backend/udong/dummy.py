@@ -36,3 +36,10 @@ time1 = Time.objects.create(
     start_date=datetime(2022, 11, 6),
     end_date=datetime(2022, 11, 7),
 )
+
+time2 = Time.objects.create(
+    event=event1,
+    type="D",
+    start_date=datetime(2022, 11, 1),
+    end_date=datetime(2022, 11, 2),
+)
