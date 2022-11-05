@@ -31,4 +31,10 @@ class UserClub(models.Model):
 # Dummy user (Use when login is not implemented)
 class DummyUser(User):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(pk=1, *args, **kwargs)
+        user = User.objects.get(id=1)
+        self.id = user.id
+        self.google = user.google
+        self.image = user.image
+        self.name = user.name
+        self.created_at = user.created_at
+        self.updated_at = user.updated_at
