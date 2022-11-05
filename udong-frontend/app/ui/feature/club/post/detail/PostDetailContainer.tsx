@@ -40,8 +40,8 @@ const tags = [
 
 export const PostDetailContainer = () => {
     const router = useRouter()
-    const isEnrollment = true
-    const isScheduling = false
+    const isEnrollment = false
+    const isScheduling = true
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     return <VStack paddingHorizontal={16}>

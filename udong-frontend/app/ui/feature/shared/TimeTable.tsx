@@ -3,6 +3,7 @@ import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react'
 
 import { HStack, VStack } from '../../components/Stack'
 import { UdongColors } from '../../theme/ColorPalette'
+import { SlashedBox } from './SlashedBox'
 
 const CELL_WIDTH = 64
 const CELL_HEIGHT = 32
@@ -81,15 +82,13 @@ const BodyCell = (props: ({
                     zIndex: 0,
                 }}
             />
-            {gray && <CellBg
+            {gray && <SlashedBox
                 style={{
-                    background: `repeating-linear-gradient(
-                        56deg,
-                        transparent,
-                        transparent 8px,
-                        ${UdongColors.GrayNormal} 8px,
-                        ${UdongColors.GrayNormal} 9px
-                    )`,
+                    position: 'absolute',
+                    left: -0.5,
+                    right: -0.5,
+                    top: -0.5,
+                    bottom: -0.5,
                     zIndex: 10,
                 }}
             />}
