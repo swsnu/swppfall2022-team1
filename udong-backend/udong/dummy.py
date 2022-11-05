@@ -6,4 +6,4 @@ os.system("rm -f db.sqlite3")
 os.system("make migrate")
 
 # Create dummy user
-User.objects.create()
+User.objects.create(name="Alan Turing")
