@@ -16,7 +16,7 @@ export const ClickableTag = (props: TagItemProps) => {
         e.stopPropagation()
         e.preventDefault()
         onClick()
-    }, [])
+    }, [onClick])
 
     return <VStack
         onClick={handleOnClick}

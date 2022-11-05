@@ -24,7 +24,7 @@ export const UserListModal = (props: UserListModalProps) => {
     const handleOnClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         setIsOpen(false)
         e.stopPropagation()
-    }, [])
+    }, [setIsOpen])
 
     return <UdongModal
         isOpen={isOpen}
