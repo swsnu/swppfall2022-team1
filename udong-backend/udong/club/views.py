@@ -4,6 +4,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from club.models import Club
 from club.serializers import ClubSerializer
+from typing import Any
 
 # Create your views here.
 
@@ -15,3 +16,7 @@ class ClubViewSet(viewsets.GenericViewSet):
     def list(self, request: Request) -> Response:
         club = self.get_queryset().filter(club_user_set__user__id=request.user.id)
         return Response(self.get_serializer(club, many=True).data)
+
+    def retrieve(self, request: Request, pk: Any = None) -> Response:
+        club = self.get_object()
+        return Response(self.get_serializer(club).data)
