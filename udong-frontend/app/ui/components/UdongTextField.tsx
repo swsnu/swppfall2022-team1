@@ -15,10 +15,9 @@ interface UdongTextFieldProps {
  * <UdongTextField defaultValue={''}/>
  *
  * */
-// TODO: needs developing & testing
 export const UdongTextField = (props: UdongTextFieldProps) => {
     const { defaultValue, width, imageSrc } = props
-    const [value, setValue] = useState(defaultValue)
+    const [value, setValue] = useState('')
 
     const handleOnChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setValue(event.target.value)
@@ -36,6 +35,7 @@ export const UdongTextField = (props: UdongTextFieldProps) => {
             type={'text'}
             value={value}
             onChange={handleOnChange}
+            placeholder={defaultValue}
             style={{
                 backgroundColor: UdongColors.GrayBright,
                 borderRadius: 14,

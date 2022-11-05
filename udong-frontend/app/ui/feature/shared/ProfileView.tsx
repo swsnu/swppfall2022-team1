@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
+import { UdongChip } from '../../components/UdongChip'
 import { UdongImage } from '../../components/UdongImage'
 import { UdongText } from '../../components/UdongText'
 import camera from '../../icons/IcCamera.png'
@@ -14,14 +15,25 @@ import { UdongColors } from '../../theme/ColorPalette'
 
 interface ProfileViewProps {
     name: string
+    showCameraButton?: boolean
     showEditButton?: boolean
     showAccessCode?: boolean
     showGoogleAccount?: boolean
+    showAdminBadge?: boolean
     bottomItem: ReactNode
 }
 
 export const ProfileView = (props: ProfileViewProps) => {
-    const { name, showEditButton = false, showAccessCode = false, showGoogleAccount = false, bottomItem } = props
+    const {
+        name,
+        showCameraButton = false,
+        showEditButton = false,
+        showAccessCode = false,
+        showGoogleAccount = false,
+        showAdminBadge = false,
+        bottomItem,
+    } = props
+
     return <VStack alignItems={'center'}>
         <BackgroundCircle>
             <UdongImage
@@ -29,16 +41,18 @@ export const ProfileView = (props: ProfileViewProps) => {
                 height={100}
                 width={100}
             />
-            <UdongImage
-                src={camera.src}
-                height={50}
-                width={50}
-                style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    right: 0,
-                }}
-            />
+            {showCameraButton &&
+                <UdongImage
+                    src={camera.src}
+                    height={50}
+                    width={50}
+                    style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        right: 0,
+                    }}
+                />
+            }
         </BackgroundCircle>
 
         <Spacer height={15}/>
@@ -79,6 +93,13 @@ export const ProfileView = (props: ProfileViewProps) => {
                 <Spacer width={5}/>
                 <UdongText style={'ListContentS'}>yblee2001@gmail.com</UdongText>
             </HStack>
+        }
+
+        {showAdminBadge &&
+            <UdongChip
+                style={'line'}
+                text={'관리자'}
+            />
         }
 
         <Spacer height={90}/>

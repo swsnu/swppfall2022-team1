@@ -7,6 +7,7 @@ import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { PostItem } from '../../../shared/PostItem'
+import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
 
 export const EventDetailContainer = () => {
     const router = useRouter()
@@ -55,5 +56,7 @@ export const EventDetailContainer = () => {
         <PostItem isEventDetail={true}/>
         <PostItem isEventDetail={true}/>
         <PostItem isEventDetail={true}/>
+
+        <ScrollToTopButton/>
     </VStack>
 }

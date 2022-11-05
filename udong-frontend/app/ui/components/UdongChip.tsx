@@ -4,7 +4,7 @@ import { UdongText } from './UdongText'
 
 type UdongChipColorStyle = 'primary' | 'secondary' | 'gray' | 'line'
 
-const MAX_WIDTH = 300
+const MAX_WIDTH = 250
 
 interface ColorProps {
     backgroundColor: string
