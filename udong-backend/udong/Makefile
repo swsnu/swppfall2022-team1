@@ -21,5 +21,8 @@ test_html:
 	coverage html
 	google-chrome htmlcov/index.html
 
+dummy:
+	python manage.py shell < dummy.py
+
 clean:
 	rm -rf .mypy_cache htmlcov
