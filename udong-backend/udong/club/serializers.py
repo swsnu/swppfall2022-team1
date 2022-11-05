@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.utils.serializer_helpers import ReturnDict
 from club.models import Club
 from user.models import UserClub
 from event.models import Event
@@ -40,6 +41,7 @@ class ClubUserSerializer(serializers.ModelSerializer[UserClub]):
 
 class ClubEventSerializer(serializers.ModelSerializer[Event]):
     name = serializers.CharField(max_length=255)
+    time = serializers.SerializerMethodField(read_only=True)
     created_at = serializers.DateTimeField(required=False)
     updated_at = serializers.DateTimeField(required=False)
 
@@ -47,6 +49,10 @@ class ClubEventSerializer(serializers.ModelSerializer[Event]):
         model = Event
         fields = (
             "name",
+            "time",
             "created_at",
             "updated_at",
         )
+
+    def get_time(self, event: Event) -> ReturnDict:
+        return EventTimeSerializer(event.time_set, many=True, context=self.context).data
