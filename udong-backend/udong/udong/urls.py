@@ -39,6 +39,7 @@ schema_view = get_schema_view(
 urlpatterns: List[Union[URLPattern, URLResolver]] = [
     path("admin/", admin.site.urls),
     path("api/", include("user.urls")),
+    path("api/", include("club.urls")),
 ]
 
 if settings.DEBUG:
