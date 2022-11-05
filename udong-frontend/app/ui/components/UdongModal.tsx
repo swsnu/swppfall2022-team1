@@ -14,7 +14,7 @@ export const UdongModal = (props: UdongModalProps) => {
     const { isOpen, setIsOpen, children, width } = props
 
     const closeModal = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        event.preventDefault()
+        event.stopPropagation()
         if (event.target === event.currentTarget) {
             setIsOpen(false)
         }
