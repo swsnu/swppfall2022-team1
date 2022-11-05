@@ -45,5 +45,10 @@ class ClubViewSet(viewsets.GenericViewSet):
 
     @action(detail=True, methods=["GET"])
     def event(self, request: Request, pk: Any) -> Response:
-        club_event = self.get_object().event_set
+        club_event = (
+            self.get_queryset()
+            .prefetch_related("event_set__time_set")
+            .get(id=pk)
+            .event_set
+        )
         return Response(self.get_serializer(club_event, many=True).data)
