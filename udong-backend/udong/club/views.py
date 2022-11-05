@@ -6,7 +6,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.serializers import BaseSerializer
 from club.models import Club
-from club.serializers import ClubSerializer, ClubUserSerializer, ClubEventSerializer
+from club.serializers import (
+    ClubSerializer,
+    ClubUserSerializer,
+    ClubEventSerializer,
+    ClubTagSerializer,
+)
 from typing import Any, Type, TypeVar
 
 # Create your views here.
@@ -23,6 +28,8 @@ class ClubViewSet(viewsets.GenericViewSet):
             return ClubUserSerializer
         if self.action == "event":
             return ClubEventSerializer
+        if self.action == "tag":
+            return ClubTagSerializer
         return ClubSerializer
 
     def list(self, request: Request) -> Response:
@@ -52,3 +59,8 @@ class ClubViewSet(viewsets.GenericViewSet):
             .event_set
         )
         return Response(self.get_serializer(club_event, many=True).data)
+
+    @action(detail=True, methods=["GET"])
+    def tag(self, request: Request, pk: Any) -> Response:
+        club_tag = self.get_object().tag_set
+        return Response(self.get_serializer(club_tag, many=True).data)
