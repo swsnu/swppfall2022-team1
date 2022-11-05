@@ -1,11 +1,23 @@
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
-import { UdongChip } from '../../components/UdongChip'
 import { UdongText } from '../../components/UdongText'
 import { UdongColors } from '../../theme/ColorPalette'
+import { ClickableTag } from './ClickableTag'
+import { UserListModal } from './UserListModal'
+
+interface DummyTag {
+    text: string
+    isIncluded: boolean
+}
+
+const dummyTags: Array<DummyTag> = [
+    { text: '2022년 겨울 공연 3팀', isIncluded: true },
+    { text: '2022년 겨울 공연 2팀', isIncluded: false },
+    { text: '우동', isIncluded: false },
+]
 
 interface PostItemProps {
     isClubBoard?: boolean
@@ -15,10 +27,12 @@ interface PostItemProps {
 export const PostItem = (props: PostItemProps) => {
     const { isClubBoard = false, isEventDetail = false } = props
     const router = useRouter()
+    const [isMemberListOpen, setIsMemberListOpen] = useState(false)
+    const [currentTag, setCurrentTag] = useState('')
 
     const handleOnClickPost = useCallback(() => {
         router.push('/club/1/post/1')
-    }, [])
+    }, [router])
 
     return <VStack onClick={handleOnClickPost}>
         <Spacer
@@ -54,17 +68,17 @@ export const PostItem = (props: PostItemProps) => {
                     </HStack>
                 }
 
-                <UdongChip
-                    style={'primary'}
-                    onClick={() => console.log('TAG!')}
-                    text={'2022년 겨울 공연 3팀'}
-                />
-                <Spacer width={12}/>
-                <UdongChip
-                    style={'gray'}
-                    onClick={() => console.log('TAG!')}
-                    text={'2022년 겨울 공연 4팀'}
-                />
+                {dummyTags.map((tag, index) => {
+                    return <ClickableTag
+                        key={tag.text + index}
+                        text={tag.text}
+                        isIncluded={tag.isIncluded}
+                        onClick={() => {
+                            setIsMemberListOpen(true)
+                            setCurrentTag(tag.text)
+                        }}
+                    />
+                })}
             </HStack>
 
             <UdongText style={'ListTitle'}>
@@ -87,5 +101,11 @@ export const PostItem = (props: PostItemProps) => {
                 </UdongText>
             </HStack>
         </VStack>
+
+        <UserListModal
+            isOpen={isMemberListOpen}
+            setIsOpen={setIsMemberListOpen}
+            title={currentTag}
+        />
     </VStack>
 }

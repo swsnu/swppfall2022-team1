@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongChip } from '../../../components/UdongChip'
@@ -11,10 +13,23 @@ import { UdongColors } from '../../../theme/ColorPalette'
 interface TagItemProps {
     name: string
     isUserIncluded: boolean
+    showEditModal: (showEditModal: boolean) => void
+    onClickDelete: (showDeleteModal: boolean) => void
 }
 
 export const TagItem = (props: TagItemProps) => {
-    const { name, isUserIncluded } = props
+    const { name, isUserIncluded, showEditModal, onClickDelete } = props
+
+    const handleOnClickEdit = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation()
+        showEditModal(true)
+    }, [showEditModal])
+
+    const handleOnClickDelete = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation()
+        onClickDelete(true)
+    }, [onClickDelete])
+
     return <VStack>
         <Spacer
             height={1}
@@ -48,19 +63,23 @@ export const TagItem = (props: TagItemProps) => {
                 </UdongText>
 
                 <Spacer width={30}/>
-                <UdongImage
-                    src={edit.src}
-                    height={20}
-                    width={20}
-                />
+                <VStack onClick={handleOnClickEdit}>
+                    <UdongImage
+                        src={edit.src}
+                        height={20}
+                        width={20}
+                    />
+                </VStack>
+
                 <Spacer width={10}/>
-                <UdongImage
-                    src={trash.src}
-                    height={20}
-                    width={20}
-                />
+                <VStack onClick={handleOnClickDelete}>
+                    <UdongImage
+                        src={trash.src}
+                        height={20}
+                        width={20}
+                    />
+                </VStack>
             </HStack>
         </HStack>
-
     </VStack>
 }

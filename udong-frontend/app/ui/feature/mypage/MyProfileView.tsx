@@ -29,6 +29,7 @@ export const MyProfileView = () => {
 
         <ProfileView
             name={'이유빈'}
+            showCameraButton={true}
             showEditButton={true}
             showGoogleAccount={true}
             bottomItem={
