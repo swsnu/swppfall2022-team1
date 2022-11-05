@@ -49,7 +49,7 @@ jobs:
     - name: Test
       run: |
         cd ./udong-frontend
-        yarn test --coverage --watchAll=false
+        node --trace-uncaught --trace-warnings node_modules/.bin/jest --coverage --watchAll=false
         echo "jest done"
         ls
         ls -l coverage
