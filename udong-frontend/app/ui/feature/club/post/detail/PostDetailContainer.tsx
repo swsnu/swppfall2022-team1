@@ -44,7 +44,7 @@ export const PostDetailContainer = () => {
     const [postType, setPostType] = useState<PostType>('announcement')
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-    // default값은 건드리지 말고 여기서 값 setting하면서 테스트하기
+    // 위에 default 값은 건드리지 말고 테스트할 때 여기서 값 바꿔가면서 쓰기!
     useEffect(() => {
         setPostType('scheduling')
     }, [])
