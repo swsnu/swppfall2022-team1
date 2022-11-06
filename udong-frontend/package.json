@@ -30,7 +30,8 @@
     "react-dom": "18.2.0",
     "react-quill": "^2.0.0",
     "react-spinners": "^0.13.6",
-    "tui-date-picker": "^4.3.1"
+    "tui-date-picker": "^4.3.1",
+    "tui-time-picker": "^2.1.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
