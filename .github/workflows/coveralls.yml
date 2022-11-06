@@ -53,12 +53,13 @@ jobs:
         coveralls-lcov -v -n coverage/lcov.info > coverage.json
 
         coveralls --merge=../../udong-frontend/coverage.json --service=github
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Test Backend
       working-directory: ./udong-frontend/udong
       run: |
         coverage run --source='.' manage.py test
         coverage xml
-
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
