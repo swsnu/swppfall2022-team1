@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 import React, { useState } from 'react'
+=======
+import dynamic from 'next/dynamic'
+import React, { useMemo, useState } from 'react'
+>>>>>>> 22a7b6f (make tui date picker component)
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongChip } from '../../../../components/UdongChip'
 import { UdongImage } from '../../../../components/UdongImage'
+import UdongLoader from '../../../../components/UdongLoader'
 import { UdongRadioButton } from '../../../../components/UdongRadioButton'
 import { UdongText } from '../../../../components/UdongText'
 import add from '../../../../icons/IcPlus.png'
@@ -13,9 +19,25 @@ import PostDateSchedule from './PostDateSchedule'
 import PostDaySchedule from './PostDaySchedule'
 
 type SchedulingTimeType = 'days' | 'dates'
+enum DAYS {
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
+}
 
 export const PostAdditionalFieldsView = () => {
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingTimeType>('days')
+    const [time, setTime] = useState<string>()
+    const [day, setDay] = useState<DAYS|undefined>()
+    const [dates, setDates] = useState<Date[]>([new Date()])
+
+    const DatePicker = useMemo(() => dynamic(() => import('../../../shared/TUIDatePicker').then((mod)=>mod.default),
+        { ssr: false, loading: () =>
+            <UdongLoader/> }), [])
 
     return <VStack>
         <HStack
