@@ -7,7 +7,13 @@ import { UdongText } from '../../../components/UdongText'
 import { UdongColors } from '../../../theme/ColorPalette'
 import { ProfileView } from '../../shared/ProfileView'
 
-export const ClubProfileView = () => {
+interface ClubProfileViewProps {
+    onClickDelete: (showDeleteModal: boolean) => void
+}
+
+export const ClubProfileView = (props: ClubProfileViewProps) => {
+    const { onClickDelete } = props
+
     const renderLeaveClubButton = useCallback(() => {
         return <HStack onClick={() => console.log('탈퇴~')}>
             <UdongText
@@ -20,7 +26,7 @@ export const ClubProfileView = () => {
     }, [])
 
     const renderDeleteClubButton = useCallback(() => {
-        return <HStack onClick={() => console.log('삭제')}>
+        return <HStack onClick={() => onClickDelete(true)}>
             <UdongText
                 style={'ListContentS'}
                 color={UdongColors.Warning}
@@ -40,6 +46,7 @@ export const ClubProfileView = () => {
 
         <ProfileView
             name={'SWPP'}
+            showCameraButton={true}
             showEditButton={true}
             showAccessCode={true}
             bottomItem={

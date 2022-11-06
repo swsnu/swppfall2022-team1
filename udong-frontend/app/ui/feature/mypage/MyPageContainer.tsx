@@ -10,6 +10,7 @@ export const MyPageContainer = () => {
         <VStack
             justifyContent={'center'}
             paddingHorizontal={50}
+            alignItems={'start'}
         >
             <HStack
                 justifyContent={'center'}

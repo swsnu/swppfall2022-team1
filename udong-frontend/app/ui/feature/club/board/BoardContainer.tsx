@@ -5,6 +5,7 @@ import { HStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
 import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { PostItem } from '../../shared/PostItem'
+import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 
 export const BoardContainer = () => {
     const router = useRouter()
@@ -32,5 +33,6 @@ export const BoardContainer = () => {
         <PostItem isClubBoard={true}/>
         <PostItem isClubBoard={true}/>
         <PostItem isClubBoard={true}/>
-    <VStack>
+        <ScrollToTopButton/>
+    </VStack>]
 }

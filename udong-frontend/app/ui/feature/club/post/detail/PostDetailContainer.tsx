@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -7,8 +8,12 @@ import { UdongChip } from '../../../../components/UdongChip'
 import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
+import { DeleteModal } from '../../../shared/DeleteModal'
+import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
 import { PostDetailCommentsView } from './PostDetailCommentsView'
 import { PostDetailContentView } from './PostDetailContentView'
+import { PostDetailEnrollmentView } from './PostDetailEnrollmentView'
+import { PostDetailSchedulingView } from './PostDetailSchedulingView'
 
 const tags = [
     {
@@ -35,6 +40,9 @@ const tags = [
 
 export const PostDetailContainer = () => {
     const router = useRouter()
+    const isEnrollment = true
+    const isScheduling = false
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
@@ -56,7 +64,7 @@ export const PostDetailContainer = () => {
                     style={'line'}
                     color={UdongColors.Warning}
                     height={40}
-                    onClick={() => {return}}
+                    onClick={() => setShowDeleteModal(true)}
                 >
                     삭제하기
                 </UdongButton>
@@ -65,8 +73,10 @@ export const PostDetailContainer = () => {
         <Spacer height={45}/>
 
         <VStack alignItems={'center'}>
-            <UdongText style={'ListContentUnderscore'}>MT</UdongText>
-            <Spacer height={15}/>
+            <VStack onClick={() => router.push('/club/1/event/1')}>
+                <UdongText style={'ListContentUnderscore'}>MT</UdongText>
+                <Spacer height={15}/>
+            </VStack>
 
             <HStack justifyContent={'center'}>
                 {tags.map((tag) => {
@@ -89,11 +99,32 @@ export const PostDetailContainer = () => {
             backgroundColor={UdongColors.GrayBright}
         />
         <PostDetailContentView/>
+
+        {isEnrollment && <PostDetailEnrollmentView/>}
+
+        {isScheduling && <PostDetailSchedulingView/>}
+
+        <HStack>
+            <UdongText style={'ListContentXS'}>2022.09.10</UdongText>
+            <Spacer width={10}/>
+            <UdongText style={'ListContentXS'}>박지연</UdongText>
+        </HStack>
+
+        <Spacer height={10}/>
+
         <Spacer
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
-
         <PostDetailCommentsView/>
+
+        <ScrollToTopButton/>
+
+        <DeleteModal
+            deleteObjectText={'게시글'}
+            warningText={'경고 문구'}
+            isOpen={showDeleteModal}
+            setIsOpen={setShowDeleteModal}
+        />
     </VStack>
 }

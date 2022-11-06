@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { VStack } from '../../../../components/Stack'
@@ -6,10 +7,13 @@ import { UdongButton } from '../../../../components/UdongButton'
 import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
+import { DeleteModal } from '../../../shared/DeleteModal'
 import { PostItem } from '../../../shared/PostItem'
+import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
 
 export const EventDetailContainer = () => {
     const router = useRouter()
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
@@ -31,7 +35,7 @@ export const EventDetailContainer = () => {
                     style={'line'}
                     color={UdongColors.Warning}
                     height={40}
-                    onClick={() => {return}}
+                    onClick={() => setShowDeleteModal(true)}
                 >
                     삭제하기
                 </UdongButton>
@@ -55,5 +59,14 @@ export const EventDetailContainer = () => {
         <PostItem isEventDetail={true}/>
         <PostItem isEventDetail={true}/>
         <PostItem isEventDetail={true}/>
+
+        <ScrollToTopButton/>
+
+        <DeleteModal
+            deleteObjectText={'행사'}
+            warningText={'경고 문구'}
+            isOpen={showDeleteModal}
+            setIsOpen={setShowDeleteModal}
+        />
     </VStack>
 }

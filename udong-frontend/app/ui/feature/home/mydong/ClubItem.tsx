@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router'
+
 import { Spacer } from '../../../components/Spacer'
 import { VStack } from '../../../components/Stack'
 import { UdongImage } from '../../../components/UdongImage'
@@ -11,9 +13,12 @@ interface ClubItemProps {
 
 export const ClubItem = (props: ClubItemProps) => {
     const { imageSrc, name } = props
+    const router = useRouter()
+
     return <VStack
         alignItems={'center'}
         width={'fit-content'}
+        onClick={() => router.push('/club/1')}
     >
         <VStack
             style={{
