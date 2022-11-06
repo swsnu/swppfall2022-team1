@@ -46,6 +46,14 @@ jobs:
         yarn install
         yarn global add coveralls
 
+    - name: Test Backend
+      working-directory: ./udong-backend/udong
+      run: |
+        coverage run --source='.' manage.py test
+        coverage xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Test Frontend
       working-directory: ./udong-frontend
       run: |
@@ -53,13 +61,5 @@ jobs:
         coveralls-lcov -v -n coverage/lcov.info > coverage.json
 
         coveralls --merge=coverage.json --service=github
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Test Backend
-      working-directory: ./udong-backend/udong
-      run: |
-        coverage run --source='.' manage.py test
-        coverage xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
