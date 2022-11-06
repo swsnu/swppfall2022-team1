@@ -14,7 +14,12 @@ import PostDaySchedule from './PostDaySchedule'
 
 type SchedulingTimeType = 'days' | 'dates'
 
-export const PostAdditionalFieldsView = () => {
+interface PostAdditionalFieldsViewProps {
+    showDateTimePicker?: boolean
+}
+
+export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) => {
+    const { showDateTimePicker = false } = props
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingTimeType>('days')
 
     return <VStack>
@@ -72,6 +77,7 @@ export const PostAdditionalFieldsView = () => {
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
+        
         <HStack
             alignItems={'center'}
             justifyContent={'start'}
