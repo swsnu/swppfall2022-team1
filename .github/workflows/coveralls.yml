@@ -57,7 +57,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Test Backend
-      working-directory: ./udong-frontend/udong
+      working-directory: ./udong-backend/udong
       run: |
         coverage run --source='.' manage.py test
         coverage xml
