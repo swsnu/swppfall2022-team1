@@ -3,13 +3,21 @@ import { BeatLoader } from 'react-spinners'
 import { UdongColors } from '../theme/ColorPalette'
 import { HStack } from './Stack'
 
-const UdongLoader = () => {
+type SafeNumber = number | `${number}`
+
+interface UdongLoaderProps {
+    height?: SafeNumber
+    width?: SafeNumber
+}
+
+const UdongLoader = (props: UdongLoaderProps) => {
+    const { height, width } = props
+
     return <HStack
-        width={'100%'}
-        height={'100%'}
+        width={width ? width : '100%'}
+        height={height ? height : '100%'}
         alignItems={'center'}
         justifyContent={'center'}
-        paddingVertical={200}
     >
         <BeatLoader
             color={UdongColors.Primary}
