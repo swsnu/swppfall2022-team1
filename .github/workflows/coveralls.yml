@@ -49,7 +49,7 @@ jobs:
     - name: Test
       run: |
         cd ./udong-frontend
-        node --trace-uncaught --trace-warnings node_modules/.bin/jest --coverage --watchAll=false --maxWorkers=4
+        node --trace-uncaught --trace-warnings node_modules/.bin/jest --coverage --watchAll=false --maxWorkers=16
         echo "jest done"
         ls
         ls -l coverage
