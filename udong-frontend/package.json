@@ -16,6 +16,7 @@
     "@types/random-seed": "^0.3.3",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
+    "antd": "^4.24.1",
     "eslint": "8.22.0",
     "eslint-config-next": "^13.0.0",
     "eslint-plugin-import": "^2.26.0",
@@ -27,8 +28,7 @@
     "react-dom": "18.2.0",
     "react-quill": "^2.0.0",
     "react-spinners": "^0.13.6",
-    "tui-date-picker": "^4.3.1",
-    "tui-time-picker": "^2.1.4"
+    "tui-date-picker": "^4.3.1"
   },
   "devDependencies": {
     "@types/node": "18.11.7",

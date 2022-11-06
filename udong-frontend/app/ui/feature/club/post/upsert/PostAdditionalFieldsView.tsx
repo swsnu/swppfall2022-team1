@@ -10,6 +10,7 @@ import { UdongRadioButton } from '../../../../components/UdongRadioButton'
 import { UdongText } from '../../../../components/UdongText'
 import add from '../../../../icons/IcPlus.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
+import ReactTimePicker from '../../../shared/ReactTimePicker'
 import { AdditionalFieldItem } from './AdditionalFieldItem'
 
 type SchedulingTimeType = 'days' | 'dates'
@@ -25,7 +26,7 @@ enum DAYS {
 
 export const PostAdditionalFieldsView = () => {
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingTimeType>('days')
-    const [time, setTime] = useState<string>()
+    const [time, setTime] = useState<string|Date>('00:00')
     const [day, setDay] = useState<DAYS|undefined>()
     const [dates, setDates] = useState<Date[]>([new Date()])
 
@@ -108,6 +109,10 @@ export const PostAdditionalFieldsView = () => {
             />
         </HStack>
         <Spacer height={30}/>
+        <ReactTimePicker
+            time={time}
+            setTime={setTime}
+        />
         {
             dates.map((date, i) => (
                 <DatePicker
