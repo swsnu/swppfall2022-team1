@@ -34,5 +34,5 @@ export const BoardContainer = () => {
         <PostItem isClubBoard={true}/>
         <PostItem isClubBoard={true}/>
         <ScrollToTopButton/>
-    </VStack>]
+    </VStack>
 }
