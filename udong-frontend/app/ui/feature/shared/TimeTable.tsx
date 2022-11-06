@@ -48,7 +48,7 @@ const BodyCell = (props: ({
     onHover?: () => void
     onClick?: () => void
     onMouseDown?: (e: MouseEvent<HTMLDivElement>) => void
-    text: string
+    text: number | null
     gray?: boolean
 })) => {
     const { backgroundColor, backgroundOpacity, isUpper, text, gray, onHover, onClick, onMouseDown } = props
@@ -94,7 +94,7 @@ const BodyCell = (props: ({
                 }}
             />}
             <p style={{ margin: 0, zIndex: 30, position: 'relative', cursor: 'default' }} >
-                {text}
+                {text === null ? '' : (text % 2 === 0 ? text / 2 : `${(text - 1) / 2}:30`)}
             </p>
         </Cell>
     )
@@ -181,10 +181,23 @@ export const TimeTable = (props: TimeTableProps) => {
                 borderColor: UdongColors.GrayNormal,
                 borderStyle: 'solid',
                 borderWidth: 0.5,
+                position: 'relative',
                 ...style,
             }}
             ref={ref}
         >
+            <div
+                style={{
+                    top: CELL_HEIGHT - 0.5,
+                    bottom: -0.5,
+                    right: -0.5,
+                    left: -0.5,
+                    borderColor: UdongColors.GrayNormal,
+                    borderStyle: 'solid',
+                    borderWidth: 1,
+                    position: 'absolute',
+                }}
+            />
             {
                 data.map((colData, col) => (
                     <VStack key={col}>
@@ -196,7 +209,7 @@ export const TimeTable = (props: TimeTableProps) => {
                                     : selected[col][row]
                                 return <BodyCell
                                     key={row}
-                                    isUpper={row % 2 == 0}
+                                    isUpper={(row + startTime) % 2 == 0}
                                     backgroundColor={cellSelected ? (selectColor ?? UdongColors.Secondary) : UdongColors.Primary}
                                     backgroundOpacity={cellSelected ? 1 : cnt / mxCnt / 2}
                                     onHover={onHover && (() => onHover({ col, row }))}
@@ -206,7 +219,7 @@ export const TimeTable = (props: TimeTableProps) => {
                                         setEndCellIdx({ col, row })
                                     }}
                                     gray={gray && gray[col][row]}
-                                    text={row % 2 ? '' : `${startTime + (row / 2)}`}
+                                    text={(colData.length === 1 || (startTime + row) % 2 === 0) ? (startTime + row) : null}
                                 />
                             })
                         }
