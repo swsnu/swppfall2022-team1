@@ -34,31 +34,35 @@ jobs:
         gem install coveralls-lcov
 
     - name: Install python dependencies
+      working-directory: ./udong-backend
       run: |
-        cd ./udong-backend
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install coveralls
 
     - name: Install node dependencies
+      working-directory: ./udong-frontend
       run: |
-        cd ./udong-frontend
         yarn install
         yarn global add coveralls
 
-    - name: Test
+    - name: Test frontend
+      working-directory: ./udong-frontend
       run: |
-        cd ./udong-frontend
-        node --trace-uncaught --trace-warnings node_modules/.bin/jest --coverage --watchAll=false --maxWorkers=16
+        node --trace-uncaught --trace-warnings node_modules/.bin/jest --coverage --watchAll=false
         echo "jest done"
         ls
-        ls -l coverage
         coveralls-lcov -v -n coverage/lcov.info > coverage.json
 
+        coveralls --merge=../../udong-frontend/coverage.json --service=github
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Test backend
+      working-directory: ./udong-backend
+      run: |
         cd ../udong-backend/udong
         coverage run --source='.' manage.py test
         coverage xml
-
-        coveralls --merge=../../udong-frontend/coverage.json --service=github
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
