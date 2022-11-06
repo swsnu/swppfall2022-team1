@@ -52,7 +52,7 @@ jobs:
         yarn test --coverage --watchAll=false
         coveralls-lcov -v -n coverage/lcov.info > coverage.json
 
-        coveralls --merge=../../udong-frontend/coverage.json --service=github
+        coveralls --merge=coverage.json --service=github
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
