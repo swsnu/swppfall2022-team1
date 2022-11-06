@@ -15,7 +15,7 @@ const calendars = [
         borderColor: UdongColors.GrayNormal,
     }]
 
-const template = {
+const template: TemplateConfig = {
     monthGridHeaderExceed(){
         return ''
     },
