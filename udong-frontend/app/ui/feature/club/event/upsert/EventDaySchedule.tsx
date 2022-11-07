@@ -80,7 +80,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                             }
                         />
                         <TimeRangePicker
-                            fixedTime={['11:00', '23:00']}
+                            fixedTime={fixed ? ['11:00', '23:00'] : undefined}
                             key={dayTime.id}
                             setTime={(newTime) => {
                                 const newTimes = dayTimes.map((target) => {
