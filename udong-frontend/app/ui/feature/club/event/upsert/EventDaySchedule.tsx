@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import React, { useMemo, useState } from 'react'
 
+import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongImage } from '../../../../components/UdongImage'
 import UdongLoader from '../../../../components/UdongLoader'
@@ -49,7 +50,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
         <HStack>
             <UdongText
                 style={'GeneralContent'}
-                width={150}
+                width={105}
             >요일</UdongText>
             <VStack
                 alignItems={'center'}
@@ -61,6 +62,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                         gap={15}
                         alignItems={'center'}
                     >
+                        <Spacer width={30}/>
                         <DayPicker
                             day={dayTime.day}
                             setDay={
