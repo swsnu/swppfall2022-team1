@@ -7,7 +7,7 @@ import { VStack } from '../../components/Stack'
 
 interface SpecificDatePickerProps {
     setDate: (date: string) => void
-    fixedDate?: string[]
+    fixedDate?: string
 }
 
 const SpecificDatePicker = ({ setDate, fixedDate } : SpecificDatePickerProps) => {

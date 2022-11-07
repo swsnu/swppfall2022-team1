@@ -64,6 +64,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                     >
                         <Spacer width={30}/>
                         <DayPicker
+                            fixed={fixed}
                             day={dayTime.day}
                             setDay={
                                 (newDay) => {
@@ -79,6 +80,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                             }
                         />
                         <TimeRangePicker
+                            fixedTime={['11:00', '23:00']}
                             key={dayTime.id}
                             setTime={(newTime) => {
                                 const newTimes = dayTimes.map((target) => {
@@ -91,6 +93,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                                 setDayTimes(newTimes)
                             }}
                         />
+                        {!fixed &&
                         <UdongImage
                             src={IcClose.src}
                             height={15}
@@ -99,10 +102,10 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                                 const newDayTimes = dayTimes.filter((target) => (target.id !== dayTime.id))
                                 setDayTimes(newDayTimes)}
                             }
-                        />
+                        />}
                     </HStack>
                 ))
-                }
+                }{!fixed &&
                 <UdongImage
                     src={IcPlus.src}
                     height={15}
@@ -110,7 +113,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                     onClick={() => {
                         setDayTimes([...dayTimes, { id: dayTimes[dayTimes.length - 1].id + 1, time: ['', ''] }])
                     }}
-                />
+                />}
             </VStack>
         </HStack>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}

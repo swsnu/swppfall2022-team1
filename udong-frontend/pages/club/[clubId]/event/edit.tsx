@@ -1,5 +1,7 @@
+import { EventEditContainer } from '../../../../app/ui/feature/club/event/upsert/edit/EventEditContainer'
+
 export const EventEditPage = () => {
-    return <h1>행사 수정</h1>
+    return <EventEditContainer/>
 }
 
 export default EventEditPage

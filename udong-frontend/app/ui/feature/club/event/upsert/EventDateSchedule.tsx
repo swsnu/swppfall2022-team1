@@ -68,6 +68,7 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                                 setDateTimes(newDateTimes)
                             }
                             }
+                            fixedDate={fixed ? '2022-10-10' : undefined}
                         />
                         <SpecificTimePicker
                             setTime={(newTime) => {
@@ -81,6 +82,7 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                                 setDateTimes(newDateTimes)
                             }
                             }
+                            fixedTime={fixed ? '15:30' : undefined}
                         />
                         <UdongText style={'GeneralContent'}>~</UdongText>
                         <SpecificDatePicker
@@ -95,6 +97,7 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                                 setDateTimes(newDateTimes)
                             }
                             }
+                            fixedDate={fixed ? '2022-10-22' : undefined}
                         />
                         <SpecificTimePicker
                             setTime={(newTime) => {
@@ -108,7 +111,9 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                                 setDateTimes(newDateTimes)
                             }
                             }
+                            fixedTime={fixed ? '12:00' : undefined}
                         />
+                        {!fixed &&
                         <UdongImage
                             src={IcClose.src}
                             height={15}
@@ -117,9 +122,10 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                                 const newDateTimes = dateTimes.filter((target) => (target.id !== dateTime.id))
                                 setDateTimes(newDateTimes)}
                             }
-                        />
+                        />}
                     </HStack>
                 ))}
+                {!fixed &&
                 <UdongImage
                     src={IcPlus.src}
                     height={15}
@@ -128,7 +134,7 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                         setDateTimes([...dateTimes, { id: dateTimes[dateTimes.length - 1].id + 1,
                             start: { date: '', time: '' }, end: { date: '', time: '' } }])
                     }}
-                />
+                />}
             </VStack>
         </HStack>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}
