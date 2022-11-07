@@ -5,7 +5,7 @@ from user.models import UserClub
 from event.models import Event
 from tag.models import Tag
 from user.serializers import UserSerializer
-from event.serializers import EventTimeSerializer
+from timedata.serializers import PureTimeSerializer
 
 
 class ClubSerializer(serializers.ModelSerializer[Club]):
@@ -56,7 +56,7 @@ class ClubEventSerializer(serializers.ModelSerializer[Event]):
         )
 
     def get_time(self, event: Event) -> ReturnDict:
-        return EventTimeSerializer(event.time_set, many=True, context=self.context).data
+        return PureTimeSerializer(event.time_set, many=True, context=self.context).data
 
 
 class ClubTagSerializer(serializers.ModelSerializer[Tag]):
