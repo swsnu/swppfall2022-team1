@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -9,6 +9,8 @@ import { UdongText } from '../../../../components/UdongText'
 import add from '../../../../icons/IcPlus.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { AdditionalFieldItem } from './AdditionalFieldItem'
+import PostDateSchedule from './PostDateSchedule'
+import PostDaySchedule from './PostDaySchedule'
 
 type SchedulingTimeType = 'days' | 'dates'
 
@@ -70,7 +72,6 @@ export const PostAdditionalFieldsView = () => {
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
-
         <HStack
             alignItems={'center'}
             justifyContent={'start'}
@@ -90,7 +91,9 @@ export const PostAdditionalFieldsView = () => {
             />
         </HStack>
         <Spacer height={30}/>
-
+        {
+            schedulingTimeType === 'days' ? <PostDaySchedule/> : <PostDateSchedule/>
+        }
         <Spacer height={20}/>
     </VStack>
 }
