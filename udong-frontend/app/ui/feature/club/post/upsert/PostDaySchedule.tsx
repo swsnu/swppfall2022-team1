@@ -51,6 +51,7 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
                         key={target}
                         selected={target === day}
                         onClick={()=>setDay(target)}
+                        style={{ cursor: 'pointer' }}
                     >
                         <UdongText
                             color={target === day ? UdongColors.White : UdongColors.GrayNormal}
