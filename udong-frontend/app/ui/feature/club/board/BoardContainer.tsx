@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 
 import { Spacer } from '../../../components/Spacer'
-import { HStack } from '../../../components/Stack'
+import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
 import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { PostItem } from '../../shared/PostItem'
