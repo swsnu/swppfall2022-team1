@@ -53,6 +53,7 @@ export const SchedulingCloseContainer = () => {
     const [hover, setHover] = useState<CellIdx|null>(null)
     const [modalOpen, setModalOpen] = useState(false)
     const [ava, setAva] = useState<number[]>([])
+    const [inc, setInc] = useState<number[]>([])
 
     const users = useMemo(() => (
         schedulingData.availableTime.map(({ user: { id, name, auth } }) => ({ id, name, isMe: id === myId, isAdmin: auth === 'A' }))
@@ -79,12 +80,16 @@ export const SchedulingCloseContainer = () => {
     ), [cnt, header, schedulingData])
 
     useEffect(() => {
-        setSelected(Array(header.length).fill(0).map(() => Array((schedulingData.endTime - schedulingData.startTime) * 2)))
+        setSelected(Array(header.length).fill(0).map(() => Array((schedulingData.endTime - schedulingData.startTime) * 2).fill(false)))
     }, [header, schedulingData])
 
     useEffect(() => setAva(
         schedulingData.availableTime.filter(({ time }) => (hover && time[hover.col][hover.row])).map(({ user }) => user.id),
     ), [hover, schedulingData])
+
+    useEffect(() => setInc(schedulingData.availableTime.filter(({ time }) => (
+        selected !== null && time.map((timeRow, col) => timeRow.map((x, row) => x && selected[col][row]).some(x => x)).some(x => x)
+    )).map(({ user }) => user.id)), [selected, schedulingData])
 
     return (
         <VStack
@@ -145,7 +150,12 @@ export const SchedulingCloseContainer = () => {
                                 leftList={users.filter(({ id }) => ava.includes(id))}
                                 rightList={users.filter(({ id }) => !ava.includes(id))}
                             />
-                        ) : <></>
+                        ) : <SchedulingUserListView
+                            leftTitle='포함'
+                            rightTitle='미포함'
+                            leftList={users.filter(({ id }) => inc.includes(id))}
+                            rightList={users.filter(({ id }) => !inc.includes(id))}
+                        />
                     )}
                 </VStack>
             </HStack>

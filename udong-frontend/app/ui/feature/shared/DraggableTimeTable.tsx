@@ -19,6 +19,7 @@ export const DraggableTimeTable = (props: DraggableTimeTableProps) => {
     const { setSelected, selected, ...otherProps } = props
 
     const onDrag = (startIdx: CellIdx, endIdx: CellIdx) => setSelected(selected => {
+        const newSelected = selected.slice()
         const mnCol = Math.min(startIdx?.col, endIdx?.col)
         const mxCol = Math.max(startIdx?.col, endIdx?.col)
         const mnRow = Math.min(startIdx?.row, endIdx?.row)
@@ -26,10 +27,10 @@ export const DraggableTimeTable = (props: DraggableTimeTableProps) => {
         const v = !selected[startIdx.col][startIdx.row]
         for(let col = mnCol; col <= mxCol; col++) {
             for(let row = mnRow; row <= mxRow; row++) {
-                selected[col][row] = v
+                newSelected[col][row] = v
             }
         }
-        return selected  
+        return newSelected
     })
 
     return <TimeTable
