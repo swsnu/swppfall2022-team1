@@ -11,13 +11,15 @@ import { PostInputView } from '../PostInputView'
 
 interface PostEditContainerProps {
     postType: PostType
+    // 코드 중복 제거를 위해 일단 더미부터 넣음 ㅋ
+    content?: string
 }
 
 export const PostEditContainer = (props: PostEditContainerProps) => {
-    const { postType } = props
+    const { postType, content = 'Hello World!' } = props
     const router = useRouter()
     const [title, setTitle] = useState<string>('')
-    const [contents, setContents] = useState<string>('Hello World!!!')
+    const [contents, setContents] = useState<string>(content)
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
