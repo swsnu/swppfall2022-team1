@@ -4,6 +4,7 @@ from club.models import Club
 from event.models import Event
 from timedata.models import Time
 from tag.models import Tag
+from post.models import Post
 from datetime import datetime
 
 # Refresh DB
@@ -47,4 +48,15 @@ time2 = Time.objects.create(
 
 # Create dummy tag
 tag1 = Tag.objects.create(club=club1, name="genius")
-tag1 = Tag.objects.create(club=club1, name="winner")
+tag2 = Tag.objects.create(club=club1, name="winner")
+
+
+# Create dummy post
+post1 = Post.objects.create(
+    author=user1,
+    event=event1,
+    club=club1,
+    title="Turing award is coming!",
+    content="Turing award Turing award Turing award",
+    type="A",
+)
