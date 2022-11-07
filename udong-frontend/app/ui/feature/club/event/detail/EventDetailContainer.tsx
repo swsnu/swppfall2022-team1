@@ -24,7 +24,7 @@ export const EventDetailContainer = () => {
                     style={'line'}
                     color={UdongColors.Primary}
                     height={40}
-                    onClick={() => {return}}
+                    onClick={() => {router.push('/club/1/event/1/edit')}}
                 >
                     수정하기
                 </UdongButton>

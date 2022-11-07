@@ -2,7 +2,8 @@ import { useRouter } from 'next/router'
 import React, { useCallback } from 'react'
 
 import { Spacer } from '../../../components/Spacer'
-import { VStack } from '../../../components/Stack'
+import { HStack, VStack } from '../../../components/Stack'
+import { UdongButton } from '../../../components/UdongButton'
 import UdongLoader from '../../../components/UdongLoader'
 import { EventCalendarView } from './calendar/EventCalendarView'
 import { EVENT_TAB, EventTabType, EventTabView } from './EventTabView'
@@ -122,6 +123,15 @@ export const EventContainer = () => {
     }
 
     return <VStack paddingHorizontal={16}>
+        <HStack justifyContent={'end'}>
+            <UdongButton
+                style={'line'}
+                onClick={() => router.push('/club/1/event/create')}
+                width={120}
+            >
+                행사 만들기
+            </UdongButton>
+        </HStack>
         <Spacer height={20}/>
         {getCurrentTab()}
         <Spacer height={15}/>

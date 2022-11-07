@@ -44,7 +44,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
             >반복 기간</UdongText>
             <DateRangePicker
                 setDate={setDate}
-                fixedDate={fixed ? date : undefined}
+                fixedDate={fixed ?  { start: '2022-10-20', end: '2022-11-01' } : undefined}
             />
         </HStack>
         <HStack>

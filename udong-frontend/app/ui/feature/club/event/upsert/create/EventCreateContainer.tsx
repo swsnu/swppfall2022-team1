@@ -12,7 +12,7 @@ export const EventCreateContainer = () => {
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
-            title={'행사 생성하기'}
+            title={'행사 만들기'}
             onGoBack={() => router.back()}
             rightButtons={
                 <UdongButton
