@@ -40,6 +40,7 @@ urlpatterns: List[Union[URLPattern, URLResolver]] = [
     path("admin/", admin.site.urls),
     path("api/", include("user.urls")),
     path("api/", include("club.urls")),
+    path("api/", include("post.urls")),
 ]
 
 if settings.DEBUG:
