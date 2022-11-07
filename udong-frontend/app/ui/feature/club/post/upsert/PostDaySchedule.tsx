@@ -46,6 +46,10 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
             </UdongText>
         </DayButtonContainer>
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3a53a1d (modulize day button)
     return <VStack
         paddingHorizontal={120}
         gap={15}
