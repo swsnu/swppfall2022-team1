@@ -9,13 +9,13 @@ import { UdongColors } from '../../../../theme/ColorPalette'
 import { DateRangeType } from '../../../shared/DateRangePicker'
 
 enum DAYS {
-    MONDAY,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY,
-    SATURDAY,
-    SUNDAY
+    MONDAY='월',
+    TUESDAY='화',
+    WEDNESDAY='수',
+    THURSDAY='목',
+    FRIDAY='금',
+    SATURDAY='토',
+    SUNDAY='일'
 }
 
 interface PostDaySchedule {
@@ -33,6 +33,20 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
     const DateRangePicker = useMemo(() => dynamic(() => import('../../../shared/DateRangePicker').then((mod)=>mod.default),
         { ssr: false, loading: () =>
             <UdongLoader width={300}/> }), [])
+
+    const DayButton = ({ selectedDay, day } : { selectedDay : DAYS|null, day: DAYS }) => {
+        return <DayButtonContainer
+            selected={selectedDay === day}
+            onClick={()=>setDay(day)}
+        >
+            <UdongText
+                color={selectedDay === day ? UdongColors.White : UdongColors.GrayNormal}
+                style={'GeneralContent'}
+            >
+                {day}
+            </UdongText>
+        </DayButtonContainer>
+    }
 
     return <VStack
         paddingHorizontal={120}
@@ -55,82 +69,33 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
             >요일</UdongText>
             <HStack gap={10}>
                 <DayButton
-                    selected={day === DAYS.MONDAY}
-                    onClick={()=>setDay(DAYS.MONDAY)}
-                >
-                    <UdongText
-                        color={day === DAYS.MONDAY ? UdongColors.White : UdongColors.GrayNormal}
-                        style={'GeneralContent'}
-                    >
-                월
-                    </UdongText>
-                </DayButton>
+                    selectedDay={day}
+                    day={DAYS.MONDAY}
+                />
                 <DayButton
-                    selected={day === DAYS.TUESDAY}
-                    onClick={()=>setDay(DAYS.TUESDAY)}
-                >
-                    <UdongText
-                        color={day === DAYS.TUESDAY ? UdongColors.White : UdongColors.GrayNormal}
-                        style={'GeneralContent'}
-                    >
-                화
-                    </UdongText>
-                </DayButton>
+                    selectedDay={day}
+                    day={DAYS.TUESDAY}
+                />
                 <DayButton
-                    selected={day === DAYS.WEDNESDAY}
-                    onClick={()=>setDay(DAYS.WEDNESDAY)}
-                >
-                    <UdongText
-                        color={day === DAYS.WEDNESDAY ? UdongColors.White : UdongColors.GrayNormal}
-                        style={'GeneralContent'}
-                    >
-                수
-                    </UdongText>
-                </DayButton>
+                    selectedDay={day}
+                    day={DAYS.WEDNESDAY}
+                />
                 <DayButton
-                    selected={day === DAYS.THURSDAY}
-                    onClick={()=>setDay(DAYS.THURSDAY)}
-                >
-                    <UdongText
-                        color={day === DAYS.THURSDAY ? UdongColors.White : UdongColors.GrayNormal}
-                        style={'GeneralContent'}
-                    >
-                목
-                    </UdongText>
-                </DayButton>
+                    selectedDay={day}
+                    day={DAYS.THURSDAY}
+                />
                 <DayButton
-                    selected={day === DAYS.FRIDAY}
-                    onClick={()=>setDay(DAYS.FRIDAY)}
-                >
-                    <UdongText
-                        color={day === DAYS.FRIDAY ? UdongColors.White : UdongColors.GrayNormal}
-                        style={'GeneralContent'}
-                    >
-                금
-                    </UdongText>
-                </DayButton>
+                    selectedDay={day}
+                    day={DAYS.FRIDAY}
+                />
                 <DayButton
-                    selected={day === DAYS.SATURDAY}
-                    onClick={()=>setDay(DAYS.SATURDAY)}
-                >
-                    <UdongText
-                        color={day === DAYS.SATURDAY ? UdongColors.White : UdongColors.GrayNormal}
-                        style={'GeneralContent'}
-                    >
-                토
-                    </UdongText>
-                </DayButton>
+                    selectedDay={day}
+                    day={DAYS.SATURDAY}
+                />
                 <DayButton
-                    selected={day === DAYS.SUNDAY}
-                    onClick={()=>setDay(DAYS.SUNDAY)}
-                >
-                    <UdongText
-                        color={day === DAYS.SUNDAY ? UdongColors.White : UdongColors.GrayNormal}
-                        style={'GeneralContent'}
-                    >
-                일
-                    </UdongText>
-                </DayButton>
+                    selectedDay={day}
+                    day={DAYS.SUNDAY}
+                />
             </HStack>
         </HStack>
         <HStack>
@@ -150,7 +115,7 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
 
 export default PostDaySchedule
 
-const DayButton = styled.div<{ selected: boolean }>`
+const DayButtonContainer = styled.div<{ selected: boolean }>`
     border: 1px solid ${(props) => props.selected ? UdongColors.GrayNormal : UdongColors.GrayDark};
     background-color: ${(props) => props.selected ? UdongColors.GrayNormal : UdongColors.White};
     width: 30px;
