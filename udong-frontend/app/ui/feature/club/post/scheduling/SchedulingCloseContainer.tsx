@@ -6,7 +6,9 @@ import { UdongButton } from '../../../../components/UdongButton'
 import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { DraggableTimeTable } from '../../../shared/DraggableTimeTable'
+import { CellIdx } from '../../../shared/TimeTable'
 import { SchedulingCloseModal } from './SchedulingCloseModal'
+import { SchedulingUserListView, UserType } from './SchedulingUserListView'
 
 const schedulingDummy = {
     startTime: 12,
@@ -21,7 +23,7 @@ const schedulingDummy = {
     weekdays: [true, true, true, false, true, false, false],
     availableTime: [
         {
-            user: { id: 1, name: 'user1' },
+            user: { id: 1, name: 'user1', auth: 'A' },
             time: [
                 [true, true, true, true, true, true],
                 [true, true, false, false, true, false],
@@ -30,7 +32,7 @@ const schedulingDummy = {
             ],
         },
         {
-            user: { id: 2, name: 'user2' },
+            user: { id: 2, name: 'user2', auth: 'M' },
             time: [
                 [false, false, false, false, false, false],
                 [true, true, true, true, true, true],
@@ -40,12 +42,18 @@ const schedulingDummy = {
         },
     ],
 }
+const myId = 1
+
+const timeToStr = (x: number) => (x % 2 === 0 ? `${x / 2}:00` : `${(x - 1) / 2}:30`)
 
 export const SchedulingCloseContainer = () => {
     const router = useRouter()
     const schedulingData = useMemo(() => schedulingDummy, [])
     const [selected, setSelected] = useState<boolean[][]|null>(null)
+    const [hover, setHover] = useState<CellIdx|null>(null)
     const [modalOpen, setModalOpen] = useState(false)
+    const [ava, setAva] = useState<UserType[]>([])
+    const [notAva, setNotAva] = useState<UserType[]>([])
 
     const header = useMemo(() => (
         schedulingData.dates ?
@@ -53,14 +61,33 @@ export const SchedulingCloseContainer = () => {
             : ['SUN', 'MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT'].filter((_, idx) => schedulingData.weekdays?.[idx])
     ), [schedulingData])
 
-    const data = useMemo(() => schedulingData.availableTime.reduce(
+    const cnt: number[][] = useMemo(() => schedulingData.availableTime.reduce(
         (d, { time }) => d.map((colData, colIdx) => colData.map((x, rowIdx) => x + time[colIdx][rowIdx])),
         Array(header.length).fill(0).map(() => Array(schedulingData.endTime - schedulingData.startTime).fill(0)),
     ), [header, schedulingData])
 
+    const best = useMemo(() => (
+        cnt.reduce(
+            (v, colData, colIdx) => v.concat(
+                colData.map((x, rowIdx) => ({ cnt: x, day: header[colIdx], time: rowIdx + schedulingData.startTime })),
+            ),
+            [] as ({ cnt: number, day: string, time: number })[],
+        ).sort((a, b) => b.cnt - a.cnt).slice(0, 3)
+    ), [cnt, header, schedulingData])
+
     useEffect(() => {
         setSelected(Array(header.length).fill(0).map(() => Array((schedulingData.endTime - schedulingData.startTime) * 2)))
     }, [header, schedulingData])
+
+    useEffect(() => {
+        const ava: UserType[] = []
+        const notAva: UserType[] = []
+        schedulingData.availableTime.forEach(({ user: { id, name, auth }, time }) => {
+            (hover && time[hover.col][hover.row] ? ava : notAva).push({ name, isMe: id === myId, isAdmin: auth === 'A' })
+        })
+        setAva(ava)
+        setNotAva(notAva)
+    }, [hover, schedulingData])
 
     return (
         <VStack
@@ -80,7 +107,10 @@ export const SchedulingCloseContainer = () => {
                 gap={50}
                 justifyContent={'center'}
             >
-                <VStack alignItems={'start'}>
+                <VStack
+                    alignItems={'start'}
+                    width={'40%'}
+                >
                     <UdongText style={'GeneralTitle'}>일정 수합 현황</UdongText>
                     <UdongText style={'GeneralContent'}>※ 클릭시 해당 시간에 참여 가능한 인원을 보여드립니다.</UdongText>
                     {selected !== null && <DraggableTimeTable
@@ -88,11 +118,39 @@ export const SchedulingCloseContainer = () => {
                         startTime={schedulingDummy.startTime}
                         selected={selected}
                         setSelected={setSelected as (f: ((x: boolean[][]) => boolean[][])) => void}
-                        data={data}
+                        onHover={setHover}
+                        data={cnt}
                         style={{ marginTop: 10 }}
                     />}
                 </VStack>
 
+                <VStack
+                    width={'40%'}
+                    gap={50}
+                >
+                    <VStack>
+                        <UdongText style={'GeneralTitle'}>Best 시간대</UdongText>
+                        {best.map(({ cnt,  day, time }, idx) => (
+                            <HStack key={idx}>
+                                <UdongText
+                                    style={'GeneralContent'}
+                                    width={40}
+                                >{cnt}명</UdongText>
+                                <UdongText style={'GeneralContent'}>{day} {timeToStr(time)}~{timeToStr(time + 1)}</UdongText>
+                            </HStack>
+                        ))}
+                    </VStack>
+                    {selected !== null && (hover !== null && !selected[hover.col][hover.row]
+                        ? (
+                            <SchedulingUserListView
+                                leftTitle='가능'
+                                rightTitle='불가능'
+                                leftList={ava}
+                                rightList={notAva}
+                            />
+                        ) : <></>
+                    )}
+                </VStack>
             </HStack>
 
             <SchedulingCloseModal

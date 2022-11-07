@@ -7,6 +7,7 @@ interface UdongTextProps {
     children: ReactNode
     style:
         | 'ListTitle'
+        | 'ListTitleS'
         | 'ListContentS'
         | 'ListContentXS'
         | 'ListContentUnderscore'
@@ -44,6 +45,12 @@ export const UdongText = (props: UdongTextProps & CSSProperties) => {
             case 'ListTitle':
                 return {
                     fontSize: 16,
+                    fontWeight: 'bold',
+                    color: UdongColors.GrayDark,
+                }
+            case 'ListTitleS':
+                return {
+                    fontSize: 14,
                     fontWeight: 'bold',
                     color: UdongColors.GrayDark,
                 }
