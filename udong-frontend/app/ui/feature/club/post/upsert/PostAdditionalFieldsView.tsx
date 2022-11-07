@@ -1,38 +1,21 @@
-import dynamic from 'next/dynamic'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongChip } from '../../../../components/UdongChip'
 import { UdongImage } from '../../../../components/UdongImage'
-import UdongLoader from '../../../../components/UdongLoader'
 import { UdongRadioButton } from '../../../../components/UdongRadioButton'
 import { UdongText } from '../../../../components/UdongText'
 import add from '../../../../icons/IcPlus.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
-import ReactTimePicker from '../../../shared/ReactTimePicker'
 import { AdditionalFieldItem } from './AdditionalFieldItem'
+import PostDateSchedule from './PostDateSchedule'
+import PostDaySchedule from './PostDaySchedule'
 
 type SchedulingTimeType = 'days' | 'dates'
-enum DAYS {
-    MONDAY,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY,
-    SATURDAY,
-    SUNDAY
-}
 
 export const PostAdditionalFieldsView = () => {
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingTimeType>('days')
-    const [time, setTime] = useState<string|Date>('00:00')
-    const [day, setDay] = useState<DAYS|undefined>()
-    const [dates, setDates] = useState<Date[]>([new Date()])
-
-    const DatePicker = useMemo(() => dynamic(() => import('../../../shared/TUIDatePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader/> }), [])
 
     return <VStack>
         <HStack
@@ -89,7 +72,6 @@ export const PostAdditionalFieldsView = () => {
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
-
         <HStack
             alignItems={'center'}
             justifyContent={'start'}
@@ -109,24 +91,9 @@ export const PostAdditionalFieldsView = () => {
             />
         </HStack>
         <Spacer height={30}/>
-        <ReactTimePicker
-            time={time}
-            setTime={setTime}
-        />
         {
-            dates.map((date, i) => (
-                <DatePicker
-                    key={i}
-                    date={date}
-                    setDate={(newDate: Date) => {
-                        const newDates = dates
-                        newDates[i] = newDate
-                        setDates(newDates)
-                    }}
-                />
-            ))
+            schedulingTimeType === 'days' ? <PostDaySchedule/> : <PostDateSchedule/>
         }
-
         <Spacer height={20}/>
     </VStack>
 }
