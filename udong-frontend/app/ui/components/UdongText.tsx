@@ -15,6 +15,7 @@ interface UdongTextProps {
         | 'TabSelected'
         | 'TabUnselected'
         | 'Header'
+    nonText?: boolean
 }
 
 interface TextProps {
@@ -37,7 +38,7 @@ interface TextProps {
  *
  * */
 export const UdongText = (props: UdongTextProps & CSSProperties) => {
-    const { children, style } = props
+    const { children, style, nonText } = props
 
     const textProps = (): TextProps => {
         switch (style) {
@@ -108,6 +109,7 @@ export const UdongText = (props: UdongTextProps & CSSProperties) => {
                 textDecoration: textProps().textDecoration,
                 color: textProps().color,
                 margin: 0,
+                cursor: nonText ? 'default' : undefined,
                 ...props,
             }}
         >
