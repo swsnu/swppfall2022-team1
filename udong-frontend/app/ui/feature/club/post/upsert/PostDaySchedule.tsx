@@ -6,6 +6,7 @@ import { HStack, VStack } from '../../../../components/Stack'
 import UdongLoader from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
+import { DateRangeType } from '../../../shared/DateRangePicker'
 
 enum DAYS {
     MONDAY,
@@ -24,14 +25,14 @@ interface PostDaySchedule {
 const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
     const [time, setTime] = useState<string[]>(['', ''])
     const [day, setDay] = useState<DAYS|null>(null)
-    const [date, setDate] = useState<string[]>(['', ''])
+    const [date, setDate] = useState<DateRangeType>({ start: '', end: '' })
 
     const TimeRangePicker = useMemo(() => dynamic(() => import('../../../shared/TimeRangePicker').then((mod)=>mod.default),
         { ssr: false, loading: () =>
-            <UdongLoader/> }), [])
+            <UdongLoader width={300}/> }), [])
     const DateRangePicker = useMemo(() => dynamic(() => import('../../../shared/DateRangePicker').then((mod)=>mod.default),
         { ssr: false, loading: () =>
-            <UdongLoader/> }), [])
+            <UdongLoader width={300}/> }), [])
 
     return <VStack
         paddingHorizontal={120}
