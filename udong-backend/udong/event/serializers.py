@@ -1,5 +1,14 @@
 from rest_framework import serializers
+from event.models import Event
 from timedata.models import Time
+
+
+class EventNameSerializer(serializers.ModelField[Event]):
+    name = serializers.CharField(max_length=255)
+
+    class Meta:
+        model = Event
+        fields = ("name",)
 
 
 class EventTimeSerializer(serializers.ModelSerializer[Time]):
