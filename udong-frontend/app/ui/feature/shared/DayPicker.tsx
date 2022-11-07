@@ -17,6 +17,7 @@ export enum DAYS {
 }
 
 export const DayPicker = ({ day, setDay, fixed } : DayPickerProps) => {
+
     return <select
         disabled={fixed}
         value={day}
@@ -27,33 +28,12 @@ export const DayPicker = ({ day, setDay, fixed } : DayPickerProps) => {
             selected={!fixed}
             value={undefined}
         >요일을 선택하세요</option>
-        <option
-            value={DAYS.MONDAY}
-            onChange={()=>setDay(DAYS.MONDAY)}
-        >월요일</option>
-        <option
-            value={DAYS.TUESDAY}
-            onChange={()=>setDay(DAYS.TUESDAY)}
-        >화요일</option>
-        <option
-            value={DAYS.WEDNESDAY}
-            onChange={()=>setDay(DAYS.WEDNESDAY)}
-        >수요일</option>
-        <option
-            value={DAYS.THURSDAY}
-            onChange={()=>setDay(DAYS.THURSDAY)}
-        >목요일</option>
-        <option
-            value={DAYS.FRIDAY}
-            onChange={()=>setDay(DAYS.FRIDAY)}
-        >금요일</option>
-        <option
-            value={DAYS.SATURDAY}
-            onChange={()=>setDay(DAYS.SATURDAY)}
-        >토요일</option>
-        <option
-            value={DAYS.SUNDAY}
-            onChange={()=>setDay(DAYS.SUNDAY)}
-        >일요일</option>
+        {Object.values(DAYS).map((day) => (
+            <option
+                key={day}
+                value={day}
+                onChange={()=>setDay(day)}
+            >{day}요일</option>
+        ))}
     </select>
 }
