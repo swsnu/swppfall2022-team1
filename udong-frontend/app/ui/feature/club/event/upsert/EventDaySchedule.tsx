@@ -116,6 +116,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                 />}
             </VStack>
         </HStack>
+        <p style={{ color: 'white' }}>{date.start}</p>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}
         {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>
