@@ -38,3 +38,15 @@ a {
 .ql-editor {
     height: 300px !important;
 }
+
+.ant-picker-focused {
+    border-color: #3945AC !important;
+}
+
+.ant-picker .ant-picker-active-bar {
+    background: #3945AC !important;
+}
+
+.ant-picker {
+    border: 1px solid #808080 !important;
+}
