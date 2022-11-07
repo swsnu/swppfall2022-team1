@@ -14,8 +14,8 @@ const UdongLoader = (props: UdongLoaderProps) => {
     const { height, width } = props
 
     return <HStack
-        width={width ? width : '100%'}
-        height={height ? height : '100%'}
+        width={width ?? '100%'}
+        height={height ?? '100%'}
         alignItems={'center'}
         justifyContent={'center'}
     >
