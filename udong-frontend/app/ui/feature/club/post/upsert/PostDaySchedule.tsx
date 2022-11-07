@@ -33,7 +33,6 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
     const DateRangePicker = useMemo(() => dynamic(() => import('../../../shared/DateRangePicker').then((mod)=>mod.default),
         { ssr: false, loading: () =>
             <UdongLoader width={300}/> }), [])
-
     const DayButton = ({ selectedDay, day } : { selectedDay : DAYS|null, day: DAYS }) => {
         return <DayButtonContainer
             selected={selectedDay === day}
@@ -47,7 +46,6 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
             </UdongText>
         </DayButtonContainer>
     }
-
     return <VStack
         paddingHorizontal={120}
         gap={15}
