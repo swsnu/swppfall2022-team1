@@ -1,18 +1,16 @@
-import dynamic from 'next/dynamic'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongImage } from '../../../../components/UdongImage'
-import UdongLoader from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
-import { DateRangeType } from '../../../shared/DateRangePicker'
+import DateRangePicker, { DateRangeType } from '../../../shared/DateRangePicker'
 import { DayPicker, DAYS } from '../../../shared/DayPicker'
 
 import IcPlus from '/app/ui/icons/IcPlus.png'
 import IcClose from '/app/ui/icons/IcClose.png'
 
-import { TimeRangeType } from '../../../shared/TimeRangePicker'
+import TimeRangePicker, { TimeRangeType } from '../../../shared/TimeRangePicker'
 
 interface EventDaySchedule {
     fixed?: boolean
@@ -27,13 +25,6 @@ interface DayTimeType {
 const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
     const [date, setDate] = useState<DateRangeType>({ start: '', end: '' })
     const [dayTimes, setDayTimes] = useState<DayTimeType[]>([{ id: 0, time: { start: '12:00', end: '20:30' } }])
-
-    const TimeRangePicker = useMemo(() => dynamic(() => import('../../../shared/TimeRangePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader width={160}/> }), [])
-    const DateRangePicker = useMemo(() => dynamic(() => import('../../../shared/DateRangePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader width={300}/> }), [])
 
     return <VStack
         paddingHorizontal={120}

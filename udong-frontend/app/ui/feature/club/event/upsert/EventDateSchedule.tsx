@@ -1,14 +1,15 @@
-import dynamic from 'next/dynamic'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongImage } from '../../../../components/UdongImage'
-import UdongLoader from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
 
 import IcClose from '/app/ui/icons/IcClose.png'
 import IcPlus from '/app/ui/icons/IcPlus.png'
+
+import SpecificDatePicker from '../../../shared/SpecificDatePicker'
+import SpecificTimePicker from '../../../shared/SpecificTimePicker'
 
 interface EventDateSchedule {
     fixed?: boolean
@@ -28,13 +29,6 @@ interface DateTimesType {
 
 const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
     const [dateTimes, setDateTimes] = useState<DateTimesType[]>([{ id: 0, start: { date: '', time: '' }, end: { date: '', time: '' } }])
-
-    const SpecificTimePicker = useMemo(() => dynamic(() => import('../../../shared/SpecificTimePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader width={110}/> }), [])
-    const SpecificDatePicker = useMemo(() => dynamic(() => import('../../../shared/SpecificDatePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader width={110}/> }), [])
 
     return <VStack
         paddingHorizontal={120}

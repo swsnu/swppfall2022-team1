@@ -1,16 +1,14 @@
-import dynamic from 'next/dynamic'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongImage } from '../../../../components/UdongImage'
-import UdongLoader from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
 
 import IcPlus from '/app/ui/icons/IcPlus.png'
 import IcClose from '/app/ui/icons/IcClose.png'
 
-import { DateRangeType } from '../../../shared/DateRangePicker'
-import { TimeRangeType } from '../../../shared/TimeRangePicker'
+import DateRangePicker, { DateRangeType } from '../../../shared/DateRangePicker'
+import TimeRangePicker, { TimeRangeType } from '../../../shared/TimeRangePicker'
 
 interface PostDateSchedule {
     fixed?: boolean
@@ -23,13 +21,6 @@ interface DateRangeTypeWithId extends DateRangeType {
 const PostDateSchedule = ({ fixed }: PostDateSchedule) => {
     const [time, setTime] = useState<TimeRangeType>({ start: '', end: '' })
     const [dates, setDates] = useState<DateRangeTypeWithId[]>([{ id: 0, start: '', end: '' }])
-
-    const TimeRangePicker = useMemo(() => dynamic(() => import('../../../shared/TimeRangePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader width={300}/> }), [])
-    const DateRangePicker = useMemo(() => dynamic(() => import('../../../shared/DateRangePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader width={300}/> }), [])
 
     return <VStack
         paddingHorizontal={120}
