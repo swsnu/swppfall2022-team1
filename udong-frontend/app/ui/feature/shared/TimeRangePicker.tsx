@@ -15,7 +15,7 @@ const TimeRangePicker = ({ setTime, fixedTime } : TimeRangePickerProps) => {
         TimePicker
     ), [])
 
-    return <VStack width={180}>
+    return <VStack width={160}>
         <RangePicker
             defaultValue={fixedTime ? [moment(fixedTime[0], 'HH:mm'), moment(fixedTime[1], 'HH:mm')] : undefined}
             disabled={!!fixedTime}
