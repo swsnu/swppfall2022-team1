@@ -27,10 +27,12 @@ const SchedulingUserSingleListView = (props: SchedulingUserSingleListViewProps) 
                 <UdongChip
                     text={`${list.length}`}
                     style={'primary'}
+                    small
                 />
             </HStack>
             {list.map((user, idx) => <UserItem
                 key={idx}
+                small
                 {...user}
             />)}
         </VStack>

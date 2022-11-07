@@ -51,6 +51,7 @@ interface UdongChipProps {
     style: UdongChipColorStyle
     onClick?: () => void
     text: string
+    small?: boolean
 }
 
 /**
@@ -63,11 +64,11 @@ interface UdongChipProps {
  *
  */
 export const UdongChip = (props: UdongChipProps) => {
-    const { style, onClick, text } = props
+    const { style, onClick, text, small = false } = props
     const { backgroundColor, textColor, borderColor } = getColorProps(style)
 
     return <HStack
-        paddingHorizontal={16}
+        paddingHorizontal={small ? 12 : 18}
         backgroundColor={backgroundColor}
         style={{
             borderRadius: 18,
@@ -77,7 +78,7 @@ export const UdongChip = (props: UdongChipProps) => {
         onClick={onClick}
     >
         <UdongText
-            style={'ListContentS'}
+            style={small ? 'ListContentXS' : 'ListContentS'}
             margin={2}
             color={textColor}
             textOverflow={'ellipsis'}
