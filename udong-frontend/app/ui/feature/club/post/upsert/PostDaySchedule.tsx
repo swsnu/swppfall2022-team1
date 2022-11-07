@@ -7,6 +7,7 @@ import UdongLoader from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { DateRangeType } from '../../../shared/DateRangePicker'
+import { TimeRangeType } from '../../../shared/TimeRangePicker'
 
 enum DAYS {
     MONDAY='월',
@@ -23,7 +24,7 @@ interface PostDaySchedule {
 }
 
 const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
-    const [time, setTime] = useState<string[]>(['', ''])
+    const [time, setTime] = useState<TimeRangeType>({ start: '', end: '' })
     const [day, setDay] = useState<DAYS|null>(null)
     const [date, setDate] = useState<DateRangeType>({ start: '', end: '' })
 

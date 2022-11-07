@@ -6,8 +6,13 @@ import 'antd/dist/antd.css'
 import { VStack } from '../../components/Stack'
 
 interface TimeRangePickerProps {
-    setTime: (times: string[]) => void
-    fixedTime?: string[]
+    setTime: (times: TimeRangeType) => void
+    fixedTime?: TimeRangeType
+}
+
+export interface TimeRangeType {
+    start: string
+    end: string
 }
 
 const TimeRangePicker = ({ setTime, fixedTime } : TimeRangePickerProps) => {
@@ -17,13 +22,13 @@ const TimeRangePicker = ({ setTime, fixedTime } : TimeRangePickerProps) => {
 
     return <VStack width={160}>
         <RangePicker
-            defaultValue={fixedTime ? [moment(fixedTime[0], 'HH:mm'), moment(fixedTime[1], 'HH:mm')] : undefined}
+            defaultValue={fixedTime ? [moment(fixedTime.start, 'HH:mm'), moment(fixedTime.end, 'HH:mm')] : undefined}
             disabled={!!fixedTime}
             format={'HH:mm'}
             minuteStep={30}
             onChange={(range) => {
                 if (range && range[0] !== null && range[1] !== null){
-                    setTime([range[0].format('HH:mm'), range[1].format('HH:mm')])
+                    setTime({ start: range[0].format('HH:mm'), end: range[1].format('HH:mm') })
                 }
             }}
             allowClear={false}

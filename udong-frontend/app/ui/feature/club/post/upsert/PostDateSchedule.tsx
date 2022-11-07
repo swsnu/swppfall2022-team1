@@ -10,6 +10,7 @@ import IcPlus from '/app/ui/icons/IcPlus.png'
 import IcClose from '/app/ui/icons/IcClose.png'
 
 import { DateRangeType } from '../../../shared/DateRangePicker'
+import { TimeRangeType } from '../../../shared/TimeRangePicker'
 
 interface PostDateSchedule {
     fixed?: boolean
@@ -20,7 +21,7 @@ interface DateRangeTypeWithId extends DateRangeType {
 }
 
 const PostDateSchedule = ({ fixed }: PostDateSchedule) => {
-    const [time, setTime] = useState<string[]>(['', ''])
+    const [time, setTime] = useState<TimeRangeType>({ start: '', end: '' })
     const [dates, setDates] = useState<DateRangeTypeWithId[]>([{ id: 0, start: '', end: '' }])
 
     const TimeRangePicker = useMemo(() => dynamic(() => import('../../../shared/TimeRangePicker').then((mod)=>mod.default),

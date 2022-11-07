@@ -12,6 +12,8 @@ import { DayPicker, DAYS } from '../../../shared/DayPicker'
 import IcPlus from '/app/ui/icons/IcPlus.png'
 import IcClose from '/app/ui/icons/IcClose.png'
 
+import { TimeRangeType } from '../../../shared/TimeRangePicker'
+
 interface EventDaySchedule {
     fixed?: boolean
 }
@@ -19,12 +21,12 @@ interface EventDaySchedule {
 interface DayTimeType {
     id: number
     day?: DAYS
-    time: string[]
+    time: TimeRangeType
 }
 
 const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
     const [date, setDate] = useState<DateRangeType>({ start: '', end: '' })
-    const [dayTimes, setDayTimes] = useState<DayTimeType[]>([{ id: 0, time: ['12:00', '20:30'] }])
+    const [dayTimes, setDayTimes] = useState<DayTimeType[]>([{ id: 0, time: { start: '12:00', end: '20:30' } }])
 
     const TimeRangePicker = useMemo(() => dynamic(() => import('../../../shared/TimeRangePicker').then((mod)=>mod.default),
         { ssr: false, loading: () =>
@@ -80,7 +82,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                             }
                         />
                         <TimeRangePicker
-                            fixedTime={fixed ? ['11:00', '23:00'] : undefined}
+                            fixedTime={fixed ? { start: '11:00', end: '23:00' } : undefined}
                             key={dayTime.id}
                             setTime={(newTime) => {
                                 const newTimes = dayTimes.map((target) => {
@@ -111,7 +113,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                     height={15}
                     width={15}
                     onClick={() => {
-                        setDayTimes([...dayTimes, { id: dayTimes[dayTimes.length - 1].id + 1, time: ['', ''] }])
+                        setDayTimes([...dayTimes, { id: dayTimes[dayTimes.length - 1].id + 1, time: { start: '', end: '' } }])
                     }}
                 />}
             </VStack>
