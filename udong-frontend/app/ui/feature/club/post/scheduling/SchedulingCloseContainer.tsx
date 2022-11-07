@@ -8,7 +8,7 @@ import { UdongText } from '../../../../components/UdongText'
 import { DraggableTimeTable } from '../../../shared/DraggableTimeTable'
 import { CellIdx } from '../../../shared/TimeTable'
 import { SchedulingCloseModal } from './SchedulingCloseModal'
-import { SchedulingUserListView, UserType } from './SchedulingUserListView'
+import { SchedulingUserListView } from './SchedulingUserListView'
 
 const schedulingDummy = {
     startTime: 12,
@@ -52,8 +52,11 @@ export const SchedulingCloseContainer = () => {
     const [selected, setSelected] = useState<boolean[][]|null>(null)
     const [hover, setHover] = useState<CellIdx|null>(null)
     const [modalOpen, setModalOpen] = useState(false)
-    const [ava, setAva] = useState<UserType[]>([])
-    const [notAva, setNotAva] = useState<UserType[]>([])
+    const [ava, setAva] = useState<number[]>([])
+
+    const users = useMemo(() => (
+        schedulingData.availableTime.map(({ user: { id, name, auth } }) => ({ id, name, isMe: id === myId, isAdmin: auth === 'A' }))
+    ), [schedulingData])
 
     const header = useMemo(() => (
         schedulingData.dates ?
@@ -79,15 +82,9 @@ export const SchedulingCloseContainer = () => {
         setSelected(Array(header.length).fill(0).map(() => Array((schedulingData.endTime - schedulingData.startTime) * 2)))
     }, [header, schedulingData])
 
-    useEffect(() => {
-        const ava: UserType[] = []
-        const notAva: UserType[] = []
-        schedulingData.availableTime.forEach(({ user: { id, name, auth }, time }) => {
-            (hover && time[hover.col][hover.row] ? ava : notAva).push({ name, isMe: id === myId, isAdmin: auth === 'A' })
-        })
-        setAva(ava)
-        setNotAva(notAva)
-    }, [hover, schedulingData])
+    useEffect(() => setAva(
+        schedulingData.availableTime.filter(({ time }) => (hover && time[hover.col][hover.row])).map(({ user }) => user.id),
+    ), [hover, schedulingData])
 
     return (
         <VStack
@@ -145,8 +142,8 @@ export const SchedulingCloseContainer = () => {
                             <SchedulingUserListView
                                 leftTitle='가능'
                                 rightTitle='불가능'
-                                leftList={ava}
-                                rightList={notAva}
+                                leftList={users.filter(({ id }) => ava.includes(id))}
+                                rightList={users.filter(({ id }) => !ava.includes(id))}
                             />
                         ) : <></>
                     )}
