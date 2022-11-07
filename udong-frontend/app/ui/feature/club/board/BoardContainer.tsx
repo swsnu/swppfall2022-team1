@@ -8,7 +8,6 @@ import { PostItem } from '../../shared/PostItem'
 import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 
 export const BoardContainer = () => {
-
     const router = useRouter()
     return <VStack>
         <HStack justifyContent={'end'}>
