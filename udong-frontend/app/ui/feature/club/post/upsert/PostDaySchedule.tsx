@@ -33,19 +33,7 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
     const DateRangePicker = useMemo(() => dynamic(() => import('../../../shared/DateRangePicker').then((mod)=>mod.default),
         { ssr: false, loading: () =>
             <UdongLoader width={300}/> }), [])
-    const DayButton = ({ selectedDay, day } : { selectedDay : DAYS|null, day: DAYS }) => {
-        return <DayButtonContainer
-            selected={selectedDay === day}
-            onClick={()=>setDay(day)}
-        >
-            <UdongText
-                color={selectedDay === day ? UdongColors.White : UdongColors.GrayNormal}
-                style={'GeneralContent'}
-            >
-                {day}
-            </UdongText>
-        </DayButtonContainer>
-    }
+
     return <VStack
         paddingHorizontal={120}
         gap={15}
@@ -66,34 +54,20 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
                 width={150}
             >요일</UdongText>
             <HStack gap={10}>
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.MONDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.TUESDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.WEDNESDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.THURSDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.FRIDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.SATURDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.SUNDAY}
-                />
+                {Object.values(DAYS).map((target) => (
+                    <DayButton
+                        key={target}
+                        selected={target === day}
+                        onClick={()=>setDay(target)}
+                    >
+                        <UdongText
+                            color={target === day ? UdongColors.White : UdongColors.GrayNormal}
+                            style={'GeneralContent'}
+                        >
+                            {target}
+                        </UdongText>
+                    </DayButton>
+                ))}
             </HStack>
         </HStack>
         <HStack>
@@ -113,7 +87,7 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
 
 export default PostDaySchedule
 
-const DayButtonContainer = styled.div<{ selected: boolean }>`
+const DayButton = styled.div<{ selected: boolean }>`
     border: 1px solid ${(props) => props.selected ? UdongColors.GrayNormal : UdongColors.GrayDark};
     background-color: ${(props) => props.selected ? UdongColors.GrayNormal : UdongColors.White};
     width: 30px;
