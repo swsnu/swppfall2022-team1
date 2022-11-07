@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongText } from '../../../../components/UdongText'
@@ -76,8 +75,8 @@ export const PostDetailSchedulingView = () => {
             selectColor={UdongColors.PrimaryBright}
         />}
         <HStack
-            flex={1}
-            justifyContent={'center'}
+            justifyContent={'space-around'}
+            width={'100%'}
         >
             <UdongButton
                 style={'fill'}
@@ -85,8 +84,6 @@ export const PostDetailSchedulingView = () => {
             >
                 현황 보기
             </UdongButton>
-
-            <Spacer width={60}/>
 
             <UdongButton
                 style={'fill'}
