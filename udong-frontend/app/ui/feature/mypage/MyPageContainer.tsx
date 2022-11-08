@@ -15,6 +15,7 @@ export const MyPageContainer = () => {
             <HStack
                 justifyContent={'center'}
                 alignItems={'center'}
+                width={'100%'}
             >
                 <MyProfileView/>
                 <Spacer width={50}/>
