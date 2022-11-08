@@ -2,7 +2,7 @@ import { UdongColors } from '../../theme/ColorPalette'
 
 interface DayPickerProps {
     selectedDay: DAYS | ''
-    setSelectedDay: (day: string) => void
+    setSelectedDay: (day: DAYS|'') => void
     fixed?: boolean
 }
 
@@ -22,7 +22,9 @@ export const DayPicker = ({ selectedDay, setSelectedDay, fixed } : DayPickerProp
         disabled={fixed}
         value={selectedDay}
         style={{ width: 145, height: 32, color: UdongColors.GrayDark, padding: 5 }}
-        onChange={(e)=>setSelectedDay(e.target.value)}
+        onChange={(e) => {
+            setSelectedDay(e.target.value as DAYS)}
+        }
     >
         <option
             disabled={true}
