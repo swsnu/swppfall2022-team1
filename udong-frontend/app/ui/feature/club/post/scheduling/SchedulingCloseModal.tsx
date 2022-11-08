@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import { VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
-import { UdongCheckbox } from '../../../../components/UdongCheckboxButton'
+import { UdongCheckbox } from '../../../../components/UdongCheckbox'
 import { UdongModal } from '../../../../components/UdongModal'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongTextField } from '../../../../components/UdongTextField'
