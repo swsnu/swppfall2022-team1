@@ -40,6 +40,7 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                         src={Logo.src}
                         height={50}
                         width={160}
+                        clickable={true}
                         onClick={() => router.push('/')}
                     />
                     {type === HEADER_PAGE.CLUB ?
