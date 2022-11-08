@@ -1,4 +1,3 @@
-
 import styled from '@emotion/styled'
 
 import { Spacer } from '../../../../components/Spacer'
@@ -13,10 +12,11 @@ interface CommentItemProps {
     name: string
     content: string
     isAuthor?: boolean
+    showDeleteModal: (showModal: boolean) => void
 }
 
 export const CommentItem = (props: CommentItemProps) => {
-    const { name, content, isAuthor = false } = props
+    const { name, content, isAuthor = false, showDeleteModal } = props
     return <VStack>
         <Spacer height={20}/>
 
@@ -40,6 +40,7 @@ export const CommentItem = (props: CommentItemProps) => {
                         src={del.src}
                         height={20}
                         width={20}
+                        onClick={() => showDeleteModal(true)}
                     />
                 </HStack>
             }
