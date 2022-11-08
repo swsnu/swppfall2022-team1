@@ -20,7 +20,7 @@ export const ClubContainer = (props: ClubContainerProps) => {
 
     const handleCurrentTab = useCallback((selectedTab: ClubTabType) => {
         router.replace(`/club/1/?tab=${selectedTab}`)
-    }, [])
+    }, [router])
 
     const getCurrentContainer = () => {
         if (tab === CLUB_TAB.BOARD) {
