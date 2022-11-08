@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongHeader } from '../../../../components/UdongHeader'
+import { UdongColors } from '../../../../theme/ColorPalette'
 import { CellIdx } from '../../../shared/TimeTable'
 import { BestTimeView } from './BestTimeView'
 import { SchedulingCloseModal } from './SchedulingCloseModal'
@@ -63,6 +64,7 @@ export const SchedulingStatusContainer = () => {
                                 rightTitle='불가능'
                                 leftList={users.filter(({ id }) => ava.includes(id))}
                                 rightList={users.filter(({ id }) => !ava.includes(id))}
+                                color={UdongColors.Primary}
                             />
                         ) : (
                             <SchedulingUserListView
@@ -70,6 +72,7 @@ export const SchedulingStatusContainer = () => {
                                 rightTitle='미참여'
                                 leftList={users}
                                 rightList={allUsers.filter(({ id }) => users.map(({ id }) => id).includes(id))}
+                                color={UdongColors.GrayNormal}
                             />
                         )
                     }

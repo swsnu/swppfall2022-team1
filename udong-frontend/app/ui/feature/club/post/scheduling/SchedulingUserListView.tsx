@@ -1,7 +1,6 @@
 import { HStack, VStack } from '../../../../components/Stack'
-import { UdongChip } from '../../../../components/UdongChip'
+import { UdongChip, UdongChipColorStyle } from '../../../../components/UdongChip'
 import { UdongText } from '../../../../components/UdongText'
-import { UdongColors } from '../../../../theme/ColorPalette'
 import { UserItem } from '../../../shared/UserItem'
 
 export type UserType = {
@@ -13,10 +12,12 @@ export type UserType = {
 interface SchedulingUserSingleListViewProps {
     title: string
     list: UserType[]
+    color: string
+    style: UdongChipColorStyle
 }
 
 const SchedulingUserSingleListView = (props: SchedulingUserSingleListViewProps) => {
-    const { title, list } = props
+    const { title, list, color, style } = props
     return (
         <VStack
             width={'50%'}
@@ -27,8 +28,8 @@ const SchedulingUserSingleListView = (props: SchedulingUserSingleListViewProps) 
                 <UdongText style={'ListTitleS'}>{title}</UdongText>
                 <UdongChip
                     text={`${list.length}`}
-                    color={UdongColors.Primary}
-                    style={'fill'}
+                    color={color}
+                    style={style}
                     small
                 />
             </HStack>
@@ -42,6 +43,7 @@ const SchedulingUserSingleListView = (props: SchedulingUserSingleListViewProps) 
 }
 
 interface SchedulingUserListViewProps {
+    color: string
     leftTitle: string
     rightTitle: string
     leftList: UserType[]
@@ -49,16 +51,20 @@ interface SchedulingUserListViewProps {
 }
 
 export const SchedulingUserListView = (props: SchedulingUserListViewProps) => {
-    const { leftTitle, rightTitle, leftList, rightList } = props
+    const { color, leftTitle, rightTitle, leftList, rightList } = props
     return (
         <HStack alignItems={'start'}>
             <SchedulingUserSingleListView
                 title={leftTitle}
                 list={leftList}
+                color={color}
+                style={'fill'}
             />
             <SchedulingUserSingleListView
                 title={rightTitle}
                 list={rightList}
+                color={color}
+                style={'line'}
             />
         </HStack>
     )

@@ -2,7 +2,7 @@ import { UdongColors } from '../theme/ColorPalette'
 import { HStack } from './Stack'
 import { UdongText } from './UdongText'
 
-type UdongChipColorStyle = 'fill' | 'line'
+export type UdongChipColorStyle = 'fill' | 'line'
 
 const MAX_WIDTH = 250
 
