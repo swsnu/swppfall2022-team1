@@ -39,6 +39,7 @@ const ModalBackground = styled.div({
     top: 0,
     left: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 100,
 })
 
 const ModalContent = styled.div<{ width?: number | string }>(props => ({

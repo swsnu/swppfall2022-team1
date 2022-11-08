@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
+import { getDay } from '../../../../../utility/functions'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongText } from '../../../../components/UdongText'
@@ -31,10 +32,10 @@ export const PostDetailSchedulingView = () => {
 
     if(schedulingDummy.dates) {
         header = schedulingDummy.dates.map(date => `${date.getMonth()}/${date.getDate()}`)
-        fixed = schedulingDummy.dates.map(date => timetableDummy[date.getDay()].slice())
+        fixed = schedulingDummy.dates.map(date => timetableDummy[getDay(date)].slice())
     }
     else {
-        header = ['SUN', 'MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT'].filter((_, idx) => schedulingDummy.weekdays?.[idx])
+        header = ['MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT', 'SUN'].filter((_, idx) => schedulingDummy.weekdays?.[idx])
         fixed = timetableDummy.filter((_, idx) => schedulingDummy.weekdays?.[idx])
     }
 
