@@ -1,13 +1,13 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useMemo } from 'react'
 
 import { VStack } from '../../../../components/Stack'
 import { UdongText } from '../../../../components/UdongText'
 import { DraggableTimeTable } from '../../../shared/DraggableTimeTable'
 import { CellIdx } from '../../../shared/TimeTable'
+import { getHeader, SchedulingDataType } from './SchedulingHooks'
 
 interface SchedulingStatusTableViewProps {
-    header: string[]
-    startTime: number
+    data: SchedulingDataType
     selected: boolean[][]|null
     setSelected: Dispatch<SetStateAction<boolean[][] | null>>
     setHover: (idx: CellIdx | null) => void
@@ -15,7 +15,10 @@ interface SchedulingStatusTableViewProps {
 }
 
 export const SchedulingStatusTableView = (props: SchedulingStatusTableViewProps) => {
-    const { header, startTime, selected, setSelected, setHover, cnt } = props
+    const { data, selected, setSelected, setHover, cnt } = props
+
+    const header = useMemo(() => getHeader(data), [data])
+
     return (
         <VStack
             alignItems={'start'}
@@ -25,7 +28,7 @@ export const SchedulingStatusTableView = (props: SchedulingStatusTableViewProps)
             <UdongText style={'GeneralContent'}>※ 클릭시 해당 시간에 참여 가능한 인원을 보여드립니다.</UdongText>
             {selected !== null && <DraggableTimeTable
                 days={header}
-                startTime={startTime}
+                startTime={data.startTime}
                 selected={selected}
                 setSelected={setSelected as (f: ((x: boolean[][]) => boolean[][])) => void}
                 onHover={setHover}

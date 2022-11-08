@@ -8,7 +8,7 @@ import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { CellIdx } from '../../../shared/TimeTable'
 import { SchedulingCloseModal } from './SchedulingCloseModal'
-import { getAva, getInc, useData } from './SchedulingHooks'
+import { getAva, getDayCnt, getInc, useData } from './SchedulingHooks'
 import { SchedulingStatusTableView } from './SchedulingStatusTableView'
 import { SchedulingUserListView } from './SchedulingUserListView'
 
@@ -19,14 +19,14 @@ export const SchedulingCloseContainer = () => {
     const [hover, setHover] = useState<CellIdx|null>(null)
     const [modalOpen, setModalOpen] = useState(false)
 
-    const { data, header, users, cnt, best } = useData()
+    const { data, users, cnt, best } = useData()
 
     const ava = useMemo(() => getAva(data, hover), [data, hover])
     const inc = useMemo(() => selected ? getInc(data, selected) : [], [data, selected])
 
     useEffect(() => {
-        setSelected(new2dArray(header.length, data.endTime - data.startTime, false))
-    }, [header, data])
+        setSelected(new2dArray(getDayCnt(data), data.endTime - data.startTime, false))
+    }, [data])
 
     return (
         <VStack
@@ -47,8 +47,7 @@ export const SchedulingCloseContainer = () => {
                 justifyContent={'center'}
             >
                 <SchedulingStatusTableView
-                    header={header}
-                    startTime={data.startTime}
+                    data={data}
                     selected={selected}
                     setSelected={setSelected}
                     setHover={setHover}
