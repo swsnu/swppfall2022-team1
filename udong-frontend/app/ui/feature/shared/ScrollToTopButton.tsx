@@ -1,20 +1,41 @@
 import styled from '@emotion/styled'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { UdongImage } from '../../components/UdongImage'
 import up from '../../icons/IcScrollUp.png'
 import { UdongColors } from '../../theme/ColorPalette'
 
 export const ScrollToTopButton = () => {
+    const [scrolled, setScrolled] = useState<boolean>(false)
+
     const scrollToTop = useCallback(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
 
-    return <ScrollUpButton onClick={scrollToTop}>
+    useEffect(() => {
+        let timeout: ReturnType<typeof setTimeout> | null = null
+        const onScroll = () => {
+            if (!timeout) {
+                timeout = setTimeout(() => {
+                    setScrolled(document.body.scrollTop > 20 || document.documentElement.scrollTop > 20)
+                    timeout = null
+                }, 100)
+            }
+        }
+
+        window.addEventListener('scroll', onScroll)
+        return () => window.removeEventListener('scroll', onScroll)
+    }, [])
+
+    return <ScrollUpButton
+        onClick={scrollToTop}
+        style={{ display: (scrolled ? 'flex' : 'none') }}
+    >
         <UdongImage
             src={up.src}
             height={15}
             width={15}
+            clickable
         />
     </ScrollUpButton>
 }
@@ -31,4 +52,5 @@ const ScrollUpButton = styled.div({
     borderRadius: 25,
     boxShadow: `1px 1px 2px 2px ${UdongColors.GrayBright}`,
     backgroundColor: UdongColors.White,
+    cursor: 'pointer',
 })
