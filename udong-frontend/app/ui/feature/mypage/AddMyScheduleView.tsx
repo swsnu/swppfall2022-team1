@@ -35,6 +35,7 @@ export const AddMyScheduleView = () => {
             startTime={0}
             selected={timetable}
             setSelected={setTimetable}
+            selectColor={UdongColors.Primary50}
         />
     </UdongFloatingContainer>
 }
