@@ -35,6 +35,7 @@ export const ScrollToTopButton = () => {
             src={up.src}
             height={15}
             width={15}
+            clickable
         />
     </ScrollUpButton>
 }
@@ -51,4 +52,5 @@ const ScrollUpButton = styled.div({
     borderRadius: 25,
     boxShadow: `1px 1px 2px 2px ${UdongColors.GrayBright}`,
     backgroundColor: UdongColors.White,
+    cursor: 'pointer',
 })
