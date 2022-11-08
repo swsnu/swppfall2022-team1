@@ -1,3 +1,4 @@
+import styled from '@emotion/styled'
 import { CSSProperties, ReactNode } from 'react'
 
 import { UdongColors } from '../theme/ColorPalette'
@@ -28,7 +29,7 @@ interface UdongButtonProps {
 export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
     const { children, style, color, onClick } = props
 
-    return <button
+    return <StyledButton
         style={{
             width: 'fit-content',
             backgroundColor: style === 'fill' ? (color ?? UdongColors.Primary) : UdongColors.White,
@@ -43,5 +44,13 @@ export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
         onClick={onClick}
     >
         {children}
-    </button>
+    </StyledButton>
 }
+
+const StyledButton = styled.button`
+    &:hover {
+        box-shadow: 200px 0 0 0 #3945AC10 inset,
+                    -200px 0 0 0 #3945AC10 inset;
+        transition: 1.0s;
+    },
+`
