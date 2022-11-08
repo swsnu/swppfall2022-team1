@@ -52,6 +52,7 @@ interface UdongChipProps {
     onClick?: () => void
     text: string
     small?: boolean
+    clickable?: boolean
 }
 
 /**
@@ -64,7 +65,7 @@ interface UdongChipProps {
  *
  */
 export const UdongChip = (props: UdongChipProps) => {
-    const { style, onClick, text, small = false } = props
+    const { style, onClick, text, small = false, clickable = false } = props
     const { backgroundColor, textColor, borderColor } = getColorProps(style)
 
     return <HStack
@@ -74,6 +75,7 @@ export const UdongChip = (props: UdongChipProps) => {
             borderRadius: 18,
             border: `1px solid ${borderColor}`,
             maxWidth: MAX_WIDTH,
+            cursor: clickable ? 'pointer' : 'default',
         }}
         onClick={onClick}
     >
