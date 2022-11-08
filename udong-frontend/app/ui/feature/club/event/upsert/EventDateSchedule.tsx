@@ -43,7 +43,7 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                 gap={15}
                 alignItems={'center'}
             >
-                {dateTimes.map((dateTime) => (
+                {dateTimes.map((dateTime, i) => (
                     <HStack
                         key={dateTime.id}
                         gap={15}
@@ -107,16 +107,17 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                             }
                             fixedTime={fixed ? '12:00' : undefined}
                         />
-                        {!fixed &&
-                        <UdongImage
-                            src={IcClose.src}
-                            height={15}
-                            width={15}
-                            onClick={() => {
-                                const newDateTimes = dateTimes.filter((target) => (target.id !== dateTime.id))
-                                setDateTimes(newDateTimes)}
-                            }
-                        />}
+                        {fixed || i == 0 ?
+                            <Spacer width={15}/> :
+                            <UdongImage
+                                src={IcClose.src}
+                                height={15}
+                                width={15}
+                                onClick={() => {
+                                    const newDateTimes = dateTimes.filter((target) => (target.id !== dateTime.id))
+                                    setDateTimes(newDateTimes)}
+                                }
+                            />}
                     </HStack>
                 ))}
                 {!fixed &&

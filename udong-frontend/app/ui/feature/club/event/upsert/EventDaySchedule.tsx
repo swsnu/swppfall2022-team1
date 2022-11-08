@@ -49,7 +49,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                 alignItems={'center'}
                 gap={14}
             >
-                {dayTimes.map((dayTime) => (
+                {dayTimes.map((dayTime, i) => (
                     <HStack
                         key={dayTime.id}
                         gap={15}
@@ -86,16 +86,17 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                                 setDayTimes(newTimes)
                             }}
                         />
-                        {!fixed &&
-                        <UdongImage
-                            src={IcClose.src}
-                            height={15}
-                            width={15}
-                            onClick={() => {
-                                const newDayTimes = dayTimes.filter((target) => (target.id !== dayTime.id))
-                                setDayTimes(newDayTimes)}
-                            }
-                        />}
+                        {fixed || i == 0 ?
+                            <Spacer width={15}/> :
+                            <UdongImage
+                                src={IcClose.src}
+                                height={15}
+                                width={15}
+                                onClick={() => {
+                                    const newDayTimes = dayTimes.filter((target) => (target.id !== dayTime.id))
+                                    setDayTimes(newDayTimes)}
+                                }
+                            />}
                     </HStack>
                 ))
                 }{!fixed &&
