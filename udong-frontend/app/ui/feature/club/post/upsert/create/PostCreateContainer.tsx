@@ -10,6 +10,7 @@ import { PostInputView } from '../PostInputView'
 
 export const PostCreateContainer = () => {
     const router = useRouter()
+    const [title, setTitle] = useState<string>('')
     const [contents, setContents] = useState<string>('')
 
     return <VStack paddingHorizontal={16}>
@@ -30,6 +31,8 @@ export const PostCreateContainer = () => {
         />
 
         <PostInputView
+            title={title}
+            setTitle={setTitle}
             contents={contents}
             setContents={setContents}
         />
