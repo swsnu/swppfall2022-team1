@@ -4,6 +4,4 @@ export interface User {
     imageUrl: string
     timeTable: string
     name: string
-    createdAt: number
-    updatedAt: number
 }

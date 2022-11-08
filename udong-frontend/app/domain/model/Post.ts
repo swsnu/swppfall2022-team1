@@ -10,5 +10,4 @@ export interface Post {
     content: string
     type: PostType
     createdAt: number
-    updatedAt: number
 }

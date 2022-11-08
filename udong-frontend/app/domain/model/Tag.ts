@@ -1,8 +1,7 @@
 import { Club } from './Club'
 
 export interface Tag {
+    id: number
     club: Club
     name: string
-    createdAt: number
-    updatedAt: number
 }
