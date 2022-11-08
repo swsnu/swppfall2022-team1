@@ -85,6 +85,7 @@ const CircularProfileIcon = styled.div({
     height: 40,
     borderRadius: 20,
     backgroundColor: UdongColors.GrayBright,
+    cursor: 'pointer',
 })
 
 const CircularProfileIconClicked = styled.div({
