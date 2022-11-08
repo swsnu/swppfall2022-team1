@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import { Spacer } from '../../../components/Spacer'
@@ -11,7 +10,6 @@ import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 import { PostCreateModal } from './PostCreateModal'
 
 export const BoardContainer = () => {
-    const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [showPostCreateModal, setShowPostCreateModal] = useState(false)
 
