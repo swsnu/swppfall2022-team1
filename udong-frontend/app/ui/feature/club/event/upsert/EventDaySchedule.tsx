@@ -18,13 +18,13 @@ interface EventDaySchedule {
 
 interface DayTimeType {
     id: number
-    day?: DAYS
+    day: DAYS | ''
     time: TimeRangeType
 }
 
 const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
     const [date, setDate] = useState<DateRangeType>({ start: '', end: '' })
-    const [dayTimes, setDayTimes] = useState<DayTimeType[]>([{ id: 0, time: { start: '12:00', end: '20:30' } }])
+    const [dayTimes, setDayTimes] = useState<DayTimeType[]>([{ id: 0, day: '', time: { start: '12:00', end: '20:30' } }])
 
     return <VStack
         paddingHorizontal={120}
@@ -58,8 +58,8 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                         <Spacer width={30}/>
                         <DayPicker
                             fixed={fixed}
-                            day={dayTime.day}
-                            setDay={
+                            selectedDay={dayTime.day}
+                            setSelectedDay={
                                 (newDay) => {
                                     const newDayTimes = dayTimes.map((target) => {
                                         if (target.id === dayTime.id){
@@ -104,7 +104,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                     height={15}
                     width={15}
                     onClick={() => {
-                        setDayTimes([...dayTimes, { id: dayTimes[dayTimes.length - 1].id + 1, time: { start: '', end: '' } }])
+                        setDayTimes([...dayTimes, { id: dayTimes[dayTimes.length - 1].id + 1, day: '', time: { start: '', end: '' } }])
                     }}
                 />}
             </VStack>

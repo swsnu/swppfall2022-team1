@@ -1,8 +1,8 @@
 import { UdongColors } from '../../theme/ColorPalette'
 
 interface DayPickerProps {
-    day: DAYS | undefined
-    setDay: (day: DAYS) => void
+    selectedDay: DAYS | ''
+    setSelectedDay: (day: string) => void
     fixed?: boolean
 }
 
@@ -16,23 +16,22 @@ export enum DAYS {
     SUNDAY='일'
 }
 
-export const DayPicker = ({ day, setDay, fixed } : DayPickerProps) => {
+export const DayPicker = ({ selectedDay, setSelectedDay, fixed } : DayPickerProps) => {
 
     return <select
         disabled={fixed}
-        value={day}
+        value={selectedDay}
         style={{ width: 145, height: 32, color: UdongColors.GrayDark, padding: 5 }}
+        onChange={(e)=>setSelectedDay(e.target.value)}
     >
         <option
             disabled={true}
-            selected={!fixed}
-            value={undefined}
+            value={''}
         >요일을 선택하세요</option>
         {Object.values(DAYS).map((day) => (
             <option
                 key={day}
                 value={day}
-                onChange={()=>setDay(day)}
             >{day}요일</option>
         ))}
     </select>

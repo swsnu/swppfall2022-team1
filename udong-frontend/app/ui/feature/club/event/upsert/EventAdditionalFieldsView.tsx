@@ -22,7 +22,7 @@ export const EventAdditionalFieldsView = ({ fixed } : EventAdditionalFieldsViewP
             justifyContent={'start'}
             paddingVertical={12}
         >
-            <UdongText style={'GeneralTitle'}>일정 수합</UdongText>
+            <UdongText style={'GeneralTitle'}>행사 시간</UdongText>
             <Spacer width={30}/>
             <UdongRadioButton
                 text={'요일'}
