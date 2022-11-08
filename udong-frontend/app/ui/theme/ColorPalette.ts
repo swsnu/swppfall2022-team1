@@ -1,6 +1,7 @@
 export const UdongColors = {
     Primary: '#3945AC',
     PrimaryBright: '#E0E2F5',
+    Primary50: '#9CA2D5',
     GrayBright: '#EAEAEA',
     GrayNormal: '#808080',
     GrayDark: '#292929',

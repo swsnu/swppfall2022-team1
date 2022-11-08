@@ -73,7 +73,7 @@ export const PostDetailSchedulingView = () => {
             selected={selected}
             gray={fixed}
             setSelected={setSelected as (f: ((x: boolean[][]) => boolean[][])) => void}
-            selectColor={UdongColors.PrimaryBright}
+            selectColor={UdongColors.Primary50}
         />}
         <HStack
             justifyContent={'space-around'}
