@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 
-import { PostCreateContainer } from '../../../../../app/ui/feature/club/post/upsert/create/PostCreateContainer'
 import { PostEditContainer } from '../../../../../app/ui/feature/club/post/upsert/edit/PostEditContainer'
 
 export const PostEditPage = () => {
@@ -13,7 +12,7 @@ export const PostEditPage = () => {
         case 'enrollment':
             return <PostEditContainer postType={'enrollment'}/>
         case 'scheduling':
-            return <PostCreateContainer postType={'scheduling'}/>
+            return <PostEditContainer postType={'scheduling'}/>
         default:
             return <PostEditContainer postType={'announcement'}/>
     }

@@ -29,11 +29,13 @@ export const EventAdditionalFieldsView = ({ edit }: EventAdditionalFieldsViewPro
                 checked={schedulingTimeType === 'days'}
                 onCheck={() => setSchedulingTimeType('days')}
             />
+            <Spacer width={30}/>
             <UdongRadioButton
                 text={'날짜'}
                 checked={schedulingTimeType === 'dates'}
                 onCheck={() => setSchedulingTimeType('dates')}
             />
+            <Spacer width={30}/>
             <UdongRadioButton
                 text={'지정안함'}
                 checked={schedulingTimeType === 'notAssigned'}
