@@ -28,7 +28,10 @@ export const UdongRadioButton = (props: UdongRadioButtonProps) => {
             disabled={disabled}
         />
         <Spacer width={5}/>
-        <UdongText style={'GeneralContent'}>{text}</UdongText>
+        <UdongText
+            style={'GeneralContent'}
+            cursor={'default'}
+        >{text}</UdongText>
     </HStack>
 }
 
@@ -40,7 +43,7 @@ const StyledRadioButton = styled.input<{ disabled?: boolean }>((props)=>({
     height: 20,
     border: `1px solid ${UdongColors.GrayNormal}`,
     backgroundColor: props.disabled ? UdongColors.GrayBright : UdongColors.White,
-    cursor: props.disabled ? 'not-allowed' : 'pointer',
+    cursor: props.disabled ? 'not-allowed' : 'deafult',
     borderRadius: 10,
     ':checked': {
         '::after': {
