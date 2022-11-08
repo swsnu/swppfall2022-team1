@@ -5,6 +5,7 @@ import { new2dArray } from '../../../../../utility/functions'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongHeader } from '../../../../components/UdongHeader'
+import { UdongColors } from '../../../../theme/ColorPalette'
 import { CellIdx } from '../../../shared/TimeTable'
 import { BestTimeView } from './BestTimeView'
 import { SchedulingCloseModal } from './SchedulingCloseModal'
@@ -66,13 +67,17 @@ export const SchedulingCloseContainer = () => {
                                 rightTitle='불가능'
                                 leftList={users.filter(({ id }) => ava.includes(id))}
                                 rightList={users.filter(({ id }) => !ava.includes(id))}
+                                color={UdongColors.Primary}
                             />
-                        ) : <SchedulingUserListView
-                            leftTitle='포함'
-                            rightTitle='미포함'
-                            leftList={users.filter(({ id }) => inc.includes(id))}
-                            rightList={users.filter(({ id }) => !inc.includes(id))}
-                        />
+                        ) : (
+                            <SchedulingUserListView
+                                leftTitle='포함'
+                                rightTitle='미포함'
+                                leftList={users.filter(({ id }) => inc.includes(id))}
+                                rightList={users.filter(({ id }) => !inc.includes(id))}
+                                color={UdongColors.Secondary}
+                            />
+                        )
                     )}
                 </VStack>
             </HStack>

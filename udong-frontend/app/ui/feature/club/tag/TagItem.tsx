@@ -41,7 +41,8 @@ export const TagItem = (props: TagItemProps) => {
             justifyContent={'space-between'}
         >
             <UdongChip
-                style={isUserIncluded ? 'primary' : 'gray'}
+                color={isUserIncluded ? UdongColors.Primary : UdongColors.GrayNormal}
+                style={'fill'}
                 onClick={() => console.log('tag!')}
                 text={name}
             />

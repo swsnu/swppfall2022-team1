@@ -90,7 +90,8 @@ export const PostDetailContainer = () => {
                         paddingHorizontal={6}
                     >
                         <UdongChip
-                            style={tag.isUserIncluded ? 'primary' : 'gray'}
+                            color={tag.isUserIncluded ? UdongColors.Primary : UdongColors.GrayNormal}
+                            style={'fill'}
                             text={tag.name}
                         />
                     </HStack>
