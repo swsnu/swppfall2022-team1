@@ -14,11 +14,13 @@ import PostDaySchedule from './PostDaySchedule'
 
 type SchedulingTimeType = 'days' | 'dates'
 
-interface PostAdditionalFieldView {
+interface PostAdditionalFieldsViewProps {
     edit: boolean
+    showDateTimePicker?: boolean
 }
 
-export const PostAdditionalFieldsView = ({ edit }:PostAdditionalFieldView) => {
+export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) => {
+    const { showDateTimePicker = false } = props
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingTimeType>('days')
 
     return <VStack>
@@ -76,36 +78,33 @@ export const PostAdditionalFieldsView = ({ edit }:PostAdditionalFieldView) => {
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
-        <HStack
-            alignItems={'center'}
-            justifyContent={'start'}
-            paddingVertical={12}
-        >
-            <UdongText style={'GeneralTitle'}>일정 수합</UdongText>
-            <Spacer width={30}/>
-            <UdongRadioButton
-                text={'요일'}
-                checked={schedulingTimeType === 'days'}
-                onCheck={() => {
-                    if (!edit){
-                        setSchedulingTimeType('days')
-                    }
-                }}
-            />
-            <UdongRadioButton
-                text={'날짜'}
-                checked={schedulingTimeType === 'dates'}
-                onCheck={() => {
-                    if (!edit){
-                        setSchedulingTimeType('dates')
-                    }
-                }}
-            />
-        </HStack>
-        <Spacer height={30}/>
-        {
-            schedulingTimeType === 'days' ? <PostDaySchedule edit={edit}/> : <PostDateSchedule edit={edit}/>
+        {showDateTimePicker &&
+            <VStack>
+                <HStack
+                    alignItems={'center'}
+                    justifyContent={'start'}
+                    paddingVertical={12}
+                >
+                    <UdongText style={'GeneralTitle'}>일정 수합</UdongText>
+                    <Spacer width={30}/>
+                    <UdongRadioButton
+                        text={'요일'}
+                        checked={schedulingTimeType === 'days'}
+                        onCheck={() => setSchedulingTimeType('days')}
+                    />
+                    <Spacer width={30}/>
+                    <UdongRadioButton
+                        text={'날짜'}
+                        checked={schedulingTimeType === 'dates'}
+                        onCheck={() => setSchedulingTimeType('dates')}
+                    />
+                </HStack>
+                <Spacer height={30}/>
+                {
+                    schedulingTimeType === 'days' ? <PostDaySchedule edit={props.edit}/> : <PostDateSchedule edit={props.edit}/>
+                }
+                <Spacer height={20}/>
+            </VStack>
         }
-        <Spacer height={20}/>
     </VStack>
 }

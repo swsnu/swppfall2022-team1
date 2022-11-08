@@ -84,6 +84,7 @@ entity Post {
   --
   *author_id: int <<FK>>
   *event_id: int <<FK>>
+  *club_id: int <<FK>>
   *title: varchar
   *content: longtext
   *images: varchar[]
@@ -161,7 +162,7 @@ Club ||--o{ Event
 Time }o-left-|| Event
 User ||--o{ UserTag
 Tag ||--o{ UserTag
-Event ||-down-o{ Post
+Event |o-down-o{ Post
 Post }o-up-|| User
 Enrollment |o-up-|| Post
 Scheduling |o-up-|| Post
@@ -169,10 +170,11 @@ Scheduling ||--o{ Time
 User ||--o{ Participation
 Enrollment ||--o{ Participation
 User ||--o{ AvailableTime
-AvailableTime }o---|| Scheduling
+AvailableTime }o-d-|| Scheduling
 User ||--o{ Comment
 Post ||--o{ PostTag
 Tag }o-up-|| Club
 Tag ||--o{ PostTag
 Post ||--o{ Comment
+Post }o--|| Club
 @enduml

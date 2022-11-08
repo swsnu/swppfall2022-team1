@@ -1,4 +1,4 @@
-name: ESLint check on PR
+name: Frontend CI
 
 on:
   pull_request:

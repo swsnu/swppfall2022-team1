@@ -1,8 +1,8 @@
-import '@toast-ui/calendar/dist/toastui-calendar.css'
 import { EventObject } from '@toast-ui/calendar/types/types/events'
+import { TemplateConfig } from '@toast-ui/calendar/types/types/template'
 import ToastUIReactCalendar from '@toast-ui/react-calendar'
-import randomSeed from 'random-seed'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import '@toast-ui/calendar/dist/toastui-calendar.css'
 
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { EventType } from '../EventContainer'
@@ -15,7 +15,7 @@ const calendars = [
         borderColor: UdongColors.GrayNormal,
     }]
 
-const template = {
+const template: TemplateConfig = {
     monthGridHeaderExceed(){
         return ''
     },
@@ -65,13 +65,12 @@ interface CalenderProps {
 
 export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps ) => {
     const [calendarEvents, setCalendarEvents] = useState<EventObject[]>([])
-    const seedGenerator = useMemo(() => randomSeed.create(), [])
 
     useEffect(()=>{
         let coloredEvents: EventObject[] = []
         events.forEach((event, i)=>{
             event.times.forEach((time: { start: Date, end: Date }) => {
-                const seed = seedGenerator.range(100)
+                const seed = (event.created_at.getTime() / 17) % 100
                 coloredEvents = [...coloredEvents,
                     {
                         id: `${i}`, calendarId: '0', title: event.title, body: `${event.id}`,
@@ -83,7 +82,7 @@ export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps 
             )
         })
         setCalendarEvents(coloredEvents)
-    }, [events, seedGenerator])
+    }, [events])
 
     return (
         <ToastUIReactCalendar

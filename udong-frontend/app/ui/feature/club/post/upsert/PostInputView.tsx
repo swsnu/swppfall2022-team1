@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import { Dispatch, SetStateAction, useMemo } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useMemo } from 'react'
 
 import 'react-quill/dist/quill.snow.css'
 import { Spacer } from '../../../../components/Spacer'
@@ -8,19 +8,23 @@ import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 
 interface IProps {
+    title: string
+    setTitle: Dispatch<SetStateAction<string>>
     contents: string
     setContents: Dispatch<SetStateAction<string>>
 }
 
-export const PostInputView = ({ contents, setContents }: IProps) => {
+export const PostInputView = (props: IProps) => {
+
+    const { title, setTitle, contents, setContents } = props
 
     const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), {
         ssr: false,
         loading: () => <p>Loading ...</p>,
     }), [])
 
-    const onChange = (text: string) => {
-        setContents(text)
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value)
     }
 
     const modules = useMemo(() => ({
@@ -53,9 +57,9 @@ export const PostInputView = ({ contents, setContents }: IProps) => {
             <Spacer width={30}/>
             <input
                 type={'text'}
-                value={''}
+                value={title}
                 placeholder={'제목을 입력해주세요'}
-                onChange={() => {return}}
+                onChange={onChange}
                 style={{
                     outline: UdongColors.GrayBright,
                     border: `1px solid ${UdongColors.GrayNormal}`,
@@ -73,7 +77,7 @@ export const PostInputView = ({ contents, setContents }: IProps) => {
             modules={modules}
             formats={formats}
             value={contents}
-            onChange={onChange}
+            onChange={(text: string) => {setContents(text)}}
             placeholder={'내용을 입력하세요.'}
             theme={'snow'}
             style={{

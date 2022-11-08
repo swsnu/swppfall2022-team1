@@ -13,7 +13,7 @@ export const AdditionalFieldItem = (props: AdditionalFieldItemProps) => {
     const { item } = props
     return <HStack
         alignItems={'center'}
-        paddingHorizontal={10}
+        style={{ paddingRight: 20 }}
     >
         {item}
         <Spacer width={10}/>

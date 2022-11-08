@@ -13,10 +13,11 @@ interface UserItemProps {
     isMe?: boolean
     isAdmin?: boolean
     hasRemoveButton?: boolean
+    small?: boolean
 }
 
 export const UserItem = (props: UserItemProps) => {
-    const { name, isMe = false, isAdmin = false, hasRemoveButton = false } = props
+    const { name, isMe = false, isAdmin = false, hasRemoveButton = false, small = false } = props
     return <HStack
         alignItems={'center'}
         justifyContent={'space-between'}
@@ -24,7 +25,9 @@ export const UserItem = (props: UserItemProps) => {
         paddingVertical={5}
     >
         <HStack alignItems={'center'}>
-            <CircularProfileIcon/>
+            <CircularProfileIcon
+                style={small ? { width: 30, height: 30 } : {}}
+            />
             <Spacer width={10}/>
 
             <UdongText style={'GeneralContent'}>{name}</UdongText>
@@ -35,6 +38,7 @@ export const UserItem = (props: UserItemProps) => {
                     <UdongChip
                         style={'line'}
                         text={'me'}
+                        small={small}
                     />
                 </HStack>
             }
@@ -44,6 +48,7 @@ export const UserItem = (props: UserItemProps) => {
                     <UdongChip
                         style={'line'}
                         text={'관리자'}
+                        small={small}
                     />
                 </HStack>
             }
@@ -54,6 +59,7 @@ export const UserItem = (props: UserItemProps) => {
                 src={remove.src}
                 height={10}
                 width={10}
+                clickable={true}
             />
         }
     </HStack>

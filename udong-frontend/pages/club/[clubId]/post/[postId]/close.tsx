@@ -1,5 +1,7 @@
-export const PostClosePage = () => {
-    return <h1>post close!! (마감하기)</h1>
+import { SchedulingCloseContainer } from '../../../../../app/ui/feature/club/post/scheduling/SchedulingCloseContainer'
+
+export const PostStatusPage = () => {
+    return <SchedulingCloseContainer/>
 }
 
-export default PostClosePage
+export default PostStatusPage

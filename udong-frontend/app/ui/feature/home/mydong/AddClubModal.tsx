@@ -31,6 +31,7 @@ export const AddClubModal = (props: AddClubModalProps) => {
                 height={15}
                 width={15}
                 onClick={() => setIsOpen(false)}
+                clickable={true}
             />
         </VStack>
         <HStack
@@ -48,6 +49,7 @@ export const AddClubModal = (props: AddClubModalProps) => {
                     src={register.src}
                     height={80}
                     width={80}
+                    clickable={true}
                 />
                 <Spacer height={34}/>
                 <UdongText style={'GeneralTitle'}>동아리 가입</UdongText>
@@ -69,6 +71,7 @@ export const AddClubModal = (props: AddClubModalProps) => {
                     src={create.src}
                     height={80}
                     width={80}
+                    clickable={true}
                 />
                 <Spacer height={34}/>
                 <UdongText style={'GeneralTitle'}>동아리 생성</UdongText>
