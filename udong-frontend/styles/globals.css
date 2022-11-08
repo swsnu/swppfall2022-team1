@@ -50,3 +50,8 @@ a {
 .ant-picker {
     border: 1px solid #808080 !important;
 }
+
+select:focus {
+    border-style: inset;
+    outline-color: #3945AC;
+}
