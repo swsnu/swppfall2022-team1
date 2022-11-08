@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 
-import { new2dArray, timeToStr } from '../../../../../utility/functions'
+import { new2dArray } from '../../../../../utility/functions'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongHeader } from '../../../../components/UdongHeader'
-import { UdongText } from '../../../../components/UdongText'
 import { CellIdx } from '../../../shared/TimeTable'
+import { BestTimeView } from './BestTimeView'
 import { SchedulingCloseModal } from './SchedulingCloseModal'
 import { getAva, getDayCnt, getInc, useData } from './SchedulingHooks'
 import { SchedulingStatusTableView } from './SchedulingStatusTableView'
@@ -58,18 +58,7 @@ export const SchedulingCloseContainer = () => {
                     width={'40%'}
                     gap={50}
                 >
-                    <VStack>
-                        <UdongText style={'GeneralTitle'}>Best 시간대</UdongText>
-                        {best.map(({ cnt,  day, time }, idx) => (
-                            <HStack key={idx}>
-                                <UdongText
-                                    style={'GeneralContent'}
-                                    width={40}
-                                >{cnt}명</UdongText>
-                                <UdongText style={'GeneralContent'}>{day} {timeToStr(time)}~{timeToStr(time + 1)}</UdongText>
-                            </HStack>
-                        ))}
-                    </VStack>
+                    <BestTimeView best={best}/>
                     {selected !== null && (hover !== null && !selected[hover.col][hover.row]
                         ? (
                             <SchedulingUserListView
