@@ -10,6 +10,7 @@ import { PostInputView } from '../PostInputView'
 
 export const PostEditContainer = () => {
     const router = useRouter()
+    const [title, setTitle] = useState<string>('')
     const [contents, setContents] = useState<string>('Hello World!!!')
 
     return <VStack paddingHorizontal={16}>
@@ -31,6 +32,8 @@ export const PostEditContainer = () => {
         {/*코드 중복 일어날 것 같아..*/}
 
         <PostInputView
+            title={title}
+            setTitle={setTitle}
             contents={contents}
             setContents={setContents}
         />
