@@ -23,7 +23,10 @@ export const HomeContainer = (props: HomeContainerProps) => {
     return (
         <VStack>
             <Header type={HEADER_PAGE.MAIN}/>
-            <VStack paddingHorizontal={50}>
+            <VStack
+                paddingHorizontal={50}
+                width='100vw'
+            >
                 <HomeTabView
                     selectedTab={tab}
                     setSelectedTab={handleCurrentTab}
