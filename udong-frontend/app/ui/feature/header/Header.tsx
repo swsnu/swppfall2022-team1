@@ -40,7 +40,13 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                         src={Logo.src}
                         height={50}
                         width={160}
-                        onClick={() => router.push('/').then(()=>router.reload())}
+                        onClick={() => {
+                            if (router.pathname === '/' && router.query['tab'] !== 'mydong'){
+                                router.reload()
+                            } else {
+                                router.push('/')
+                            }
+                        }}
                     />
                     {type === HEADER_PAGE.CLUB ?
                         <HStack onClick={() => router.push(`/club/${clubId}`)}>
