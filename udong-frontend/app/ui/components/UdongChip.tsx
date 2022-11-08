@@ -2,7 +2,7 @@ import { UdongColors } from '../theme/ColorPalette'
 import { HStack } from './Stack'
 import { UdongText } from './UdongText'
 
-type UdongChipColorStyle = 'primary' | 'secondary' | 'gray' | 'line'
+type UdongChipColorStyle = 'fill' | 'line'
 
 const MAX_WIDTH = 250
 
@@ -12,35 +12,23 @@ interface ColorProps {
     textColor: string
 }
 
-const getColorProps = (style: UdongChipColorStyle): ColorProps => {
+const getColorProps = (style: UdongChipColorStyle, color: string): ColorProps => {
     switch (style) {
-        case 'primary':
+        case 'fill':
             return {
-                backgroundColor: UdongColors.Primary,
-                borderColor: 'transparent',
-                textColor: UdongColors.White,
-            }
-        case 'secondary':
-            return {
-                backgroundColor: UdongColors.Secondary,
-                borderColor: 'transparent',
-                textColor: UdongColors.White,
-            }
-        case 'gray':
-            return {
-                backgroundColor: UdongColors.GrayNormal,
+                backgroundColor: color,
                 borderColor: 'transparent',
                 textColor: UdongColors.White,
             }
         case 'line':
             return {
                 backgroundColor: UdongColors.White,
-                borderColor: UdongColors.Primary,
-                textColor: UdongColors.Primary,
+                borderColor: color,
+                textColor: color,
             }
         default:
             return {
-                backgroundColor: UdongColors.Primary,
+                backgroundColor: color,
                 borderColor: 'transparent',
                 textColor: UdongColors.White,
             }
@@ -48,6 +36,7 @@ const getColorProps = (style: UdongChipColorStyle): ColorProps => {
 }
 
 interface UdongChipProps {
+    color: string
     style: UdongChipColorStyle
     onClick?: () => void
     text: string
@@ -65,8 +54,8 @@ interface UdongChipProps {
  *
  */
 export const UdongChip = (props: UdongChipProps) => {
-    const { style, onClick, text, small = false, clickable = false } = props
-    const { backgroundColor, textColor, borderColor } = getColorProps(style)
+    const { color, style, onClick, text, small = false, clickable = false } = props
+    const { backgroundColor, textColor, borderColor } = getColorProps(style, color)
 
     return <HStack
         paddingHorizontal={small ? 12 : 18}

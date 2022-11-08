@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { VStack } from '../../components/Stack'
 import { UdongChip } from '../../components/UdongChip'
+import { UdongColors } from '../../theme/ColorPalette'
 
 interface TagItemProps {
     text: string
@@ -23,7 +24,8 @@ export const ClickableTag = (props: TagItemProps) => {
         paddingHorizontal={6}
     >
         <UdongChip
-            style={isIncluded ? 'primary' : 'gray'}
+            color={isIncluded ? UdongColors.Primary : UdongColors.GrayNormal}
+            style={'fill'}
             text={text}
             clickable={true}
         />

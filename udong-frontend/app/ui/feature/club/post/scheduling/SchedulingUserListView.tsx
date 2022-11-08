@@ -1,6 +1,7 @@
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongChip } from '../../../../components/UdongChip'
 import { UdongText } from '../../../../components/UdongText'
+import { UdongColors } from '../../../../theme/ColorPalette'
 import { UserItem } from '../../../shared/UserItem'
 
 export type UserType = {
@@ -26,7 +27,8 @@ const SchedulingUserSingleListView = (props: SchedulingUserSingleListViewProps) 
                 <UdongText style={'ListTitleS'}>{title}</UdongText>
                 <UdongChip
                     text={`${list.length}`}
-                    style={'primary'}
+                    color={UdongColors.Primary}
+                    style={'fill'}
                     small
                 />
             </HStack>

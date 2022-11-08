@@ -56,13 +56,15 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
                 <Spacer width={70}/>
                 <AdditionalFieldItem
                     item={<UdongChip
-                        style={'primary'}
+                        color={UdongColors.Primary}
+                        style={'fill'}
                         text={'전체'}
                     />}
                 />
                 <AdditionalFieldItem
                     item={<UdongChip
-                        style={'gray'}
+                        color={UdongColors.GrayNormal}
+                        style={'fill'}
                         text={'2팀'}
                     />}
                 />

@@ -97,6 +97,7 @@ export const ProfileView = (props: ProfileViewProps) => {
 
         {showAdminBadge &&
             <UdongChip
+                color={UdongColors.Primary}
                 style={'line'}
                 text={'관리자'}
             />

@@ -36,6 +36,7 @@ export const UserItem = (props: UserItemProps) => {
                 <HStack>
                     <Spacer width={10}/>
                     <UdongChip
+                        color={UdongColors.Primary}
                         style={'line'}
                         text={'me'}
                         small={small}
@@ -46,6 +47,7 @@ export const UserItem = (props: UserItemProps) => {
                 <HStack>
                     <Spacer width={10}/>
                     <UdongChip
+                        color={UdongColors.Primary}
                         style={'line'}
                         text={'관리자'}
                         small={small}
