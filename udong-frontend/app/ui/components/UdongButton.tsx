@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { CSSProperties, ReactNode } from 'react'
 
@@ -41,6 +42,7 @@ export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
             cursor: 'pointer',
             ...props,
         }}
+        color={color}
         onClick={onClick}
     >
         {children}
@@ -48,9 +50,14 @@ export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
 }
 
 const StyledButton = styled.button`
-    &:hover {
-        box-shadow: 200px 0 0 0 #3945AC10 inset,
-                    -200px 0 0 0 #3945AC10 inset;
-        transition: 1.0s;
-    },
+    ${props => {
+        const color = `${props.color ?? UdongColors.Primary}10`
+        return css`
+            &:hover {
+                box-shadow: 200px 0 0 0 ${color} inset,
+                            -200px 0 0 0 ${color} inset;
+                transition: 1.0s;
+            },
+        `
+    }}   
 `
