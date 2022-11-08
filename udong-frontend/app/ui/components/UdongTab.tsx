@@ -17,7 +17,10 @@ export const UdongTab = (props: UdongTabProps) => {
         alignItems={'center'}
         onClick={onClick}
     >
-        <UdongText style={selected ? 'TabSelected' : 'TabUnselected'}>
+        <UdongText
+            style={selected ? 'TabSelected' : 'TabUnselected'}
+            cursor={selected ? 'default' : 'pointer'}
+        >
             {text}
         </UdongText>
         <TabUnderline selected={selected}/>

@@ -30,7 +30,10 @@ export const UserItem = (props: UserItemProps) => {
             />
             <Spacer width={10}/>
 
-            <UdongText style={'GeneralContent'}>{name}</UdongText>
+            <UdongText
+                style={'GeneralContent'}
+                cursor={'pointer'}
+            >{name}</UdongText>
 
             {isMe &&
                 <HStack>
