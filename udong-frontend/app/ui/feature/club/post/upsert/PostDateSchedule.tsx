@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongImage } from '../../../../components/UdongImage'
 import { UdongText } from '../../../../components/UdongText'
@@ -39,18 +40,19 @@ const PostDateSchedule = ({ fixed }: PostDateSchedule) => {
         <HStack>
             <UdongText
                 style={'GeneralContent'}
-                width={150}
+                width={120}
             >날짜</UdongText>
             <VStack
                 gap={15}
                 alignItems={'center'}
             >
-                {dates.map((date) => (
+                {dates.map((date, i) => (
                     <HStack
                         key={date.id}
                         gap={15}
                         alignItems={'center'}
                     >
+                        <Spacer width={15}/>
                         <DateRangePicker
                             setDate={(newDate) => {
                                 const newDates = dates.map((target) => {
@@ -64,15 +66,18 @@ const PostDateSchedule = ({ fixed }: PostDateSchedule) => {
                             }}
                             fixedDate={fixed ? date : undefined}
                         />
-                        <UdongImage
-                            src={IcClose.src}
-                            height={15}
-                            width={15}
-                            onClick={() => {
-                                const newDates = dates.filter((target) => (target !== date))
-                                setDates(newDates)}
-                            }
-                        />
+                        {i == 0 ?
+                            <Spacer width={15} />
+                            :
+                            <UdongImage
+                                src={IcClose.src}
+                                height={15}
+                                width={15}
+                                onClick={() => {
+                                    const newDates = dates.filter((target) => (target !== date))
+                                    setDates(newDates)}
+                                }
+                            />}
                     </HStack>
                 ))}
                 <UdongImage
