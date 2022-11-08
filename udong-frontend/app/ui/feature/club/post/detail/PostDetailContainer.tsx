@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -10,6 +10,7 @@ import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { DeleteModal } from '../../../shared/DeleteModal'
 import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
+import { PostType } from '../upsert/create/PostCreateContainer'
 import { PostDetailCommentsView } from './PostDetailCommentsView'
 import { PostDetailContentView } from './PostDetailContentView'
 import { PostDetailEnrollmentView } from './PostDetailEnrollmentView'
@@ -40,9 +41,13 @@ const tags = [
 
 export const PostDetailContainer = () => {
     const router = useRouter()
-    const isEnrollment = false
-    const isScheduling = true
+    const [postType, setPostType] = useState<PostType>('announcement')
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+    // 위에 default 값은 건드리지 말고 테스트할 때 여기서 값 바꿔가면서 쓰기!
+    useEffect(() => {
+        setPostType('scheduling')
+    }, [])
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
@@ -53,7 +58,7 @@ export const PostDetailContainer = () => {
                     style={'line'}
                     color={UdongColors.Primary}
                     height={40}
-                    onClick={() => router.push('/club/1/post/1/edit')}
+                    onClick={() => router.push(`/club/1/post/1/edit/?type=${postType}`)}
                 >
                     수정하기
                 </UdongButton>
@@ -100,9 +105,9 @@ export const PostDetailContainer = () => {
         />
         <PostDetailContentView/>
 
-        {isEnrollment && <PostDetailEnrollmentView/>}
+        {postType === 'enrollment' && <PostDetailEnrollmentView/>}
 
-        {isScheduling && <PostDetailSchedulingView/>}
+        {postType === 'scheduling' && <PostDetailSchedulingView/>}
 
         <HStack>
             <UdongText style={'ListContentXS'}>2022.09.10</UdongText>

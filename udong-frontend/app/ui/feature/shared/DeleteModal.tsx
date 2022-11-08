@@ -25,6 +25,7 @@ export const DeleteModal = (props: DeleteModalProps) => {
         >
             <CloseModalButton setIsOpen={setIsOpen}/>
             <Spacer height={7}/>
+
             <VStack
                 paddingHorizontal={90}
                 width={'100%'}

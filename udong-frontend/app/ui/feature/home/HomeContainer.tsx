@@ -18,7 +18,7 @@ export const HomeContainer = (props: HomeContainerProps) => {
 
     const handleCurrentTab = useCallback((selectedTab: HomeTabType) => {
         router.replace(`/?tab=${selectedTab}`)
-    }, [])
+    }, [router])
 
     return (
         <VStack>
