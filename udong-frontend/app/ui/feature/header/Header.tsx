@@ -22,7 +22,7 @@ export enum HEADER_PAGE {
 
 export const Header = ({ type, clubId }: HeaderProps) => {
     const router = useRouter()
-    const clubName = '고어헤드'
+    const clubName = '단풍'
 
     return (
         <HeaderContainer>
