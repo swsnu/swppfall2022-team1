@@ -37,6 +37,7 @@ export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
             padding: '8px 16px',
             color: style === 'line' ? (color ?? UdongColors.Primary) : UdongColors.White,
             fontSize: 16,
+            cursor: 'pointer',
             ...props,
         }}
         onClick={onClick}
