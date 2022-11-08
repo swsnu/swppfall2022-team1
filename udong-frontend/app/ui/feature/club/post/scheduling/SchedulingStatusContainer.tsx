@@ -1,32 +1,32 @@
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
-import { new2dArray } from '../../../../../utility/functions'
 import { HStack, VStack } from '../../../../components/Stack'
-import { UdongButton } from '../../../../components/UdongButton'
 import { UdongHeader } from '../../../../components/UdongHeader'
 import { CellIdx } from '../../../shared/TimeTable'
 import { BestTimeView } from './BestTimeView'
 import { SchedulingCloseModal } from './SchedulingCloseModal'
-import { SchedulingCloseTableView } from './SchedulingCloseTableView'
-import { getAva, getDayCnt, getInc, useData } from './SchedulingHooks'
+import { getAva, parseUsers, useData } from './SchedulingHooks'
+import { SchedulingStatusTableView } from './SchedulingStatusTableView'
 import { SchedulingUserListView } from './SchedulingUserListView'
 
-export const SchedulingCloseContainer = () => {
+const allUsersDummy = [
+    { id: 1, name: 'user1', auth: 'A' },
+    { id: 2, name: 'user2', auth: 'M' },
+    { id: 3, name: 'user3', auth: 'A' },
+]
+
+export const SchedulingStatusContainer = () => {
     const router = useRouter()
 
-    const [selected, setSelected] = useState<boolean[][]|null>(null)
+    const [selected, setSelected] = useState<CellIdx|null>(null)
     const [hover, setHover] = useState<CellIdx|null>(null)
     const [modalOpen, setModalOpen] = useState(false)
 
     const { data, users, cnt, best } = useData()
+    const allUsers = useMemo(() => parseUsers(allUsersDummy), [])
 
-    const ava = useMemo(() => getAva(data, hover), [data, hover])
-    const inc = useMemo(() => selected ? getInc(data, selected) : [], [data, selected])
-
-    useEffect(() => {
-        setSelected(new2dArray(getDayCnt(data), data.endTime - data.startTime, false))
-    }, [data])
+    const ava = useMemo(() => hover ? getAva(data, hover) : selected ? getAva(data, selected) : [], [data, hover, selected])
 
     return (
         <VStack
@@ -36,17 +36,14 @@ export const SchedulingCloseContainer = () => {
             <UdongHeader
                 title={'MT 수요조사입니다'}
                 onGoBack={() => router.back()}
-                rightButtons={<UdongButton
-                    style={'line'}
-                    onClick={() => setModalOpen(true)}
-                >마감하기</UdongButton>}
+                rightButtons={<></>}
                 subtitle={'일정 수합 중'}
             />
             <HStack
                 gap={50}
                 justifyContent={'center'}
             >
-                <SchedulingCloseTableView
+                <SchedulingStatusTableView
                     data={data}
                     selected={selected}
                     setSelected={setSelected}
@@ -59,7 +56,7 @@ export const SchedulingCloseContainer = () => {
                     gap={50}
                 >
                     <BestTimeView best={best}/>
-                    {selected !== null && (hover !== null && !selected[hover.col][hover.row]
+                    {selected !== null || hover !== null
                         ? (
                             <SchedulingUserListView
                                 leftTitle='가능'
@@ -67,13 +64,15 @@ export const SchedulingCloseContainer = () => {
                                 leftList={users.filter(({ id }) => ava.includes(id))}
                                 rightList={users.filter(({ id }) => !ava.includes(id))}
                             />
-                        ) : <SchedulingUserListView
-                            leftTitle='포함'
-                            rightTitle='미포함'
-                            leftList={users.filter(({ id }) => inc.includes(id))}
-                            rightList={users.filter(({ id }) => !inc.includes(id))}
-                        />
-                    )}
+                        ) : (
+                            <SchedulingUserListView
+                                leftTitle='참여'
+                                rightTitle='미참여'
+                                leftList={users}
+                                rightList={allUsers.filter(({ id }) => users.map(({ id }) => id).includes(id))}
+                            />
+                        )
+                    }
                 </VStack>
             </HStack>
 

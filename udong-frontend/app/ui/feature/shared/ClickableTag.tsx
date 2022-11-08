@@ -25,6 +25,7 @@ export const ClickableTag = (props: TagItemProps) => {
         <UdongChip
             style={isIncluded ? 'primary' : 'gray'}
             text={text}
+            clickable={true}
         />
     </VStack>
 }

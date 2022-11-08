@@ -7,23 +7,25 @@ import { UdongText } from './UdongText'
 
 interface UdongRadioButtonProps {
     text: string
+    paddingRight?: number
     checked: boolean
     onCheck: () => void
 }
 
 export const UdongRadioButton = (props: UdongRadioButtonProps) => {
-    const { text, checked, onCheck } = props
+    const { text, paddingRight, checked, onCheck } = props
 
     return <HStack
-        paddingHorizontal={10}
         alignItems={'center'}
         onClick={onCheck}
+        style={{ paddingRight }}
     >
         <StyledRadioButton
             type={'radio'}
             checked={checked}
+            onChange={() => {return}}
         />
-        <Spacer width={10}/>
+        <Spacer width={5}/>
         <UdongText style={'GeneralContent'}>{text}</UdongText>
     </HStack>
 }

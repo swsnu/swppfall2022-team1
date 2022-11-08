@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import { Spacer } from '../../../components/Spacer'
@@ -8,21 +7,22 @@ import UdongLoader from '../../../components/UdongLoader'
 import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { PostItem } from '../../shared/PostItem'
 import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
+import { PostCreateModal } from './PostCreateModal'
 
 export const BoardContainer = () => {
     const [loading, setLoading] = useState(true)
+    const [showPostCreateModal, setShowPostCreateModal] = useState(false)
 
     useEffect(() => {
         setTimeout(() => setLoading(false), 600)
 
     }, [])
 
-    const router = useRouter()
     return <VStack>
         <HStack justifyContent={'end'}>
             <UdongButton
                 style={'line'}
-                onClick={() => router.push('/club/1/post/create')}
+                onClick={() => setShowPostCreateModal(true)}
                 width={120}
             >
                 글쓰기
@@ -44,6 +44,12 @@ export const BoardContainer = () => {
                 <PostItem isClubBoard={true}/>
                 <PostItem isClubBoard={true}/>
                 <PostItem isClubBoard={true}/>
+
+                <PostCreateModal
+                    isOpen={showPostCreateModal}
+                    setIsOpen={setShowPostCreateModal}
+                />
+
                 <ScrollToTopButton/>
             </VStack>
         }

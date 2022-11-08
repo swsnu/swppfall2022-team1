@@ -32,6 +32,7 @@ export const UdongHeader = (props: UdongHeaderProps) => {
                     src={back.src}
                     height={40}
                     width={40}
+                    clickable={true}
                 />
             </HStack>
 

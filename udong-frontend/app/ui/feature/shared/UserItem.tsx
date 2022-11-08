@@ -59,6 +59,7 @@ export const UserItem = (props: UserItemProps) => {
                 src={remove.src}
                 height={10}
                 width={10}
+                clickable={true}
             />
         }
     </HStack>
