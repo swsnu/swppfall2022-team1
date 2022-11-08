@@ -27,7 +27,8 @@ export const PostItem = (props: PostItemProps) => {
     const isFeed = !isEventDetail && !isClubBoard
 
     const handleOnClickPost = useCallback(() => {
-        router.push('/club/1/post/1')
+        // FIXME: demo를 위해 임시방편으로 query params으로 type넘겨주기, 나중에는 리덕스로 해결
+        router.push(`/club/1/post/1/?type=${post.type}`)
     }, [router])
 
     return <VStack onClick={handleOnClickPost}>

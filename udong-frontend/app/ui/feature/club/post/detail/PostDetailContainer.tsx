@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
+import { dummyTagsDanpung } from '../../../../../domain/model/Tag'
+import { dummyUserMe } from '../../../../../domain/model/User'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
@@ -16,42 +18,32 @@ import { PostDetailContentView } from './PostDetailContentView'
 import { PostDetailEnrollmentView } from './PostDetailEnrollmentView'
 import { PostDetailSchedulingView } from './PostDetailSchedulingView'
 
-const tags = [
-    {
-        name: '전체',
-        isUserIncluded: true,
-    },
-    {
-        name: '2022 겨울 공연 1팀',
-        isUserIncluded: true,
-    },
-    {
-        name: '2022 겨울 공연 3팀',
-        isUserIncluded: false,
-    },
-    {
-        name: '2022 겨울 공연 4팀',
-        isUserIncluded: false,
-    },
-    {
-        name: '2022 겨울 공연 2팀',
-        isUserIncluded: false,
-    },
-]
+const getQueryParam = (queryParam: string | string[] | undefined): PostType => {
+    if (queryParam === undefined) {
+        return 'announcement'
+    }
+
+    if (queryParam instanceof Array) {
+        return queryParam.join('') as PostType
+    } else {
+        return queryParam as PostType
+    }
+}
 
 export const PostDetailContainer = () => {
     const router = useRouter()
+    const { type } = router.query
     const [postType, setPostType] = useState<PostType>('announcement')
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     // 위에 default 값은 건드리지 말고 테스트할 때 여기서 값 바꿔가면서 쓰기!
     useEffect(() => {
-        setPostType('scheduling')
-    }, [])
+        setPostType(getQueryParam(type))
+    }, [type])
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
-            title={'MT 수요조사입니다'}
+            title={'겨울 공연 중요 공지!'}
             onGoBack={() => router.back()}
             rightButtons={<>
                 <UdongButton
@@ -82,18 +74,18 @@ export const PostDetailContainer = () => {
                 <UdongText
                     style={'ListContentUnderscore'}
                     cursor={'pointer'}
-                >MT</UdongText>
+                >2022년 겨울 공연</UdongText>
                 <Spacer height={15}/>
             </VStack>
 
             <HStack justifyContent={'center'}>
-                {tags.map((tag) => {
+                {dummyTagsDanpung.map((tag) => {
                     return <HStack
                         key={tag.name}
                         paddingHorizontal={6}
                     >
                         <UdongChip
-                            color={tag.isUserIncluded ? UdongColors.Primary : UdongColors.GrayNormal}
+                            color={tag.users.includes(dummyUserMe) ? UdongColors.Primary : UdongColors.GrayNormal}
                             style={'fill'}
                             text={tag.name}
                         />
