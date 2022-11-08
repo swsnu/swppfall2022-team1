@@ -7,6 +7,7 @@ import { UdongCheckbox } from '../../../../components/UdongCheckbox'
 import { UdongModal } from '../../../../components/UdongModal'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongTextField } from '../../../../components/UdongTextField'
+import { CloseModalButton } from '../../../home/mydong/CloseModalButton'
 
 interface UdongModalProps {
   isOpen: boolean
@@ -25,12 +26,13 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
             isOpen={isOpen}
             setIsOpen={setIsOpen}
         >
+            <CloseModalButton setIsOpen={setIsOpen}/>
             <VStack
                 alignItems={'start'}
                 width={'100%'}
-                paddingVertical={30}
                 paddingHorizontal={50}
                 gap={10}
+                style={{ paddingBottom: 30 }}
             >
                 <UdongText style={'GeneralTitle'}>일정 수합 마감</UdongText>
                 <UdongCheckbox
@@ -55,6 +57,7 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
                     style={'line'}
                     alignSelf={'center'}
                     onClick={() => {router.push(`/club/${clubId}/post/${postId}`)}}
+                    paddingTop={10}
                 >마감하기</UdongButton>
             </VStack>
         </UdongModal>
