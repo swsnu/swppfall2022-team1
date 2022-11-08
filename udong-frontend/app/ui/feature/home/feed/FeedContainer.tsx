@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Spacer } from '../../../components/Spacer'
 import { VStack } from '../../../components/Stack'
@@ -7,13 +7,13 @@ import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { PostItem } from '../../shared/PostItem'
 import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 
-const delay = (time: number) => {
-    return new Promise(resolve => setTimeout(resolve, time))
-}
-
 export const FeedContainer = () => {
     const [loading, setLoading] = useState(true)
-    delay(600).then(() => setLoading(false))
+
+    useEffect(() => {
+        setTimeout(() => setLoading(false), 600)
+
+    }, [])
 
     return <VStack>
         <UdongSearchBar/>

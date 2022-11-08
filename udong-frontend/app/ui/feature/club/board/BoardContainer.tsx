@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
@@ -9,13 +9,13 @@ import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { PostItem } from '../../shared/PostItem'
 import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 
-const delay = (time: number) => {
-    return new Promise(resolve => setTimeout(resolve, time))
-}
-
 export const BoardContainer = () => {
     const [loading, setLoading] = useState(true)
-    delay(600).then(() => setLoading(false))
+
+    useEffect(() => {
+        setTimeout(() => setLoading(false), 600)
+
+    }, [])
 
     const router = useRouter()
     return <VStack>
