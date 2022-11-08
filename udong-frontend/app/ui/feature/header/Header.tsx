@@ -15,14 +15,17 @@ interface HeaderProps {
 export type HearPageType = HEADER_PAGE
 
 export enum HEADER_PAGE {
+    NONE,
     MAIN,
     MY_PAGE,
-    CLUB
+    CLUB,
 }
 
 export const Header = ({ type, clubId }: HeaderProps) => {
     const router = useRouter()
-    const clubName = '고어헤드'
+    const clubName = '단풍'
+
+    if (type === HEADER_PAGE.NONE) {return null}
 
     return (
         <HeaderContainer>

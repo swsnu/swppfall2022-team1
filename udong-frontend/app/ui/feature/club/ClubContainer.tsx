@@ -3,7 +3,6 @@ import { useCallback } from 'react'
 
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
-import { Header, HEADER_PAGE } from '../header/Header'
 import { BoardContainer } from './board/BoardContainer'
 import { CLUB_TAB, ClubTabType, ClubTabView } from './ClubTabView'
 import { EventContainer } from './event/EventContainer'
@@ -37,18 +36,12 @@ export const ClubContainer = (props: ClubContainerProps) => {
     }
 
     return <VStack>
-        <Header
-            type={HEADER_PAGE.CLUB}
-            clubId={1}
+        <ClubTabView
+            selectedTab={tab}
+            setSelectedTab={handleCurrentTab}
         />
-        <VStack paddingHorizontal={50}>
-            <ClubTabView
-                selectedTab={tab}
-                setSelectedTab={handleCurrentTab}
-            />
-            <Spacer height={20}/>
-            {getCurrentContainer()}
-        </VStack>
+        <Spacer height={20}/>
+        {getCurrentContainer()}
     </VStack>
 
 }
