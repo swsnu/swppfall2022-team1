@@ -18,6 +18,7 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
     const [createTag, setCreateTag] = useState<boolean>(false)
     const [saveTime, setSaveTime] = useState<boolean>(false)
     const router = useRouter()
+    const { clubId, postId } = router.query
 
     return (
         <UdongModal
@@ -53,7 +54,7 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
                 <UdongButton
                     style={'line'}
                     alignSelf={'center'}
-                    onClick={() => {router.push('/club/1/post/1')}}
+                    onClick={() => {router.push(`/club/${clubId}/post/${postId}`)}}
                 >마감하기</UdongButton>
             </VStack>
         </UdongModal>
