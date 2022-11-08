@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+import { dummyEventPosts } from '../../../../../domain/model/Post'
 import { Spacer } from '../../../../components/Spacer'
 import { VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
@@ -17,7 +18,7 @@ export const EventDetailContainer = () => {
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
-            title={'MT'}
+            title={'2022년 겨울 공연'}
             onGoBack={() => router.back()}
             rightButtons={<>
                 <UdongButton
@@ -55,10 +56,13 @@ export const EventDetailContainer = () => {
         <UdongText style={'GeneralTitle'}>관련 게시글</UdongText>
         <Spacer height={15}/>
 
-        <PostItem isEventDetail={true}/>
-        <PostItem isEventDetail={true}/>
-        <PostItem isEventDetail={true}/>
-        <PostItem isEventDetail={true}/>
+        {dummyEventPosts.map((post, index) => {
+            return <PostItem
+                post={post}
+                key={post.id + index}
+                isEventDetail={true}
+            />
+        })}
 
         <ScrollToTopButton/>
 
