@@ -2,7 +2,6 @@ import { ReactNode } from 'react'
 
 import back from '../icons/IcArrowBack.png'
 import { UdongColors } from '../theme/ColorPalette'
-import { Spacer } from './Spacer'
 import { HStack, VStack } from './Stack'
 import { UdongImage } from './UdongImage'
 import { UdongText } from './UdongText'
@@ -16,9 +15,8 @@ interface UdongHeaderProps {
 
 export const UdongHeader = (props: UdongHeaderProps) => {
     const { onGoBack, title, subtitle, rightButtons } = props
-    
+
     return <VStack>
-        <Spacer height={50}/>
         <HStack
             justifyContent={'space-between'}
             alignItems={'center'}

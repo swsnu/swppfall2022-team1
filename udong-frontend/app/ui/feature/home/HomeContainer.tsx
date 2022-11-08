@@ -3,7 +3,6 @@ import { useCallback } from 'react'
 
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
-import { Header, HEADER_PAGE } from '../header/Header'
 import { FeedContainer } from './feed/FeedContainer'
 import { HomeTabType, HomeTabView } from './HomeTabView'
 import { MyDongContainer } from './mydong/MyDongContainer'
@@ -22,7 +21,6 @@ export const HomeContainer = (props: HomeContainerProps) => {
 
     return (
         <VStack>
-            <Header type={HEADER_PAGE.MAIN}/>
             <VStack
                 paddingHorizontal={50}
                 width='100vw'

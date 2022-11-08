@@ -15,14 +15,17 @@ interface HeaderProps {
 export type HearPageType = HEADER_PAGE
 
 export enum HEADER_PAGE {
+    NONE,
     MAIN,
     MY_PAGE,
-    CLUB
+    CLUB,
 }
 
 export const Header = ({ type, clubId }: HeaderProps) => {
     const router = useRouter()
     const clubName = '단풍'
+
+    if (type === HEADER_PAGE.NONE) {return null}
 
     return (
         <HeaderContainer>
@@ -106,5 +109,5 @@ const HeaderContainer = styled.div({
     position: 'sticky',
     top: 0,
     width: '100%',
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: UdongColors.White,
 })

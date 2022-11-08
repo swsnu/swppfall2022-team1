@@ -1,16 +1,17 @@
 import { Spacer } from '../../components/Spacer'
-import { HStack, VStack } from '../../components/Stack'
-import { Header, HEADER_PAGE } from '../header/Header'
+import { HStack } from '../../components/Stack'
 import { AddMyScheduleView } from './AddMyScheduleView'
 import { MyProfileView } from './MyProfileView'
 
 export const MyPageContainer = () => {
-    return <VStack>
-        <Header type={HEADER_PAGE.MY_PAGE}/>
-        <VStack
+    return <HStack
+        justifyContent={'center'}
+        paddingHorizontal={50}
+        alignItems={'start'}
+    >
+        <HStack
             justifyContent={'center'}
-            paddingHorizontal={50}
-            alignItems={'start'}
+            alignItems={'center'}
         >
             <HStack
                 justifyContent={'center'}
@@ -21,6 +22,6 @@ export const MyPageContainer = () => {
                 <Spacer width={50}/>
                 <AddMyScheduleView/>
             </HStack>
-        </VStack>
-    </VStack>
+        </HStack>
+    </HStack>
 }
