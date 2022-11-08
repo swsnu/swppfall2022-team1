@@ -1,5 +1,4 @@
 import { EventObject } from '@toast-ui/calendar/types/types/events'
-import { TemplateConfig } from '@toast-ui/calendar/types/types/template'
 import ToastUIReactCalendar from '@toast-ui/react-calendar'
 import React, { useEffect, useState } from 'react'
 import '@toast-ui/calendar/dist/toastui-calendar.css'
@@ -15,7 +14,7 @@ const calendars = [
         borderColor: UdongColors.GrayNormal,
     }]
 
-const template: TemplateConfig = {
+const template = {
     monthGridHeaderExceed(){
         return ''
     },
