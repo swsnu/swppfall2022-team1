@@ -7,15 +7,16 @@ import { VStack } from '../../components/Stack'
 
 interface SpecificTimePickerProps {
     setTime: (time: string) => void
-    fixedTime?: string
+    time: string
+    fixed?: boolean
 }
 
-const SpecificTimePicker = ({ setTime, fixedTime } : SpecificTimePickerProps) => {
+const SpecificTimePicker = ({ setTime, time, fixed } : SpecificTimePickerProps) => {
 
     return <VStack width={110}>
         <TimePicker
-            defaultValue={fixedTime ? moment(fixedTime, 'HH:mm') : undefined}
-            disabled={!!fixedTime}
+            defaultValue={time.length ? moment(time, 'HH:mm') : undefined}
+            disabled={!!fixed}
             format={'HH:mm'}
             minuteStep={30}
             onChange={(time) => {

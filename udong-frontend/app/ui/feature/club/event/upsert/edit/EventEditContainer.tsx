@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 import { VStack } from '../../../../../components/Stack'
 import { UdongButton } from '../../../../../components/UdongButton'
@@ -8,6 +9,7 @@ import { EventAdditionalFieldsView } from '../EventAdditionalFieldsView'
 import { EventInputView } from '../EventInputView'
 
 export const EventEditContainer = () => {
+    const [title, setTitle] = useState('컴공 MT')
     const router = useRouter()
 
     return <VStack paddingHorizontal={16}>
@@ -25,6 +27,9 @@ export const EventEditContainer = () => {
                 </UdongButton>
             }
         />
-        <EventInputView title={'컴공 MT'}/>
-        <EventAdditionalFieldsView fixed={true}/>
+        <EventInputView
+            title={title}
+            setTitle={setTitle}
+        />
+        <EventAdditionalFieldsView edit={true}/>
     </VStack>}

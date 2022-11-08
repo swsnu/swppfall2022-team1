@@ -23,7 +23,11 @@ interface DateTimesType {
     }
 }
 
-const EventDateSchedule = () => {
+interface EventDateSchedule {
+    edit: boolean
+}
+
+const EventDateSchedule = ({ edit }: EventDateSchedule) => {
     const [dateTimes, setDateTimes] = useState<DateTimesType[]>([{ id: 0, start: { date: '', time: '' }, end: { date: '', time: '' } }])
 
     return <VStack
@@ -47,6 +51,7 @@ const EventDateSchedule = () => {
                     >
                         <Spacer width={15}/>
                         <SpecificDatePicker
+                            date={dateTime.start.date}
                             setDate={(newDate) => {
                                 const newDateTimes = dateTimes.map((target) => {
                                     if (target.id === dateTime.id){
@@ -60,6 +65,7 @@ const EventDateSchedule = () => {
                             }
                         />
                         <SpecificTimePicker
+                            time={dateTime.start.time}
                             setTime={(newTime) => {
                                 const newDateTimes = dateTimes.map((target) => {
                                     if (target.id === dateTime.id){
@@ -74,6 +80,7 @@ const EventDateSchedule = () => {
                         />
                         <UdongText style={'GeneralContent'}>~</UdongText>
                         <SpecificDatePicker
+                            date={dateTime.end.date}
                             setDate={(newDate) => {
                                 const newDateTimes = dateTimes.map((target) => {
                                     if (target.id === dateTime.id){
@@ -87,6 +94,7 @@ const EventDateSchedule = () => {
                             }
                         />
                         <SpecificTimePicker
+                            time={dateTime.end.time}
                             setTime={(newTime) => {
                                 const newDateTimes = dateTimes.map((target) => {
                                     if (target.id === dateTime.id){
@@ -124,6 +132,7 @@ const EventDateSchedule = () => {
                     />}
             </VStack>
         </HStack>
+        <p style={{ color: 'white' }}>{edit}</p>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}
         {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>

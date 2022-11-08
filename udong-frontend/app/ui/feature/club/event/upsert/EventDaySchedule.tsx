@@ -18,9 +18,15 @@ interface DayTimeType {
     time: TimeRangeType
 }
 
-const EventDaySchedule = () => {
-    const [date, setDate] = useState<DateRangeType>({ start: '', end: '' })
-    const [dayTimes, setDayTimes] = useState<DayTimeType[]>([{ id: 0, day: '', time: { start: '12:00', end: '20:30' } }])
+interface EventDaySchedule {
+    edit: boolean
+}
+
+const EventDaySchedule = ({ edit }: EventDaySchedule) => {
+    const [date, setDate] = useState<DateRangeType>(edit ? { start: '2019-03-25', end: '2019-03-26' } : { start: '', end: '' })
+    const [dayTimes, setDayTimes] = useState<DayTimeType[]>(edit ?
+        [{ id: 0, day: DAYS.TUESDAY, time: { start: '03:30', end: '06:00' } }]
+        : [{ id: 0, day: '', time: { start: '', end: '' } }])
 
     return <VStack
         paddingHorizontal={120}
@@ -32,6 +38,7 @@ const EventDaySchedule = () => {
                 width={150}
             >반복 기간</UdongText>
             <DateRangePicker
+                date={date}
                 setDate={setDate}
             />
         </HStack>
@@ -68,6 +75,7 @@ const EventDaySchedule = () => {
                         />
                         <TimeRangePicker
                             key={dayTime.id}
+                            time={dayTime.time}
                             setTime={(newTime) => {
                                 const newTimes = dayTimes.map((target) => {
                                     if (target.id === dayTime.id){
@@ -103,7 +111,6 @@ const EventDaySchedule = () => {
                 />
             </VStack>
         </HStack>
-        <p style={{ color: 'white' }}>{date.start}</p>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}
         {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>

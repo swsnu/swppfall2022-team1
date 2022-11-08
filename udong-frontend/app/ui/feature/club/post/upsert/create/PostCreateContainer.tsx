@@ -33,6 +33,6 @@ export const PostCreateContainer = () => {
             contents={contents}
             setContents={setContents}
         />
-        <PostAdditionalFieldsView/>
+        <PostAdditionalFieldsView edit={false}/>
     </VStack>
 }

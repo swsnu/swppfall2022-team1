@@ -18,13 +18,13 @@ enum DAYS {
 }
 
 interface PostDaySchedule {
-    fixed?: boolean
+    edit: boolean
 }
 
-const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
-    const [time, setTime] = useState<TimeRangeType>({ start: '', end: '' })
-    const [days, setDays] = useState<DAYS[]>([])
-    const [date, setDate] = useState<DateRangeType>({ start: '', end: '' })
+const PostDaySchedule = ({ edit }: PostDaySchedule) => {
+    const [time, setTime] = useState<TimeRangeType>(edit ? { start: '14:30', end: '16:00' } : { start: '', end: '' })
+    const [days, setDays] = useState<DAYS[]>(edit ? [DAYS.MONDAY, DAYS.THURSDAY] : [])
+    const [date, setDate] = useState<DateRangeType>(edit ? { start: '2022-11-01', end: '2022-11-10' } : { start: '', end: '' })
 
     return <VStack
         paddingHorizontal={120}
@@ -37,7 +37,8 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
             >시간</UdongText>
             <TimeRangePicker
                 setTime={setTime}
-                fixedTime={fixed ? time : undefined}
+                time={time}
+                fixed={edit}
             />
         </HStack>
         <HStack>
@@ -49,6 +50,8 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
                 {Object.values(DAYS).map((target) => (
                     <DayButton
                         key={target}
+                        disabled={edit}
+                        fixed={edit}
                         selected={days.includes(target)}
                         onClick={()=>{
                             const idx = days.indexOf(target)
@@ -63,7 +66,7 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
                         style={{ cursor: 'pointer' }}
                     >
                         <UdongText
-                            color={days.includes(target) ? UdongColors.White : UdongColors.GrayNormal}
+                            color={!days.includes(target) ? UdongColors.GrayNormal : edit ? UdongColors.GrayBright : UdongColors.White}
                             style={'GeneralContent'}
                         >
                             {target}
@@ -79,7 +82,8 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
             >반복 기간</UdongText>
             <DateRangePicker
                 setDate={setDate}
-                fixedDate={fixed ? date : undefined}
+                date={edit ? { start: '2022-09-30', end: '2022-10-02' } : date}
+                fixed={edit}
             />
         </HStack>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}
@@ -89,9 +93,9 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
 
 export default PostDaySchedule
 
-const DayButton = styled.div<{ selected: boolean }>`
+const DayButton = styled.button<{ selected: boolean, fixed: boolean }>`
     border: 1px solid ${(props) => props.selected ? UdongColors.GrayNormal : UdongColors.GrayDark};
-    background-color: ${(props) => props.selected ? UdongColors.GrayNormal : UdongColors.White};
+    background-color: ${(props) => props.selected ? UdongColors.GrayNormal : props.fixed ? UdongColors.GrayBright : UdongColors.White};
     width: 30px;
     height: 30px;
     text-align: center;

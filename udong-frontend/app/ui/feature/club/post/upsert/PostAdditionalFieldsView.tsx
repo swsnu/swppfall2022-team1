@@ -14,7 +14,11 @@ import PostDaySchedule from './PostDaySchedule'
 
 type SchedulingTimeType = 'days' | 'dates'
 
-export const PostAdditionalFieldsView = () => {
+interface PostAdditionalFieldView {
+    edit: boolean
+}
+
+export const PostAdditionalFieldsView = ({ edit }:PostAdditionalFieldView) => {
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingTimeType>('days')
 
     return <VStack>
@@ -82,17 +86,25 @@ export const PostAdditionalFieldsView = () => {
             <UdongRadioButton
                 text={'요일'}
                 checked={schedulingTimeType === 'days'}
-                onCheck={() => setSchedulingTimeType('days')}
+                onCheck={() => {
+                    if (!edit){
+                        setSchedulingTimeType('days')
+                    }
+                }}
             />
             <UdongRadioButton
                 text={'날짜'}
                 checked={schedulingTimeType === 'dates'}
-                onCheck={() => setSchedulingTimeType('dates')}
+                onCheck={() => {
+                    if (!edit){
+                        setSchedulingTimeType('dates')
+                    }
+                }}
             />
         </HStack>
         <Spacer height={30}/>
         {
-            schedulingTimeType === 'days' ? <PostDaySchedule/> : <PostDateSchedule/>
+            schedulingTimeType === 'days' ? <PostDaySchedule edit={edit}/> : <PostDateSchedule edit={edit}/>
         }
         <Spacer height={20}/>
     </VStack>

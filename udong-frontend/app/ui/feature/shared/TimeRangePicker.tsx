@@ -7,7 +7,8 @@ import { VStack } from '../../components/Stack'
 
 interface TimeRangePickerProps {
     setTime: (times: TimeRangeType) => void
-    fixedTime?: TimeRangeType
+    time: TimeRangeType
+    fixed?: boolean
 }
 
 export interface TimeRangeType {
@@ -15,15 +16,15 @@ export interface TimeRangeType {
     end: string
 }
 
-const TimeRangePicker = ({ setTime, fixedTime } : TimeRangePickerProps) => {
+const TimeRangePicker = ({ setTime, time, fixed } : TimeRangePickerProps) => {
     const { RangePicker } = useMemo(() => (
         TimePicker
     ), [])
 
     return <VStack width={160}>
         <RangePicker
-            defaultValue={fixedTime ? [moment(fixedTime.start, 'HH:mm'), moment(fixedTime.end, 'HH:mm')] : undefined}
-            disabled={!!fixedTime}
+            defaultValue={time.start.length ? [moment(time.start, 'HH:mm'), moment(time.end, 'HH:mm')] : undefined}
+            disabled={!!fixed}
             format={'HH:mm'}
             minuteStep={30}
             onChange={(range) => {

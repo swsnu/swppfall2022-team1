@@ -9,7 +9,11 @@ import EventDaySchedule from './EventDaySchedule'
 
 type SchedulingTimeType = 'days' | 'dates' | 'notAssigned'
 
-export const EventAdditionalFieldsView = () => {
+interface EventAdditionalFieldsViewProps {
+    edit: boolean
+}
+
+export const EventAdditionalFieldsView = ({ edit }: EventAdditionalFieldsViewProps) => {
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingTimeType>('days')
 
     return <VStack>
@@ -38,8 +42,8 @@ export const EventAdditionalFieldsView = () => {
         </HStack>
         <Spacer height={30}/>
         {
-            schedulingTimeType === 'days' ? <EventDaySchedule />
-                : schedulingTimeType === 'dates' ? <EventDateSchedule /> : null
+            schedulingTimeType === 'days' ? <EventDaySchedule edit={edit} />
+                : schedulingTimeType === 'dates' ? <EventDateSchedule edit={edit} /> : null
         }
         <Spacer height={20}/>
     </VStack>
