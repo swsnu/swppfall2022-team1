@@ -6,10 +6,10 @@ import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
-import { DraggableTimeTable } from '../../../shared/DraggableTimeTable'
 import { CellIdx } from '../../../shared/TimeTable'
 import { SchedulingCloseModal } from './SchedulingCloseModal'
 import { getAva, getInc, useData } from './SchedulingHooks'
+import { SchedulingStatusTableView } from './SchedulingStatusTableView'
 import { SchedulingUserListView } from './SchedulingUserListView'
 
 export const SchedulingCloseContainer = () => {
@@ -46,22 +46,14 @@ export const SchedulingCloseContainer = () => {
                 gap={50}
                 justifyContent={'center'}
             >
-                <VStack
-                    alignItems={'start'}
-                    width={'40%'}
-                >
-                    <UdongText style={'GeneralTitle'}>일정 수합 현황</UdongText>
-                    <UdongText style={'GeneralContent'}>※ 클릭시 해당 시간에 참여 가능한 인원을 보여드립니다.</UdongText>
-                    {selected !== null && <DraggableTimeTable
-                        days={header}
-                        startTime={data.startTime}
-                        selected={selected}
-                        setSelected={setSelected as (f: ((x: boolean[][]) => boolean[][])) => void}
-                        onHover={setHover}
-                        data={cnt}
-                        style={{ marginTop: 10 }}
-                    />}
-                </VStack>
+                <SchedulingStatusTableView
+                    header={header}
+                    startTime={data.startTime}
+                    selected={selected}
+                    setSelected={setSelected}
+                    setHover={setHover}
+                    cnt={cnt}
+                />
 
                 <VStack
                     width={'40%'}
