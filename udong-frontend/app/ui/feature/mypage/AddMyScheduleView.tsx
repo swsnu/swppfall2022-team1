@@ -14,7 +14,6 @@ export const AddMyScheduleView = () => {
     const [timetable, setTimetable] = useState(dummy_data)
 
     return <UdongFloatingContainer
-        width={'calc(50% - 50px)'}
         padding={'35px 50px'}
         alignItems={'center'}
         gap={30}
