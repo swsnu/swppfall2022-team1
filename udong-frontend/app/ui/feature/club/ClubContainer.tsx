@@ -41,7 +41,10 @@ export const ClubContainer = (props: ClubContainerProps) => {
             type={HEADER_PAGE.CLUB}
             clubId={1}
         />
-        <VStack paddingHorizontal={50}>
+        <VStack
+            paddingHorizontal={50}
+            width='100vw'
+        >
             <ClubTabView
                 selectedTab={tab}
                 setSelectedTab={handleCurrentTab}
