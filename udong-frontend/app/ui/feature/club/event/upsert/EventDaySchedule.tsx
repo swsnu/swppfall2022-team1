@@ -12,17 +12,13 @@ import IcClose from '/app/ui/icons/IcClose.png'
 
 import TimeRangePicker, { TimeRangeType } from '../../../shared/TimeRangePicker'
 
-interface EventDaySchedule {
-    fixed?: boolean
-}
-
 interface DayTimeType {
     id: number
     day: DAYS | ''
     time: TimeRangeType
 }
 
-const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
+const EventDaySchedule = () => {
     const [date, setDate] = useState<DateRangeType>({ start: '', end: '' })
     const [dayTimes, setDayTimes] = useState<DayTimeType[]>([{ id: 0, day: '', time: { start: '12:00', end: '20:30' } }])
 
@@ -37,7 +33,6 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
             >반복 기간</UdongText>
             <DateRangePicker
                 setDate={setDate}
-                fixedDate={fixed ?  { start: '2022-10-20', end: '2022-11-01' } : undefined}
             />
         </HStack>
         <HStack>
@@ -57,7 +52,6 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                     >
                         <Spacer width={30}/>
                         <DayPicker
-                            fixed={fixed}
                             selectedDay={dayTime.day}
                             setSelectedDay={
                                 (newDay) => {
@@ -73,7 +67,6 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                             }
                         />
                         <TimeRangePicker
-                            fixedTime={fixed ? { start: '11:00', end: '23:00' } : undefined}
                             key={dayTime.id}
                             setTime={(newTime) => {
                                 const newTimes = dayTimes.map((target) => {
@@ -86,7 +79,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                                 setDayTimes(newTimes)
                             }}
                         />
-                        {fixed || i == 0 ?
+                        {i == 0 ?
                             <Spacer width={15}/> :
                             <UdongImage
                                 src={IcClose.src}
@@ -99,7 +92,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                             />}
                     </HStack>
                 ))
-                }{!fixed &&
+                }
                 <UdongImage
                     src={IcPlus.src}
                     height={15}
@@ -107,7 +100,7 @@ const EventDaySchedule = ({ fixed }: EventDaySchedule) => {
                     onClick={() => {
                         setDayTimes([...dayTimes, { id: dayTimes[dayTimes.length - 1].id + 1, day: '', time: { start: '', end: '' } }])
                     }}
-                />}
+                />
             </VStack>
         </HStack>
         <p style={{ color: 'white' }}>{date.start}</p>

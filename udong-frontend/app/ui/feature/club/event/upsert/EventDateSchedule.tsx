@@ -11,10 +11,6 @@ import IcPlus from '/app/ui/icons/IcPlus.png'
 import SpecificDatePicker from '../../../shared/SpecificDatePicker'
 import SpecificTimePicker from '../../../shared/SpecificTimePicker'
 
-interface EventDateSchedule {
-    fixed?: boolean
-}
-
 interface DateTimesType {
     id: number
     start: {
@@ -27,7 +23,7 @@ interface DateTimesType {
     }
 }
 
-const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
+const EventDateSchedule = () => {
     const [dateTimes, setDateTimes] = useState<DateTimesType[]>([{ id: 0, start: { date: '', time: '' }, end: { date: '', time: '' } }])
 
     return <VStack
@@ -62,7 +58,6 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                                 setDateTimes(newDateTimes)
                             }
                             }
-                            fixedDate={fixed ? '2022-10-10' : undefined}
                         />
                         <SpecificTimePicker
                             setTime={(newTime) => {
@@ -76,7 +71,6 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                                 setDateTimes(newDateTimes)
                             }
                             }
-                            fixedTime={fixed ? '15:30' : undefined}
                         />
                         <UdongText style={'GeneralContent'}>~</UdongText>
                         <SpecificDatePicker
@@ -91,7 +85,6 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                                 setDateTimes(newDateTimes)
                             }
                             }
-                            fixedDate={fixed ? '2022-10-22' : undefined}
                         />
                         <SpecificTimePicker
                             setTime={(newTime) => {
@@ -105,9 +98,8 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                                 setDateTimes(newDateTimes)
                             }
                             }
-                            fixedTime={fixed ? '12:00' : undefined}
                         />
-                        {fixed || i == 0 ?
+                        {i == 0 ?
                             <Spacer width={15}/> :
                             <UdongImage
                                 src={IcClose.src}
@@ -120,16 +112,16 @@ const EventDateSchedule = ({ fixed }: EventDateSchedule) => {
                             />}
                     </HStack>
                 ))}
-                {!fixed &&
-                <UdongImage
-                    src={IcPlus.src}
-                    height={15}
-                    width={15}
-                    onClick={() => {
-                        setDateTimes([...dateTimes, { id: dateTimes[dateTimes.length - 1].id + 1,
-                            start: { date: '', time: '' }, end: { date: '', time: '' } }])
-                    }}
-                />}
+                {
+                    <UdongImage
+                        src={IcPlus.src}
+                        height={15}
+                        width={15}
+                        onClick={() => {
+                            setDateTimes([...dateTimes, { id: dateTimes[dateTimes.length - 1].id + 1,
+                                start: { date: '', time: '' }, end: { date: '', time: '' } }])
+                        }}
+                    />}
             </VStack>
         </HStack>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}

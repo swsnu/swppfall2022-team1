@@ -9,11 +9,7 @@ import EventDaySchedule from './EventDaySchedule'
 
 type SchedulingTimeType = 'days' | 'dates' | 'notAssigned'
 
-interface EventAdditionalFieldsViewProps {
-    fixed?: boolean
-}
-
-export const EventAdditionalFieldsView = ({ fixed } : EventAdditionalFieldsViewProps) => {
+export const EventAdditionalFieldsView = () => {
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingTimeType>('days')
 
     return <VStack>
@@ -42,8 +38,8 @@ export const EventAdditionalFieldsView = ({ fixed } : EventAdditionalFieldsViewP
         </HStack>
         <Spacer height={30}/>
         {
-            schedulingTimeType === 'days' ? <EventDaySchedule fixed={fixed}/>
-                : schedulingTimeType === 'dates' ? <EventDateSchedule fixed={fixed}/> : null
+            schedulingTimeType === 'days' ? <EventDaySchedule />
+                : schedulingTimeType === 'dates' ? <EventDateSchedule /> : null
         }
         <Spacer height={20}/>
     </VStack>
