@@ -2,3 +2,8 @@ export const new2dArray = <T>(d1: number, d2: number, x: T): T[][] => Array(d1).
 
 export const timeToStr = (x: number) => (x % 2 === 0 ? `${x / 2}:00` : `${(x - 1) / 2}:30`)
 
+export const getDay = (d: Date) => {
+    const x = d.getDay()
+    return x === 0 ? 6 : x - 1
+}
+
