@@ -40,15 +40,21 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                         src={Logo.src}
                         height={50}
                         width={160}
+                        onClick={() => {
+                            if (router.pathname === '/' && router.query['tab'] !== 'mydong'){
+                                router.reload()
+                            } else {
+                                router.push('/')
+                            }
+                        }}
                         clickable={true}
-                        onClick={() => router.push('/')}
                     />
                     {type === HEADER_PAGE.CLUB ?
                         <HStack onClick={() => router.push(`/club/${clubId}`)}>
                             <UdongText
                                 style={'Header'}
                                 color={UdongColors.Primary}
-                                nonText={true}
+                                cursor={'pointer'}
                             >{clubName}</UdongText>
                         </HStack>
                         : null
@@ -58,11 +64,11 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                     alignItems={'center'}
                     gap={15}
                 >
-                    <div onClick={() => {router.push('/')}}>
+                    <div onClick={() => router.push('/')}>
                         <UdongText
                             style={'Header'}
                             color={UdongColors.GrayDark}
-                            nonText={true}
+                            cursor={'pointer'}
                         >로그아웃</UdongText>
                     </div>
                     <HStack
