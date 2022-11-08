@@ -30,6 +30,19 @@ const getQueryParam = (queryParam: string | string[] | undefined): PostType => {
     }
 }
 
+const getSubtitle = (postType: PostType) => {
+    switch(postType) {
+        case 'announcement':
+            return '일반 공지글'
+        case 'enrollment':
+            return '인원 모집글'
+        case 'scheduling':
+            return '일정 수합글'
+        default:
+            return ''
+    }
+}
+
 export const PostDetailContainer = () => {
     const router = useRouter()
     const { type } = router.query
@@ -45,6 +58,7 @@ export const PostDetailContainer = () => {
         <UdongHeader
             title={'겨울 공연 중요 공지!'}
             onGoBack={() => router.back()}
+            subtitle={getSubtitle(postType)}
             rightButtons={<>
                 <UdongButton
                     style={'line'}
