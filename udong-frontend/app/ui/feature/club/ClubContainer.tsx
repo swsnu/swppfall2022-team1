@@ -19,7 +19,7 @@ export const ClubContainer = (props: ClubContainerProps) => {
 
     const handleCurrentTab = useCallback((selectedTab: ClubTabType) => {
         router.replace(`/club/1/?tab=${selectedTab}`)
-    }, [])
+    }, [router])
 
     const getCurrentContainer = () => {
         if (tab === CLUB_TAB.BOARD) {
@@ -36,12 +36,17 @@ export const ClubContainer = (props: ClubContainerProps) => {
     }
 
     return <VStack>
-        <ClubTabView
-            selectedTab={tab}
-            setSelectedTab={handleCurrentTab}
-        />
-        <Spacer height={20}/>
-        {getCurrentContainer()}
+        <VStack
+            paddingHorizontal={50}
+            width='100vw'
+        >
+            <ClubTabView
+                selectedTab={tab}
+                setSelectedTab={handleCurrentTab}
+            />
+            <Spacer height={20}/>
+            {getCurrentContainer()}
+        </VStack>
     </VStack>
 
 }

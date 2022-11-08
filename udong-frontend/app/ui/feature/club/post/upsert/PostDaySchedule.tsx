@@ -1,12 +1,11 @@
 import styled from '@emotion/styled'
-import dynamic from 'next/dynamic'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 
 import { HStack, VStack } from '../../../../components/Stack'
-import UdongLoader from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
-import { DateRangeType } from '../../../shared/DateRangePicker'
+import DateRangePicker, { DateRangeType } from '../../../shared/DateRangePicker'
+import TimeRangePicker, { TimeRangeType } from '../../../shared/TimeRangePicker'
 
 enum DAYS {
     MONDAY='월',
@@ -19,34 +18,13 @@ enum DAYS {
 }
 
 interface PostDaySchedule {
-    fixed?: boolean
+    isEdit: boolean
 }
 
-const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
-    const [time, setTime] = useState<string[]>(['', ''])
-    const [day, setDay] = useState<DAYS|null>(null)
-    const [date, setDate] = useState<DateRangeType>({ start: '', end: '' })
-
-    const TimeRangePicker = useMemo(() => dynamic(() => import('../../../shared/TimeRangePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader width={300}/> }), [])
-    const DateRangePicker = useMemo(() => dynamic(() => import('../../../shared/DateRangePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader width={300}/> }), [])
-
-    const DayButton = ({ selectedDay, day } : { selectedDay : DAYS|null, day: DAYS }) => {
-        return <DayButtonContainer
-            selected={selectedDay === day}
-            onClick={()=>setDay(day)}
-        >
-            <UdongText
-                color={selectedDay === day ? UdongColors.White : UdongColors.GrayNormal}
-                style={'GeneralContent'}
-            >
-                {day}
-            </UdongText>
-        </DayButtonContainer>
-    }
+const PostDaySchedule = ({ isEdit }: PostDaySchedule) => {
+    const [time, setTime] = useState<TimeRangeType>(isEdit ? { start: '14:30', end: '16:00' } : { start: '', end: '' })
+    const [days, setDays] = useState<DAYS[]>(isEdit ? [DAYS.MONDAY, DAYS.THURSDAY] : [])
+    const [date, setDate] = useState<DateRangeType>(isEdit ? { start: '2022-11-01', end: '2022-11-10' } : { start: '', end: '' })
 
     return <VStack
         paddingHorizontal={120}
@@ -59,7 +37,8 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
             >시간</UdongText>
             <TimeRangePicker
                 setTime={setTime}
-                fixedTime={fixed ? time : undefined}
+                time={time}
+                fixed={isEdit}
             />
         </HStack>
         <HStack>
@@ -68,34 +47,32 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
                 width={150}
             >요일</UdongText>
             <HStack gap={10}>
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.MONDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.TUESDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.WEDNESDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.THURSDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.FRIDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.SATURDAY}
-                />
-                <DayButton
-                    selectedDay={day}
-                    day={DAYS.SUNDAY}
-                />
+                {Object.values(DAYS).map((target) => (
+                    <DayButton
+                        key={target}
+                        disabled={isEdit}
+                        fixed={isEdit}
+                        selected={days.includes(target)}
+                        onClick={()=>{
+                            const idx = days.indexOf(target)
+                            if (idx < 0){
+                                setDays([...days, target])
+                            } else {
+                                const newDays = [...days]
+                                newDays.splice(idx, 1)
+                                setDays(newDays)
+                            }
+                        }}
+                        style={{ cursor: isEdit ? 'not-allowed' : 'pointer' }}
+                    >
+                        <UdongText
+                            color={!days.includes(target) ? UdongColors.GrayNormal : isEdit ? UdongColors.GrayBright : UdongColors.White}
+                            style={'GeneralContent'}
+                        >
+                            {target}
+                        </UdongText>
+                    </DayButton>
+                ))}
             </HStack>
         </HStack>
         <HStack>
@@ -105,7 +82,8 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
             >반복 기간</UdongText>
             <DateRangePicker
                 setDate={setDate}
-                fixedDate={fixed ? date : undefined}
+                date={isEdit ? { start: '2022-09-30', end: '2022-10-02' } : date}
+                fixed={isEdit}
             />
         </HStack>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}
@@ -115,9 +93,9 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
 
 export default PostDaySchedule
 
-const DayButtonContainer = styled.div<{ selected: boolean }>`
+const DayButton = styled.button<{ selected: boolean, fixed: boolean }>`
     border: 1px solid ${(props) => props.selected ? UdongColors.GrayNormal : UdongColors.GrayDark};
-    background-color: ${(props) => props.selected ? UdongColors.GrayNormal : UdongColors.White};
+    background-color: ${(props) => props.selected ? UdongColors.GrayNormal : props.fixed ? UdongColors.GrayBright : UdongColors.White};
     width: 30px;
     height: 30px;
     text-align: center;

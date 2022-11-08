@@ -14,7 +14,6 @@ export const AddMyScheduleView = () => {
     const [timetable, setTimetable] = useState(dummy_data)
 
     return <UdongFloatingContainer
-        width={'calc(50% - 50px)'}
         padding={'35px 50px'}
         alignItems={'center'}
         gap={30}
@@ -36,6 +35,7 @@ export const AddMyScheduleView = () => {
             startTime={0}
             selected={timetable}
             setSelected={setTimetable}
+            selectColor={UdongColors.Primary50}
         />
     </UdongFloatingContainer>
 }

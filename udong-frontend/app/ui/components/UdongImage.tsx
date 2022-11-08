@@ -16,6 +16,7 @@ interface Props {
     alignSelf?: Property.AlignSelf
     borderRadius?: number
     border?: string
+    clickable?: boolean
 }
 
 export const UdongImage = (props: Props) => {
@@ -30,6 +31,7 @@ export const UdongImage = (props: Props) => {
         alignSelf,
         borderRadius,
         border,
+        clickable,
     } = props
     return (
         <Image
@@ -44,6 +46,7 @@ export const UdongImage = (props: Props) => {
                 display: 'block',
                 borderRadius: borderRadius ?? 0,
                 border,
+                cursor: clickable ? 'pointer' : 'default',
                 ...style,
             }}
             onClick={onClick}

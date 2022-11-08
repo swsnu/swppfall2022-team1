@@ -8,8 +8,16 @@ import { UdongColors } from '../../../../../theme/ColorPalette'
 import { PostAdditionalFieldsView } from '../PostAdditionalFieldsView'
 import { PostInputView } from '../PostInputView'
 
-export const PostCreateContainer = () => {
+export type PostType = 'announcement' | 'enrollment' | 'scheduling'
+
+interface PostCreateContainerProps {
+    postType: PostType
+}
+
+export const PostCreateContainer = (props: PostCreateContainerProps) => {
+    const { postType } = props
     const router = useRouter()
+    const [title, setTitle] = useState<string>('')
     const [contents, setContents] = useState<string>('')
 
     return <VStack paddingHorizontal={16}>
@@ -30,9 +38,14 @@ export const PostCreateContainer = () => {
         />
 
         <PostInputView
+            title={title}
+            setTitle={setTitle}
             contents={contents}
             setContents={setContents}
         />
-        <PostAdditionalFieldsView/>
+        <PostAdditionalFieldsView
+            showDateTimePicker={postType === 'scheduling'}
+            isEdit={false}
+        />
     </VStack>
 }

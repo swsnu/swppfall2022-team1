@@ -30,12 +30,16 @@ export const UserItem = (props: UserItemProps) => {
             />
             <Spacer width={10}/>
 
-            <UdongText style={'GeneralContent'}>{name}</UdongText>
+            <UdongText
+                style={'GeneralContent'}
+                cursor={'pointer'}
+            >{name}</UdongText>
 
             {isMe &&
                 <HStack>
                     <Spacer width={10}/>
                     <UdongChip
+                        color={UdongColors.Primary}
                         style={'line'}
                         text={'me'}
                         small={small}
@@ -46,6 +50,7 @@ export const UserItem = (props: UserItemProps) => {
                 <HStack>
                     <Spacer width={10}/>
                     <UdongChip
+                        color={UdongColors.Primary}
                         style={'line'}
                         text={'관리자'}
                         small={small}
@@ -59,6 +64,7 @@ export const UserItem = (props: UserItemProps) => {
                 src={remove.src}
                 height={10}
                 width={10}
+                clickable={true}
             />
         }
     </HStack>

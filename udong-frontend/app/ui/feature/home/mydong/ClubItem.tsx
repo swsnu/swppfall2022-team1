@@ -30,6 +30,8 @@ export const ClubItem = (props: ClubItemProps) => {
                 src={imageSrc}
                 height={160}
                 width={160}
+                borderRadius={30}
+                clickable={true}
             />
         </VStack>
         <Spacer height={8}/>

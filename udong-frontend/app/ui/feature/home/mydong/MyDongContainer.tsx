@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react'
 import { VStack } from '../../../components/Stack'
 import { UdongImage } from '../../../components/UdongImage'
 import dummy from '../../../icons/IcDong.png'
+import maple from '../../../icons/IcMaple.png'
 import plus from '../../../icons/IcPlus.png'
 import waffle from '../../../icons/IcWaffle.png'
 import { UdongColors } from '../../../theme/ColorPalette'
@@ -13,11 +14,12 @@ import { CreateClubModal } from './CreateClubModal'
 import { RegisterClubModal } from './RegisterClubModal'
 
 const dummyData = [
-    { imageSrc: dummy.src, name: '우리 동아리' },
+    { imageSrc: maple.src, name: '단풍' },
     { imageSrc: waffle.src, name: '와플스튜디오' },
+    { imageSrc: dummy.src, name: '우리 동아리' },
+    { imageSrc: dummy.src, name: '우리 동아리' },
+    { imageSrc: dummy.src, name: '우리 동아리' },
 ]
-
-const duplicatedDummyData = [...dummyData].concat(dummyData).concat(dummyData).concat(dummyData)
 
 export const MyDongContainer = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
@@ -41,6 +43,7 @@ export const MyDongContainer = () => {
                     src={plus.src}
                     height={30}
                     width={30}
+                    clickable={true}
                 />
             </AddClubButton>
 
@@ -60,7 +63,7 @@ export const MyDongContainer = () => {
                 setIsOpen={setIsCreateModalOpen}
             />
 
-            {duplicatedDummyData.map((item, index) => {
+            {dummyData.map((item, index) => {
                 return <ClubItem
                     key={`${item.name} / ${index}`}
                     imageSrc={item.imageSrc}
@@ -88,4 +91,5 @@ const AddClubButton = styled.div({
     height: 100,
     backgroundColor: UdongColors.GrayBright,
     borderRadius: 30,
+    cursor: 'pointer',
 })

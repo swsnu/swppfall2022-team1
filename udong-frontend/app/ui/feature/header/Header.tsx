@@ -50,6 +50,7 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                                 router.push('/')
                             }
                         }}
+                        clickable={true}
                     />
                     {type === HEADER_PAGE.CLUB ?
                         <HStack onClick={() => router.push(`/club/${clubId}`)}>
@@ -93,6 +94,7 @@ const CircularProfileIcon = styled.div({
     height: 40,
     borderRadius: 20,
     backgroundColor: UdongColors.GrayBright,
+    cursor: 'pointer',
 })
 
 const CircularProfileIconClicked = styled.div({

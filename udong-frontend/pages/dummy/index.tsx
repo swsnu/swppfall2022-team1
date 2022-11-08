@@ -57,21 +57,25 @@ export const DummyPage = () => {
         <Spacer height={16}/>
         <HStack gap={16}>
             <UdongChip
-                style={'primary'}
+                color={UdongColors.Primary}
+                style={'fill'}
                 onClick={() => console.log('hello world')}
                 text={'hello world'}
             />
             <UdongChip
-                style={'gray'}
+                color={UdongColors.GrayNormal}
+                style={'fill'}
                 onClick={() => console.log('hello world')}
                 text={'hello world'}
             />
             <UdongChip
-                style={'secondary'}
+                color={UdongColors.Secondary}
+                style={'fill'}
                 onClick={() => console.log('hello world')}
                 text={'hello world'}
             />
             <UdongChip
+                color={UdongColors.Primary}
                 style={'line'}
                 onClick={() => console.log('hello world')}
                 text={'hello world'}

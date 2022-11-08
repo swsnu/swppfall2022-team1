@@ -7,7 +7,8 @@ import { VStack } from '../../components/Stack'
 
 interface DateRangePickerProps {
     setDate: (date: DateRangeType) => void
-    fixedDate?: DateRangeType
+    date: DateRangeType
+    fixed?: boolean
 }
 
 export type DateRangeType = {
@@ -15,15 +16,15 @@ export type DateRangeType = {
     end: string
 }
 
-const DateRangePicker = ({ setDate, fixedDate } : DateRangePickerProps) => {
+const DateRangePicker = ({ setDate, date, fixed } : DateRangePickerProps) => {
     const { RangePicker } = useMemo(() => (
         DatePicker
     ), [])
 
     return <VStack width={320}>
         <RangePicker
-            defaultValue={fixedDate ? [moment(fixedDate.start, 'YYYY-MM-DD'), moment(fixedDate.end, 'YYYY-MM-DD')] : undefined}
-            disabled={!!fixedDate}
+            defaultValue={date.start.length ? [moment(date.start, 'YYYY-MM-DD'), moment(date.end, 'YYYY-MM-DD')] : undefined}
+            disabled={!!fixed}
             format={'YYYY-MM-DD'}
             minuteStep={30}
             onChange={(range) => {

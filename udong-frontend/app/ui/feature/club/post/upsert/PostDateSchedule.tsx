@@ -1,34 +1,28 @@
-import dynamic from 'next/dynamic'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 
+import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongImage } from '../../../../components/UdongImage'
-import UdongLoader from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
 
 import IcPlus from '/app/ui/icons/IcPlus.png'
 import IcClose from '/app/ui/icons/IcClose.png'
 
-import { DateRangeType } from '../../../shared/DateRangePicker'
+import DateRangePicker, { DateRangeType } from '../../../shared/DateRangePicker'
+import TimeRangePicker, { TimeRangeType } from '../../../shared/TimeRangePicker'
 
 interface PostDateSchedule {
-    fixed?: boolean
+    isEdit: boolean
 }
 
 interface DateRangeTypeWithId extends DateRangeType {
     id: number
 }
 
-const PostDateSchedule = ({ fixed }: PostDateSchedule) => {
-    const [time, setTime] = useState<string[]>(['', ''])
-    const [dates, setDates] = useState<DateRangeTypeWithId[]>([{ id: 0, start: '', end: '' }])
-
-    const TimeRangePicker = useMemo(() => dynamic(() => import('../../../shared/TimeRangePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader width={300}/> }), [])
-    const DateRangePicker = useMemo(() => dynamic(() => import('../../../shared/DateRangePicker').then((mod)=>mod.default),
-        { ssr: false, loading: () =>
-            <UdongLoader width={300}/> }), [])
+const PostDateSchedule = ({ isEdit }: PostDateSchedule) => {
+    const [time, setTime] = useState<TimeRangeType>(isEdit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
+    const [dates, setDates] = useState<DateRangeTypeWithId[]>(isEdit ? [{ id: 0, start: '2022-11-04', end: '2022-11-05' },
+        { id: 1, start: '2022-11-06', end: '2022-11-08' }] : [{ id: 0, start: '', end: '' }])
 
     return <VStack
         paddingHorizontal={120}
@@ -41,24 +35,26 @@ const PostDateSchedule = ({ fixed }: PostDateSchedule) => {
             >시간</UdongText>
             <TimeRangePicker
                 setTime={setTime}
-                fixedTime={fixed ? time : undefined}
+                time={time}
+                fixed={isEdit}
             />
         </HStack>
         <HStack>
             <UdongText
                 style={'GeneralContent'}
-                width={150}
+                width={120}
             >날짜</UdongText>
             <VStack
                 gap={15}
                 alignItems={'center'}
             >
-                {dates.map((date) => (
+                {dates.map((date, i) => (
                     <HStack
                         key={date.id}
                         gap={15}
                         alignItems={'center'}
                     >
+                        <Spacer width={15}/>
                         <DateRangePicker
                             setDate={(newDate) => {
                                 const newDates = dates.map((target) => {
@@ -70,19 +66,24 @@ const PostDateSchedule = ({ fixed }: PostDateSchedule) => {
                                 })
                                 setDates(newDates)
                             }}
-                            fixedDate={fixed ? date : undefined}
+                            date={date}
+                            fixed={isEdit}
                         />
-                        <UdongImage
-                            src={IcClose.src}
-                            height={15}
-                            width={15}
-                            onClick={() => {
-                                const newDates = dates.filter((target) => (target !== date))
-                                setDates(newDates)}
-                            }
-                        />
+                        {isEdit || i == 0 ?
+                            <Spacer width={15} />
+                            :
+                            <UdongImage
+                                src={IcClose.src}
+                                height={15}
+                                width={15}
+                                onClick={() => {
+                                    const newDates = dates.filter((target) => (target !== date))
+                                    setDates(newDates)}
+                                }
+                            />}
                     </HStack>
-                ))}
+                ))}{
+                    !isEdit &&
                 <UdongImage
                     src={IcPlus.src}
                     height={15}
@@ -91,6 +92,7 @@ const PostDateSchedule = ({ fixed }: PostDateSchedule) => {
                         setDates([...dates, { id: dates[dates.length - 1].id + 1, start: '', end: '' }])
                     }}
                 />
+                }
             </VStack>
         </HStack>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}

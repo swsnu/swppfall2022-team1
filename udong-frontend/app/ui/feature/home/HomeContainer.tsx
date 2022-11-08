@@ -17,11 +17,14 @@ export const HomeContainer = (props: HomeContainerProps) => {
 
     const handleCurrentTab = useCallback((selectedTab: HomeTabType) => {
         router.replace(`/?tab=${selectedTab}`)
-    }, [])
+    }, [router])
 
     return (
         <VStack>
-            <VStack paddingHorizontal={50}>
+            <VStack
+                paddingHorizontal={50}
+                width='100vw'
+            >
                 <HomeTabView
                     selectedTab={tab}
                     setSelectedTab={handleCurrentTab}

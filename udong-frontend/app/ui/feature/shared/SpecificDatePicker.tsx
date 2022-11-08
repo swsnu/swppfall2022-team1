@@ -7,14 +7,15 @@ import { VStack } from '../../components/Stack'
 
 interface SpecificDatePickerProps {
     setDate: (date: string) => void
-    fixedDate?: string[]
+    date: string
+    fixed?: boolean
 }
 
-const SpecificDatePicker = ({ setDate, fixedDate } : SpecificDatePickerProps) => {
+const SpecificDatePicker = ({ setDate, date, fixed } : SpecificDatePickerProps) => {
     return <VStack width={180}>
         <DatePicker
-            defaultValue={fixedDate ? moment(fixedDate, 'YYYY-MM-DD') : undefined}
-            disabled={!!fixedDate}
+            defaultValue={date.length ? moment(date, 'YYYY-MM-DD') : undefined}
+            disabled={!!fixed}
             format={'YYYY-MM-DD'}
             minuteStep={30}
             onChange={(date) => {

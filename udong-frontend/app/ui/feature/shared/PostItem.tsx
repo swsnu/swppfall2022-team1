@@ -81,7 +81,10 @@ export const PostItem = (props: PostItemProps) => {
                 })}
             </HStack>
 
-            <UdongText style={'ListTitle'}>
+            <UdongText
+                style={'ListTitle'}
+                cursor={'pointer'}
+            >
                 이번 스프린트도 파이팅입니다
             </UdongText>
 

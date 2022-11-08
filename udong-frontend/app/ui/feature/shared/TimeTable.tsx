@@ -109,7 +109,7 @@ interface TimeTableProps {
     style?: CSSProperties
     onHover?: (idx: CellIdx | null) => void
     onClick?: (idx: CellIdx) => void
-    onDrag: (startIdx: CellIdx, endIdx: CellIdx) => void
+    onDrag?: (startIdx: CellIdx, endIdx: CellIdx) => void
 }
 
 export const TimeTable = (props: TimeTableProps) => {
@@ -125,7 +125,7 @@ export const TimeTable = (props: TimeTableProps) => {
     const mxCnt = Math.max(1, maxFn(data.map(colData => maxFn(colData))))
 
     const calculateInDrag = (cellIdx: CellIdx) => {
-        if(!startCellIdx || !endCellIdx) {return false}
+        if(onDrag === undefined || !startCellIdx || !endCellIdx) {return false}
         const mnCol = Math.min(startCellIdx?.col, endCellIdx?.col)
         const mxCol = Math.max(startCellIdx?.col, endCellIdx?.col)
         const mnRow = Math.min(startCellIdx?.row, endCellIdx?.row)
@@ -134,6 +134,7 @@ export const TimeTable = (props: TimeTableProps) => {
     }
 
     useEffect(() => {
+        if(onDrag === undefined) {return}
         const calculateCellIdx = (e: Event): CellIdx|null => {
             if(!ref.current) {return null}
             const rect = ref.current.getBoundingClientRect()
@@ -146,11 +147,13 @@ export const TimeTable = (props: TimeTableProps) => {
         }
 
         const mouseUpHandler = (e: Event) => {
-            if(startCellIdx) {
-                const c = calculateCellIdx(e)
-                if(c) {onDrag(startCellIdx, c)}
+            if(onDrag) {
+                if(startCellIdx) {
+                    const c = calculateCellIdx(e)
+                    if(c) {onDrag(startCellIdx, c)}
+                }
+                setStartCellIdx(null)
             }
-            setStartCellIdx(null)
         }
 
         let timeout: ReturnType<typeof setTimeout> | null = null
@@ -213,10 +216,10 @@ export const TimeTable = (props: TimeTableProps) => {
                                     backgroundOpacity={cellSelected ? 1 : cnt / mxCnt / 2}
                                     onHover={onHover && (() => onHover({ col, row }))}
                                     onClick={onClick && (() => onClick({ col, row }))}
-                                    onMouseDown={() => {
+                                    onMouseDown={onDrag ? () => {
                                         setStartCellIdx({ col, row })
                                         setEndCellIdx({ col, row })
-                                    }}
+                                    } : undefined}
                                     gray={gray && gray[col][row]}
                                     text={(colData.length === 1 || (startTime + row) % 2 === 0) ? (startTime + row) : null}
                                 />

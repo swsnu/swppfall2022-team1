@@ -20,9 +20,9 @@ export const MyProfileView = () => {
     }, [])
 
     return <UdongFloatingContainer
-        width={'calc(50% - 50px)'}
         height={560}
         padding={'35px 50px'}
+        width={'400px'}
     >
         <UdongText style={'GeneralTitle'}>유저 프로필</UdongText>
         <Spacer height={90}/>
