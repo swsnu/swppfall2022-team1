@@ -61,11 +61,15 @@ const myId = 1
 
 export const getDayCnt = (data: SchedulingDataType) => data.dates ? data.dates.length : (data.weekdays ?? []).filter(x => x).length
 
+export const parseUsers = (users: { id: number, name: string, auth: string }[]) => (
+    users.map(({ id, name, auth  }) =>  ({ id, name, isMe: id === myId, isAdmin: auth === 'A' }))
+)
+
 export const useData = () => {
     const data = useMemo(() => schedulingDummy, [])
 
     const users = useMemo<SchedulingListUserType[]>(() => (
-        data.availableTime.map(({ user: { id, name, auth } }) =>  ({ id, name, isMe: id === myId, isAdmin: auth === 'A' }))
+        parseUsers(data.availableTime.map(({ user }) => user))
     ), [data])
 
     const cnt = useMemo<number[][]>(() => data.availableTime.reduce(
