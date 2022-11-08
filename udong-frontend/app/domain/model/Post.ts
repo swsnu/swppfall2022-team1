@@ -71,6 +71,16 @@ export const dummyFeedPosts: Array<Post> = [
         clubName: dummyClubWaffle.name,
         tags: dummyTagsWaffle,
     },
+    {
+        id: 6,
+        author: dummyUserNotMe,
+        title: '신나는 단풍! 웰컴 여러분~',
+        content: 'hello world',
+        type: PostType.ANNOUNCEMENT,
+        createdAt: '16시간 전',
+        clubName: dummyClubDanpung.name,
+        tags: dummyTagsDanpung,
+    },
 ]
 
 export const dummyBoardPosts = dummyFeedPosts.filter((post) => post.clubName === dummyClubDanpung.name)

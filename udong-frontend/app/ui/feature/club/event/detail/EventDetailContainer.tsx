@@ -18,7 +18,7 @@ export const EventDetailContainer = () => {
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
-            title={'MT'}
+            title={'2022년 겨울 공연'}
             onGoBack={() => router.back()}
             rightButtons={<>
                 <UdongButton
