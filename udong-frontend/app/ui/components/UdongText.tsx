@@ -25,6 +25,7 @@ interface TextProps {
     textDecoration?: Property.TextDecoration
     color?: string
     transition?: string
+    transitionTimingFunction?: string
 }
 
 /**
@@ -88,14 +89,16 @@ export const UdongText = (props: UdongTextProps & CSSProperties) => {
                     fontSize: 30,
                     fontWeight: 'bold',
                     color: UdongColors.Primary,
-                    transition: '1.0s',
+                    transition: '0.4s',
+                    transitionTimingFunction: 'linear',
                 }
             case 'TabUnselected':
                 return {
                     fontSize: 20,
                     fontWeight: 'bold',
                     color: UdongColors.GrayBright,
-                    transition: '0.5s',
+                    transition: '0.4s',
+                    transitionTimingFunction: 'linear',
                 }
             case 'Header':
                 return {
@@ -119,6 +122,7 @@ export const UdongText = (props: UdongTextProps & CSSProperties) => {
                 textDecoration: textProps().textDecoration,
                 color: textProps().color,
                 transition: textProps().transition,
+                transitionTimingFunction: textProps().transitionTimingFunction,
                 margin: 0,
                 cursor: cursor ?? undefined,
                 ...props,
