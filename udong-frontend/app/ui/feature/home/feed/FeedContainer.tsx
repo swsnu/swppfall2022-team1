@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { dummyFeedPosts } from '../../../../domain/model/Post'
 import { Spacer } from '../../../components/Spacer'
 import { VStack } from '../../../components/Stack'
 import UdongLoader from '../../../components/UdongLoader'
@@ -23,16 +24,12 @@ export const FeedContainer = () => {
 
         {loading ? <UdongLoader height={500}/> :
             <VStack>
-                <PostItem/>
-                <PostItem/>
-                <PostItem/>
-                <PostItem/>
-                <PostItem/>
-                <PostItem/>
-                <PostItem/>
-                <PostItem/>
-                <PostItem/>
-                <PostItem/>
+                {dummyFeedPosts.concat(dummyFeedPosts).map((post, index) => {
+                    return <PostItem
+                        post={post}
+                        key={post.id + index}
+                    />
+                })}
                 <ScrollToTopButton/>
             </VStack>
         }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { dummyBoardPosts } from '../../../../domain/model/Post'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -35,15 +36,13 @@ export const BoardContainer = () => {
 
         {loading ? <UdongLoader height={400}/> :
             <VStack>
-                <PostItem isClubBoard={true}/>
-                <PostItem isClubBoard={true}/>
-                <PostItem isClubBoard={true}/>
-                <PostItem isClubBoard={true}/>
-                {/* 코드 중복 잘 것 같아서 주석 달기*/}
-                <PostItem isClubBoard={true}/>
-                <PostItem isClubBoard={true}/>
-                <PostItem isClubBoard={true}/>
-                <PostItem isClubBoard={true}/>
+                {dummyBoardPosts.concat(dummyBoardPosts).concat(dummyBoardPosts).map((post, index) => {
+                    return <PostItem
+                        post={post}
+                        key={post.id + index}
+                        isClubBoard={true}
+                    />
+                })}
 
                 <PostCreateModal
                     isOpen={showPostCreateModal}
