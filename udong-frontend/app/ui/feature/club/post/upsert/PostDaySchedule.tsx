@@ -18,13 +18,13 @@ enum DAYS {
 }
 
 interface PostDaySchedule {
-    edit: boolean
+    isEdit: boolean
 }
 
-const PostDaySchedule = ({ edit }: PostDaySchedule) => {
-    const [time, setTime] = useState<TimeRangeType>(edit ? { start: '14:30', end: '16:00' } : { start: '', end: '' })
-    const [days, setDays] = useState<DAYS[]>(edit ? [DAYS.MONDAY, DAYS.THURSDAY] : [])
-    const [date, setDate] = useState<DateRangeType>(edit ? { start: '2022-11-01', end: '2022-11-10' } : { start: '', end: '' })
+const PostDaySchedule = ({ isEdit }: PostDaySchedule) => {
+    const [time, setTime] = useState<TimeRangeType>(isEdit ? { start: '14:30', end: '16:00' } : { start: '', end: '' })
+    const [days, setDays] = useState<DAYS[]>(isEdit ? [DAYS.MONDAY, DAYS.THURSDAY] : [])
+    const [date, setDate] = useState<DateRangeType>(isEdit ? { start: '2022-11-01', end: '2022-11-10' } : { start: '', end: '' })
 
     return <VStack
         paddingHorizontal={120}
@@ -38,7 +38,7 @@ const PostDaySchedule = ({ edit }: PostDaySchedule) => {
             <TimeRangePicker
                 setTime={setTime}
                 time={time}
-                fixed={edit}
+                fixed={isEdit}
             />
         </HStack>
         <HStack>
@@ -50,8 +50,8 @@ const PostDaySchedule = ({ edit }: PostDaySchedule) => {
                 {Object.values(DAYS).map((target) => (
                     <DayButton
                         key={target}
-                        disabled={edit}
-                        fixed={edit}
+                        disabled={isEdit}
+                        fixed={isEdit}
                         selected={days.includes(target)}
                         onClick={()=>{
                             const idx = days.indexOf(target)
@@ -63,10 +63,10 @@ const PostDaySchedule = ({ edit }: PostDaySchedule) => {
                                 setDays(newDays)
                             }
                         }}
-                        style={{ cursor: 'pointer' }}
+                        style={{ cursor: isEdit ? 'not-allowed' : 'pointer' }}
                     >
                         <UdongText
-                            color={!days.includes(target) ? UdongColors.GrayNormal : edit ? UdongColors.GrayBright : UdongColors.White}
+                            color={!days.includes(target) ? UdongColors.GrayNormal : isEdit ? UdongColors.GrayBright : UdongColors.White}
                             style={'GeneralContent'}
                         >
                             {target}
@@ -82,8 +82,8 @@ const PostDaySchedule = ({ edit }: PostDaySchedule) => {
             >반복 기간</UdongText>
             <DateRangePicker
                 setDate={setDate}
-                date={edit ? { start: '2022-09-30', end: '2022-10-02' } : date}
-                fixed={edit}
+                date={isEdit ? { start: '2022-09-30', end: '2022-10-02' } : date}
+                fixed={isEdit}
             />
         </HStack>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}

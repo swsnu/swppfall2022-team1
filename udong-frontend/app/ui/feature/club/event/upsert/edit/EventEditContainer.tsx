@@ -31,5 +31,5 @@ export const EventEditContainer = () => {
             title={title}
             setTitle={setTitle}
         />
-        <EventAdditionalFieldsView edit={true}/>
+        <EventAdditionalFieldsView isEdit={true}/>
     </VStack>}

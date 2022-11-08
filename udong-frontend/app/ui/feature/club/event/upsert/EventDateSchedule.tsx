@@ -24,10 +24,10 @@ interface DateTimesType {
 }
 
 interface EventDateSchedule {
-    edit: boolean
+    isEdit: boolean
 }
 
-const EventDateSchedule = ({ edit }: EventDateSchedule) => {
+const EventDateSchedule = ({ isEdit }: EventDateSchedule) => {
     const [dateTimes, setDateTimes] = useState<DateTimesType[]>([{ id: 0, start: { date: '', time: '' }, end: { date: '', time: '' } }])
 
     return <VStack
@@ -132,7 +132,7 @@ const EventDateSchedule = ({ edit }: EventDateSchedule) => {
                     />}
             </VStack>
         </HStack>
-        <p style={{ color: 'white' }}>{edit}</p>
+        <p style={{ color: 'white' }}>{isEdit}</p>
         {/*<SpecificTimePicker setTime={()=>{}}/>*/}
         {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>

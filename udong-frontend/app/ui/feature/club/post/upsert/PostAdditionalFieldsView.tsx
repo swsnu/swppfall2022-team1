@@ -15,12 +15,11 @@ import PostDaySchedule from './PostDaySchedule'
 type SchedulingTimeType = 'days' | 'dates'
 
 interface PostAdditionalFieldsViewProps {
-    edit: boolean
+    isEdit: boolean
     showDateTimePicker?: boolean
 }
 
-export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) => {
-    const { showDateTimePicker = false } = props
+export const PostAdditionalFieldsView = ({ isEdit, showDateTimePicker = false }: PostAdditionalFieldsViewProps) => {
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingTimeType>('days')
 
     return <VStack>
@@ -90,18 +89,27 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
                     <UdongRadioButton
                         text={'요일'}
                         checked={schedulingTimeType === 'days'}
-                        onCheck={() => setSchedulingTimeType('days')}
+                        onCheck={() => {
+                            if (!isEdit){
+                                setSchedulingTimeType('days')
+                            }
+                        }}
+                        disabled={isEdit}
                     />
                     <Spacer width={30}/>
                     <UdongRadioButton
                         text={'날짜'}
                         checked={schedulingTimeType === 'dates'}
-                        onCheck={() => setSchedulingTimeType('dates')}
+                        onCheck={() => {
+                            if (!isEdit){
+                                setSchedulingTimeType('dates')}
+                        }}
+                        disabled={isEdit}
                     />
                 </HStack>
                 <Spacer height={30}/>
                 {
-                    schedulingTimeType === 'days' ? <PostDaySchedule edit={props.edit}/> : <PostDateSchedule edit={props.edit}/>
+                    schedulingTimeType === 'days' ? <PostDaySchedule isEdit={isEdit}/> : <PostDateSchedule isEdit={isEdit}/>
                 }
                 <Spacer height={20}/>
             </VStack>

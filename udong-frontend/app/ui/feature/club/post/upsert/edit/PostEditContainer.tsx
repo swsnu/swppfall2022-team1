@@ -37,8 +37,6 @@ export const PostEditContainer = (props: PostEditContainerProps) => {
                 </UdongButton>
             }
         />
-        {/*코드 중복 일어날 것 같아..*/}
-
         <PostInputView
             title={title}
             setTitle={setTitle}
@@ -47,6 +45,6 @@ export const PostEditContainer = (props: PostEditContainerProps) => {
         />
         <PostAdditionalFieldsView
             showDateTimePicker={postType === 'scheduling'}
-            edit={true}
+            isEdit={true}
         />
     </VStack>}

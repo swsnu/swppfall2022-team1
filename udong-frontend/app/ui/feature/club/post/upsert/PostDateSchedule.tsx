@@ -12,16 +12,16 @@ import DateRangePicker, { DateRangeType } from '../../../shared/DateRangePicker'
 import TimeRangePicker, { TimeRangeType } from '../../../shared/TimeRangePicker'
 
 interface PostDateSchedule {
-    edit: boolean
+    isEdit: boolean
 }
 
 interface DateRangeTypeWithId extends DateRangeType {
     id: number
 }
 
-const PostDateSchedule = ({ edit }: PostDateSchedule) => {
-    const [time, setTime] = useState<TimeRangeType>(edit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
-    const [dates, setDates] = useState<DateRangeTypeWithId[]>(edit ? [{ id: 0, start: '2022-11-04', end: '2022-11-05' },
+const PostDateSchedule = ({ isEdit }: PostDateSchedule) => {
+    const [time, setTime] = useState<TimeRangeType>(isEdit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
+    const [dates, setDates] = useState<DateRangeTypeWithId[]>(isEdit ? [{ id: 0, start: '2022-11-04', end: '2022-11-05' },
         { id: 1, start: '2022-11-06', end: '2022-11-08' }] : [{ id: 0, start: '', end: '' }])
 
     return <VStack
@@ -36,7 +36,7 @@ const PostDateSchedule = ({ edit }: PostDateSchedule) => {
             <TimeRangePicker
                 setTime={setTime}
                 time={time}
-                fixed={edit}
+                fixed={isEdit}
             />
         </HStack>
         <HStack>
@@ -67,9 +67,9 @@ const PostDateSchedule = ({ edit }: PostDateSchedule) => {
                                 setDates(newDates)
                             }}
                             date={date}
-                            fixed={edit}
+                            fixed={isEdit}
                         />
-                        {edit || i == 0 ?
+                        {isEdit || i == 0 ?
                             <Spacer width={15} />
                             :
                             <UdongImage
@@ -83,7 +83,7 @@ const PostDateSchedule = ({ edit }: PostDateSchedule) => {
                             />}
                     </HStack>
                 ))}{
-                    !edit &&
+                    !isEdit &&
                 <UdongImage
                     src={IcPlus.src}
                     height={15}

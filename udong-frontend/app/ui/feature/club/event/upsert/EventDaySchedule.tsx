@@ -19,12 +19,12 @@ interface DayTimeType {
 }
 
 interface EventDaySchedule {
-    edit: boolean
+    isEdit: boolean
 }
 
-const EventDaySchedule = ({ edit }: EventDaySchedule) => {
-    const [date, setDate] = useState<DateRangeType>(edit ? { start: '2019-03-25', end: '2019-03-26' } : { start: '', end: '' })
-    const [dayTimes, setDayTimes] = useState<DayTimeType[]>(edit ?
+const EventDaySchedule = ({ isEdit }: EventDaySchedule) => {
+    const [date, setDate] = useState<DateRangeType>(isEdit ? { start: '2019-03-25', end: '2019-03-26' } : { start: '', end: '' })
+    const [dayTimes, setDayTimes] = useState<DayTimeType[]>(isEdit ?
         [{ id: 0, day: DAYS.TUESDAY, time: { start: '03:30', end: '06:00' } }]
         : [{ id: 0, day: '', time: { start: '', end: '' } }])
 
