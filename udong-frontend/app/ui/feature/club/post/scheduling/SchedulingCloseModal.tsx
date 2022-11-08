@@ -15,8 +15,8 @@ interface UdongModalProps {
 
 export const SchedulingCloseModal = (props: UdongModalProps) => {
     const { isOpen, setIsOpen } = props
-    const [createTag, setCreateTag] = useState(false)
-    const [saveTime, setSaveTime] = useState(false)
+    const [createTag, setCreateTag] = useState<boolean>(false)
+    const [saveTime, setSaveTime] = useState<boolean>(false)
     const router = useRouter()
 
     return (
