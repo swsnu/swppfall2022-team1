@@ -43,6 +43,7 @@ export const MyDongContainer = () => {
                     src={plus.src}
                     height={30}
                     width={30}
+                    clickable={true}
                 />
             </AddClubButton>
 
@@ -90,4 +91,5 @@ const AddClubButton = styled.div({
     height: 100,
     backgroundColor: UdongColors.GrayBright,
     borderRadius: 30,
+    cursor: 'pointer',
 })

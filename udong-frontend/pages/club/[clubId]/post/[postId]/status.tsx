@@ -1,5 +1,5 @@
-export const PostStatusPage = () => {
-    return <h1>Post status!! (현황보기)</h1>
-}
+import { SchedulingStatusContainer } from '../../../../../app/ui/feature/club/post/scheduling/SchedulingStatusContainer'
+
+export const PostStatusPage = () => <SchedulingStatusContainer/>
 
 export default PostStatusPage

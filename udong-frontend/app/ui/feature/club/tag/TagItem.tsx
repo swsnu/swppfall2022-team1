@@ -68,6 +68,7 @@ export const TagItem = (props: TagItemProps) => {
                         src={edit.src}
                         height={20}
                         width={20}
+                        clickable={true}
                     />
                 </VStack>
 
@@ -77,6 +78,7 @@ export const TagItem = (props: TagItemProps) => {
                         src={trash.src}
                         height={20}
                         width={20}
+                        clickable={true}
                     />
                 </VStack>
             </HStack>
