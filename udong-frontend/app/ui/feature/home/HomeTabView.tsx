@@ -21,6 +21,7 @@ export const HomeTabView = (props: HomeTabViewProps) => {
     return <HStack
         justifyContent={'center'}
         alignItems={'end'}
+        height={50}
     >
         <UdongTab
             text={'피드'}

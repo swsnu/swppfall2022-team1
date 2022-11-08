@@ -27,6 +27,7 @@ export const ClubTabView = (props: ClubTabViewProps) => {
     return <HStack
         justifyContent={'center'}
         alignItems={'end'}
+        height={50}
     >
         <UdongTab
             text={'게시판'}
