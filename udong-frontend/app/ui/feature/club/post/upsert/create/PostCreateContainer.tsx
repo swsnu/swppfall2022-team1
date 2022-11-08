@@ -14,6 +14,19 @@ interface PostCreateContainerProps {
     postType: PostType
 }
 
+const getSubtitle = (postType: PostType) => {
+    switch(postType) {
+        case 'announcement':
+            return '일반 공지글'
+        case 'enrollment':
+            return '인원 모집글'
+        case 'scheduling':
+            return '일정 수합글'
+        default:
+            return ''
+    }
+}
+
 export const PostCreateContainer = (props: PostCreateContainerProps) => {
     const { postType } = props
     const router = useRouter()
@@ -23,14 +36,14 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
     return <VStack paddingHorizontal={16}>
         <UdongHeader
             title={'게시글 쓰기'}
-            subtitle={'일반 공지글'}
+            subtitle={getSubtitle(postType)}
             onGoBack={() => router.back()}
             rightButtons={
                 <UdongButton
                     style={'line'}
                     color={UdongColors.Primary}
                     height={40}
-                    onClick={() => {return}}
+                    onClick={() => {router.push('/club/1/post/1?type=scheduling')}}
                 >
                     저장하기
                 </UdongButton>
