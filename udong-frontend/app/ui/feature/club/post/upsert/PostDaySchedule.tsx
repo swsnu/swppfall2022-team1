@@ -23,7 +23,7 @@ interface PostDaySchedule {
 
 const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
     const [time, setTime] = useState<TimeRangeType>({ start: '', end: '' })
-    const [day, setDay] = useState<DAYS|null>(null)
+    const [days, setDays] = useState<DAYS[]>([])
     const [date, setDate] = useState<DateRangeType>({ start: '', end: '' })
 
     return <VStack
@@ -49,12 +49,21 @@ const PostDaySchedule = ({ fixed }: PostDaySchedule) => {
                 {Object.values(DAYS).map((target) => (
                     <DayButton
                         key={target}
-                        selected={target === day}
-                        onClick={()=>setDay(target)}
+                        selected={days.includes(target)}
+                        onClick={()=>{
+                            const idx = days.indexOf(target)
+                            if (idx < 0){
+                                setDays([...days, target])
+                            } else {
+                                const newDays = [...days]
+                                newDays.splice(idx, 1)
+                                setDays(newDays)
+                            }
+                        }}
                         style={{ cursor: 'pointer' }}
                     >
                         <UdongText
-                            color={target === day ? UdongColors.White : UdongColors.GrayNormal}
+                            color={days.includes(target) ? UdongColors.White : UdongColors.GrayNormal}
                             style={'GeneralContent'}
                         >
                             {target}
