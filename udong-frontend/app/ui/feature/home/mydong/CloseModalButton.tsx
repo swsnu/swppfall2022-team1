@@ -18,6 +18,7 @@ export const CloseModalButton = (props: CloseModalButtonProps) => {
             height={15}
             width={15}
             onClick={() => setIsOpen(false)}
+            clickable={true}
         />
     </VStack>
 }

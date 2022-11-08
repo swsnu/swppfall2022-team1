@@ -41,6 +41,7 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
                     height={15}
                     width={15}
                     onClick={() => setIsOpen(false)}
+                    clickable={true}
                 />
             </VStack>
             <Spacer height={5}/>
@@ -52,6 +53,7 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
                     src={edit.src}
                     height={20}
                     width={20}
+                    clickable={true}
                 />
             </HStack>
             <Spacer height={45}/>
