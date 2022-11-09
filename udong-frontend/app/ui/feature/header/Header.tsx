@@ -110,4 +110,5 @@ const HeaderContainer = styled.div({
     top: 0,
     width: '100%',
     backgroundColor: UdongColors.White,
+    zIndex: 100,
 })
