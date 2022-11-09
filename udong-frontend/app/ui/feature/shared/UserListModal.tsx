@@ -45,6 +45,7 @@ export const UserListModal = (props: UserListModalProps) => {
                     src={close.src}
                     height={15}
                     width={15}
+                    clickable
                 />
             </VStack>
             <Spacer height={5}/>
