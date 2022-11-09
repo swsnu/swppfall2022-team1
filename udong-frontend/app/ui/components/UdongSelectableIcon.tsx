@@ -25,6 +25,7 @@ const UdongSelectableIcon = ({ selected, selectedIcon, unselectedIcon, onClickSe
                     src={unselectedIcon.src}
                     height={25}
                     width={25}
+                    clickable
                 />}
         </div>
     )
