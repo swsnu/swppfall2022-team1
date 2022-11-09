@@ -21,20 +21,40 @@ const tags: Array<TagItemType> = [
         isUserIncluded: true,
     },
     {
-        name: '제발 종강 주세요 제발료',
+        name: '2022년 겨울 공연 1팀',
+        isUserIncluded: true,
+    },
+    {
+        name: '2022년 겨울 공연 2팀',
         isUserIncluded: false,
     },
     {
-        name: '자일리톨',
+        name: '2022년 겨울 공연 3팀',
         isUserIncluded: false,
     },
     {
-        name: '태그 이름 이렇게 길게 지으면 계정 정지시킬겁니다 진짜 주의해주세요 이번만 경고로 넘어가겠습니다 다음부터는 얄짤 없을테...',
+        name: '월요일 세션',
+        isUserIncluded: true,
+    },
+    {
+        name: '수요일 세션',
+        isUserIncluded: false,
+    },
+    {
+        name: '2022년 여름 공연 1팀',
+        isUserIncluded: false,
+    },
+    {
+        name: '2022년 여름 공연 2팀',
+        isUserIncluded: true,
+    },
+    {
+        name: '2022년 여름 공연 3팀',
         isUserIncluded: false,
     },
 ]
 
-const dummy = [...tags].concat(tags.slice(1)).concat(tags.slice(1)).concat(tags.slice(1)).concat(tags.slice(1))
+const dummy = tags
 
 export const TagContainer = () => {
     const [showUpsertModal, setShowUpsertModal] = useState(false)
