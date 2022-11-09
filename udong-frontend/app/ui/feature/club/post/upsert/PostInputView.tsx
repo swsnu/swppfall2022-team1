@@ -4,6 +4,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useMemo } from 'react'
 import 'react-quill/dist/quill.snow.css'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
+import UdongLoader from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 
@@ -20,7 +21,7 @@ export const PostInputView = (props: IProps) => {
 
     const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), {
         ssr: false,
-        loading: () => <p>Loading ...</p>,
+        loading: () => <UdongLoader/>,
     }), [])
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
