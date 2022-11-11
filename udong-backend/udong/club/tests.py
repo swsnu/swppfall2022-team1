@@ -4,6 +4,7 @@ from user.models import UserClub
 from club.models import Club
 from event.models import Event
 from timedata.models import Time
+from tag.models import Tag
 from datetime import date
 
 # Create your tests here.
@@ -16,7 +17,7 @@ class ClubTestCase(MyTestCase):
         club2 = Club.objects.create(name="Ramen", code="random")
         UserClub.objects.create(user=self.dummy_user, club=club1, auth="A")
         event1 = Event.objects.create(club=club1, name="Turing award")
-        time1 = Time.objects.create(
+        Time.objects.create(
             event=event1,
             type="D",
             start_date=date(2022, 11, 6),
@@ -24,7 +25,7 @@ class ClubTestCase(MyTestCase):
             start_time=10,
             end_time=30,
         )
-        time2 = Time.objects.create(
+        Time.objects.create(
             event=event1,
             type="W",
             repeat_start=date(2022, 11, 6),
@@ -33,6 +34,8 @@ class ClubTestCase(MyTestCase):
             start_time=15,
             end_time=35,
         )
+        Tag.objects.create(club=club1, name="genius")
+        Tag.objects.create(club=club1, name="winner")
 
     # api/club/:id
     def test_club_id(self) -> None:
@@ -84,6 +87,7 @@ class ClubTestCase(MyTestCase):
             response.content,
             [
                 {
+                    "id": 1,
                     "name": "Turing award",
                     "time": [
                         {
@@ -107,6 +111,26 @@ class ClubTestCase(MyTestCase):
                             "end_time": 35,
                         },
                     ],
+                },
+            ],
+        )
+
+    # api/club/:id/tag/
+    def test_club_tag(self) -> None:
+        client = Client()
+
+        response = client.get("/api/club/1/tag/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            [
+                {
+                    "id": 1,
+                    "name": "genius",
+                },
+                {
+                    "id": 2,
+                    "name": "winner",
                 },
             ],
         )
