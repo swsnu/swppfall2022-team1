@@ -43,7 +43,7 @@ jobs:
     - name: Test Backend
       working-directory: ./udong-backend/udong
       run: |
-        coverage run --source='.' --omit='udong/*,dummy.py' manage.py test
+        coverage run --branch --source='.' --omit='udong/*,dummy.py' manage.py test
         coverage lcov
         coverage xml
 
