@@ -20,7 +20,7 @@ export interface EventType {
     }[]
 }
 
-const dummyEvents: EventType[] = [
+export const dummyEvents: EventType[] = [
     {
         id: '1',
         title: 'event1',

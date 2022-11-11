@@ -1,29 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { EventType } from '../../EventContainer'
+import { dummyEvents } from '../../EventContainer'
 import { UnsettledEventList } from '../UnsettledEventList'
-
-const dummyEvents: EventType[] = [
-    {
-        id: '1',
-        title: 'test event 1',
-        created_at: new Date('2021-01-23T22:23:22'),
-        updated_at: new Date('2021-08-12T12:11:02'),
-        times: [{
-            start: new Date('2021-11-01T10:00:00'),
-            end: new Date('2021-11-03T11:00:00'),
-        }],
-    },
-    {
-        id: '2',
-        title: 'test event 2',
-        created_at: new Date('2022-03-22T22:23:22'),
-        updated_at: new Date('2022-09-15T12:11:02'),
-        times: [{
-            start: new Date('2022-11-01T10:00:00'),
-            end: new Date('2022-11-03T11:00:00'),
-        }],
-    }]
 
 describe('<UnsettledEventList/>', () => {
     it('render unsettled event list',  () => {
