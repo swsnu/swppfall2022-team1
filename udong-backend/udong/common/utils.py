@@ -33,14 +33,14 @@ class MyJson:
             for i in range(len(json1)):
                 if MyJson.compare(json1[i], json2[i]) == False:
                     return False
-                return True
+            return True
         elif isinstance(json1, dict) and isinstance(json2, dict):
             if sorted(json1) != sorted(json2):
                 return False
             for key in json1.keys():
                 if MyJson.compare(json1[key], json2[key]) == False:
                     return False
-                return True
+            return True
         elif isinstance(json1, int) and isinstance(json2, int):
             return json1 == json2
         elif isinstance(json1, str) and isinstance(json2, str):
