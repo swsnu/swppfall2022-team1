@@ -12,7 +12,6 @@ const customJestConfig = {
     testEnvironment: 'jest-environment-jsdom',
     collectCoverageFrom: [
         'app/**/*.{js,jsx,ts,tsx}',
-        'pages/**/*.{js,jsx,ts,tsx}',
         '!pages/dummy/*',
     ],
     coverageReporters: ['lcov', 'text', 'html']
