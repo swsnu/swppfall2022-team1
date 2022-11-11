@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
 import { MyDongContainer } from '../MyDongContainer'
@@ -15,11 +15,12 @@ describe('<MyDongContainer/>', () => {
         expect(text).toBeDefined()
     })
 
-    it('should test when add club modal is open', () => {
+    it('should test when add club modal is open', async () => {
         render(<MyDongContainer/>)
         const openButton = screen.getAllByRole('img')
-        fireEvent.click(openButton[0])
-        const isOpen = screen.getByText('open')
-        expect(isOpen).toBeDefined()
+        await act(async () => {
+            fireEvent.click(openButton[0])
+        })
+        await waitFor(() => expect(screen.getByText('open')).toBeDefined())
     })
 })
