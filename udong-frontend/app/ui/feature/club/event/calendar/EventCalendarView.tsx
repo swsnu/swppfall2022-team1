@@ -6,7 +6,7 @@ import { HStack, VStack } from '../../../../components/Stack'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { EventType } from '../EventContainer'
 import { EventCalendar } from './EventCalendar'
-import UnsettledEventList from './UnsettledEventList'
+import { UnsettledEventList } from './UnsettledEventList'
 
 interface EventCalendarViewProps {
     events: EventType[]
