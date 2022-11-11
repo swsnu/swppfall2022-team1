@@ -1,4 +1,5 @@
 from django.test import TestCase
+from user.models import User
 from typing import Dict, List
 import json
 
@@ -23,3 +24,12 @@ class MyTestCase(TestCase):
                 del json_j1[key]
 
         self.assertEqual(sorted(json_j1), sorted(json_j2))
+
+    # Add Dummy User
+    def setUp(self) -> None:
+        User.objects.create(
+            name="Alan Turing",
+            google="google",
+            image="image",
+            time_table="001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+        )
