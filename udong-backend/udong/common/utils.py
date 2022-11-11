@@ -49,8 +49,6 @@ class MyJson:
             return json1 == json2
         elif json1 is None and json2 is None:
             return True
-        else:
-            return False
         return False
 
     def __eq__(self, other: object) -> bool:
