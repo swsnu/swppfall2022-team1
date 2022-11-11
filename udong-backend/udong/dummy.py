@@ -6,6 +6,7 @@ from timedata.models import Time
 from tag.models import Tag
 from post.models import Post
 from post.models import PostTag
+from post.models import Enrollment
 from tag.models import UserTag
 from datetime import datetime
 
@@ -73,8 +74,10 @@ post2 = Post.objects.create(
     club=club1,
     title="Nobel prize is coming!",
     content="Nobel Prize Nobel Prize Nobel Prize",
-    type="A",
+    type="P",
 )
+
+enrollment2 = Enrollment.objects.create(post=post2, closed=False)
 
 # Add tag to post
 PostTag.objects.create(post=post1, tag=tag1)
