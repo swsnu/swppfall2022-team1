@@ -3,11 +3,8 @@ from user.models import User, UserClub
 from club.models import Club
 from event.models import Event
 from timedata.models import Time
-from tag.models import Tag
-from post.models import Post
-from post.models import PostTag
-from post.models import Enrollment
-from tag.models import UserTag
+from tag.models import Tag, UserTag
+from post.models import Post, PostTag, Enrollment, Scheduling
 from datetime import date
 
 # Refresh DB
@@ -83,6 +80,23 @@ post2 = Post.objects.create(
 
 enrollment2 = Enrollment.objects.create(post=post2, closed=False)
 
+post3 = Post.objects.create(
+    author=user1,
+    club=club2,
+    title="When to Meet?",
+    content="Really Boring",
+    type="T",
+)
+
+scheduling3 = Scheduling.objects.create(
+    post=post3,
+    type="D",
+    dates=["2022-11-07"],
+    start_time=25,
+    end_time=40,
+    closed=True,
+)
+
 # Add tag to post
 PostTag.objects.create(post=post1, tag=tag1)
 PostTag.objects.create(post=post1, tag=tag2)
@@ -91,3 +105,7 @@ PostTag.objects.create(post=post1, tag=tag3)
 PostTag.objects.create(post=post2, tag=tag1)
 PostTag.objects.create(post=post2, tag=tag2)
 PostTag.objects.create(post=post2, tag=tag3)
+
+PostTag.objects.create(post=post3, tag=tag1)
+PostTag.objects.create(post=post3, tag=tag2)
+PostTag.objects.create(post=post3, tag=tag3)
