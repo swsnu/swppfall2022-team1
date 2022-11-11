@@ -10,25 +10,25 @@ interface UdongSelectableIconProps {
     onClickUnSelected?: () => void
 }
 
-const UdongSelectableIcon = ({ selected, selectedIcon, unselectedIcon, onClickSelected, onClickUnSelected }: UdongSelectableIconProps) => {
-    return (
-        <div
-            onClick={selected ? onClickSelected : onClickUnSelected}
-        >
-            {selected ?
-                <UdongImage
-                    src={selectedIcon.src}
-                    height={25}
-                    width={25}
-                /> :
-                <UdongImage
-                    src={unselectedIcon.src}
-                    height={25}
-                    width={25}
-                    clickable
-                />}
-        </div>
-    )
-}
+export const UdongSelectableIcon =
+    ({ selected, selectedIcon, unselectedIcon, onClickSelected, onClickUnSelected }: UdongSelectableIconProps) => {
+        return (
+            <div
+                onClick={selected ? onClickSelected : onClickUnSelected}
+            >
+                {selected ?
+                    <UdongImage
+                        src={selectedIcon.src}
+                        height={25}
+                        width={25}
+                    /> :
+                    <UdongImage
+                        src={unselectedIcon.src}
+                        height={25}
+                        width={25}
+                        clickable
+                    />}
+            </div>
+        )
+    }
 
-export default UdongSelectableIcon
