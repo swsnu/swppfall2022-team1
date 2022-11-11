@@ -58,6 +58,10 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: coverage.lcov
 
+    - name: Override Coverage Source Path for Sonar
+      working-directory: ./udong-backend/udong
+      run: sed -i 's/<source>\/home\/runner\/work\/swppfall2022-team1\/swppfall2022-team1\/udong-backend\/udong<\/source>/<source>\/github\/workspace\/udong-backend\/udong<\/source>/g' coverage.xml
+
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
