@@ -35,6 +35,7 @@ class DummyUser(User):
         self.id = user.id
         self.google = user.google
         self.image = user.image
+        self.time_table = user.time_table
         self.name = user.name
         self.created_at = user.created_at
         self.updated_at = user.updated_at
