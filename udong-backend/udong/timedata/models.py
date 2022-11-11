@@ -8,12 +8,7 @@ from user.models import User
 
 class Time(models.Model):
     # id: auto-generated
-    event = models.ForeignKey(
-        Event, null=True, on_delete=models.SET_NULL, related_name="time_set"
-    )
-    scheduling = models.ForeignKey(
-        Scheduling, null=True, on_delete=models.SET_NULL, related_name="time_set"
-    )
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="time_set")
     type = models.CharField(max_length=1, choices=[("D", "Date"), ("W", "Weekday")])
 
     # Date
