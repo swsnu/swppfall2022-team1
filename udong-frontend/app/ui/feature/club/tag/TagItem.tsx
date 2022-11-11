@@ -43,7 +43,7 @@ export const TagItem = (props: TagItemProps) => {
             <UdongChip
                 color={isUserIncluded ? UdongColors.Primary : UdongColors.GrayNormal}
                 style={'fill'}
-                onClick={() => console.log('tag!')}
+                onClick={() => {return}}
                 text={name}
             />
 
