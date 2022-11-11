@@ -10,6 +10,17 @@ source ~/.virtualenv/django-env/bin/activate
 pip install -r requirements.txt
 ```
 
+## Make dummy data
+
+You should do this before run server.
+
+(Warning) Whole database will be reset.
+
+```bash
+cd udong
+make dummy
+```
+
 ## Run server
 
 It is easy to run server.
@@ -18,6 +29,10 @@ It is easy to run server.
 cd udong
 make
 ```
+
+## Swagger
+
+[Swagger Link](http://127.0.0.1:8000/swagger/)
 
 ## Test
 
