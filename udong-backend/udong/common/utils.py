@@ -19,15 +19,19 @@ class MyTestCase(TestCase):
         json_j2 = json.loads(json.dumps(j2))
 
         # We don't have to check created_at & updated_at
-        if isinstance(json_j1, dict):
-            for key in ("created_at", "updated_at"):
-                if key in json_j1:
-                    del json_j1[key]
-        elif isinstance(json_j1, list):
-            for dictionary in json_j1:
+        def remove_auto_generated_field(json: JsonType) -> None:
+            if isinstance(json, dict):
                 for key in ("created_at", "updated_at"):
-                    if key in dictionary:
-                        del dictionary[key]
+                    if key in json:
+                        del json[key]
+                for value in json.values():
+                    remove_auto_generated_field(value)
+
+            elif isinstance(json, list):
+                for dictionary in json:
+                    remove_auto_generated_field(dictionary)
+
+        remove_auto_generated_field(json_j1)
 
         self.assertEqual(sorted(json_j1), sorted(json_j2))
 
