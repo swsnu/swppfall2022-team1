@@ -8,6 +8,6 @@ jest.mock( '../../../../../app/ui/feature/club/event/upsert/create/EventCreateCo
 
 test('renders event create page', () => {
     render(<EventCreatePage/>)
-    const container = screen.findByTestId('event-create-container')
+    const container = screen.getByTestId('event-create-container')
     expect(container).toBeDefined()
 })
