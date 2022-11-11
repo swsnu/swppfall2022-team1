@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils'
 import { PostDetailContainer } from '../PostDetailContainer'
 
 describe('<PostDetailContainer/>', () => {
-    it('renders MyPage', async () => {
+    it('renders Post Detail', async () => {
         const mockPush = jest.fn()
         const mockBack = jest.fn()
         jest.spyOn(router, 'useRouter').mockImplementation(() => ({
