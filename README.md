@@ -5,9 +5,9 @@
 ![Backend CI Status](https://github.com/swsnu/swppfall2022-team1/actions/workflows/Backend-CI.yml/badge.svg)
 ![Frontend CI Status](https://github.com/swsnu/swppfall2022-team1/actions/workflows/frontend-eslint-pr.yml/badge.svg)
 
-## ![Backend README](https://github.com/swsnu/swppfall2022-team1/blob/main/udong-backend/README.md)
+## [Backend README](https://github.com/swsnu/swppfall2022-team1/blob/main/udong-backend/README.md)
 
-## ![Frontend README](https://github.com/swsnu/swppfall2022-team1/blob/main/udong-frontend/README.md)
+## [Frontend README](https://github.com/swsnu/swppfall2022-team1/blob/main/udong-frontend/README.md)
 
 ## Warning
 
