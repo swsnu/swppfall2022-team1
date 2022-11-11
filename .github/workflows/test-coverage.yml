@@ -47,10 +47,12 @@ jobs:
         coverage lcov
         coveralls --merge=../../udong-frontend/coverage.json --service=github
 
-    - name: Coveralls
+    - name: Merge coverage
       run: |
         sed 's/^SF:/SF:udong-frontend\//g' udong-frontend/coverage/lcov.info > coveralls.lcov
         sed 's/^SF:/SF:udong-backend\/udong\//g' udong-backend/udong/coverage.lcov >> coveralls.lcov
+
+    - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
