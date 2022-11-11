@@ -15,7 +15,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
     const { onClickDelete } = props
 
     const renderLeaveClubButton = useCallback(() => {
-        return <HStack onClick={() => console.log('탈퇴~')}>
+        return <HStack onClick={() => {return}}>
             <UdongText
                 style={'ListContentS'}
                 color={UdongColors.GrayNormal}
