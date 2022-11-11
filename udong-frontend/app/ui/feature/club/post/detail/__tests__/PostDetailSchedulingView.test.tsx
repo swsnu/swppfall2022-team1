@@ -20,6 +20,6 @@ describe('<PostDetailSchedulingView/>', () => {
         } as unknown as NextRouter))
 
         await act(async () => {render(<PostDetailSchedulingView/>)})
-        await waitFor(() => expect(mockPush).toHaveBeenCalled)
+        await waitFor(() => expect(mockPush).toHaveBeenCalled())
     })
 })
