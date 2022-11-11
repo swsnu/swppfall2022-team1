@@ -1,6 +1,8 @@
 from django.db.models import Q
+from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
 from post.models import Post
+from tag.serializers import TagPostSerializer
 from typing import List
 
 
@@ -43,14 +45,16 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             return post.scheduling.closed
         return None
 
-    def get_include_tag(self, post: Post) -> List[str]:
+    def get_include_tag(self, post: Post) -> ReturnDict:
         post_tag_list = post.post_tag_set.select_related("tag").filter(
             tag__tag_user_set__user__id__contains=self.context["id"]
         )
-        return [post_tag.tag.name for post_tag in post_tag_list]
+        tags = list(map(lambda post_tag: post_tag.tag, post_tag_list))
+        return TagPostSerializer(tags, many=True).data
 
-    def get_exclude_tag(self, post: Post) -> List[str]:
+    def get_exclude_tag(self, post: Post) -> ReturnDict:
         post_tag_list = post.post_tag_set.select_related("tag").filter(
             ~Q(tag__tag_user_set__user__id__contains=self.context["id"])
         )
-        return [post_tag.tag.name for post_tag in post_tag_list]
+        tags = list(map(lambda post_tag: post_tag.tag, post_tag_list))
+        return TagPostSerializer(tags, many=True).data
