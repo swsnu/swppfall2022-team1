@@ -49,6 +49,7 @@ class ClubEventSerializer(serializers.ModelSerializer[Event]):
     class Meta:
         model = Event
         fields = (
+            "id",
             "name",
             "time",
             "created_at",
@@ -67,6 +68,7 @@ class ClubTagSerializer(serializers.ModelSerializer[Tag]):
     class Meta:
         model = Tag
         fields = (
+            "id",
             "name",
             "created_at",
             "updated_at",
