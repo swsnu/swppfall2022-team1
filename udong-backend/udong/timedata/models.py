@@ -17,15 +17,16 @@ class Time(models.Model):
     type = models.CharField(max_length=1, choices=[("D", "Date"), ("W", "Weekday")])
 
     # Date
-    start_date = models.DateTimeField(null=True)
-    end_date = models.DateTimeField(null=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
 
     # Weekday
     repeat_start = models.DateField(null=True)
     repeat_end = models.DateField(null=True)
     weekday = models.IntegerField(null=True)
-    start_time = models.TimeField(null=True)
-    end_time = models.TimeField(null=True)
+
+    start_time = models.IntegerField(null=True)
+    end_time = models.IntegerField(null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
