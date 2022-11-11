@@ -30,3 +30,25 @@ class ClubTestCase(MyTestCase):
         self.jsonEqual(
             response.content, [{"id": 1, "name": "Udong", "code": "swppfall"}]
         )
+
+    # api/club/:id/user/
+    def test_club_user(self) -> None:
+        client = Client()
+
+        response = client.get("/api/club/1/user/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            [
+                {
+                    "user": {
+                        "id": 1,
+                        "google": "google",
+                        "image": "image",
+                        "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                        "name": "Alan Turing",
+                    },
+                    "auth": "Admin",
+                }
+            ],
+        )
