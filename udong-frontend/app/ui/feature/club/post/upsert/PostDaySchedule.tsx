@@ -17,11 +17,11 @@ enum DAYS {
     SUNDAY='일'
 }
 
-interface PostDaySchedule {
+interface PostDayScheduleProps {
     isEdit: boolean
 }
 
-export const PostDaySchedule = ({ isEdit }: PostDaySchedule) => {
+export const PostDaySchedule = ({ isEdit }: PostDayScheduleProps) => {
     const [time, setTime] = useState<TimeRangeType>(isEdit ? { start: '14:30', end: '16:00' } : { start: '', end: '' })
     const [days, setDays] = useState<DAYS[]>(isEdit ? [DAYS.MONDAY, DAYS.THURSDAY] : [])
     const [date, setDate] = useState<DateRangeType>(isEdit ? { start: '2022-11-01', end: '2022-11-10' } : { start: '', end: '' })

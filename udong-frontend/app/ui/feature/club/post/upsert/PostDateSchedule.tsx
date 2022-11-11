@@ -11,7 +11,7 @@ import IcClose from '/app/ui/icons/IcClose.png'
 import { DateRangePicker, DateRangeType } from '../../../shared/DateRangePicker'
 import { TimeRangePicker, TimeRangeType } from '../../../shared/TimeRangePicker'
 
-interface PostDateSchedule {
+interface PostDateScheduleProps {
     isEdit: boolean
 }
 
@@ -19,7 +19,7 @@ interface DateRangeTypeWithId extends DateRangeType {
     id: number
 }
 
-export const PostDateSchedule = ({ isEdit }: PostDateSchedule) => {
+export const PostDateSchedule = ({ isEdit }: PostDateScheduleProps) => {
     const [time, setTime] = useState<TimeRangeType>(isEdit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
     const [dates, setDates] = useState<DateRangeTypeWithId[]>(isEdit ? [{ id: 0, start: '2022-11-04', end: '2022-11-05' },
         { id: 1, start: '2022-11-06', end: '2022-11-08' }] : [{ id: 0, start: '', end: '' }])
