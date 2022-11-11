@@ -1,6 +1,6 @@
 import { PostDetailContainer } from '../../../../app/ui/feature/club/post/detail/PostDetailContainer'
 
-export const PostDetailPage = () => {
+const PostDetailPage = () => {
     return <PostDetailContainer/>
 }
 

@@ -11,7 +11,7 @@ interface SpecificTimePickerProps {
     fixed?: boolean
 }
 
-const SpecificTimePicker = ({ setTime, time, fixed } : SpecificTimePickerProps) => {
+export const SpecificTimePicker = ({ setTime, time, fixed } : SpecificTimePickerProps) => {
 
     return <VStack width={110}>
         <TimePicker
@@ -30,4 +30,3 @@ const SpecificTimePicker = ({ setTime, time, fixed } : SpecificTimePickerProps) 
     </VStack>
 }
 
-export default SpecificTimePicker

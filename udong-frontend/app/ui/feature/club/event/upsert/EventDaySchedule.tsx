@@ -4,13 +4,13 @@ import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongImage } from '../../../../components/UdongImage'
 import { UdongText } from '../../../../components/UdongText'
-import DateRangePicker, { DateRangeType } from '../../../shared/DateRangePicker'
+import { DateRangePicker, DateRangeType } from '../../../shared/DateRangePicker'
 import { DayPicker, DAYS } from '../../../shared/DayPicker'
 
 import IcPlus from '/app/ui/icons/IcPlus.png'
 import IcClose from '/app/ui/icons/IcClose.png'
 
-import TimeRangePicker, { TimeRangeType } from '../../../shared/TimeRangePicker'
+import { TimeRangePicker, TimeRangeType } from '../../../shared/TimeRangePicker'
 
 interface DayTimeType {
     id: number
@@ -18,14 +18,14 @@ interface DayTimeType {
     time: TimeRangeType
 }
 
-interface EventDaySchedule {
+interface EventDayScheduleProps {
     isEdit: boolean
 }
 
-const EventDaySchedule = ({ isEdit }: EventDaySchedule) => {
+export const EventDaySchedule = ({ isEdit }: EventDayScheduleProps) => {
     const [date, setDate] = useState<DateRangeType>(isEdit ? { start: '2019-03-25', end: '2019-03-26' } : { start: '', end: '' })
     const [dayTimes, setDayTimes] = useState<DayTimeType[]>(isEdit ?
-        [{ id: 0, day: DAYS.TUESDAY, time: { start: '03:30', end: '06:00' } }]
+        [{ id: 0, day: '화' as DAYS, time: { start: '03:30', end: '06:00' } }]
         : [{ id: 0, day: '', time: { start: '', end: '' } }])
 
     return <VStack
@@ -111,10 +111,6 @@ const EventDaySchedule = ({ isEdit }: EventDaySchedule) => {
                 />
             </VStack>
         </HStack>
-        {/*<SpecificTimePicker setTime={()=>{}}/>*/}
-        {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>
 }
-
-export default EventDaySchedule
 

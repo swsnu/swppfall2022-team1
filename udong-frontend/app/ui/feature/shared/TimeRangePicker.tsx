@@ -16,7 +16,7 @@ export interface TimeRangeType {
     end: string
 }
 
-const TimeRangePicker = ({ setTime, time, fixed } : TimeRangePickerProps) => {
+export const TimeRangePicker = ({ setTime, time, fixed } : TimeRangePickerProps) => {
     const { RangePicker } = useMemo(() => (
         TimePicker
     ), [])
@@ -38,4 +38,3 @@ const TimeRangePicker = ({ setTime, time, fixed } : TimeRangePickerProps) => {
     </VStack>
 }
 
-export default TimeRangePicker

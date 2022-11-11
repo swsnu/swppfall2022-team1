@@ -1,6 +1,6 @@
 import { MyPageContainer } from '../app/ui/feature/mypage/MyPageContainer'
 
-export const MyPage = () => {
+const MyPage = () => {
     return <MyPageContainer/>
 }
 

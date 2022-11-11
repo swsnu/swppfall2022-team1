@@ -1,6 +1,6 @@
 import { EventEditContainer } from '../../../../../app/ui/feature/club/event/upsert/edit/EventEditContainer'
 
-export const EventEditPage = () => {
+const EventEditPage = () => {
     return <EventEditContainer/>
 }
 

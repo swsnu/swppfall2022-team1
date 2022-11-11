@@ -4,7 +4,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useMemo } from 'react'
 import 'react-quill/dist/quill.snow.css'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
-import UdongLoader from '../../../../components/UdongLoader'
+import { UdongLoader } from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 

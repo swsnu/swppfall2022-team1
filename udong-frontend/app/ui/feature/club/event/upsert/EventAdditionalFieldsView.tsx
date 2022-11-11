@@ -4,8 +4,8 @@ import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongRadioButton } from '../../../../components/UdongRadioButton'
 import { UdongText } from '../../../../components/UdongText'
-import EventDateSchedule from './EventDateSchedule'
-import EventDaySchedule from './EventDaySchedule'
+import { EventDateSchedule } from './EventDateSchedule'
+import { EventDaySchedule } from './EventDaySchedule'
 
 type SchedulingTimeType = 'days' | 'dates' | 'notAssigned'
 
