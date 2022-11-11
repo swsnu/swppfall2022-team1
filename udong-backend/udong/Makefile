@@ -13,8 +13,8 @@ check_format:
 check_type:
 	mypy . 
 
-test:
-	coverage run --branch --source='.' --omit='./udong/*' manage.py test
+test: check
+	coverage run --branch --source='.' --omit='./udong/*,dummy.py' manage.py test
 	coverage report -m
 
 test_html:
