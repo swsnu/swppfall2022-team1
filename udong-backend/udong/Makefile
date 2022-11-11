@@ -14,7 +14,7 @@ check_type:
 	mypy . 
 
 test:
-	coverage run --branch --source='.' manage.py test
+	coverage run --branch --source='.' --omit='./udong/*' manage.py test
 	coverage report -m
 
 test_html:
