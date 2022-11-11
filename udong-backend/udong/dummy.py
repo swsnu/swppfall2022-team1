@@ -8,7 +8,7 @@ from post.models import Post
 from post.models import PostTag
 from post.models import Enrollment
 from tag.models import UserTag
-from datetime import datetime
+from datetime import date
 
 # Refresh DB
 os.system("rm -f db.sqlite3")
@@ -38,15 +38,19 @@ event2 = Event.objects.create(club=club1, name="Nobel Prize")
 time1 = Time.objects.create(
     event=event1,
     type="D",
-    start_date=datetime(2022, 11, 6),
-    end_date=datetime(2022, 11, 7),
+    start_date=date(2022, 11, 6),
+    end_date=date(2022, 11, 7),
+    start_time=10,
+    end_time=30,
 )
 
 time2 = Time.objects.create(
     event=event1,
     type="D",
-    start_date=datetime(2022, 11, 1),
-    end_date=datetime(2022, 11, 2),
+    start_date=date(2022, 11, 1),
+    end_date=date(2022, 11, 2),
+    start_time=15,
+    end_time=35,
 )
 
 # Create dummy tag
