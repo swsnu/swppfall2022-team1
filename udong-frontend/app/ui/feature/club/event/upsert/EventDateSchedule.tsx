@@ -8,8 +8,8 @@ import { UdongText } from '../../../../components/UdongText'
 import IcClose from '/app/ui/icons/IcClose.png'
 import IcPlus from '/app/ui/icons/IcPlus.png'
 
-import SpecificDatePicker from '../../../shared/SpecificDatePicker'
-import SpecificTimePicker from '../../../shared/SpecificTimePicker'
+import { SpecificDatePicker } from '../../../shared/SpecificDatePicker'
+import { SpecificTimePicker } from '../../../shared/SpecificTimePicker'
 
 interface DateTimesType {
     id: number
