@@ -19,7 +19,7 @@ export const PostInputView = (props: IProps) => {
 
     const { title, setTitle, contents, setContents } = props
 
-    const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), {
+    const ReactQuill = useMemo(() => dynamic(() => import('react-quill').then((mod) => (mod.default)), {
         ssr: false,
         loading: () => <UdongLoader/>,
     }), [])
