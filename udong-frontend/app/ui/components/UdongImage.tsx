@@ -21,6 +21,7 @@ interface Props {
 
 export const UdongImage = (props: Props) => {
     const {
+        alt,
         src,
         height,
         width,
@@ -35,7 +36,7 @@ export const UdongImage = (props: Props) => {
     } = props
     return (
         <Image
-            alt={'이미지 없음'}
+            alt={alt ?? '이미지 없음'}
             src={src}
             height={height}
             width={width}
