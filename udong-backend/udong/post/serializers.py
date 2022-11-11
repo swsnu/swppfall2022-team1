@@ -19,6 +19,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     class Meta:
         model = Post
         fields = (
+            "id",
             "event",
             "title",
             "content",
