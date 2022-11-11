@@ -4,6 +4,10 @@ from club.models import Club
 from event.models import Event
 from timedata.models import Time
 from tag.models import Tag
+from post.models import Post
+from post.models import PostTag
+from post.models import Enrollment
+from tag.models import UserTag
 from datetime import datetime
 
 # Refresh DB
@@ -47,4 +51,39 @@ time2 = Time.objects.create(
 
 # Create dummy tag
 tag1 = Tag.objects.create(club=club1, name="genius")
-tag1 = Tag.objects.create(club=club1, name="winner")
+tag2 = Tag.objects.create(club=club1, name="winner")
+tag3 = Tag.objects.create(club=club1, name="loser")
+
+# Add user in tag
+UserTag.objects.create(user=user1, tag=tag1)
+
+
+# Create dummy post
+post1 = Post.objects.create(
+    author=user1,
+    event=event1,
+    club=club1,
+    title="Turing award is coming!",
+    content="Turing award Turing award Turing award",
+    type="A",
+)
+
+post2 = Post.objects.create(
+    author=user1,
+    event=event2,
+    club=club1,
+    title="Nobel prize is coming!",
+    content="Nobel Prize Nobel Prize Nobel Prize",
+    type="P",
+)
+
+enrollment2 = Enrollment.objects.create(post=post2, closed=False)
+
+# Add tag to post
+PostTag.objects.create(post=post1, tag=tag1)
+PostTag.objects.create(post=post1, tag=tag2)
+PostTag.objects.create(post=post1, tag=tag3)
+
+PostTag.objects.create(post=post2, tag=tag1)
+PostTag.objects.create(post=post2, tag=tag2)
+PostTag.objects.create(post=post2, tag=tag3)

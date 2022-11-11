@@ -1,6 +1,7 @@
 from django.db import models
 from user.models import User
 from event.models import Event
+from club.models import Club
 from tag.models import Tag
 
 # Create your models here.
@@ -14,6 +15,7 @@ class Post(models.Model):
     event = models.ForeignKey(
         Event, null=True, on_delete=models.SET_NULL, related_name="post_set"
     )
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name="post_set")
     title = models.CharField(max_length=255)
     content = models.TextField()
     type = models.CharField(
