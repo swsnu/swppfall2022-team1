@@ -8,11 +8,11 @@ import Logo from '../../icons/Logo.png'
 import { UdongColors } from '../../theme/ColorPalette'
 
 interface HeaderProps {
-    type: HearPageType
+    type: HeaderPageType
     clubId?: number
 }
 
-export type HearPageType = HEADER_PAGE
+export type HeaderPageType = HEADER_PAGE
 
 export enum HEADER_PAGE {
     NONE,
