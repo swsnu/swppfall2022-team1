@@ -45,6 +45,7 @@ jobs:
       run: |
         coverage run --source='.' manage.py test
         coverage lcov
+        coverage xml
 
     - name: Merge coverage
       run: |
