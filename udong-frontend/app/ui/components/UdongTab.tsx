@@ -31,6 +31,6 @@ const TabUnderline = styled.div<{ selected: boolean }>((props) => ({
     width: props.selected ? 200 : 120,
     height: props.selected ? 4 : 2,
     backgroundColor: props.selected ? UdongColors.Primary : UdongColors.GrayBright,
-    transition: props.selected ? '0.4s' : '0.4s',
+    transition: '0.4s',
     transitionTimingFunction: 'linear',
 }))
