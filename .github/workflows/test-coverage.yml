@@ -45,7 +45,6 @@ jobs:
       run: |
         coverage run --source='.' manage.py test
         coverage lcov
-        coveralls --merge=../../udong-frontend/coverage.json --service=github
 
     - name: Merge coverage
       run: |
