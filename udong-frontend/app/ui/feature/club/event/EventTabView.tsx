@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
-import UdongSelectableIcon from '../../../components/UdongSelectableIcon'
+import { UdongSelectableIcon } from '../../../components/UdongSelectableIcon'
 import IcCalendarOff from '../../../icons/IcCalendarOff.png'
 import IcCalendarOn from '../../../icons/IcCalendarOn.png'
 import IcListOff from '../../../icons/IcListOff.png'
