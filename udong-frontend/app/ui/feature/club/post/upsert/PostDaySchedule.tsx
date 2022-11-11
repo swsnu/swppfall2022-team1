@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
-import DateRangePicker, { DateRangeType } from '../../../shared/DateRangePicker'
-import TimeRangePicker, { TimeRangeType } from '../../../shared/TimeRangePicker'
+import { DateRangePicker, DateRangeType } from '../../../shared/DateRangePicker'
+import { TimeRangePicker, TimeRangeType } from '../../../shared/TimeRangePicker'
 
 enum DAYS {
     MONDAY='월',
@@ -21,7 +21,7 @@ interface PostDaySchedule {
     isEdit: boolean
 }
 
-const PostDaySchedule = ({ isEdit }: PostDaySchedule) => {
+export const PostDaySchedule = ({ isEdit }: PostDaySchedule) => {
     const [time, setTime] = useState<TimeRangeType>(isEdit ? { start: '14:30', end: '16:00' } : { start: '', end: '' })
     const [days, setDays] = useState<DAYS[]>(isEdit ? [DAYS.MONDAY, DAYS.THURSDAY] : [])
     const [date, setDate] = useState<DateRangeType>(isEdit ? { start: '2022-11-01', end: '2022-11-10' } : { start: '', end: '' })
@@ -90,8 +90,6 @@ const PostDaySchedule = ({ isEdit }: PostDaySchedule) => {
         {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>
 }
-
-export default PostDaySchedule
 
 const DayButton = styled.button<{ selected: boolean, fixed: boolean }>`
     border: 1px solid ${(props) => props.selected ? UdongColors.GrayNormal : UdongColors.GrayDark};

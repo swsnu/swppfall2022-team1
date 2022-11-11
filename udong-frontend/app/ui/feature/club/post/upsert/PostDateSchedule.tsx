@@ -8,8 +8,8 @@ import { UdongText } from '../../../../components/UdongText'
 import IcPlus from '/app/ui/icons/IcPlus.png'
 import IcClose from '/app/ui/icons/IcClose.png'
 
-import DateRangePicker, { DateRangeType } from '../../../shared/DateRangePicker'
-import TimeRangePicker, { TimeRangeType } from '../../../shared/TimeRangePicker'
+import { DateRangePicker, DateRangeType } from '../../../shared/DateRangePicker'
+import { TimeRangePicker, TimeRangeType } from '../../../shared/TimeRangePicker'
 
 interface PostDateSchedule {
     isEdit: boolean
@@ -19,7 +19,7 @@ interface DateRangeTypeWithId extends DateRangeType {
     id: number
 }
 
-const PostDateSchedule = ({ isEdit }: PostDateSchedule) => {
+export const PostDateSchedule = ({ isEdit }: PostDateSchedule) => {
     const [time, setTime] = useState<TimeRangeType>(isEdit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
     const [dates, setDates] = useState<DateRangeTypeWithId[]>(isEdit ? [{ id: 0, start: '2022-11-04', end: '2022-11-05' },
         { id: 1, start: '2022-11-06', end: '2022-11-08' }] : [{ id: 0, start: '', end: '' }])
@@ -95,9 +95,6 @@ const PostDateSchedule = ({ isEdit }: PostDateSchedule) => {
                 }
             </VStack>
         </HStack>
-        {/*<SpecificTimePicker setTime={()=>{}}/>*/}
-        {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>
 }
 
-export default PostDateSchedule
