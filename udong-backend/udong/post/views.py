@@ -15,6 +15,7 @@ class PostClubViewSet(viewsets.GenericViewSet):
     queryset = Post.objects.all()
     serializer_class = PostBoardSerializer
 
+    # TODO: Need to be optimized
     def retrieve(self, request: Request, pk: Any = None) -> Response:
         auth = UserClub.objects.filter(Q(user_id=request.user.id) & Q(club_id=pk))[
             0
