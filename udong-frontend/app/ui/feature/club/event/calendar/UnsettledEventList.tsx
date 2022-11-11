@@ -8,7 +8,7 @@ interface UnsettledEventListProps {
     onClickEvent: (eventId: string) => void
 }
 
-const UnsettledEventList = ({ events, onClickEvent }: UnsettledEventListProps) => {
+export const UnsettledEventList = ({ events, onClickEvent }: UnsettledEventListProps) => {
     return <VStack
         paddingVertical={70}
         gap={10}
@@ -27,4 +27,3 @@ const UnsettledEventList = ({ events, onClickEvent }: UnsettledEventListProps) =
     </VStack>
 }
 
-export default UnsettledEventList
