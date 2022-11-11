@@ -25,8 +25,8 @@ class Time(models.Model):
     repeat_end = models.DateField(null=True)
     weekday = models.IntegerField(null=True)
 
-    start_time = models.IntegerField(null=True)
-    end_time = models.IntegerField(null=True)
+    start_time = models.IntegerField()
+    end_time = models.IntegerField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
