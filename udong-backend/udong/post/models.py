@@ -40,18 +40,20 @@ class Scheduling(models.Model):
         Post, primary_key=True, on_delete=models.CASCADE, related_name="scheduling"
     )
     type = models.CharField(max_length=1, choices=[("D", "Date"), ("W", "Weekday")])
-    start_time = models.TimeField()
-    end_time = models.TimeField()
 
     # Date
     dates = models.JSONField(null=True)
 
     # Weekday
-    weekdays = models.CharField(max_length=7)
+    weekdays = models.CharField(max_length=7, null=True)
     repeat_start = models.DateField(null=True)
     repeat_end = models.DateField(null=True)
 
+    start_time = models.IntegerField()
+    end_time = models.IntegerField()
     closed = models.BooleanField()
+    confirmed_time = models.TextField(null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
