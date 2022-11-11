@@ -1,6 +1,6 @@
 import { EventDetailContainer } from '../../../../app/ui/feature/club/event/detail/EventDetailContainer'
 
-export const EventDetailPage = () => {
+const EventDetailPage = () => {
     return <EventDetailContainer/>
 }
 

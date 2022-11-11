@@ -10,7 +10,7 @@ interface UdongLoaderProps {
     width?: SafeNumber
 }
 
-const UdongLoader = (props: UdongLoaderProps) => {
+export const UdongLoader = (props: UdongLoaderProps) => {
     const { height, width } = props
 
     return <HStack
@@ -26,4 +26,3 @@ const UdongLoader = (props: UdongLoaderProps) => {
     </HStack>
 }
 
-export default UdongLoader

@@ -1,6 +1,6 @@
 import { EventCreateContainer } from '../../../../app/ui/feature/club/event/upsert/create/EventCreateContainer'
 
-export const EventCreatePage = () => {
+const EventCreatePage = () => {
     return <EventCreateContainer/>
 }
 
