@@ -19,15 +19,21 @@ class MyTestCase(TestCase):
         json_j2 = json.loads(json.dumps(j2))
 
         # We don't have to check created_at & updated_at
-        for key in ("created_at", "updated_at"):
-            if key in json_j1:
-                del json_j1[key]
+        if isinstance(json_j1, dict):
+            for key in ("created_at", "updated_at"):
+                if key in json_j1:
+                    del json_j1[key]
+        elif isinstance(json_j1, list):
+            for dictionary in json_j1:
+                for key in ("created_at", "updated_at"):
+                    if key in dictionary:
+                        del dictionary[key]
 
         self.assertEqual(sorted(json_j1), sorted(json_j2))
 
     # Add Dummy User
     def setUp(self) -> None:
-        User.objects.create(
+        self.dummy_user = User.objects.create(
             name="Alan Turing",
             google="google",
             image="image",
