@@ -27,7 +27,7 @@ interface EventDateSchedule {
     isEdit: boolean
 }
 
-const EventDateSchedule = ({ isEdit }: EventDateSchedule) => {
+export const EventDateSchedule = ({ isEdit }: EventDateSchedule) => {
     const [dateTimes, setDateTimes] = useState<DateTimesType[]>([{ id: 0, start: { date: '', time: '' }, end: { date: '', time: '' } }])
 
     return <VStack
@@ -137,5 +137,3 @@ const EventDateSchedule = ({ isEdit }: EventDateSchedule) => {
         {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>
 }
-
-export default EventDateSchedule

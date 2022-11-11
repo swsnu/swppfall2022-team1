@@ -22,7 +22,7 @@ interface EventDaySchedule {
     isEdit: boolean
 }
 
-const EventDaySchedule = ({ isEdit }: EventDaySchedule) => {
+export const EventDaySchedule = ({ isEdit }: EventDaySchedule) => {
     const [date, setDate] = useState<DateRangeType>(isEdit ? { start: '2019-03-25', end: '2019-03-26' } : { start: '', end: '' })
     const [dayTimes, setDayTimes] = useState<DayTimeType[]>(isEdit ?
         [{ id: 0, day: DAYS.TUESDAY, time: { start: '03:30', end: '06:00' } }]
@@ -115,6 +115,4 @@ const EventDaySchedule = ({ isEdit }: EventDaySchedule) => {
         {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>
 }
-
-export default EventDaySchedule
 
