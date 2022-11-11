@@ -11,7 +11,7 @@ interface SpecificDatePickerProps {
     fixed?: boolean
 }
 
-const SpecificDatePicker = ({ setDate, date, fixed } : SpecificDatePickerProps) => {
+export const SpecificDatePicker = ({ setDate, date, fixed } : SpecificDatePickerProps) => {
     return <VStack width={180}>
         <DatePicker
             defaultValue={date.length ? moment(date, 'YYYY-MM-DD') : undefined}
@@ -28,5 +28,3 @@ const SpecificDatePicker = ({ setDate, date, fixed } : SpecificDatePickerProps) 
         />
     </VStack>
 }
-
-export default SpecificDatePicker

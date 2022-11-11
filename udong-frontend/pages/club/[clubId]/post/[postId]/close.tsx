@@ -1,6 +1,6 @@
 import { SchedulingCloseContainer } from '../../../../../app/ui/feature/club/post/scheduling/SchedulingCloseContainer'
 
-export const PostStatusPage = () => {
+const PostStatusPage = () => {
     return <SchedulingCloseContainer/>
 }
 

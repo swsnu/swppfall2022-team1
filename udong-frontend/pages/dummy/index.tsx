@@ -11,7 +11,7 @@ import { DraggableTimeTable } from '../../app/ui/feature/shared/DraggableTimeTab
 import { CellIdx } from '../../app/ui/feature/shared/TimeTable'
 import { UdongColors } from '../../app/ui/theme/ColorPalette'
 
-export const DummyPage = () => {
+const DummyPage = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     const [hoverIdx, setHoverIdx] = useState<CellIdx | null>(null)

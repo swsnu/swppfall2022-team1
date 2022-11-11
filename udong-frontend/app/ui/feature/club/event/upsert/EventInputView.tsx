@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react'
-
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongText } from '../../../../components/UdongText'
@@ -7,7 +5,7 @@ import { UdongColors } from '../../../../theme/ColorPalette'
 
 interface EventInputViewProps {
     title: string
-    setTitle: Dispatch<SetStateAction<string>>
+    setTitle: (title: string) => void
 }
 
 export const EventInputView = ({ title, setTitle } : EventInputViewProps) => {

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 
 import { HomeContainer } from '../app/ui/feature/home/HomeContainer'
 
-export const HomePage = () => {
+const HomePage = () => {
     const router = useRouter()
     const { tab } = router.query
 

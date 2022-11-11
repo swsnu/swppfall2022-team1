@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 
 import { PostCreateContainer } from '../../../../app/ui/feature/club/post/upsert/create/PostCreateContainer'
 
-export const PostCreatePage = () => {
+const PostCreatePage = () => {
     const router = useRouter()
     const { type } = router.query
 

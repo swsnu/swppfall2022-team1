@@ -16,7 +16,7 @@ export type DateRangeType = {
     end: string
 }
 
-const DateRangePicker = ({ setDate, date, fixed } : DateRangePickerProps) => {
+export const DateRangePicker = ({ setDate, date, fixed } : DateRangePickerProps) => {
     const { RangePicker } = useMemo(() => (
         DatePicker
     ), [])
@@ -38,4 +38,3 @@ const DateRangePicker = ({ setDate, date, fixed } : DateRangePickerProps) => {
     </VStack>
 }
 
-export default DateRangePicker

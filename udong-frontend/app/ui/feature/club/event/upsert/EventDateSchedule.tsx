@@ -8,8 +8,8 @@ import { UdongText } from '../../../../components/UdongText'
 import IcClose from '/app/ui/icons/IcClose.png'
 import IcPlus from '/app/ui/icons/IcPlus.png'
 
-import SpecificDatePicker from '../../../shared/SpecificDatePicker'
-import SpecificTimePicker from '../../../shared/SpecificTimePicker'
+import { SpecificDatePicker } from '../../../shared/SpecificDatePicker'
+import { SpecificTimePicker } from '../../../shared/SpecificTimePicker'
 
 interface DateTimesType {
     id: number
@@ -23,11 +23,11 @@ interface DateTimesType {
     }
 }
 
-interface EventDateSchedule {
+interface EventDateScheduleProps {
     isEdit: boolean
 }
 
-const EventDateSchedule = ({ isEdit }: EventDateSchedule) => {
+export const EventDateSchedule = ({ isEdit }: EventDateScheduleProps) => {
     const [dateTimes, setDateTimes] = useState<DateTimesType[]>([{ id: 0, start: { date: '', time: '' }, end: { date: '', time: '' } }])
 
     return <VStack
@@ -137,5 +137,3 @@ const EventDateSchedule = ({ isEdit }: EventDateSchedule) => {
         {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>
 }
-
-export default EventDateSchedule

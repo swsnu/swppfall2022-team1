@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'
 
-import UdongLoader from '../../app/ui/components/UdongLoader'
+import { UdongLoader } from '../../app/ui/components/UdongLoader'
 import { ClubContainer } from '../../app/ui/feature/club/ClubContainer'
 import { CLUB_TAB } from '../../app/ui/feature/club/ClubTabView'
 
-export const ClubPage = () => {
+const ClubPage = () => {
     const router = useRouter()
     const { isReady } = router
     const { tab } = router.query
