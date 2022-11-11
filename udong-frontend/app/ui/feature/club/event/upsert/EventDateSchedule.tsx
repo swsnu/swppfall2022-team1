@@ -23,11 +23,11 @@ interface DateTimesType {
     }
 }
 
-interface EventDateSchedule {
+interface EventDateScheduleProps {
     isEdit: boolean
 }
 
-export const EventDateSchedule = ({ isEdit }: EventDateSchedule) => {
+export const EventDateSchedule = ({ isEdit }: EventDateScheduleProps) => {
     const [dateTimes, setDateTimes] = useState<DateTimesType[]>([{ id: 0, start: { date: '', time: '' }, end: { date: '', time: '' } }])
 
     return <VStack
