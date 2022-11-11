@@ -6,8 +6,8 @@ jest.mock( '../../../../../app/ui/feature/club/event/upsert/create/EventCreateCo
     EventCreateContainer: () => <div data-testid={'event-create-container'}/>,
 }))
 
-test('renders event create page', async () => {
+test('renders event create page', () => {
     render(<EventCreatePage/>)
-    const lbl = screen.findByTestId('event-create-container')
-    expect(lbl).toBeDefined()
+    const container = screen.findByTestId('event-create-container')
+    expect(container).toBeDefined()
 })
