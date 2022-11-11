@@ -4,7 +4,7 @@ from typing import Dict, List
 import json
 
 
-JsonType = List["JsonType"] | Dict[str, "JsonType"] | int | str | None
+JsonType = List["JsonType"] | Dict[str, "JsonType"] | int | str | bool | None
 
 
 class MyJson:
@@ -44,6 +44,8 @@ class MyJson:
         elif isinstance(json1, int) and isinstance(json2, int):
             return json1 == json2
         elif isinstance(json1, str) and isinstance(json2, str):
+            return json1 == json2
+        elif isinstance(json1, bool) and isinstance(json2, bool):
             return json1 == json2
         elif json1 is None and json2 is None:
             return True
