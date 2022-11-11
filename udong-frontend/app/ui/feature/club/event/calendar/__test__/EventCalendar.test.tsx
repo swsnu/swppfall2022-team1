@@ -3,13 +3,6 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { EventType } from '../../EventContainer'
 import { EventCalendar } from '../EventCalendar'
 
-jest.mock('../../../../../components/UdongButton', () => ({
-    UdongButton: ({ onClick }: { onClick: () => void }) => <button
-        data-testid={'udong-button'}
-        onClick={onClick}
-    />,
-}))
-
 jest.mock('../../../../../components/UdongLoader', () => ({
     UdongLoader: () => <div data-testid={'udong-loader'}/>,
 }))
@@ -42,7 +35,7 @@ describe('<EventCalendar/>', () => {
             events={dummyEvents}
             onClickEvent={()=>jest.fn()}
         />)})
-        const button = screen.getAllByTestId('udong-button')
+        const button = screen.getByText('Today')
         expect(button).toBeDefined()
     })
     it('move month', async () => {
@@ -52,7 +45,7 @@ describe('<EventCalendar/>', () => {
         />)})
 
         const today = new Date()
-        const moveButtons = screen.getAllByTestId('udong-button')
+        const moveButtons = screen.getAllByRole('button')
         await act( async () => {
             fireEvent.click(moveButtons[1])
         })
