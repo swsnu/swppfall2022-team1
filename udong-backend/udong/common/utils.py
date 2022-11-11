@@ -4,7 +4,7 @@ from typing import Dict, List
 import json
 
 
-JsonType = int | str | List["JsonType"] | Dict[str, "JsonType"]
+JsonType = List["JsonType"] | Dict[str, "JsonType"] | int | str | None
 
 
 class MyTestCase(TestCase):
