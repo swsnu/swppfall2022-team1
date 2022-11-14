@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { authReducer } from './auth/AuthSlice'
 import { clubReducer } from './club/ClubSlice'
 import { commentReducer } from './comment/CommentSlice'
+import { eventReducer } from './event/EventSlice'
 import { enrollmentReducer } from './post/enrollment/EnrollmentSlice'
 import { postReducer } from './post/PostSlice'
 import { schedulingReducer } from './post/scheduling/SchedulingSlice'
@@ -17,6 +18,7 @@ export const store = configureStore({
         comment: commentReducer,
         enrollment: enrollmentReducer,
         scheduling: schedulingReducer,
+        event: eventReducer,
     },
 })
 
