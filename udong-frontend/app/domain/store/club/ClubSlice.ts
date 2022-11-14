@@ -9,12 +9,6 @@ interface ClubState {
 const initialState: ClubState = {
 }
 
-const clubSlice = createSlice({
-    name: 'club',
-    initialState,
-    reducers: {},
-})
-
 export const getMyClubs = createAsyncThunk(
     'club/getMyClubs',
     async () => { return },
@@ -64,6 +58,12 @@ export const assignClubMemberRole = createAsyncThunk(
     'club/assignClubMemberRole',
     async () => { return },
 )
+
+const clubSlice = createSlice({
+    name: 'club',
+    initialState,
+    reducers: {},
+})
 
 export const clubActions = clubSlice.actions
 export const clubReducer = clubSlice.reducer
