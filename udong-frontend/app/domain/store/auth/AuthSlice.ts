@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 interface AuthState {
-    // TODO: 나중에 바꾸기
     isLoggedIn: boolean
 }
 
