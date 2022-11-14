@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { Tag } from '../../model/Tag'
 
@@ -9,10 +9,30 @@ interface TagState {
 const initialState: TagState = {
 }
 
-// TODO: actions
-//        participateInEnrollment,
-//         getEnrollmentStatus,
-//         closeEnrollment,
+export const getTags = createAsyncThunk(
+    'tag/getTags',
+    async () => { return },
+)
+
+export const getTag = createAsyncThunk(
+    'tag/getTag',
+    async () => { return },
+)
+
+export const createTag = createAsyncThunk(
+    'tag/createTag',
+    async () => { return },
+)
+
+export const editTag = createAsyncThunk(
+    'tag/editTag',
+    async () => { return },
+)
+
+export const deleteTag = createAsyncThunk(
+    'tag/deleteTag',
+    async () => { return },
+)
 
 const tagSlice = createSlice({
     name: 'tag',
