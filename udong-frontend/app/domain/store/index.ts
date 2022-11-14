@@ -7,6 +7,7 @@ import { eventReducer } from './event/EventSlice'
 import { enrollmentReducer } from './post/enrollment/EnrollmentSlice'
 import { postReducer } from './post/PostSlice'
 import { schedulingReducer } from './post/scheduling/SchedulingSlice'
+import { tagReducer } from './tag/TagSlice'
 import { userReducer } from './user/UserSlice'
 
 export const store = configureStore({
@@ -19,6 +20,7 @@ export const store = configureStore({
         enrollment: enrollmentReducer,
         scheduling: schedulingReducer,
         event: eventReducer,
+        tag: tagReducer,
     },
 })
 
