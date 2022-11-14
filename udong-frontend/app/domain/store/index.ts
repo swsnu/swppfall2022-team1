@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import { authReducer } from './auth/AuthSlice'
 import { clubReducer } from './club/ClubSlice'
+import { postReducer } from './post/PostSlice'
 import { userReducer } from './user/UserSlice'
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
         auth: authReducer,
         user: userReducer,
         club: clubReducer,
+        post: postReducer,
     },
 })
 
