@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 interface SchedulingState {
     isOpen: boolean
@@ -8,10 +8,20 @@ const initialState: SchedulingState = {
     isOpen: false,
 }
 
-// TODO: actions
-//        participateInScheduling,
-//         getSchedulingStatus,
-//         closeScheduling,
+export const participateInScheduling = createAsyncThunk(
+    'scheduling/participateInScheduling',
+    async () => { return },
+)
+
+export const getSchedulingStatus = createAsyncThunk(
+    'scheduling/getSchedulingStatus',
+    async () => { return },
+)
+
+export const closeScheduling = createAsyncThunk(
+    'scheduling/closeScheduling',
+    async () => { return },
+)
 
 const schedulingSlice = createSlice({
     name: 'scheduling',
