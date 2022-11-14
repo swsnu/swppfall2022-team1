@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 
+import { clubReducer } from './club/ClubSlice'
+
 export const store = configureStore({
     reducer: {
-
+        club: clubReducer,
     },
 })
 
