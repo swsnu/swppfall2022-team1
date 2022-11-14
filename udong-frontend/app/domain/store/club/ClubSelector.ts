@@ -8,3 +8,7 @@ const selectedClub = createSelector(
     clubState,
     state => state.selectedClub,
 )
+
+export const clubSelector = {
+    selectedClub,
+}
