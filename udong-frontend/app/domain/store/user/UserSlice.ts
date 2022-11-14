@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { User } from '../../model/User'
 
@@ -10,11 +10,25 @@ interface UserState {
 const initialState: UserState = {
 }
 
-// TODO: actions
-// getMyProfile,
-// editMyProfile,
-// deleteAccount,
-// getUser,
+export const getMyProfile = createAsyncThunk(
+    'user/getMyProfile',
+    async () => { return },
+)
+
+export const editMyProfile = createAsyncThunk(
+    'user/editMyProfile',
+    async () => { return },
+)
+
+export const deleteAccount = createAsyncThunk(
+    'user/deleteAccount',
+    async () => { return },
+)
+
+export const getUser = createAsyncThunk(
+    'user/getUser',
+    async () => { return },
+)
 
 const userSlice = createSlice({
     name: 'user',
