@@ -5,6 +5,7 @@ import { clubReducer } from './club/ClubSlice'
 import { commentReducer } from './comment/CommentSlice'
 import { enrollmentReducer } from './post/enrollment/EnrollmentSlice'
 import { postReducer } from './post/PostSlice'
+import { schedulingReducer } from './post/scheduling/SchedulingSlice'
 import { userReducer } from './user/UserSlice'
 
 export const store = configureStore({
@@ -15,6 +16,7 @@ export const store = configureStore({
         post: postReducer,
         comment: commentReducer,
         enrollment: enrollmentReducer,
+        scheduling: schedulingReducer,
     },
 })
 
