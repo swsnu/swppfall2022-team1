@@ -13,6 +13,12 @@ const initialState: PostState = {
 }
 
 // TODO: actions
+//        getFeedPosts,
+//         getClubPosts,
+//         getPost,
+//         createPost,
+//         editPost,
+//         deletePost,
 
 const postSlice = createSlice({
     name: 'post',

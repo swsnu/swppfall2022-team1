@@ -10,6 +10,11 @@ const initialState: EventState = {
 }
 
 // TODO: actions
+//         getEvents,
+//         getEvent,
+//         createEvent,
+//         editEvent,
+//         deleteEvent,
 
 const eventSlice = createSlice({
     name: 'event',

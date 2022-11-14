@@ -9,6 +9,9 @@ const initialState: SchedulingState = {
 }
 
 // TODO: actions
+//        participateInScheduling,
+//         getSchedulingStatus,
+//         closeScheduling,
 
 const schedulingSlice = createSlice({
     name: 'scheduling',

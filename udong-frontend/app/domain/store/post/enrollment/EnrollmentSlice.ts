@@ -9,6 +9,10 @@ const initialState: EnrollmentState = {
 }
 
 // TODO: actions
+//        participateInEnrollment,
+//        unParticipateInEnrollment,
+//         getEnrollmentStatus,
+//         closeEnrollment,
 
 const enrollmentSlice = createSlice({
     name: 'enrollment',

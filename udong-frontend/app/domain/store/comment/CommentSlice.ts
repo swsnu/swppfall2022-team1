@@ -10,6 +10,10 @@ const initialState: CommentState = {
 }
 
 // TODO: actions
+//        getComments,
+//         createComment,
+//         editComment,
+//         deleteComment,
 
 const commentSlice = createSlice({
     name: 'comment',

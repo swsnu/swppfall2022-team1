@@ -10,6 +10,9 @@ const initialState: TagState = {
 }
 
 // TODO: actions
+//        participateInEnrollment,
+//         getEnrollmentStatus,
+//         closeEnrollment,
 
 const tagSlice = createSlice({
     name: 'tag',

@@ -11,6 +11,10 @@ const initialState: UserState = {
 }
 
 // TODO: actions
+// getMyProfile,
+// editMyProfile,
+// deleteAccount,
+// getUser,
 
 const userSlice = createSlice({
     name: 'user',

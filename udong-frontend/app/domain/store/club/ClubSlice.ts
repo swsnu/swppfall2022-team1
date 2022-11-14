@@ -10,6 +10,16 @@ const initialState: ClubState = {
 }
 
 // TODO: actions
+//        getMyClubs,
+//         getClub,
+//         registerClub,
+//         createClub,
+//         editClub,
+//         leaveClub,
+//         deleteClub,
+//         getClubMembers,
+//         removeClubMember,
+//         assignClubMemberRole,
 
 const clubSlice = createSlice({
     name: 'club',

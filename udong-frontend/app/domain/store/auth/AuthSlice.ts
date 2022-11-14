@@ -10,6 +10,9 @@ const initialState: AuthState = {
 }
 
 // TODO: actions
+// signUp,
+// login,
+// logout,
 
 const authSlice = createSlice({
     name: 'auth',
