@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 interface AuthState {
     // TODO: 나중에 바꾸기
@@ -9,10 +9,20 @@ const initialState: AuthState = {
     isLoggedIn: false,
 }
 
-// TODO: actions
-// signUp,
-// login,
-// logout,
+export const signUp = createAsyncThunk(
+    'user/signUp',
+    async () => { return },
+)
+
+export const login = createAsyncThunk(
+    'user/login',
+    async () => { return },
+)
+
+export const logout = createAsyncThunk(
+    'user/logout',
+    async () => { return },
+)
 
 const authSlice = createSlice({
     name: 'auth',
