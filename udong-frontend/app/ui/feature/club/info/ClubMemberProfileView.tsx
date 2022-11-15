@@ -1,8 +1,10 @@
 import { useCallback } from 'react'
 
+import { User } from '../../../../domain/model/User'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongImage } from '../../../components/UdongImage'
+import { UdongLoader } from '../../../components/UdongLoader'
 import { UdongModal } from '../../../components/UdongModal'
 import { UdongText } from '../../../components/UdongText'
 import close from '../../../icons/IcClose.png'
@@ -12,12 +14,12 @@ import { ProfileView } from '../../shared/ProfileView'
 interface ClubMemberProfileViewProps {
     isOpen: boolean
     setIsOpen: (open: boolean) => void
-    name: string
-    isAdmin?: boolean
+    user?: User
 }
 
 export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
-    const { isOpen, setIsOpen, name, isAdmin } = props
+    const { isOpen, setIsOpen, user } = props
+    const isAdmin = true
 
     const renderAssignMemberButton = useCallback(() => {
         return <HStack
@@ -71,37 +73,38 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
     >
-        <VStack width={'100%'}>
-            <HStack
-                justifyContent={'space-between'}
-                paddingHorizontal={25}
-                paddingVertical={25}
-            >
+        {!user ? <UdongLoader/> :
+            <VStack width={'100%'}>
                 <HStack
-                    paddingVertical={10}
+                    justifyContent={'space-between'}
                     paddingHorizontal={25}
+                    paddingVertical={25}
                 >
-                    <UdongText style={'GeneralTitle'}>유저 프로필</UdongText>
-                </HStack>
+                    <HStack
+                        paddingVertical={10}
+                        paddingHorizontal={25}
+                    >
+                        <UdongText style={'GeneralTitle'}>유저 프로필</UdongText>
+                    </HStack>
 
-                <HStack
-                    style={{ padding: '0 0 20px 20px' }}
-                    onClick={() => setIsOpen(false)}
-                >
-                    <UdongImage
-                        src={close.src}
-                        height={15}
-                        width={15}
-                    />
+                    <HStack
+                        style={{ padding: '0 0 20px 20px' }}
+                        onClick={() => setIsOpen(false)}
+                    >
+                        <UdongImage
+                            src={close.src}
+                            height={15}
+                            width={15}
+                        />
+                    </HStack>
                 </HStack>
-            </HStack>
-            <Spacer height={90}/>
+                <Spacer height={90}/>
 
-            <ProfileView
-                name={name}
-                showAdminBadge={isAdmin}
-                bottomItem={renderBottomButtons()}
-            />
-        </VStack>
+                <ProfileView
+                    name={user.name}
+                    showAdminBadge={isAdmin}
+                    bottomItem={renderBottomButtons()}
+                />
+            </VStack>}
     </UdongModal>
 }
