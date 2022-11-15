@@ -4,7 +4,7 @@ import { PostAPI } from '../../../infra/api/PostAPI'
 import { Comment } from '../../model/Comment'
 import { BoardPost, ListItemPost } from '../../model/ListItemPost'
 
-interface PostState {
+export interface PostState {
     selectedPost?: ListItemPost
     boardPosts: Array<BoardPost>
     comments: Array<Comment>
