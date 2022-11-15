@@ -3,7 +3,7 @@ import { Spacer } from '../ui/components/Spacer'
 import { HStack } from '../ui/components/Stack'
 import { UdongText } from '../ui/components/UdongText'
 
-// FIXME: type에 EventPost까지 추가
+// 나중에 type에 EventPost, FeedPost까지 추가
 export const formatPostItemInfo = (
     post: ListItemPost | BoardPost,
 ) => {
