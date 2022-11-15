@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
+import { UserAPI } from '../../../infra/api/UserAPI'
 import { User } from '../../model/User'
 
 interface UserState {
@@ -27,14 +28,24 @@ export const deleteAccount = createAsyncThunk(
 
 export const getUser = createAsyncThunk(
     'user/getUser',
-    async () => { return },
+    async (userId: number) => {
+        return UserAPI.getUser(userId)
+    },
 )
 
 const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(getUser.fulfilled, (state, action) => {
+            state.selectedUser = action.payload
+        })
+    },
 })
 
-export const userActions = userSlice.actions
+export const userActions = {
+    ...userSlice.actions,
+    getUser,
+}
 export const userReducer = userSlice.reducer
