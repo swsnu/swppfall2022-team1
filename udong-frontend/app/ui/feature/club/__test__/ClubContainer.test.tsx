@@ -1,13 +1,30 @@
+import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
+import { Provider } from 'react-redux'
 
+import { postReducer, PostState } from '../../../../domain/store/post/PostSlice'
 import { ClubContainer } from '../ClubContainer'
 import { CLUB_TAB } from '../ClubTabView'
 
+const stubInitialState: PostState = {
+    boardPosts: [],
+    comments: [],
+}
+
+const mockStore = configureStore({
+    reducer: { post: postReducer },
+    preloadedState: { post: stubInitialState },
+})
+
 describe('<ClubContainer/>', () => {
     it ('should render club container board tab', () => {
-        render(<ClubContainer tab={CLUB_TAB.BOARD}/>)
+        render(
+            <Provider store={mockStore}>
+                <ClubContainer tab={CLUB_TAB.BOARD}/>
+            </Provider>,
+        )
         const component = screen.getByText('게시판')
         expect(component).toBeDefined()
     })
@@ -19,7 +36,11 @@ describe('<ClubContainer/>', () => {
             replace: (url: string) => mockReplace(url),
         } as unknown as NextRouter))
 
-        render(<ClubContainer tab={CLUB_TAB.BOARD}/>)
+        render(
+            <Provider store={mockStore}>
+                <ClubContainer tab={CLUB_TAB.BOARD}/>
+            </Provider>,
+        )
         const text = screen.getByText('게시판')
         fireEvent.click(text)
         expect(mockReplace).toHaveBeenCalledWith('/club/1/?tab=board')
