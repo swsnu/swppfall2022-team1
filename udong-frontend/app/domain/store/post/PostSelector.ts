@@ -9,6 +9,11 @@ const selectedPost = createSelector(
     state => state.selectedPost,
 )
 
+const boardPosts = createSelector(
+    postState,
+    state => state.boardPosts,
+)
+
 const comments = createSelector(
     postState,
     state => state.comments,
@@ -16,5 +21,6 @@ const comments = createSelector(
 
 export const postSelector = {
     selectedPost,
+    boardPosts,
     comments,
 }

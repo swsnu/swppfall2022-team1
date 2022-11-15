@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 
-import { dummyFeedPosts } from '../../../../domain/model/Post'
+import { dummyFeedPosts } from '../../../../domain/model/ListItemPost'
 import { PostItem } from '../PostItem'
 
 describe('<PostItem/>', () => {

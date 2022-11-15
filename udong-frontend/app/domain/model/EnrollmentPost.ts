@@ -1,6 +1,6 @@
-import { Post } from './Post'
+import { ListItemPost } from './ListItemPost'
 
 export interface EnrollmentPost {
-    post: Post
+    post: ListItemPost
     closed: boolean
 }

@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { dummyBoardPosts } from '../../../../domain/model/Post'
+import { AppDispatch } from '../../../../domain/store'
+import { postSelector } from '../../../../domain/store/post/PostSelector'
+import { postActions } from '../../../../domain/store/post/PostSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -11,12 +14,15 @@ import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 import { PostCreateModal } from './PostCreateModal'
 
 export const BoardContainer = () => {
+    const dispatch = useDispatch<AppDispatch>()
+    const boardPosts = useSelector(postSelector.boardPosts)
+
     const [loading, setLoading] = useState(true)
     const [showPostCreateModal, setShowPostCreateModal] = useState(false)
 
     useEffect(() => {
+        dispatch(postActions.getClubPosts(1))
         setTimeout(() => setLoading(false), 600)
-
     }, [])
 
     return <VStack>
@@ -36,11 +42,10 @@ export const BoardContainer = () => {
 
         {loading ? <UdongLoader height={400}/> :
             <VStack>
-                {dummyBoardPosts.concat(dummyBoardPosts).concat(dummyBoardPosts).map((post, index) => {
+                {boardPosts.map((post, index) => {
                     return <PostItem
                         post={post}
-                        key={post.id + index}
-                        isClubBoard={true}
+                        key={post.id + ' ' + index}
                     />
                 })}
 

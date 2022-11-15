@@ -1,8 +1,8 @@
-import { Post } from './Post'
+import { ListItemPost } from './ListItemPost'
 import { SchedulingPostType } from './SchedulingPostType'
 
 export interface SchedulingPost {
-    post: Post
+    post: ListItemPost
     type: SchedulingPostType
     startTime: number
     endTime: number

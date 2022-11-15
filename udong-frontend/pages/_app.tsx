@@ -1,7 +1,9 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
+import { Provider } from 'react-redux'
 
+import { store } from '../app/domain/store'
 import { VStack } from '../app/ui/components/Stack'
 import { Header, HEADER_PAGE } from '../app/ui/feature/header/Header'
 
@@ -23,12 +25,14 @@ export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter()
 
     return (
-        <VStack>
-            <Header
-                type={findHeaderType(router.pathname)}
-                clubId={1}
-            />
-            <Component {...pageProps} />
-        </VStack>
+        <Provider store={store}>
+            <VStack>
+                <Header
+                    type={findHeaderType(router.pathname)}
+                    clubId={1}
+                />
+                <Component {...pageProps} />
+            </VStack>
+        </Provider>
     )
 }
