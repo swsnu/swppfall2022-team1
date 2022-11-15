@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-import { dummyEventPosts } from '../../../../../domain/model/Post'
 import { Spacer } from '../../../../components/Spacer'
 import { VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
@@ -9,7 +8,6 @@ import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { DeleteModal } from '../../../shared/DeleteModal'
-import { PostItem } from '../../../shared/PostItem'
 import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
 
 export const EventDetailContainer = () => {
@@ -56,13 +54,13 @@ export const EventDetailContainer = () => {
         <UdongText style={'GeneralTitle'}>관련 게시글</UdongText>
         <Spacer height={15}/>
 
-        {dummyEventPosts.map((post, index) => {
-            return <PostItem
-                post={post}
-                key={post.id + index}
-                isEventDetail={true}
-            />
-        })}
+        {/*{dummyEventPosts.map((post, index) => {*/}
+        {/*    return <PostItem*/}
+        {/*        post={post}*/}
+        {/*        key={post.id + index}*/}
+        {/*        isEventDetail={true}*/}
+        {/*    />*/}
+        {/*})}*/}
 
         <ScrollToTopButton/>
 

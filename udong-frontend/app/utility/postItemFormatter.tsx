@@ -1,16 +1,14 @@
+import { BoardPost, ListItemPost, PostDisplayType } from '../domain/model/ListItemPost'
 import { Spacer } from '../ui/components/Spacer'
 import { HStack } from '../ui/components/Stack'
 import { UdongText } from '../ui/components/UdongText'
 
+// FIXME: type에 EventPost까지 추가
 export const formatPostItemInfo = (
-    clubName: string,
-    isFeed: boolean,
-    isClubBoard: boolean,
-    isEventDetail: boolean,
-    eventName?: string,
+    post: ListItemPost | BoardPost,
 ) => {
-
-    if (isFeed) {
+    if (post.displayType === PostDisplayType.FEED) {
+        const { clubName, eventName } = post as ListItemPost
         return <HStack>
             <UdongText style={'ListContentUnderscore'}>{clubName}</UdongText>
             {eventName &&
@@ -28,7 +26,8 @@ export const formatPostItemInfo = (
         </HStack>
     }
 
-    if (isClubBoard) {
+    else if (post.displayType === PostDisplayType.BOARD) {
+        const { eventName } = post as BoardPost
         if (!eventName) {
             return null
         }
@@ -38,7 +37,7 @@ export const formatPostItemInfo = (
         </HStack>
     }
 
-    if (isEventDetail) {
+    else if (post.displayType === PostDisplayType.EVENT) {
         return null
     }
 }

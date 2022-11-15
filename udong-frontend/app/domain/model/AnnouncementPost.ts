@@ -1,3 +1,3 @@
-import { Post } from './Post'
+import { ListItemPost } from './ListItemPost'
 
-export type AnnouncementPost = Post
+export type AnnouncementPost = ListItemPost

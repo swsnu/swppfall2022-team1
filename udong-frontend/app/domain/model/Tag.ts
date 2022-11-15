@@ -1,3 +1,4 @@
+import { PostTagDto } from '../../infra/dto/PostTagDto'
 import { Club, dummyClubDanpung, dummyClubWaffle } from './Club'
 import { dummyUserMe, dummyUserNotMe, User } from './User'
 
@@ -8,6 +9,8 @@ export interface Tag {
     // FIXME: temporary fields for dummy data
     users: Array<User>
 }
+
+export type PostTag = PostTagDto
 
 export const dummyTagsDanpung: Array<Tag> = [
     {

@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 
-import { Post } from '../../../domain/model/Post'
+import { BoardPost, ListItemPost } from '../../../domain/model/ListItemPost'
 import { PostType } from '../../../domain/model/PostType'
-import { dummyUserMe } from '../../../domain/model/User'
+import { getPostTypeQueryParam } from '../../../utility/getPostTypeQueryParam'
 import { formatPostItemInfo } from '../../../utility/postItemFormatter'
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
@@ -13,22 +13,17 @@ import { ClickableTag } from './ClickableTag'
 import { UserListModal } from './UserListModal'
 
 interface PostItemProps {
-    post: Post
-    isClubBoard?: boolean
-    isEventDetail?: boolean
+    post: ListItemPost | BoardPost
 }
 
 export const PostItem = (props: PostItemProps) => {
-    const { post, isClubBoard = false, isEventDetail = false } = props
+    const { post } = props
     const router = useRouter()
     const [isMemberListOpen, setIsMemberListOpen] = useState(false)
     const [currentTag, setCurrentTag] = useState('')
 
-    const isFeed = !isEventDetail && !isClubBoard
-
     const handleOnClickPost = useCallback(() => {
-        // FIXME: demo를 위해 임시방편으로 query params으로 type넘겨주기, 나중에는 리덕스로 해결
-        router.push(`/club/1/post/1/?type=${post.type}`)
+        router.push(`/club/1/post/1/?type=${getPostTypeQueryParam(post.type)}`)
     }, [router])
 
     return <VStack onClick={handleOnClickPost}>
@@ -43,14 +38,27 @@ export const PostItem = (props: PostItemProps) => {
             gap={12}
         >
             <HStack alignItems={'center'}>
-                {formatPostItemInfo(post.clubName, isFeed, isClubBoard, isEventDetail, post.event?.name)}
+                {formatPostItemInfo(post)}
 
                 <HStack>
-                    {post.tags.map((tag, index) => {
+                    {post.includedTags?.map((tag, index) => {
                         return <ClickableTag
                             key={tag.name + index}
                             text={tag.name}
-                            isIncluded={tag.users.includes(dummyUserMe)}
+                            isIncluded={true}
+                            onClick={() => {
+                                setIsMemberListOpen(true)
+                                setCurrentTag(tag.name)
+                            }}
+                        />
+                    })}
+                </HStack>
+                <HStack>
+                    {post.excludedTags?.map((tag, index) => {
+                        return <ClickableTag
+                            key={tag.name + index}
+                            text={tag.name}
+                            isIncluded={false}
                             onClick={() => {
                                 setIsMemberListOpen(true)
                                 setCurrentTag(tag.name)
