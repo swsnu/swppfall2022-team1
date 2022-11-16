@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { dummyUserNotMe } from '../../../../../domain/model/User'
 import { ClubMemberProfileView } from '../ClubMemberProfileView'
 
 describe('<ClubMemberProfileView/>', () => {
@@ -7,7 +8,8 @@ describe('<ClubMemberProfileView/>', () => {
         render(<ClubMemberProfileView
             isOpen={true}
             setIsOpen={() => {return}}
-            name={'NAME'}
+            user={dummyUserNotMe}
+            isAdmin={false}
         />)
         const text = screen.getByText('NAME')
         expect(text).toBeDefined()
@@ -17,7 +19,7 @@ describe('<ClubMemberProfileView/>', () => {
         render(<ClubMemberProfileView
             isOpen={true}
             setIsOpen={() => {return}}
-            name={'NAME'}
+            user={dummyUserNotMe}
             isAdmin={true}
         />)
         const text = screen.getByText('일반 멤버로 전환')
@@ -29,7 +31,8 @@ describe('<ClubMemberProfileView/>', () => {
         render(<ClubMemberProfileView
             isOpen={true}
             setIsOpen={() => {return}}
-            name={'NAME'}
+            user={dummyUserNotMe}
+            isAdmin={false}
         />)
         const text = screen.getByText('관리자로 전환')
         fireEvent.click(text)
@@ -40,7 +43,8 @@ describe('<ClubMemberProfileView/>', () => {
         render(<ClubMemberProfileView
             isOpen={true}
             setIsOpen={() => {return}}
-            name={'NAME'}
+            user={dummyUserNotMe}
+            isAdmin={false}
         />)
         const text = screen.getByText('내보내기')
         fireEvent.click(text)
@@ -51,7 +55,8 @@ describe('<ClubMemberProfileView/>', () => {
         render(<ClubMemberProfileView
             isOpen={true}
             setIsOpen={() => {return}}
-            name={'NAME'}
+            user={dummyUserNotMe}
+            isAdmin={false}
         />)
         const component = screen.getAllByRole('img')[0]
         fireEvent.click(component)
