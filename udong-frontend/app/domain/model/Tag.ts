@@ -6,7 +6,7 @@ export interface Tag {
     id: number
     club: Club
     name: string
-    // FIXME: temporary fields for dummy data
+    // temporary fields for dummy data
     users: Array<User>
 }
 
