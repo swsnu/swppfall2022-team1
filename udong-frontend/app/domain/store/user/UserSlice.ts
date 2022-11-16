@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { UserAPI } from '../../../infra/api/UserAPI'
 import { User } from '../../model/User'
 
-interface UserState {
+export interface UserState {
     me?: User
     selectedUser?: User
 }
