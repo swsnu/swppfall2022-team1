@@ -1,5 +1,9 @@
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { AppDispatch } from '../../../domain/store'
+import { userSelector } from '../../../domain/store/user/UserSelector'
+import { userActions } from '../../../domain/store/user/UserSlice'
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
 import { UdongSearchBar } from '../../components/UdongSearchBar'
@@ -18,8 +22,10 @@ const dummyUserData: Array<DummyUser> = [{ name: '이유빈' }, { name: '이유�
 const dummy = dummyMe.concat(dummyAdminUsers).concat(dummyUserData).concat(dummyUserData)
 
 export const SearchMembersView = () => {
-    const [selectedUser, setSelectedUser] = useState<DummyUser>(dummyMe[0])
+    const dispatch = useDispatch<AppDispatch>()
+    const selectedUser = useSelector(userSelector.selectedUser)
     const [showMemberProfile, setShowMemberProfile] = useState(false)
+    const isAdmin = true
 
     return <VStack>
         <UdongSearchBar/>
@@ -36,7 +42,7 @@ export const SearchMembersView = () => {
                     key={user.name + index}
                     onClick={() => {
                         setShowMemberProfile(true)
-                        setSelectedUser(user)
+                        dispatch(userActions.getUser(1))
                     }}
                 >
                     <UserItem
@@ -51,8 +57,8 @@ export const SearchMembersView = () => {
         <ClubMemberProfileView
             isOpen={showMemberProfile}
             setIsOpen={setShowMemberProfile}
-            name={selectedUser.name}
-            isAdmin={selectedUser.isAdmin}
+            user={selectedUser}
+            isAdmin={isAdmin}
         />
 
     </VStack>

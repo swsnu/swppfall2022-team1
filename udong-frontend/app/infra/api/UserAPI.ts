@@ -1,8 +1,17 @@
+import axios from 'axios'
+
+import { User } from '../../domain/model/User'
+import { UserDto } from '../dto/UserDto'
+import { userTransformer } from '../transformer/UserTransformer'
+
 export const UserAPI = (() => {
     function getMyProfile() { return }
     function editMyProfile() { return }
     function deleteAccount() { return }
-    function getUser() { return }
+    async function getUser(userId: number): Promise<User> {
+        const response = await axios.get<UserDto>(`/api/user/${userId}`)
+        return userTransformer.fromDto(response.data)
+    }
 
     function participateInEnrollment() { return }
     function unparticipateInEnrollment() { return }
