@@ -4,27 +4,37 @@ import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 import { Provider } from 'react-redux'
 
+import { dummyUserMe } from '../../../../domain/model/User'
 import { postReducer, PostState } from '../../../../domain/store/post/PostSlice'
+import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { ClubContainer } from '../ClubContainer'
 import { CLUB_TAB } from '../ClubTabView'
 
-const stubInitialState: PostState = {
+const userStubInitialState: UserState = {
+    selectedUser: dummyUserMe,
+}
+
+const postStubInitialState: PostState = {
     boardPosts: [],
     comments: [],
 }
 
 const mockStore = configureStore({
-    reducer: { post: postReducer },
-    preloadedState: { post: stubInitialState },
+    reducer: { post: postReducer, user: userReducer },
+    preloadedState: { post: postStubInitialState, user: userStubInitialState },
 })
 
 describe('<ClubContainer/>', () => {
+    const ClubContainerWithStore = (tab: CLUB_TAB) => (
+        <Provider store={mockStore}>
+            <ClubContainer tab={tab}/>
+        </Provider>
+    )
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
     it ('should render club container board tab', () => {
-        render(
-            <Provider store={mockStore}>
-                <ClubContainer tab={CLUB_TAB.BOARD}/>
-            </Provider>,
-        )
+        render(ClubContainerWithStore(CLUB_TAB.BOARD))
         const component = screen.getByText('게시판')
         expect(component).toBeDefined()
     })
@@ -36,30 +46,27 @@ describe('<ClubContainer/>', () => {
             replace: (url: string) => mockReplace(url),
         } as unknown as NextRouter))
 
-        render(
-            <Provider store={mockStore}>
-                <ClubContainer tab={CLUB_TAB.BOARD}/>
-            </Provider>,
-        )
+        render(ClubContainerWithStore(CLUB_TAB.BOARD))
+
         const text = screen.getByText('게시판')
         fireEvent.click(text)
         expect(mockReplace).toHaveBeenCalledWith('/club/1/?tab=board')
     })
 
     it ('should render club container event tab', () => {
-        render(<ClubContainer tab={CLUB_TAB.EVENT}/>)
+        render(ClubContainerWithStore(CLUB_TAB.EVENT))
         const component = screen.getByText('행사')
         expect(component).toBeDefined()
     })
 
     it ('should render club container tag tab', () => {
-        render(<ClubContainer tab={CLUB_TAB.TAG}/>)
+        render(ClubContainerWithStore(CLUB_TAB.TAG))
         const component = screen.getByText('태그')
         expect(component).toBeDefined()
     })
 
     it ('should render club container info tab', () => {
-        render(<ClubContainer tab={CLUB_TAB.INFO}/>)
+        render(ClubContainerWithStore(CLUB_TAB.INFO))
         const component = screen.getByText('정보')
         expect(component).toBeDefined()
     })

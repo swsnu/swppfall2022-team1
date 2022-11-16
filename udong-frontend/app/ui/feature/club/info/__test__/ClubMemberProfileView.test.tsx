@@ -11,7 +11,7 @@ describe('<ClubMemberProfileView/>', () => {
             user={dummyUserNotMe}
             isAdmin={false}
         />)
-        const text = screen.getByText('NAME')
+        const text = screen.getByText(dummyUserNotMe.name)
         expect(text).toBeDefined()
     })
 
