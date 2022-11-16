@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../domain/store'
@@ -25,10 +25,7 @@ export const SearchMembersView = () => {
     const dispatch = useDispatch<AppDispatch>()
     const selectedUser = useSelector(userSelector.selectedUser)
     const [showMemberProfile, setShowMemberProfile] = useState(false)
-
-    useEffect(() => {
-        dispatch(userActions.getUser(1))
-    }, [])
+    const isAdmin = true
 
     return <VStack>
         <UdongSearchBar/>
@@ -45,7 +42,7 @@ export const SearchMembersView = () => {
                     key={user.name + index}
                     onClick={() => {
                         setShowMemberProfile(true)
-                        dispatch(userActions.getUser(0))
+                        dispatch(userActions.getUser(1))
                     }}
                 >
                     <UserItem
@@ -61,6 +58,7 @@ export const SearchMembersView = () => {
             isOpen={showMemberProfile}
             setIsOpen={setShowMemberProfile}
             user={selectedUser}
+            isAdmin={isAdmin}
         />
 
     </VStack>

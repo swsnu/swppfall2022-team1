@@ -15,11 +15,11 @@ interface ClubMemberProfileViewProps {
     isOpen: boolean
     setIsOpen: (open: boolean) => void
     user?: User
+    isAdmin?: boolean
 }
 
 export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
-    const { isOpen, setIsOpen, user } = props
-    const isAdmin = true
+    const { isOpen, setIsOpen, user, isAdmin } = props
 
     const renderAssignMemberButton = useCallback(() => {
         return <HStack
