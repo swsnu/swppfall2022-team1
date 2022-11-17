@@ -1,14 +1,38 @@
-from django.shortcuts import render
 from django.db.models import Q
 from rest_framework import viewsets
+from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from post.models import Post
 from post.serializers import PostBoardSerializer
 from user.models import UserClub
 from typing import Any
 
 # Create your views here.
+
+
+class PostViewSet(viewsets.GenericViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostBoardSerializer
+
+    @action(detail=True, methods=["GET", "POST"])
+    def comment(self, request: Request, pk: Any) -> Response:
+        if request.method == "GET":
+            return self._get_comments(request, pk)
+        elif request.method == "POST":
+            return self._post_comment(request, pk)
+        else:
+            raise MethodNotAllowed(
+                request.method if request.method else "unknown method"
+            )
+
+    def _get_comments(self, request: Request, pk: Any) -> Response:
+        # TODO: implement GET /post/:id/comment/
+        return Response()
+
+    def _post_comment(self, request: Request, pk: Any) -> Response:
+        return Response("post")
 
 
 class PostClubViewSet(viewsets.GenericViewSet):
