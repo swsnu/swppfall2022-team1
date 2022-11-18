@@ -11,7 +11,7 @@ export const ClubAPI = (() => {
     }
 
     function getClub() { return }
-    function createClub() { return } // /club (POST)
+    function createClub() { return } // club (POST)
     function editClub() { return }
     function deleteClub() { return }
 
