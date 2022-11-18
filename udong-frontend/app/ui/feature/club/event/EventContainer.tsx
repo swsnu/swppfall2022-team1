@@ -106,7 +106,7 @@ export const EventContainer = (props: EventContainerProps) => {
 
     useEffect(() => {
         dispatch(eventActions.getEvents(clubId))
-    }, [])
+    }, [clubId, dispatch])
 
     const handleCurrentView = useCallback((selectedTab: EventTabType) => {
         router.replace(`/club/1/?tab=event&view=${selectedTab}`)
