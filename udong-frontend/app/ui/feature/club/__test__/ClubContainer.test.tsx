@@ -8,6 +8,7 @@ import { dummyUserMe } from '../../../../domain/model/User'
 import { clubReducer, ClubState } from '../../../../domain/store/club/ClubSlice'
 import { eventReducer, EventState } from '../../../../domain/store/event/EventSlice'
 import { postReducer, PostState } from '../../../../domain/store/post/PostSlice'
+import { tagReducer, TagState } from '../../../../domain/store/tag/TagSlice'
 import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { ClubContainer } from '../ClubContainer'
 import { CLUB_TAB } from '../ClubTabView'
@@ -29,9 +30,19 @@ const stubEventInitialState: EventState = {
     events: [],
 }
 
+const stubTagInitialState: TagState = {
+    tags: [],
+}
+
 const mockStore = configureStore({
-    reducer: { post: postReducer, user: userReducer, club: clubReducer, event: eventReducer },
-    preloadedState: { post: stubPostInitialState, user: stubUserInitialState, club: stubClubInitialState, event: stubEventInitialState },
+    reducer: { post: postReducer, user: userReducer, club: clubReducer, event: eventReducer, tag: tagReducer },
+    preloadedState: {
+        post: stubPostInitialState,
+        user: stubUserInitialState,
+        club: stubClubInitialState,
+        event: stubEventInitialState,
+        tag: stubTagInitialState,
+    },
 })
 
 describe('<ClubContainer/>', () => {

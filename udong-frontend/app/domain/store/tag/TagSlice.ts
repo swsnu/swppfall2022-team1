@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { ClubTag, Tag } from '../../model/Tag'
 
-interface TagState {
+export interface TagState {
     selectedTag?: Tag
     tags: Array<ClubTag>
 }
