@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { BoardPost, ListItemPost } from '../../../domain/model/ListItemPost'
 import { PostType } from '../../../domain/model/PostType'
-import { getPostTypeQueryParam } from '../../../utility/getPostTypeQueryParam'
+import { getPostTypeQueryParam } from '../../../utility/handleQueryParams'
 import { formatPostItemInfo } from '../../../utility/postItemFormatter'
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'

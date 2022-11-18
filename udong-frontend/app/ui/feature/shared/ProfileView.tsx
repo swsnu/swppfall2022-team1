@@ -15,6 +15,7 @@ import { UdongColors } from '../../theme/ColorPalette'
 
 interface ProfileViewProps {
     name: string
+    code: string
     showCameraButton?: boolean
     showEditButton?: boolean
     showAccessCode?: boolean
@@ -26,6 +27,7 @@ interface ProfileViewProps {
 export const ProfileView = (props: ProfileViewProps) => {
     const {
         name,
+        code,
         showCameraButton = false,
         showEditButton = false,
         showAccessCode = false,
@@ -73,7 +75,7 @@ export const ProfileView = (props: ProfileViewProps) => {
             <HStack>
                 <UdongText style={'ListContentUnderscore'}>고유코드</UdongText>
                 <Spacer width={5}/>
-                <UdongText style={'ListContentS'}>GF081T</UdongText>
+                <UdongText style={'ListContentS'}>{code}</UdongText>
                 <Spacer width={5}/>
                 <UdongImage
                     src={refresh.src}

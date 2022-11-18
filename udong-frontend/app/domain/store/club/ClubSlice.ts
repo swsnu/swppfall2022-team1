@@ -21,7 +21,9 @@ export const getMyClubs = createAsyncThunk(
 
 export const getClub = createAsyncThunk(
     'club/getClub',
-    async () => { return },
+    async (clubId: number) => {
+        return ClubAPI.getClub(clubId)
+    },
 )
 
 export const registerClub = createAsyncThunk(
@@ -72,11 +74,15 @@ const clubSlice = createSlice({
         builder.addCase(getMyClubs.fulfilled, (state, action) => {
             state.myClubs = action.payload
         })
+        builder.addCase(getClub.fulfilled, (state, action) => {
+            state.selectedClub = action.payload
+        })
     },
 })
 
 export const clubActions = {
     ...clubSlice.actions,
     getMyClubs,
+    getClub,
 }
 export const clubReducer = clubSlice.reducer

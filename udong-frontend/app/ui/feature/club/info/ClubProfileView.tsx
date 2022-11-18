@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 
+import { Club } from '../../../../domain/model/Club'
 import { Spacer } from '../../../components/Spacer'
 import { HStack } from '../../../components/Stack'
 import { UdongFloatingContainer } from '../../../components/UdongFloatingContainer'
@@ -8,11 +9,13 @@ import { UdongColors } from '../../../theme/ColorPalette'
 import { ProfileView } from '../../shared/ProfileView'
 
 interface ClubProfileViewProps {
+    club?: Club
     onClickDelete: (showDeleteModal: boolean) => void
 }
 
 export const ClubProfileView = (props: ClubProfileViewProps) => {
-    const { onClickDelete } = props
+    const { club, onClickDelete } = props
+    const { name = '이름 없음', code = '코드 없음' } = club ?? {}
 
     const renderLeaveClubButton = useCallback(() => {
         return <HStack onClick={() => {return}}>
@@ -45,7 +48,8 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
         <Spacer height={90}/>
 
         <ProfileView
-            name={'SWPP'}
+            name={name}
+            code={code}
             showCameraButton={true}
             showEditButton={true}
             showAccessCode={true}

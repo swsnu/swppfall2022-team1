@@ -11,3 +11,10 @@ export const getPostTypeQueryParam = (type: PostType): string => {
             return 'announcement'
     }
 }
+
+export const convertQueryParamToString = (queryParam: string | Array<string> | undefined) => {
+    if (queryParam instanceof Array) {
+        return queryParam.join('')
+    }
+    return queryParam ?? ''
+}
