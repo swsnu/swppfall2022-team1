@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 
 import { Club } from '../../../../../domain/model/Club'
 import { clubReducer, ClubState } from '../../../../../domain/store/club/ClubSlice'
+import { UdongImage } from '../../../../components/UdongImage'
 import dong from '../../../../icons/IcDong.png'
 import { MyDongContainer } from '../MyDongContainer'
 
@@ -26,7 +27,11 @@ jest.mock('../ClubItem', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
     ClubItem: ({ imageSrc, club }: { imageSrc: string, club: Club }) =>
         <div data-testid={'club-item'}>
-            <img src={dong.src}/>
+            <UdongImage
+                src={dong.src}
+                height={50}
+                width={50}
+            />
             <p>Udong</p>
         </div>,
 }))
