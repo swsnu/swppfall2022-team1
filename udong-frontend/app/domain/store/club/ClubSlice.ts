@@ -1,17 +1,22 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
+import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { Club } from '../../model/Club'
 
 interface ClubState {
     selectedClub?: Club
+    myClubs: Array<Club>
 }
 
 const initialState: ClubState = {
+    myClubs: [],
 }
 
 export const getMyClubs = createAsyncThunk(
     'club/getMyClubs',
-    async () => { return },
+    async () => {
+        return ClubAPI.getClubs()
+    },
 )
 
 export const getClub = createAsyncThunk(
@@ -63,7 +68,15 @@ const clubSlice = createSlice({
     name: 'club',
     initialState,
     reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(getMyClubs.fulfilled, (state, action) => {
+            state.myClubs = action.payload
+        })
+    },
 })
 
-export const clubActions = clubSlice.actions
+export const clubActions = {
+    ...clubSlice.actions,
+    getMyClubs,
+}
 export const clubReducer = clubSlice.reducer

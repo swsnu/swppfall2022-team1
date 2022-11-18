@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 
+import { Club } from '../../../../domain/model/Club'
 import { Spacer } from '../../../components/Spacer'
 import { VStack } from '../../../components/Stack'
 import { UdongImage } from '../../../components/UdongImage'
@@ -8,17 +9,17 @@ import { UdongColors } from '../../../theme/ColorPalette'
 
 interface ClubItemProps {
     imageSrc: string
-    name: string
+    club: Club
 }
 
 export const ClubItem = (props: ClubItemProps) => {
-    const { imageSrc, name } = props
+    const { imageSrc, club } = props
     const router = useRouter()
 
     return <VStack
         alignItems={'center'}
         width={'fit-content'}
-        onClick={() => router.push('/club/1')}
+        onClick={() => router.push(`/club/${club.id}`)}
     >
         <VStack
             style={{
@@ -35,7 +36,7 @@ export const ClubItem = (props: ClubItemProps) => {
             />
         </VStack>
         <Spacer height={8}/>
-        <UdongText style={'GeneralTitle'}>{name}</UdongText>
+        <UdongText style={'GeneralTitle'}>{club.name}</UdongText>
         <Spacer height={8}/>
     </VStack>
 }

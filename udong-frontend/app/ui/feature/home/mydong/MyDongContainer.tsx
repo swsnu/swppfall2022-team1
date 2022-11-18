@@ -1,30 +1,31 @@
 import styled from '@emotion/styled'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { AppDispatch } from '../../../../domain/store'
+import { clubSelector } from '../../../../domain/store/club/ClubSelector'
+import { clubActions } from '../../../../domain/store/club/ClubSlice'
 import { VStack } from '../../../components/Stack'
 import { UdongImage } from '../../../components/UdongImage'
-import dummy from '../../../icons/IcDong.png'
-import maple from '../../../icons/IcMaple.png'
+import dong from '../../../icons/IcDong.png'
 import plus from '../../../icons/IcPlus.png'
-import waffle from '../../../icons/IcWaffle.png'
 import { UdongColors } from '../../../theme/ColorPalette'
 import { AddClubModal } from './AddClubModal'
 import { ClubItem } from './ClubItem'
 import { CreateClubModal } from './CreateClubModal'
 import { RegisterClubModal } from './RegisterClubModal'
 
-const dummyData = [
-    { imageSrc: maple.src, name: '단풍' },
-    { imageSrc: waffle.src, name: '와플스튜디오' },
-    { imageSrc: dummy.src, name: '우리 동아리' },
-    { imageSrc: dummy.src, name: '우리 동아리' },
-    { imageSrc: dummy.src, name: '우리 동아리' },
-]
-
 export const MyDongContainer = () => {
+    const dispatch = useDispatch<AppDispatch>()
+    const myClubs = useSelector(clubSelector.myClubs)
+
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+
+    useEffect(() => {
+        dispatch(clubActions.getMyClubs())
+    }, [dispatch])
 
     const handleOnRegisterClubClick = useCallback(() => {
         setIsAddModalOpen(false)
@@ -63,11 +64,11 @@ export const MyDongContainer = () => {
                 setIsOpen={setIsCreateModalOpen}
             />
 
-            {dummyData.map((item, index) => {
+            {myClubs.map((item, index) => {
                 return <ClubItem
                     key={`${item.name} / ${index}`}
-                    imageSrc={item.imageSrc}
-                    name={item.name}
+                    imageSrc={dong.src}
+                    club={item}
                 />
             })}
         </ClubGridLayout>
