@@ -1,8 +1,20 @@
+import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
+import { Provider } from 'react-redux'
 
+import { eventReducer, EventState } from '../../../../../domain/store/event/EventSlice'
 import { EventContainer } from '../EventContainer'
+
+const stubEventInitialState: EventState = {
+    events: [],
+}
+
+const mockStore = configureStore({
+    reducer: { event: eventReducer },
+    preloadedState: { event: stubEventInitialState },
+})
 
 jest.mock('../../../../components/UdongSelectableIcon', () => ({
     UdongSelectableIcon: ({ selected, onClickUnSelected }: { selected: boolean, onClickUnSelected: ()=>void }) =>
@@ -25,13 +37,19 @@ jest.mock('../calendar/EventCalendarView', () => ({
 }))
 
 describe('<EventContainer/>', () => {
+    const eventContainer: JSX.Element = (
+        <Provider store={mockStore}>
+            <EventContainer clubId={1}/>
+        </Provider>
+    )
+
     beforeEach(()=>jest.clearAllMocks())
     it('show loader when router is not ready',  () => {
         jest.spyOn(router, 'useRouter').mockImplementation(() => ({
             isReady: false,
             query: { view: 'calendar', tab: 'event' },
         } as unknown as NextRouter))
-        render(<EventContainer/>)
+        render(eventContainer)
         const loader = screen.getByTestId('udong-loader')
         expect(loader).toBeDefined()
     })
@@ -40,7 +58,7 @@ describe('<EventContainer/>', () => {
             isReady: true,
             query: { view: 'calendar', tab: 'event' },
         } as unknown as NextRouter))
-        render(<EventContainer/>)
+        render(eventContainer)
         const calendar = screen.getByTestId('event-calendar-view')
         expect(calendar).toBeDefined()
     })
@@ -49,7 +67,7 @@ describe('<EventContainer/>', () => {
             isReady: true,
             query: { view: 'calendar', tab: 'event' },
         } as unknown as NextRouter))
-        render(<EventContainer/>)
+        render(eventContainer)
         const calendar = screen.getByTestId('event-calendar-view')
         expect(calendar).toBeDefined()
     })
@@ -60,7 +78,7 @@ describe('<EventContainer/>', () => {
             query: { view: 'calendar', tab: 'event' },
             replace: (url: string) => mockReplace(url),
         } as unknown as NextRouter))
-        render(<EventContainer/>)
+        render(eventContainer)
         const tabButton = screen.getByTestId('unselected-icon')
         fireEvent.click(tabButton)
         expect(mockReplace).toBeCalledWith(

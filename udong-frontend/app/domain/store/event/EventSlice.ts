@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { ClubEvent } from '../../model/ClubEvent'
 
-interface EventState {
+export interface EventState {
     selectedEvent?: ClubEvent
     events: Array<ClubEvent>
 }

@@ -1,17 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { EventType } from '../../EventContainer'
+import { ClubEvent } from '../../../../../../domain/model/ClubEvent'
 import { EventItem } from '../EventItem'
 
-const dummyEvent: EventType =  {
-    id: '1',
-    title: 'title',
-    created_at: new Date('2021-01-23T22:23:22'),
-    updated_at: new Date('2022-12-02T12:11:02'),
-    times: [{
-        start: new Date('2023-12-01T10:00:00'),
-        end: new Date('2023-11-04T11:00:00'),
-    }],
+const dummyEvent: ClubEvent =  {
+    id: 1,
+    name: 'title',
+    createdAt: '',
+    updatedAt: '',
+    times: [],
 }
 
 describe('<EventItem/>', () => {
@@ -32,6 +29,6 @@ describe('<EventItem/>', () => {
         />)
         const eventTitle = screen.getByText('title')
         fireEvent.click(eventTitle)
-        expect(mockOnClick).toHaveBeenCalledWith('1')
+        expect(mockOnClick).toHaveBeenCalledWith(1)
     })
 })
