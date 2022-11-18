@@ -2,9 +2,12 @@ import axios from 'axios'
 
 import { Club } from '../../domain/model/Club'
 import { ClubEvent } from '../../domain/model/ClubEvent'
+import { ClubTag } from '../../domain/model/Tag'
 import { ClubDto } from '../dto/ClubDto'
 import { ClubEventDto } from '../dto/ClubEventDto'
+import { ClubTagDto } from '../dto/ClubTagDto'
 import { clubEventTransformer } from '../transformer/ClubEventTransformer'
+import { clubTagTransformer } from '../transformer/ClubTagTransformer'
 import { clubTransformer } from '../transformer/ClubTransformer'
 
 export const ClubAPI = (() => {
@@ -33,7 +36,10 @@ export const ClubAPI = (() => {
 
     function createClubEvent() { return }
 
-    function getClubTags() { return }
+    async function getClubTags(clubId: number): Promise<Array<ClubTag>> {
+        const response = await axios.get<Array<ClubTagDto>>(`/api/club/${clubId}/tag/`)
+        return response.data.map(clubTagTransformer.fromDto)
+    }
     function createClubTag() { return }
 
     return Object.freeze({

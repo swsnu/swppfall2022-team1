@@ -1,17 +1,22 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { Tag } from '../../model/Tag'
+import { ClubAPI } from '../../../infra/api/ClubAPI'
+import { ClubTag, Tag } from '../../model/Tag'
 
 interface TagState {
     selectedTag?: Tag
+    tags: Array<ClubTag>
 }
 
 const initialState: TagState = {
+    tags: [],
 }
 
 export const getTags = createAsyncThunk(
     'tag/getTags',
-    async () => { return },
+    async (clubId: number) => {
+        return ClubAPI.getClubTags(clubId)
+    },
 )
 
 export const getTag = createAsyncThunk(
@@ -38,7 +43,15 @@ const tagSlice = createSlice({
     name: 'tag',
     initialState,
     reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(getTags.fulfilled, (state, action) => {
+            state.tags = action.payload
+        })
+    },
 })
 
-export const tagActiosn = tagSlice.actions
+export const tagActions = {
+    ...tagSlice.actions,
+    getTags,
+}
 export const tagReducer = tagSlice.reducer

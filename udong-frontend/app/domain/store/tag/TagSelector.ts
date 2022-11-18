@@ -9,6 +9,12 @@ const selectedTag = createSelector(
     state => state.selectedTag,
 )
 
+const tags = createSelector(
+    tagState,
+    state => state.tags,
+)
+
 export const tagSelector = {
     selectedTag,
+    tags,
 }
