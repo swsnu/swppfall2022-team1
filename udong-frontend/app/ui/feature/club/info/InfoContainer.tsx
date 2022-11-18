@@ -21,7 +21,7 @@ export const InfoContainer = () => {
 
     useEffect(() => {
         dispatch(clubActions.getClub(parseInt(convertQueryParamToString(clubId))))
-    }, [])
+    }, [clubId, dispatch])
 
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
