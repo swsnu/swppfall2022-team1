@@ -1,6 +1,10 @@
 import { useRouter } from 'next/router'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { AppDispatch } from '../../../../domain/store'
+import { eventSelector } from '../../../../domain/store/event/EventSelector'
+import { eventActions } from '../../../../domain/store/event/EventSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -87,10 +91,22 @@ export const dummyEvents: EventType[] = [
     },
 ]
 
-export const EventContainer = () => {
+interface EventContainerProps {
+    clubId: number
+}
+
+export const EventContainer = (props: EventContainerProps) => {
+    const { clubId } = props
+    const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
     const { isReady } = router
     const { view } = router.query
+
+    const events = useSelector(eventSelector.events)
+
+    useEffect(() => {
+        dispatch(eventActions.getEvents(clubId))
+    }, [])
 
     const handleCurrentView = useCallback((selectedTab: EventTabType) => {
         router.replace(`/club/1/?tab=event&view=${selectedTab}`)
@@ -112,7 +128,7 @@ export const EventContainer = () => {
 
     const getCurrentContainer = () => {
         if (view === EVENT_TAB.LIST){
-            return <EventListView events={dummyEvents}/>
+            return <EventListView events={events}/>
         } else {
             return <EventCalendarView events={dummyEvents}/>
         }

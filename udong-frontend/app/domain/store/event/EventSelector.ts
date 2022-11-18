@@ -9,6 +9,12 @@ const selectedEvent = createSelector(
     state => state.selectedEvent,
 )
 
+const events = createSelector(
+    eventState,
+    state => state.events,
+)
+
 export const eventSelector = {
     selectedEvent,
+    events,
 }
