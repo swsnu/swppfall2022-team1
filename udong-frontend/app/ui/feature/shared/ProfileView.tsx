@@ -15,10 +15,9 @@ import { UdongColors } from '../../theme/ColorPalette'
 
 interface ProfileViewProps {
     name: string
-    code: string
+    code?: string
     showCameraButton?: boolean
     showEditButton?: boolean
-    showAccessCode?: boolean
     showGoogleAccount?: boolean
     showAdminBadge?: boolean
     bottomItem: ReactNode
@@ -30,7 +29,6 @@ export const ProfileView = (props: ProfileViewProps) => {
         code,
         showCameraButton = false,
         showEditButton = false,
-        showAccessCode = false,
         showGoogleAccount = false,
         showAdminBadge = false,
         bottomItem,
@@ -71,7 +69,7 @@ export const ProfileView = (props: ProfileViewProps) => {
         </HStack>
 
         <Spacer height={15}/>
-        {showAccessCode &&
+        {code &&
             <HStack>
                 <UdongText style={'ListContentUnderscore'}>고유코드</UdongText>
                 <Spacer width={5}/>

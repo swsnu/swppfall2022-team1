@@ -2,13 +2,16 @@ import axios from 'axios'
 
 import { Club } from '../../domain/model/Club'
 import { ClubEvent } from '../../domain/model/ClubEvent'
+import { ClubUser } from '../../domain/model/ClubUser'
 import { ClubTag } from '../../domain/model/Tag'
 import { ClubDto } from '../dto/ClubDto'
 import { ClubEventDto } from '../dto/ClubEventDto'
 import { ClubTagDto } from '../dto/ClubTagDto'
+import { ClubUserDto } from '../dto/ClubUserDto'
 import { clubEventTransformer } from '../transformer/ClubEventTransformer'
 import { clubTagTransformer } from '../transformer/ClubTagTransformer'
 import { clubTransformer } from '../transformer/ClubTransformer'
+import { clubUserTransformer } from '../transformer/ClubUserTransformer'
 
 export const ClubAPI = (() => {
     async function getClubs(): Promise<Array<Club>> {
@@ -25,7 +28,11 @@ export const ClubAPI = (() => {
     function editClub() { return }
     function deleteClub() { return }
 
-    function getClubMembers() { return }
+    async function getClubMembers(clubId: number): Promise<Array<ClubUser>> {
+        const response = await axios.get<Array<ClubUserDto>>(`/api/club/${clubId}/user/`)
+        return response.data.map(clubUserTransformer.fromDto)
+    }
+
     function removeClubMember() { return }
     function assignClubMemberRole() { return }
 

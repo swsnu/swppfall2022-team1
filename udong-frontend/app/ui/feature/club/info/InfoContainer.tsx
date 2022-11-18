@@ -8,7 +8,12 @@ import { DeleteModal } from '../../shared/DeleteModal'
 import { ClubMembersView } from './ClubMembersView'
 import { ClubProfileView } from './ClubProfileView'
 
-export const InfoContainer = () => {
+interface InfoContainerProps {
+    clubId: number
+}
+
+export const InfoContainer = (props: InfoContainerProps) => {
+    const { clubId } = props
     const club = useSelector(clubSelector.selectedClub)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
@@ -26,7 +31,7 @@ export const InfoContainer = () => {
 
             <Spacer width={50}/>
 
-            <ClubMembersView/>
+            <ClubMembersView clubId={clubId}/>
         </HStack>
 
         <Spacer height={20}/>

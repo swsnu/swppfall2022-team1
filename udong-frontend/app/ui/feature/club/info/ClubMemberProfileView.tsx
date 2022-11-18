@@ -1,6 +1,9 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { User } from '../../../../domain/model/User'
+import { AppDispatch } from '../../../../domain/store'
+import { userSelector } from '../../../../domain/store/user/UserSelector'
+import { userActions } from '../../../../domain/store/user/UserSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongImage } from '../../../components/UdongImage'
@@ -14,12 +17,18 @@ import { ProfileView } from '../../shared/ProfileView'
 interface ClubMemberProfileViewProps {
     isOpen: boolean
     setIsOpen: (open: boolean) => void
-    user?: User
-    isAdmin?: boolean
+    memberId: number
+    isAdmin: boolean
 }
 
 export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
-    const { isOpen, setIsOpen, user, isAdmin } = props
+    const { isOpen, setIsOpen, memberId, isAdmin } = props
+    const dispatch = useDispatch<AppDispatch>()
+    const user = useSelector(userSelector.selectedUser)
+
+    useEffect(() => {
+        dispatch(userActions.getUser(memberId))
+    }, [dispatch, memberId])
 
     const renderAssignMemberButton = useCallback(() => {
         return <HStack
