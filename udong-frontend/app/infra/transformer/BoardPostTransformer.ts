@@ -1,5 +1,6 @@
 import { BoardPost, PostDisplayType } from '../../domain/model/ListItemPost'
 import { BoardPostDto } from '../dto/BoardPostDto'
+import { postTagTransformer } from './PostTagTransformer'
 
 const fromDto = (dto: BoardPostDto): BoardPost => {
     return {
@@ -10,8 +11,8 @@ const fromDto = (dto: BoardPostDto): BoardPost => {
         content: dto.content,
         type: dto.type,
         closed: dto.closed,
-        includedTags: dto.included_tags,
-        excludedTags: dto.excluded_tags,
+        includedTags: dto.included_tags?.map(postTagTransformer.fromDto),
+        excludedTags: dto.excluded_tags?.map(postTagTransformer.fromDto),
         createdAt: dto.created_at,
         updatedAt: dto.updated_at,
     }

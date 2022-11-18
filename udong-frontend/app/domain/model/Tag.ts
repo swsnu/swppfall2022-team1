@@ -1,4 +1,3 @@
-import { PostTagDto } from '../../infra/dto/PostTagDto'
 import { Club, dummyClubDanpung, dummyClubWaffle } from './Club'
 import { dummyUserMe, dummyUserNotMe, User } from './User'
 
@@ -10,7 +9,10 @@ export interface Tag {
     users: Array<User>
 }
 
-export type PostTag = PostTagDto
+export interface PostTag {
+    id: number
+    name: string
+}
 
 export const dummyTagsDanpung: Array<Tag> = [
     {
