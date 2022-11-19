@@ -47,7 +47,7 @@ class PostViewSet(_GenereicViewSet):
                 .filter(club_id=club_id)
             )
             if auth == "A":
-                response.append(
+                response.extend(
                     self.get_serializer(
                         post, many=True, context={"id": request.user.id}
                     ).data
