@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.db.models import Model
 from rest_framework import viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -12,11 +11,9 @@ from club.serializers import (
     ClubEventSerializer,
     ClubTagSerializer,
 )
-from typing import Any, Type, TypeVar, TYPE_CHECKING
+from typing import Any, Type, TYPE_CHECKING
 
 # Create your views here.
-
-_MT_co = TypeVar("_MT_co", bound=Model, covariant=True)
 
 if TYPE_CHECKING:
     _GenereicViewSet = viewsets.GenericViewSet[Club]
@@ -28,7 +25,7 @@ class ClubViewSet(_GenereicViewSet):
     queryset = Club.objects.all()
     serializer_class = ClubSerializer
 
-    def get_serializer_class(self) -> Type[BaseSerializer[_MT_co]]:
+    def get_serializer_class(self) -> Type[BaseSerializer[Club]]:
         if self.action == "user":
             return ClubUserSerializer
         if self.action == "event":
