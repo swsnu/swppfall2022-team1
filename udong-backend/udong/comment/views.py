@@ -26,3 +26,11 @@ class CommentViewSet(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.update(comment, serializer.validated_data)
         return Response(serializer.data)
+
+    def destroy(self, request: Request, pk: Any = None) -> Response:
+        user = request.user
+        comment = self.get_object()
+        if comment.user_id != user.id:
+            raise PermissionDenied()
+        comment.delete()
+        return Response()
