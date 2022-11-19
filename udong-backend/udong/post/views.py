@@ -1,5 +1,5 @@
 from django.db.models import Q
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 from post.models import Post
 from post.serializers import PostBoardSerializer
 from user.models import UserClub
+from comment.serializers import CommentSerializer
 from typing import Any
 
 # Create your views here.
@@ -14,7 +15,7 @@ from typing import Any
 
 class PostViewSet(viewsets.GenericViewSet):
     queryset = Post.objects.all()
-    serializer_class = PostBoardSerializer
+    serializer_class = CommentSerializer
 
     @action(detail=True, methods=["GET", "POST"])
     def comment(self, request: Request, pk: Any) -> Response:
@@ -32,7 +33,12 @@ class PostViewSet(viewsets.GenericViewSet):
         return Response()
 
     def _post_comment(self, request: Request, pk: Any) -> Response:
-        return Response("post")
+        serializer = self.get_serializer(
+            data=request.data, context={"post_id": pk, "user": request.user}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class PostClubViewSet(viewsets.GenericViewSet):
