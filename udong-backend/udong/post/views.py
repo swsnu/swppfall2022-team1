@@ -13,7 +13,7 @@ from typing import Any
 # Create your views here.
 
 
-class PostViewSet(viewsets.GenericViewSet):
+class PostViewSet(viewsets.GenericViewSet[Post]):
     queryset = Post.objects.all()
     serializer_class = CommentSerializer
 
@@ -41,7 +41,7 @@ class PostViewSet(viewsets.GenericViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class PostClubViewSet(viewsets.GenericViewSet):
+class PostClubViewSet(viewsets.GenericViewSet[Post]):
     queryset = Post.objects.all()
     serializer_class = PostBoardSerializer
 

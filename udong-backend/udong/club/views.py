@@ -19,7 +19,7 @@ from typing import Any, Type, TypeVar
 _MT_co = TypeVar("_MT_co", bound=Model, covariant=True)
 
 
-class ClubViewSet(viewsets.GenericViewSet):
+class ClubViewSet(viewsets.GenericViewSet[Club]):
     queryset = Club.objects.all()
     serializer_class = ClubSerializer
 

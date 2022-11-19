@@ -9,7 +9,7 @@ from comment.serializers import CommentSerializer
 # Create your views here.
 
 
-class CommentViewSet(viewsets.GenericViewSet):
+class CommentViewSet(viewsets.GenericViewSet[Comment]):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 

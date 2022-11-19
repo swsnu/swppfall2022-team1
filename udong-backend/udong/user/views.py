@@ -9,7 +9,7 @@ from typing import Any
 # Create your views here.
 
 
-class UserViewSet(viewsets.GenericViewSet):
+class UserViewSet(viewsets.GenericViewSet[User]):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
