@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, QuerySet, Model
 from rest_framework import viewsets, status
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework.exceptions import MethodNotAllowed
@@ -9,8 +9,9 @@ from rest_framework.decorators import action
 from post.models import Post
 from post.serializers import PostBoardSerializer
 from user.models import UserClub
+from comment.models import Comment
 from comment.serializers import CommentSerializer
-from typing import Any, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING, TypeVar
 
 # Create your views here.
 
@@ -20,12 +21,14 @@ if TYPE_CHECKING:
 else:
     _GenereicViewSet = viewsets.GenericViewSet
 
+_MT_co = TypeVar("_MT_co", bound=Model, covariant=True)
+
 
 class PostViewSet(_GenereicViewSet):
     queryset = Post.objects.all()
     serializer_class = CommentSerializer
 
-    def get_serializer_class(self) -> type[BaseSerializer[Post]]:
+    def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
         if self.action in ("list", "retrieve"):
             return PostBoardSerializer
         elif self.action == "comment":
@@ -83,8 +86,11 @@ class PostViewSet(_GenereicViewSet):
             )
 
     def _get_comments(self, request: Request, pk: Any) -> Response:
-        # TODO: implement GET /post/:id/comment/
-        return Response()
+        comment_list = self.get_serializer(
+            Comment.objects.select_related("user").filter(post_id=pk),
+            many=True,
+        ).data
+        return Response(comment_list)
 
     def _post_comment(self, request: Request, pk: Any) -> Response:
         serializer = self.get_serializer(
