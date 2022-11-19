@@ -22,7 +22,6 @@ class CommentSerializer(serializers.ModelSerializer[Comment]):
 
     def create(self, validated_data: Dict[str, Any]) -> Comment:
         post = Post.objects.get(id=self.context["post_id"])
-        print(self.context["user"].id)
         comment = Comment.objects.create(
             **validated_data,
             post=post,
