@@ -24,7 +24,7 @@ class CommentViewSet(viewsets.GenericViewSet):
             partial=True,
         )
         serializer.is_valid(raise_exception=True)
-        serializer.update(comment, serializer.validated_data)
+        serializer.save()
         return Response(serializer.data)
 
     def destroy(self, request: Request, pk: Any = None) -> Response:
