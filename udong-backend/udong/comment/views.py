@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, TYPE_CHECKING
 from django.core.exceptions import PermissionDenied
 from rest_framework import viewsets
 from rest_framework.request import Request
@@ -9,7 +9,13 @@ from comment.serializers import CommentSerializer
 # Create your views here.
 
 
-class CommentViewSet(viewsets.GenericViewSet[Comment]):
+if TYPE_CHECKING:
+    _GenereicViewSet = viewsets.GenericViewSet[Comment]
+else:
+    _GenereicViewSet = viewsets.GenericViewSet
+
+
+class CommentViewSet(_GenereicViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 

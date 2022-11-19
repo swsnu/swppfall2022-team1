@@ -8,12 +8,18 @@ from post.models import Post
 from post.serializers import PostBoardSerializer
 from user.models import UserClub
 from comment.serializers import CommentSerializer
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 # Create your views here.
 
 
-class PostViewSet(viewsets.GenericViewSet[Post]):
+if TYPE_CHECKING:
+    _GenereicViewSet = viewsets.GenericViewSet[Post]
+else:
+    _GenereicViewSet = viewsets.GenericViewSet
+
+
+class PostViewSet(_GenereicViewSet):
     queryset = Post.objects.all()
     serializer_class = CommentSerializer
 
@@ -41,7 +47,7 @@ class PostViewSet(viewsets.GenericViewSet[Post]):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class PostClubViewSet(viewsets.GenericViewSet[Post]):
+class PostClubViewSet(_GenereicViewSet):
     queryset = Post.objects.all()
     serializer_class = PostBoardSerializer
 

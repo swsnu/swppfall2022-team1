@@ -4,12 +4,18 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from user.models import User
 from user.serializers import UserSerializer
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 # Create your views here.
 
 
-class UserViewSet(viewsets.GenericViewSet[User]):
+if TYPE_CHECKING:
+    _GenereicViewSet = viewsets.GenericViewSet[User]
+else:
+    _GenereicViewSet = viewsets.GenericViewSet
+
+
+class UserViewSet(_GenereicViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 

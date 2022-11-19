@@ -12,14 +12,19 @@ from club.serializers import (
     ClubEventSerializer,
     ClubTagSerializer,
 )
-from typing import Any, Type, TypeVar
+from typing import Any, Type, TypeVar, TYPE_CHECKING
 
 # Create your views here.
 
 _MT_co = TypeVar("_MT_co", bound=Model, covariant=True)
 
+if TYPE_CHECKING:
+    _GenereicViewSet = viewsets.GenericViewSet[Club]
+else:
+    _GenereicViewSet = viewsets.GenericViewSet
 
-class ClubViewSet(viewsets.GenericViewSet[Club]):
+
+class ClubViewSet(_GenereicViewSet):
     queryset = Club.objects.all()
     serializer_class = ClubSerializer
 
