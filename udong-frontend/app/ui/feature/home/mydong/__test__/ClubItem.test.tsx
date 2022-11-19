@@ -6,11 +6,17 @@ import React from 'react'
 import img from '../../../../icons/IcDong.png'
 import { ClubItem } from '../ClubItem'
 
+const dummyClub = {
+    id: 1,
+    name: '단풍',
+    code: '',
+}
+
 describe('<ClubItem/>', () => {
     it('renders club item', () => {
         render(<ClubItem
             imageSrc={img.src}
-            name={'단풍'}
+            club={dummyClub}
         />)
         const text = screen.getAllByText('단풍')
         expect(text).toBeDefined()
@@ -25,7 +31,7 @@ describe('<ClubItem/>', () => {
 
         render(<ClubItem
             imageSrc={img.src}
-            name={'단풍'}
+            club={dummyClub}
         />)
         const text = screen.getByText('단풍')
         fireEvent.click(text)

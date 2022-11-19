@@ -8,6 +8,7 @@ export const UserAPI = (() => {
     function getMyProfile() { return }
     function editMyProfile() { return }
     function deleteAccount() { return }
+
     async function getUser(userId: number): Promise<User> {
         const response = await axios.get<UserDto>(`/api/user/${userId}`)
         return userTransformer.fromDto(response.data)
@@ -17,7 +18,6 @@ export const UserAPI = (() => {
     function unparticipateInEnrollment() { return }
     function participateInScheduling() { return }
 
-    function getUserClubs() { return }
     function registerNewClub() { return }
     function leaveClub() { return }
 
@@ -29,7 +29,6 @@ export const UserAPI = (() => {
         participateInEnrollment,
         unparticipateInEnrollment,
         participateInScheduling,
-        getUserClubs,
         registerNewClub,
         leaveClub,
     })

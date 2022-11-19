@@ -1,8 +1,20 @@
+import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
+import { Provider } from 'react-redux'
 
+import { clubReducer, ClubState } from '../../../../domain/store/club/ClubSlice'
 import { HomeContainer } from '../HomeContainer'
+
+const stubInitialState: ClubState = {
+    myClubs: [],
+}
+
+const mockStore = configureStore({
+    reducer: { club: clubReducer },
+    preloadedState: { club: stubInitialState },
+})
 
 describe('<HomeContainer/>', () => {
     it ('renders home container', () => {
@@ -25,7 +37,10 @@ describe('<HomeContainer/>', () => {
     })
 
     it ('should render feed page', () => {
-        render(<HomeContainer tab={'mydong'}/>)
+        render(<Provider store={mockStore}>
+            <HomeContainer tab={'mydong'}/>
+        </Provider>,
+        )
         const text = screen.getByText('my동')
         expect(text).toBeDefined()
     })
