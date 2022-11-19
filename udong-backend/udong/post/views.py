@@ -26,7 +26,7 @@ class PostViewSet(_GenereicViewSet):
     serializer_class = CommentSerializer
 
     def get_serializer_class(self) -> type[BaseSerializer[Post]]:
-        if self.action == "list":
+        if self.action in ("list", "retrieve"):
             return PostBoardSerializer
         elif self.action == "comment":
             return CommentSerializer
@@ -62,6 +62,14 @@ class PostViewSet(_GenereicViewSet):
             else:
                 return Response()
         return Response(response)
+
+    def retrieve(self, request: Request, pk: Any) -> Response:
+        post = (
+            self.get_queryset()
+            .prefetch_related("post_tag_set__tag__tag_user_set")
+            .get(id=pk)
+        )
+        return Response(self.get_serializer(post, context={"id": request.user.id}).data)
 
     @action(detail=True, methods=["GET", "POST"])
     def comment(self, request: Request, pk: Any) -> Response:
