@@ -1,10 +1,25 @@
 import { render } from '@testing-library/react'
 
+import { PostDisplayType } from '../../domain/model/ListItemPost'
+import { PostType } from '../../domain/model/PostType'
 import { formatPostItemInfo } from '../postItemFormatter'
 
 describe('postItemFormatter', () => {
     it ('should test postItemFormatter render', () => {
-        const element = formatPostItemInfo('CLUB_NAME', false, true, false, undefined)
+        const element = formatPostItemInfo({
+            displayType: PostDisplayType.BOARD,
+            id: 1,
+            author: {
+                id: 1,
+                gmail: '',
+                imageUrl: '',
+                timeTable: '',
+                name: '',
+            },
+            title: '',
+            content: '',
+            type: PostType.ANNOUNCEMENT,
+        })
         if (element) {
             render(element)
         }
