@@ -1,4 +1,3 @@
-import { PostTagDto } from '../../infra/dto/PostTagDto'
 import { Club, dummyClubDanpung, dummyClubWaffle } from './Club'
 import { dummyUserMe, dummyUserNotMe, User } from './User'
 
@@ -15,7 +14,7 @@ export interface BasicTag {
     name: string
 }
 
-export type PostTag = PostTagDto
+export type PostTag = BasicTag
 
 export type ClubTag = BasicTag
 
