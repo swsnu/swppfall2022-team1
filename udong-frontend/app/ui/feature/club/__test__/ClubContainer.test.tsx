@@ -5,6 +5,7 @@ import { NextRouter } from 'next/router'
 import { Provider } from 'react-redux'
 
 import { dummyUserMe } from '../../../../domain/model/User'
+import { clubReducer, ClubState } from '../../../../domain/store/club/ClubSlice'
 import { postReducer, PostState } from '../../../../domain/store/post/PostSlice'
 import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { ClubContainer } from '../ClubContainer'
@@ -19,9 +20,13 @@ const postStubInitialState: PostState = {
     comments: [],
 }
 
+const clubStubInitialState: ClubState = {
+    myClubs: [],
+}
+
 const mockStore = configureStore({
-    reducer: { post: postReducer, user: userReducer },
-    preloadedState: { post: postStubInitialState, user: userStubInitialState },
+    reducer: { post: postReducer, user: userReducer, club: clubReducer },
+    preloadedState: { post: postStubInitialState, user: userStubInitialState, club: clubStubInitialState },
 })
 
 describe('<ClubContainer/>', () => {

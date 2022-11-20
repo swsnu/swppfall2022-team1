@@ -10,7 +10,11 @@ export const ClubAPI = (() => {
         return response.data.map(clubTransformer.fromDto)
     }
 
-    function getClub() { return }
+    async function getClub(clubId: number): Promise<Club> {
+        const response = await axios.get<ClubDto>(`/api/club/${clubId}/`)
+        return clubTransformer.fromDto(response.data)
+    }
+
     function createClub() { return } // /club (POST)
     function editClub() { return }
     function deleteClub() { return }
