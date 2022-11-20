@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { render, screen } from '@testing-library/react'
+import * as router from 'next/router'
+import { NextRouter } from 'next/router'
 import { Provider } from 'react-redux'
 
 import { dummyUserMe } from '../../../../../domain/model/User'
@@ -22,6 +24,10 @@ const mockStore = configureStore({
 
 describe('<InfoContainer/>', () => {
     it('should render info container', () => {
+        jest.spyOn(router, 'useRouter').mockImplementation(() => ({
+            query: { clubId: 1 },
+        } as unknown as NextRouter))
+
         render(<Provider store={mockStore}>
             <InfoContainer/>
         </Provider>,
