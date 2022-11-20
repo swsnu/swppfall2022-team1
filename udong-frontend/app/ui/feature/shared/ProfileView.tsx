@@ -15,7 +15,7 @@ import { UdongColors } from '../../theme/ColorPalette'
 
 interface ProfileViewProps {
     name: string
-    code: string
+    code?: string
     showCameraButton?: boolean
     showEditButton?: boolean
     showAccessCode?: boolean
