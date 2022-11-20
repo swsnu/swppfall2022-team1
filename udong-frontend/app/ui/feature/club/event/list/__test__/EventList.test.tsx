@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { dummyEvents } from '../../EventContainer'
+import { ClubEvent } from '../../../../../../domain/model/ClubEvent'
 import { EventList } from '../EventList'
 
 jest.mock('../EventItem', () => ({
@@ -9,6 +9,15 @@ jest.mock('../EventItem', () => ({
         onClick={() => onClickEvent('1')}
     />,
 }))
+
+const dummyEvents: Array<ClubEvent> = [
+    {
+        id: 1,
+        name: '',
+        createdAt: '',
+        updatedAt: '',
+    },
+]
 
 describe('<EventList/>', () => {
     beforeEach(()=>jest.clearAllMocks())

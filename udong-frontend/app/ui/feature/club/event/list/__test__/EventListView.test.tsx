@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 
-import { dummyEvents } from '../../EventContainer'
+import { ClubEvent } from '../../../../../../domain/model/ClubEvent'
 import { EventListView } from '../EventListView'
 
 jest.mock('../EventList', () => ({
@@ -11,6 +11,15 @@ jest.mock('../EventList', () => ({
         onClick={() => onClickEvent('1')}
     />,
 }))
+
+const dummyEvents: Array<ClubEvent> = [
+    {
+        id: 1,
+        name: '',
+        createdAt: '',
+        updatedAt: '',
+    },
+]
 
 describe('<EventListView/>', () => {
     beforeEach(()=>jest.clearAllMocks())
