@@ -1,6 +1,10 @@
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
+import { AppDispatch } from '../../../domain/store'
+import { clubActions } from '../../../domain/store/club/ClubSlice'
+import { convertQueryParamToString } from '../../../utility/handleQueryParams'
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
 import { BoardContainer } from './board/BoardContainer'
@@ -15,7 +19,14 @@ interface ClubContainerProps {
 
 export const ClubContainer = (props: ClubContainerProps) => {
     const { tab } = props
+    const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
+    const { clubId: rawClubId } = router.query
+    const clubId = parseInt(convertQueryParamToString(rawClubId))
+
+    useEffect(() => {
+        dispatch(clubActions.getClub(clubId))
+    }, [clubId, dispatch])
 
     const handleCurrentTab = useCallback((selectedTab: ClubTabType) => {
         router.replace(`/club/1/?tab=${selectedTab}`)
@@ -25,7 +36,7 @@ export const ClubContainer = (props: ClubContainerProps) => {
         if (tab === CLUB_TAB.BOARD) {
             return <BoardContainer/>
         } else if (tab === CLUB_TAB.EVENT) {
-            return <EventContainer/>
+            return <EventContainer clubId={clubId}/>
         } else if (tab === CLUB_TAB.TAG) {
             return <TagContainer/>
         } else if (tab === CLUB_TAB.INFO) {

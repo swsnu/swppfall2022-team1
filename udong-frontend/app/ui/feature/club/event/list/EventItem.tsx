@@ -1,25 +1,15 @@
+import { ClubEvent } from '../../../../../domain/model/ClubEvent'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
-import { EventType } from '../EventContainer'
 
 interface EventItemProps {
-    event: EventType
-    onClickEvent: (eventId: string) => void
+    event: ClubEvent
+    onClickEvent: (eventId: number) => void
 }
 
 export const EventItem = ({ event, onClickEvent }: EventItemProps) => {
-    const dateToString = (date: Date) => {
-        const m = date.getMonth() + 1
-        const d = date.getDate()
-
-        return [date.getFullYear(),
-            (m > 9 ? '.' : '.0') + m,
-            (d > 9 ? '.' : '.0') + d,
-        ].join('')
-    }
-
     return <VStack>
         <Spacer
             height={1}
@@ -37,20 +27,20 @@ export const EventItem = ({ event, onClickEvent }: EventItemProps) => {
             >
                 <HStack>
                     <UdongText style={'ListContentS'}>
-                        {event.title}
+                        {event.name}
                     </UdongText>
                 </HStack>
                 <HStack>
                     <UdongText
                         style={'ListContentS'}
                     >
-                        생성일: {dateToString(event.created_at)}
+                        생성일: {event.createdAt}
                     </UdongText>
                     <Spacer width={30}/>
                     <UdongText
                         style={'ListContentS'}
                     >
-                        수정일: {dateToString(event.updated_at)}
+                        수정일: {event.updatedAt}
                     </UdongText>
                 </HStack>
             </HStack>

@@ -1,19 +1,19 @@
 import { useRouter } from 'next/router'
 
+import { ClubEvent } from '../../../../../domain/model/ClubEvent'
 import { HStack, VStack } from '../../../../components/Stack'
 import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
-import { EventType } from '../EventContainer'
 import { EventList } from './EventList'
 
 interface EventListViewProps{
-    events: EventType[]
+    events: Array<ClubEvent>
 }
 
 export const EventListView = ({ events }: EventListViewProps) => {
     const router = useRouter()
     const { clubId } = router.query
 
-    const onClickEvent = (eventId: string) => {
+    const onClickEvent = (eventId: number) => {
         router.push(`/club/${clubId}/event/${eventId}`)
     }
 
@@ -28,7 +28,7 @@ export const EventListView = ({ events }: EventListViewProps) => {
             gap={50}
         >
             <EventList
-                events={events.filter((event) => event.times.length > 0)}
+                events={events.filter((event) => event.times !== undefined)}
                 onClickEvent={onClickEvent}
             />
         </HStack>

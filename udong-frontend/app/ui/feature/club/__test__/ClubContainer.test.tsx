@@ -6,27 +6,32 @@ import { Provider } from 'react-redux'
 
 import { dummyUserMe } from '../../../../domain/model/User'
 import { clubReducer, ClubState } from '../../../../domain/store/club/ClubSlice'
+import { eventReducer, EventState } from '../../../../domain/store/event/EventSlice'
 import { postReducer, PostState } from '../../../../domain/store/post/PostSlice'
 import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { ClubContainer } from '../ClubContainer'
 import { CLUB_TAB } from '../ClubTabView'
 
-const userStubInitialState: UserState = {
+const stubUserInitialState: UserState = {
     selectedUser: dummyUserMe,
 }
 
-const postStubInitialState: PostState = {
+const stubPostInitialState: PostState = {
     boardPosts: [],
     comments: [],
 }
 
-const clubStubInitialState: ClubState = {
+const stubClubInitialState: ClubState = {
     myClubs: [],
 }
 
+const stubEventInitialState: EventState = {
+    events: [],
+}
+
 const mockStore = configureStore({
-    reducer: { post: postReducer, user: userReducer, club: clubReducer },
-    preloadedState: { post: postStubInitialState, user: userStubInitialState, club: clubStubInitialState },
+    reducer: { post: postReducer, user: userReducer, club: clubReducer, event: eventReducer },
+    preloadedState: { post: stubPostInitialState, user: stubUserInitialState, club: stubClubInitialState, event: stubEventInitialState },
 })
 
 describe('<ClubContainer/>', () => {
@@ -39,6 +44,10 @@ describe('<ClubContainer/>', () => {
         jest.clearAllMocks()
     })
     it ('should render club container board tab', () => {
+        jest.spyOn(router, 'useRouter').mockImplementation(() => ({
+            query: { clubId: 1 },
+        } as unknown as NextRouter))
+
         render(ClubContainerWithStore(CLUB_TAB.BOARD))
         const component = screen.getByText('게시판')
         expect(component).toBeDefined()
