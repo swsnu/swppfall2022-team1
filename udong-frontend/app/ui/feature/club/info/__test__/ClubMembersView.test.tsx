@@ -3,23 +3,29 @@ import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { dummyUserMe } from '../../../../../domain/model/User'
+import { clubReducer, ClubState } from '../../../../../domain/store/club/ClubSlice'
 import { userReducer, UserState } from '../../../../../domain/store/user/UserSlice'
 import { ClubMembersView } from '../ClubMembersView'
 
-const stubInitialState: UserState = {
+const stubClubInitialState: ClubState = {
+    myClubs: [],
+    members: [],
+}
+
+const stubUserInitialState: UserState = {
     selectedUser: dummyUserMe,
 }
 
 const mockStore = configureStore({
-    reducer: { user: userReducer },
-    preloadedState: { user: stubInitialState },
+    reducer: { club: clubReducer, user: userReducer },
+    preloadedState: { club: stubClubInitialState, user: stubUserInitialState },
 })
 
 describe('<ClubMembersView/>', () => {
     it('should render club members view', () => {
         render(
             <Provider store={mockStore}>
-                <ClubMembersView/>
+                <ClubMembersView clubId={1}/>
             </Provider>,
         )
         const text = screen.getByText('동아리 인원')

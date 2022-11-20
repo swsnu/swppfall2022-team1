@@ -9,6 +9,7 @@ import { HomeContainer } from '../HomeContainer'
 
 const stubInitialState: ClubState = {
     myClubs: [],
+    members: [],
 }
 
 const mockStore = configureStore({

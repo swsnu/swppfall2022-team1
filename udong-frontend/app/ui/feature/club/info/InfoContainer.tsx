@@ -1,28 +1,20 @@
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
-import { AppDispatch } from '../../../../domain/store'
 import { clubSelector } from '../../../../domain/store/club/ClubSelector'
-import { clubActions } from '../../../../domain/store/club/ClubSlice'
-import { convertQueryParamToString } from '../../../../utility/handleQueryParams'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { DeleteModal } from '../../shared/DeleteModal'
 import { ClubMembersView } from './ClubMembersView'
 import { ClubProfileView } from './ClubProfileView'
 
-export const InfoContainer = () => {
-    const router = useRouter()
-    const dispatch = useDispatch<AppDispatch>()
+interface InfoContainerProps {
+    clubId: number
+}
 
-    const { clubId } = router.query
+export const InfoContainer = (props: InfoContainerProps) => {
+    const { clubId } = props
     const club = useSelector(clubSelector.selectedClub)
-
-    useEffect(() => {
-        dispatch(clubActions.getClub(parseInt(convertQueryParamToString(clubId))))
-    }, [clubId, dispatch])
-
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     return <VStack justifyContent={'center'}>
@@ -39,7 +31,7 @@ export const InfoContainer = () => {
 
             <Spacer width={50}/>
 
-            <ClubMembersView/>
+            <ClubMembersView clubId={clubId}/>
         </HStack>
 
         <Spacer height={20}/>

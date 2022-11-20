@@ -9,10 +9,14 @@ export interface Tag {
     users: Array<User>
 }
 
-export interface PostTag {
+export interface BasicTag {
     id: number
     name: string
 }
+
+export type PostTag = BasicTag
+
+export type ClubTag = BasicTag
 
 export const dummyTagsDanpung: Array<Tag> = [
     {

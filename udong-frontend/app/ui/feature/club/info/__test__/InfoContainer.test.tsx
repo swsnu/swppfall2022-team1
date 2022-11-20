@@ -15,6 +15,7 @@ const stubUserInitialState: UserState = {
 
 const stubClubInitialState: ClubState = {
     myClubs: [],
+    members: [],
 }
 
 const mockStore = configureStore({
@@ -29,7 +30,7 @@ describe('<InfoContainer/>', () => {
         } as unknown as NextRouter))
 
         render(<Provider store={mockStore}>
-            <InfoContainer/>
+            <InfoContainer clubId={1}/>
         </Provider>,
         )
         const text = screen.getByText('탈퇴하기')

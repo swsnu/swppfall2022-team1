@@ -14,7 +14,13 @@ const myClubs = createSelector(
     state => state.myClubs,
 )
 
+const members = createSelector(
+    clubState,
+    state => state.members,
+)
+
 export const clubSelector = {
     selectedClub,
     myClubs,
+    members,
 }

@@ -1,5 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { AppDispatch } from '../../../../domain/store'
+import { tagSelector } from '../../../../domain/store/tag/TagSelector'
+import { tagActions } from '../../../../domain/store/tag/TagSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -56,7 +60,19 @@ const tags: Array<TagItemType> = [
 
 const dummy = tags
 
-export const TagContainer = () => {
+interface TagContainerProps {
+    clubId: number
+}
+
+export const TagContainer = (props: TagContainerProps) => {
+    const { clubId } = props
+    const dispatch = useDispatch<AppDispatch>()
+    const tags = useSelector(tagSelector.tags)
+
+    useEffect(() => {
+        dispatch(tagActions.getTags(clubId))
+    }, [clubId, dispatch])
+
     const [showUpsertModal, setShowUpsertModal] = useState(false)
     const [showMembers, setShowMembers] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -75,14 +91,14 @@ export const TagContainer = () => {
         <UdongSearchBar/>
         <Spacer height={8}/>
 
-        {dummy.map((tag, index) => {
+        {tags.map((tag, index) => {
             return <VStack
                 key={tag.name + index}
                 onClick={() => setShowMembers(true)}
             >
                 <TagItem
                     name={tag.name}
-                    isUserIncluded={tag.isUserIncluded}
+                    isUserIncluded={true}
                     showEditModal={setShowUpsertModal}
                     onClickDelete={setShowDeleteModal}
                 />
