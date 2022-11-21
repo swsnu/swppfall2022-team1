@@ -38,5 +38,7 @@ export const LoginContainer = () => {
         </VStack>
     }
 
-    return <UdongLoader/>
+    return <VStack height={'100vh'}>
+        <UdongLoader/>
+    </VStack>
 }
