@@ -43,7 +43,7 @@ class Participation(models.Model):
     enrollment = models.ForeignKey(
         Enrollment,
         on_delete=models.CASCADE,
-        related_name="enrollment_set",
+        related_name="participation_set",
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
