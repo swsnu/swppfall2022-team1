@@ -1,18 +1,29 @@
 from django.db import models
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin, BaseUserManager
 from club.models import Club
-from typing import Any
+from typing import Any, List
 
 # Create your models here.
 
 
-class User(models.Model):
+class User(AbstractBaseUser, PermissionsMixin):
     # id: auto-generated
-    google = models.CharField(max_length=25)
+    email = models.EmailField(
+        verbose_name="email",
+        max_length=255,
+        unique=True,
+    )
+    USERNAME_FIELD: str = "email"
+    REQUIRED_FIELDS: List[str] = []
     image = models.CharField(max_length=40)
     time_table = models.TextField()
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return self.email
 
 
 class UserClub(models.Model):
@@ -33,8 +44,8 @@ class DummyUser(User):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         user = User.objects.get(id=1)
         self.id = user.id
-        self.google = user.google
         self.image = user.image
+        self.email = user.email
         self.time_table = user.time_table
         self.name = user.name
         self.created_at = user.created_at

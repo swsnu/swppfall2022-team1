@@ -11,8 +11,8 @@ class UserSerializer(serializers.ModelSerializer[User]):
         model = User
         fields = (
             "id",
-            "google",
             "image",
+            "email",
             "time_table",
             "name",
             "created_at",
