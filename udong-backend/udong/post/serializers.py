@@ -64,7 +64,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         return TagPostSerializer(tags, many=True).data
 
 
-class EnrollmentSerializer(serializers.ModelSerializer(Enrollment)):
+class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):
     post_id = serializers.IntegerField(read_only=True)
     closed = serializers.BooleanField()
     created_at = serializers.DateTimeField(read_only=True)
