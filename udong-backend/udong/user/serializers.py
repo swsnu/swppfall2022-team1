@@ -12,6 +12,7 @@ class UserSerializer(serializers.ModelSerializer[User]):
         fields = (
             "id",
             "image",
+            "email",
             "time_table",
             "name",
             "created_at",
