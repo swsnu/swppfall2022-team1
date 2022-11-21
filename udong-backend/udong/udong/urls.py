@@ -21,6 +21,7 @@ from rest_framework import routers
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from udong.views import ping
 
 
 router = routers.DefaultRouter()
@@ -42,6 +43,7 @@ urlpatterns: List[Union[URLPattern, URLResolver]] = [
     path("api/", include("club.urls")),
     path("api/", include("post.urls")),
     path("api/", include("comment.urls")),
+    path("ping/", ping),
 ]
 
 if settings.DEBUG:
