@@ -7,7 +7,11 @@ from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 from rest_framework.decorators import action
 from post.models import Post
+from post.models import Enrollment
+from post.models import Participation
 from post.serializers import PostBoardSerializer
+from post.serializers import EnrollmentSerializer
+from post.serializers import ParticipationSerializer
 from user.models import UserClub
 from comment.models import Comment
 from comment.serializers import CommentSerializer
@@ -17,14 +21,16 @@ from typing import Any, TYPE_CHECKING, TypeVar
 
 
 if TYPE_CHECKING:
-    _GenereicViewSet = viewsets.GenericViewSet[Post]
+    _PostGenericViewSet = viewsets.GenericViewSet[Post]
+    _EnrollmentGenericViewSet = viewsets.GenericViewSet[Enrollment]
 else:
-    _GenereicViewSet = viewsets.GenericViewSet
+    _PostGenericViewSet = viewsets.GenericViewSet
+    _EnrollmentGenericViewSet = viewsets.GenericViewSet
 
 _MT_co = TypeVar("_MT_co", bound=Model, covariant=True)
 
 
-class PostViewSet(_GenereicViewSet):
+class PostViewSet(_PostGenericViewSet):
     queryset = Post.objects.all()
     serializer_class = CommentSerializer
 
@@ -101,7 +107,7 @@ class PostViewSet(_GenereicViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class PostClubViewSet(_GenereicViewSet):
+class PostClubViewSet(_PostGenericViewSet):
     queryset = Post.objects.all()
     serializer_class = PostBoardSerializer
 
@@ -130,3 +136,31 @@ class PostClubViewSet(_GenereicViewSet):
             return Response(result)
         else:
             return Response()
+
+
+class EnrollmentViewSet(_EnrollmentGenericViewSet):
+    queryset = Enrollment.objects.all()
+    serializer_class = EnrollmentSerializer
+
+    def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
+        if self.action == "status":
+            return ParticipationSerializer
+        elif self.action == "close":
+            return EnrollmentSerializer
+        return self.serializer_class
+
+    @action(detail=True, methods=["GET"])
+    def status(self, request: Request, pk: Any) -> Response:
+        participation_list = self.get_serializer(
+            Participation.objects.select_related("user").filter(enrollment_id=pk),
+            many=True,
+        ).data
+        return Response(participation_list)
+
+    @action(detail=True, methods=["PUT"])
+    def close(self, request: Request, pk: Any = None) -> Response:
+        enrollment = self.get_object()
+        enrollment.closed = True
+        enrollment.save()
+        serializer = self.get_serializer(enrollment)
+        return Response(serializer.data)

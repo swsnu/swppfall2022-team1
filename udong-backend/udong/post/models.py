@@ -35,6 +35,20 @@ class Enrollment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class Participation(models.Model):
+    # id: auto-generated
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="participation_set"
+    )
+    enrollment = models.ForeignKey(
+        Enrollment,
+        on_delete=models.CASCADE,
+        related_name="participation_set",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class Scheduling(models.Model):
     post = models.OneToOneField(
         Post, primary_key=True, on_delete=models.CASCADE, related_name="scheduling"
