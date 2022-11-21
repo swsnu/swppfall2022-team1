@@ -66,7 +66,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
 
 class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):
     post_id = serializers.IntegerField(read_only=True)
-    closed = serializers.BooleanField()
+    closed = serializers.BooleanField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
