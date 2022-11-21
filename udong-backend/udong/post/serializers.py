@@ -6,7 +6,7 @@ from post.models import Enrollment
 from post.models import Participation
 from tag.serializers import TagPostSerializer
 from user.serializers import UserSerializer
-from typing import List
+from typing import Dict, Any
 
 
 class PostBoardSerializer(serializers.ModelSerializer[Post]):
@@ -78,6 +78,11 @@ class EnrollmentSerializer(serializers.ModelSerializer(Enrollment)):
             "created_at",
             "updated_at",
         )
+
+    def update(self, instance, validated_data: Dict[str, Any]) -> Enrollment:
+        instance.closed = True
+        instance.save()
+        return instance
 
 
 class ParticipationSerializer(serializers.ModelSerializer(Participation)):
