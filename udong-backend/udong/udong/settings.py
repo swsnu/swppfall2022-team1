@@ -12,30 +12,50 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import environ  # type: ignore[import]
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),
+    SECRET_KEY=(str, ""),
+    ALLOWED_HOSTS=(list, ["*"]),
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-f2jjletv^b$c6$g2%dg3*(1fahj6yd%d-=7l=6_agu$c4d)1=9"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
 # Rest Framework
+DEFAULT_RENDERER_CLASSES = (
+    [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ]
+    if DEBUG
+    else [
+        "rest_framework.renderers.JSONRenderer",
+    ]
+)
 REST_FRAMEWORK = {
     # Authentication
-    "UNAUTHENTICATED_USER": "user.models.DummyUser"
+    "UNAUTHENTICATED_USER": "user.models.DummyUser",
+    "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
 }
 
 # Application definition
@@ -137,10 +157,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_DIR = os.path.join(BASE_DIR, "static")
-STATICFILES_DIRS = [
-    STATIC_DIR,
-]
 STATIC_ROOT = os.path.join(BASE_DIR, ".static_root")
 
 # Default primary key field type
