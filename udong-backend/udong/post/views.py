@@ -159,7 +159,9 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
     def close(self, request: Request, pk: Any = None) -> Response:
         if request.method == "PUT":
             enrollment = self.get_object()
-            serializer = self.get_serializer(enrollment, data={"closed": True}, partial=True)
+            serializer = self.get_serializer(
+                enrollment, data={"closed": True}, partial=True
+            )
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

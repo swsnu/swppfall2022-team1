@@ -79,6 +79,7 @@ class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):
             "updated_at",
         )
 
+
 class ParticipationSerializer(serializers.ModelSerializer(Participation)):
     user = serializers.SerializerMethodField()
     enrollment_id = serializers.IntegerField(read_only=True)
