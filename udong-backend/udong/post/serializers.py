@@ -79,12 +79,6 @@ class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):
             "updated_at",
         )
 
-    def update(self, instance, validated_data: Dict[str, Any]) -> Enrollment:
-        instance.closed = True
-        instance.save()
-        return instance
-
-
 class ParticipationSerializer(serializers.ModelSerializer(Participation)):
     user = serializers.SerializerMethodField()
     enrollment_id = serializers.IntegerField(read_only=True)

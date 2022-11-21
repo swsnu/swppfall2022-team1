@@ -136,38 +136,32 @@ class PostClubViewSet(_GenereicViewSet):
             return Response()
 
 
-class EnrollmentViewSet(_GenereicViewSet):
-    queryset = Participation.objects.all()
-    serializer_class = ParticipationSerializer
+class EnrollmentViewSet(_EnrollmentGenericViewSet):
+    queryset = Enrollment.objects.all()
+    serializer_class = EnrollmentSerializer
 
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
         if request.method == "GET":
-            return self._get_participations(request, pk)
+            participation_list = ParticipationSerializer(
+                Participation.objects.select_related("user").filter(enrollment_id=pk),
+                many=True,
+            ).data
+            return Response(participation_list)
         else:
             raise MethodNotAllowed(
                 request.method if request.method else "unknown method"
             )
 
-    def _get_participations(self, request: Request, pk: Any) -> Response:
-        participation_list = self.get_serializer(
-            self.get_object.select_related("user").filter(enrollment_id=pk),
-            many=True,
-        ).data
-        return Response(participation_list)
-
-    @action(detail=True, methods=["POST"])
+    @action(detail=True, methods=["PUT"])
     def close(self, request: Request, pk: Any = None) -> Response:
-        if request.method == "POST":
-            return self._close_enrollment(request, pk)
+        if request.method == "PUT":
+            enrollment = self.get_object()
+            serializer = self.get_serializer(enrollment, data={"closed": True}, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             raise MethodNotAllowed(
                 request.method if request.method else "unknown method"
             )
-
-    def _close_enrollment(self, request: Request, pk: Any) -> Response:
-        enrollment = Enrollment.objects.get(post_id=pk)
-        serializer = EnrollmentSerializer(enrollment, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
