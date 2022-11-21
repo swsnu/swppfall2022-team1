@@ -10,7 +10,7 @@ from post.models import Post
 from post.models import Enrollment
 from post.models import Participation
 from post.serializers import PostBoardSerializer
-from udong.post.serializers import EnrollmentSerializer 
+from udong.post.serializers import EnrollmentSerializer
 from user.models import UserClub
 from comment.models import Comment
 from comment.serializers import CommentSerializer
@@ -149,7 +149,7 @@ class EnrollmentViewSet(_GenereicViewSet):
             )
 
     def _get_participations(self, request: Request, pk: Any) -> Response:
-        participation_list= self.get_serializer(
+        participation_list = self.get_serializer(
             Participation.objects.select_related("user").filter(enrollment_id=pk),
             many=True,
         ).data
