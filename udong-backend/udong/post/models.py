@@ -38,13 +38,12 @@ class Enrollment(models.Model):
 class Participation(models.Model):
     # id: auto-generated
     user = models.ForeignKey(
-        User, null=True, on_delete=models.SET_NULL, related_name="comment_set"
+        User, on_delete=models.CASCADE, related_name="participation_set"
     )
     enrollment = models.ForeignKey(
         Enrollment,
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name="participation_set",
+        on_delete=models.CASCADE,
+        related_name="enrollment_set",
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
