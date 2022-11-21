@@ -11,20 +11,6 @@ describe('<Header/>', () => {
         expect(text).toBeDefined()
     })
 
-    it('should handle reload on click', () => {
-        const mockReload = jest.fn()
-        jest.spyOn(router, 'useRouter').mockImplementation(() => ({
-            pathname: '/',
-            query: { tab: 'feed' },
-            reload: () => mockReload(),
-        } as unknown as NextRouter))
-
-        render(<Header type={HEADER_PAGE.MAIN}/>)
-        const component = screen.getAllByRole('img')[0]
-        fireEvent.click(component)
-        expect(mockReload).toHaveBeenCalledTimes(1)
-    })
-
     it('should handle navigate to home', () => {
         const mockPush = jest.fn()
         jest.spyOn(router, 'useRouter').mockImplementation(() => ({
@@ -51,17 +37,5 @@ describe('<Header/>', () => {
         const component = screen.getByText('단풍')
         fireEvent.click(component)
         expect(mockPush).toHaveBeenCalledWith('/club/1')
-    })
-
-    it ('should handle on click logout', () => {
-        const mockPush = jest.fn()
-        jest.spyOn(router, 'useRouter').mockImplementation(() => ({
-            push: (url: string) => mockPush(url),
-        } as unknown as NextRouter))
-
-        render(<Header type={HEADER_PAGE.MAIN}/>)
-        const component = screen.getByText('로그아웃')
-        fireEvent.click(component)
-        expect(mockPush).toHaveBeenCalledWith('/')
     })
 })
