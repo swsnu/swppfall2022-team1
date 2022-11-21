@@ -1,0 +1,32 @@
+name: Backend CD
+
+on:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    working-directory: ./udong-backend
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+
+    steps:
+    - name: deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /home/ubuntu/swppfall2022-team1/udong-backend
+          killall -9 uwsgi
+          git pull origin main
+          pip install -r requirements.txt
+          cd udong
+          make migrate
+          bash uwsgi.sh
