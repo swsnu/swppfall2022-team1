@@ -137,8 +137,8 @@ class PostClubViewSet(_GenereicViewSet):
 
 
 class EnrollmentViewSet(_GenereicViewSet):
-    queryset = Enrollment.objects.all()
-    serializer_class = EnrollmentSerializer
+    queryset = Participation.objects.all()
+    serializer_class = ParticipationSerializer 
 
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
@@ -151,7 +151,7 @@ class EnrollmentViewSet(_GenereicViewSet):
 
     def _get_participations(self, request: Request, pk: Any) -> Response:
         participation_list = self.get_serializer(
-            Participation.objects.select_related("user").filter(enrollment_id=pk),
+            self.get_object.select_related("user").filter(enrollment_id=pk),
             many=True,
         ).data
         return Response(participation_list)
@@ -166,9 +166,8 @@ class EnrollmentViewSet(_GenereicViewSet):
             )
 
     def _close_enrollment(self, request: Request, pk: Any) -> Response:
-        serializer = self.get_serializer(
-            data=request.data, context={"post_id": pk, "closed": True}
-        )
+        enrollment = Enrollment.objects.get(post_id=pk)
+        serializer = EnrollmentSerializer(enrollment, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
