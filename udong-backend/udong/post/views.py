@@ -21,16 +21,16 @@ from typing import Any, TYPE_CHECKING, TypeVar
 
 
 if TYPE_CHECKING:
-    _PostGenereicViewSet = viewsets.GenericViewSet[Post]
+    _PostGenericViewSet = viewsets.GenericViewSet[Post]
     _EnrollmentGenericViewSet = viewsets.GenericViewSet[Enrollment]
 else:
-    _PostGenereicViewSet = viewsets.GenericViewSet
-    _EnrollmentGenereicViewSet = viewsets.GenericViewSet
+    _PostGenericViewSet = viewsets.GenericViewSet
+    _EnrollmentGenericViewSet = viewsets.GenericViewSet
 
 _MT_co = TypeVar("_MT_co", bound=Model, covariant=True)
 
 
-class PostViewSet(_PostGenereicViewSet):
+class PostViewSet(_PostGenericViewSet):
     queryset = Post.objects.all()
     serializer_class = CommentSerializer
 
@@ -107,7 +107,7 @@ class PostViewSet(_PostGenereicViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class PostClubViewSet(_PostGenereicViewSet):
+class PostClubViewSet(_PostGenericViewSet):
     queryset = Post.objects.all()
     serializer_class = PostBoardSerializer
 
