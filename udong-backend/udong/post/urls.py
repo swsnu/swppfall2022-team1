@@ -1,6 +1,6 @@
 from rest_framework.routers import SimpleRouter
 from post.views import PostViewSet, PostClubViewSet
-from udong.post.views import EnrollmentViewSet
+from post.views import EnrollmentViewSet
 
 app_name = "post"
 
