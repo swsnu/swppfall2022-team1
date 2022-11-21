@@ -87,7 +87,7 @@ class ParticipationSerializer(serializers.ModelSerializer[Participation]):
     updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
-        model = Enrollment
+        model = Participation
         fields = (
             "id",
             "user",
