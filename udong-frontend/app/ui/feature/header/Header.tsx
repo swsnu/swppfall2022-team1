@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 import { HStack } from '../../components/Stack'
@@ -67,13 +68,13 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                     alignItems={'center'}
                     gap={15}
                 >
-                    <div onClick={() => router.push('/')}>
+                    <HStack onClick={() => signOut({ callbackUrl: '/login' })}>
                         <UdongText
                             style={'Header'}
                             color={UdongColors.GrayDark}
                             cursor={'pointer'}
                         >로그아웃</UdongText>
-                    </div>
+                    </HStack>
                     <HStack
                         width={42}
                         justifyContent={'center'}
