@@ -2,7 +2,10 @@ from django.db.models import Q
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
 from post.models import Post
+from post.models import Enrollment 
+from post.models import Participation 
 from tag.serializers import TagPostSerializer
+from user.serializers import UserSerializer
 from typing import List
 
 
@@ -59,3 +62,37 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         )
         tags = list(map(lambda post_tag: post_tag.tag, post_tag_list))
         return TagPostSerializer(tags, many=True).data
+
+class EnrollmentSerializer(serializers.ModelSerializer(Enrollment)):
+    post_id = serializers.IntegerField(read_only=True)
+    closed = serializers.BooleanField()
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Enrollment 
+        fields = (
+            "post_id",
+            "closed",
+            "created_at",
+            "updated_at",
+        )
+
+class ParticipationSerializer(serializers.ModelSerializer(Participation)):
+    user = serializers.SerializerMethodField()
+    enrollment_id = serializers.IntegerField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Enrollment
+        fields = (
+            "id",
+            "user",
+            "enrollment_id",
+            "created_at",
+            "updated_at",
+        )
+        
+    def get_user(self, participation: Participation) -> ReturnDict:
+        return UserSerializer(participation.user).data
