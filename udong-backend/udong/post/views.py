@@ -11,7 +11,7 @@ from post.models import Enrollment
 from post.models import Participation
 from post.serializers import PostBoardSerializer
 from post.serializers import EnrollmentSerializer
-from udong.post.serializers import ParticipationSerializer
+from post.serializers import ParticipationSerializer
 from user.models import UserClub
 from comment.models import Comment
 from comment.serializers import CommentSerializer
