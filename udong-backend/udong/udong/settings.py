@@ -17,7 +17,7 @@ import environ  # type: ignore[import]
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
-    SECRET_KEY=(str, ""),
+    SECRET_KEY=(str, "secret"),
     ALLOWED_HOSTS=(list, ["*"]),
 )
 
