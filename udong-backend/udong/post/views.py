@@ -138,7 +138,7 @@ class PostClubViewSet(_GenereicViewSet):
 
 class EnrollmentViewSet(_GenereicViewSet):
     queryset = Participation.objects.all()
-    serializer_class = ParticipationSerializer 
+    serializer_class = ParticipationSerializer
 
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
