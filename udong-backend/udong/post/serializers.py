@@ -80,7 +80,7 @@ class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):
         )
 
 
-class ParticipationSerializer(serializers.ModelSerializer(Participation)):
+class ParticipationSerializer(serializers.ModelSerializer[Participation]):
     user = serializers.SerializerMethodField()
     enrollment_id = serializers.IntegerField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
