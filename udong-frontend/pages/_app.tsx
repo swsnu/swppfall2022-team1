@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import { SessionProvider } from 'next-auth/react'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { Provider } from 'react-redux'
@@ -25,14 +26,16 @@ export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter()
 
     return (
-        <Provider store={store}>
-            <VStack>
-                <Header
-                    type={findHeaderType(router.pathname)}
-                    clubId={1}
-                />
-                <Component {...pageProps} />
-            </VStack>
-        </Provider>
+        <SessionProvider session={pageProps.session}>
+            <Provider store={store}>
+                <VStack>
+                    <Header
+                        type={findHeaderType(router.pathname)}
+                        clubId={1}
+                    />
+                    <Component {...pageProps} />
+                </VStack>
+            </Provider>
+        </SessionProvider>
     )
 }

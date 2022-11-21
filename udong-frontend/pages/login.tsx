@@ -1,6 +1,7 @@
+import { LoginContainer } from '../app/ui/feature/login/LoginContainer'
+
 const LoginPage = () => {
-    // TODO: query로 feed / mydong 나누기
-    return <h1>Login Page!</h1>
+    return <LoginContainer/>
 }
 
 export default LoginPage
