@@ -1,11 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from club.models import Club
 from typing import Any
 
 # Create your models here.
 
 
-class User(models.Model):
+class User(AbstractUser):
     # id: auto-generated
     google = models.CharField(max_length=25)
     image = models.CharField(max_length=40)
