@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth import login
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -33,10 +34,9 @@ class AuthViewSet(_GenereicViewSet):
 
     @action(detail=False, methods=["POST"])
     def signin(self, request: Request) -> Response:
-        serializer = self.get_serializer(
-            data=request.data, context={"request": request, "password": "password"}
-        )
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         resp: Any = urllib3.PoolManager().request(
             "GET",
             "https://oauth2.googleapis.com/tokeninfo?access_token="
@@ -49,5 +49,6 @@ class AuthViewSet(_GenereicViewSet):
             != serializer.validated_data["email"]
         ):
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        serializer.save()
+
+        login(request, serializer.save())
         return Response(status=status.HTTP_204_NO_CONTENT)
