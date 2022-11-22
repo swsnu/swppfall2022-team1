@@ -74,7 +74,7 @@ class MyTestCase(TestCase):
 
     # Add Dummy User
     def setUp(self) -> None:
-        self.dummy_user = User.objects.create(
+        self.dummy_user = User.objects.create_user(
             name="Alan Turing",
             image="image",
             email="alan@snu.ac.kr",

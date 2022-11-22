@@ -12,12 +12,12 @@ os.system("rm -f db.sqlite3")
 os.system("make migrate")
 
 # Create dummy user
-user1 = User.objects.create(
+user1 = User.objects.create_user(
     email="alan@snu.ac.kr",
     name="Alan Turing",
     time_table="001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
 )
-user2 = User.objects.create(email="john@snu.ac.kr", name="John Backus")
+user2 = User.objects.create_user(email="john@snu.ac.kr", name="John Backus")
 
 # Create dummy club
 club1 = Club.objects.create(name="Udong", code="swppfall")
