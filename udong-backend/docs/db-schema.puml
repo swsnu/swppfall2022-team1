@@ -6,7 +6,7 @@ skinparam linetype ortho
 entity User {
   *id: int <<generated>>
   --
-  *google: varchar
+  *email: varchar
   *image: varchar
   *Timetable: varchar
   *name: varchar
