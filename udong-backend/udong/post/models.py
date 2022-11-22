@@ -20,7 +20,7 @@ class Post(models.Model):
     content = models.TextField()
     type = models.CharField(
         max_length=1,
-        choices=[("A", "Announcement"), ("P", "Participation"), ("T", "Time")],
+        choices=[("A", "Announcement"), ("E", "Enrollment"), ("S", "Scheduling")],
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
