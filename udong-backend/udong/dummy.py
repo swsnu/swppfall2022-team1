@@ -76,7 +76,7 @@ post2 = Post.objects.create(
     club=club1,
     title="Nobel prize is coming!",
     content="Nobel Prize Nobel Prize Nobel Prize",
-    type="P",
+    type="E",
 )
 
 enrollment2 = Enrollment.objects.create(post=post2, closed=False)
@@ -86,7 +86,7 @@ post3 = Post.objects.create(
     club=club2,
     title="When to Meet?",
     content="Really Boring",
-    type="T",
+    type="S",
 )
 
 scheduling3 = Scheduling.objects.create(
