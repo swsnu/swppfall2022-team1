@@ -8,7 +8,7 @@ from user.models import User
 class UserTestCase(MyTestCase):
     def setUp(self) -> None:
         super().setUp()
-        User.objects.create(
+        User.objects.create_user(
             email="john@snu.ac.kr",
             name="John Backus",
             image="image2",
