@@ -48,4 +48,4 @@ class AuthSerializer(serializers.ModelSerializer[User]):
         except:
             user = User.objects.create_user(**validated_data)
         login(self.context["request"], user)
-        return User()
+        return user
