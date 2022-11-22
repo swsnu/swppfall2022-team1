@@ -8,6 +8,14 @@ from typing import Any, List, Dict
 
 
 class UserManager(BaseUserManager["User"]):
+    def get_or_create_user(
+        self, email: str, password: str = "password", **extra_fields: str
+    ) -> "User":
+        try:
+            return User.objects.get(email=email)
+        except:
+            return self.create_user(email, password, **extra_fields)
+
     def create_user(
         self, email: str, password: str = "password", **extra_fields: str
     ) -> "User":
