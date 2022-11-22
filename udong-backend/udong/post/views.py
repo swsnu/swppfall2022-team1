@@ -1,4 +1,4 @@
-from django.db.models import Q, QuerySet, Model
+from django.db.models import Q, Model
 from rest_framework import viewsets, status
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework.exceptions import MethodNotAllowed
@@ -113,9 +113,11 @@ class PostClubViewSet(_PostGenericViewSet):
 
     # TODO: Need to be optimized
     def retrieve(self, request: Request, pk: Any = None) -> Response:
-        auth = UserClub.objects.filter(Q(user_id=request.user.id) & Q(club_id=pk))[
-            0
-        ].auth
+        try:
+            auth = UserClub.objects.get(Q(user_id=request.user.id) & Q(club_id=pk)).auth
+        except UserClub.DoesNotExist:
+            return Response("User is not in the club", status=status.HTTP_404_NOT_FOUND)
+
         post = (
             self.get_queryset()
             .select_related("event")

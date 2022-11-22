@@ -35,7 +35,7 @@ class PostTestCase(MyTestCase):
             club=club1,
             title="Nobel prize is coming!",
             content="Nobel Prize Nobel Prize Nobel Prize",
-            type="P",
+            type="E",
         )
 
         post3 = Post.objects.create(
@@ -43,7 +43,7 @@ class PostTestCase(MyTestCase):
             club=club2,
             title="When to Meet?",
             content="Really Boring",
-            type="T",
+            type="S",
         )
 
         Enrollment.objects.create(post=post2, closed=False)
@@ -102,7 +102,7 @@ class PostTestCase(MyTestCase):
                     "event": "Nobel Prize",
                     "title": "Nobel prize is coming!",
                     "content": "Nobel Prize Nobel Prize Nobel Prize",
-                    "type": "Participation",
+                    "type": "Enrollment",
                     "closed": False,
                     "include_tag": [{"id": 1, "name": "genius"}],
                     "exclude_tag": [
@@ -124,7 +124,7 @@ class PostTestCase(MyTestCase):
                     "event": "",
                     "title": "When to Meet?",
                     "content": "Really Boring",
-                    "type": "Time",
+                    "type": "Scheduling",
                     "closed": True,
                     "include_tag": [{"id": 1, "name": "genius"}],
                     "exclude_tag": [

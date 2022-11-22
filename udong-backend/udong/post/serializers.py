@@ -41,11 +41,11 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             return post.event.name
 
     def get_closed(self, post: Post) -> bool | None:
-        if post.type == "A":
+        if post.get_type_display() == "Announcement":
             return None
-        if post.type == "P":
+        if post.get_type_display() == "Enrollment":
             return post.enrollment.closed
-        if post.type == "T":
+        if post.get_type_display() == "Scheduling":
             return post.scheduling.closed
         return None
 
