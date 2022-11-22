@@ -88,7 +88,7 @@ entity Post {
   *title: varchar
   *content: longtext
   *images: varchar[]
-  *type: "Announcement" | "Participation" | "Time"
+  *type: "Announcement" | "Enrollment" | "Scheduling"
   *created_at: dateTime
   *updated_at: dateTime
 }
