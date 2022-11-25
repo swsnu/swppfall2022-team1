@@ -6,4 +6,6 @@ const { publicRuntimeConfig } = getConfig()
 export const axiosConfig = axios.create({
     baseURL: publicRuntimeConfig.backendUrl,
     withCredentials: true,
+    xsrfCookieName: 'csrftoken',
+    xsrfHeaderName: 'X-CSRFTOKEN',
 })
