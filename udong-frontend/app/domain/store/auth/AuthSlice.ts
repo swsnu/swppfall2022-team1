@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-interface AuthState {
+export interface AuthState {
     isLoggedIn: boolean
 }
 
