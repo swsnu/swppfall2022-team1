@@ -21,6 +21,12 @@ const mockStore = configureStore({
     preloadedState: { club: stubClubInitialState, user: stubUserInitialState },
 })
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<ClubMemberProfileView/>', () => {
     const regularMember: JSX.Element = (
         <Provider store={mockStore}>

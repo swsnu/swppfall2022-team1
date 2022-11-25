@@ -22,6 +22,12 @@ const mockStore = configureStore({
     preloadedState: { user: stubInitialState },
 })
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<SearchMembersView/>', () => {
     it ('should render search members view and hanlde on click', () => {
         render(

@@ -16,6 +16,12 @@ jest.mock('../UnsettledEventList', () => ({
     UnsettledEventList: () => <div data-testid={'unsettled-event-list'}/>,
 }))
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<EventCalendarView/>', () => {
     it('render event calendar view',  () => {
         jest.spyOn(router, 'useRouter').mockImplementation(() => ({

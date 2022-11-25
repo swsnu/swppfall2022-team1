@@ -23,6 +23,12 @@ const mockStore = configureStore({
     preloadedState: { user: stubUserInitialState, club: stubClubInitialState },
 })
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<InfoContainer/>', () => {
     it('should render info container', () => {
         jest.spyOn(router, 'useRouter').mockImplementation(() => ({

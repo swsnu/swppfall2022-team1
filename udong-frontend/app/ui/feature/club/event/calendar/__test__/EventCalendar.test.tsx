@@ -7,6 +7,12 @@ jest.mock('../../../../../components/UdongLoader', () => ({
     UdongLoader: () => <div data-testid={'udong-loader'}/>,
 }))
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<EventCalendar/>', () => {
     it('render event calendar',  async () => {
         await act( async () => {render(<EventCalendar

@@ -17,6 +17,12 @@ const mockStore = configureStore({
     preloadedState: { club: stubInitialState },
 })
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<HomeContainer/>', () => {
     it ('renders home container', () => {
         render(<HomeContainer tab={'feed'}/>)
