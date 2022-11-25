@@ -113,9 +113,7 @@ class PostClubViewSet(_PostGenericViewSet):
     serializer_class = PostBoardSerializer
 
     # TODO: Need to be optimized
-    @swagger_auto_schema(
-        responses={200: PostBoardSerializer(many=True)}
-    )
+    @swagger_auto_schema(responses={200: PostBoardSerializer(many=True)})
     def retrieve(self, request: Request, pk: Any = None) -> Response:
         try:
             auth = UserClub.objects.get(Q(user_id=request.user.id) & Q(club_id=pk)).auth
