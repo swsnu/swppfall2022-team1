@@ -1,10 +1,11 @@
-from django.test import Client
+import json
 from common.utils import MyTestCase
 from post.models import Post, Enrollment, Scheduling, PostTag
 from club.models import Club
 from user.models import UserClub
 from event.models import Event
 from tag.models import Tag, UserTag
+from comment.models import Comment
 
 # Create your tests here.
 
@@ -74,6 +75,9 @@ class PostTestCase(MyTestCase):
         PostTag.objects.create(post=post3, tag=tag2)
         PostTag.objects.create(post=post3, tag=tag3)
 
+        Comment.objects.create(user=self.dummy_user, post=post1, content="FIRST")
+        Comment.objects.create(user=self.dummy_user, post=post1, content="SECOND")
+
     # api/post/club/:id/
     def test_post_club_id(self) -> None:
         # Check admin
@@ -131,4 +135,62 @@ class PostTestCase(MyTestCase):
                     ],
                 }
             ],
+        )
+
+    # GET /api/post/:id/comment/
+    def test_get_post_id_comment(self) -> None:
+        response = self.client.get("/api/post/1/comment/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            [
+                {
+                    "id": 1,
+                    "user": {
+                        "id": 1,
+                        "image": "image",
+                        "email": "alan@snu.ac.kr",
+                        "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                        "name": "Alan Turing",
+                    },
+                    "post_id": 1,
+                    "content": "FIRST",
+                },
+                {
+                    "id": 2,
+                    "user": {
+                        "id": 1,
+                        "image": "image",
+                        "email": "alan@snu.ac.kr",
+                        "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                        "name": "Alan Turing",
+                    },
+                    "post_id": 1,
+                    "content": "SECOND",
+                },
+            ],
+        )
+
+    # POST /api/post/:id/comment/
+    def test_post_post_id_comment(self) -> None:
+        response = self.client.post(
+            "/api/post/1/comment/",
+            json.dumps({"content": "NEW COMMENT"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 3,
+                "user": {
+                    "id": 1,
+                    "image": "image",
+                    "email": "alan@snu.ac.kr",
+                    "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                    "name": "Alan Turing",
+                },
+                "post_id": 1,
+                "content": "NEW COMMENT",
+            },
         )
