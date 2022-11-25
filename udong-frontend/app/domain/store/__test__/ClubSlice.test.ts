@@ -5,45 +5,41 @@ import { ThunkMiddleware } from 'redux-thunk'
 
 import { RoleType } from '../../model/RoleType'
 import { clubReducer, ClubState, getClub, getClubMembers, getMyClubs } from '../club/ClubSlice'
+import { fakeUser1, fakeUser2, fakeUserDto1, fakeUserDto2 } from './UserSlice.test'
 
 export const fakeClub1 = { id: 1, name: '단풍', code: '1234' }
 export const fakeClub2 = { id: 2, name: '은행', code: '4321' }
-export const fakeUserDto1 = { id: 1, google: 'user@gmail.com', image: 'userImage', time_table: 'userTable', name: 'user',
-    created_at: '', updated_at: '' }
-export const fakeUserDto2 = { id: 2, google: 'user2@gmail.com', image: 'user2Image', time_table: 'user2Table', name: 'user2',
-    created_at: '', updated_at: '' }
-export const fakeUser1 = { id: 1, gmail: 'user@gmail.com', imageUrl: 'userImage', timeTable: 'userTable', name: 'user' }
-export const fakeUser2 = { id: 2, gmail: 'user2@gmail.com', imageUrl: 'user2Image', timeTable: 'user2Table', name: 'user2' }
+
+const fakeClubDto = {
+    selectedClub: fakeClub1,
+    myClubs: [fakeClub1, fakeClub2],
+    members: [{
+        user: fakeUserDto1,
+        auth: RoleType.ADMIN,
+    },
+    {
+        user: fakeUserDto2,
+        auth: RoleType.MEMBER,
+    }],
+}
+
+const fakeClub: ClubState = {
+    selectedClub: fakeClub1,
+    myClubs: [fakeClub1, fakeClub2],
+    members: [{
+        user: fakeUser1,
+        role: RoleType.ADMIN,
+    },
+    {
+        user: fakeUser2,
+        role: RoleType.MEMBER,
+    }],
+}
 
 describe('club reducer', () => {
     let store: EnhancedStore<{ club: ClubState },
         AnyAction,
         [ThunkMiddleware<{ club: ClubState }, AnyAction, undefined>]>
-
-    const fakeClubDto = {
-        selectedClub: fakeClub1,
-        myClubs: [fakeClub1, fakeClub2],
-        members: [{
-            user: fakeUserDto1,
-            auth: RoleType.ADMIN,
-        },
-        {
-            user: fakeUserDto2,
-            auth: RoleType.MEMBER,
-        }],
-    }
-    const fakeClub: ClubState = {
-        selectedClub: fakeClub1,
-        myClubs: [fakeClub1, fakeClub2],
-        members: [{
-            user: fakeUser1,
-            role: RoleType.ADMIN,
-        },
-        {
-            user: fakeUser2,
-            role: RoleType.MEMBER,
-        }],
-    }
 
     beforeAll(() => {
         store = configureStore({ reducer: { club: clubReducer } })
