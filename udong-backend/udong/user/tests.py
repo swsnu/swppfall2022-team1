@@ -16,7 +16,7 @@ class UserTestCase(MyTestCase):
             time_table="001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
         )
 
-    # api/user/me/
+    # GET /api/user/me/
     def test_user_me(self) -> None:
         self.assertEqual(User.objects.all().count(), 2)
 
@@ -33,7 +33,7 @@ class UserTestCase(MyTestCase):
             },
         )
 
-    # api/user/:id/
+    # GET /api/user/:id/
     def test_user_id(self) -> None:
         response = self.client.get("/api/user/2/")
         self.assertEqual(response.status_code, 200)
@@ -48,7 +48,7 @@ class UserTestCase(MyTestCase):
             },
         )
 
-    # GET /api/auth/signin/
+    # POST /api/auth/signin/
     def test_signin(self) -> None:
         response = self.client.post(
             "/api/auth/signin/",
@@ -57,7 +57,7 @@ class UserTestCase(MyTestCase):
         )
         self.assertEqual(response.status_code, 400)
 
-    # GET /api/auth/signout/
+    # POST /api/auth/signout/
     def test_signout(self) -> None:
         response = self.client.post("/api/auth/signout/")
         self.assertEqual(response.status_code, 204)

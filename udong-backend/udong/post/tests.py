@@ -74,7 +74,7 @@ class PostTestCase(MyTestCase):
         PostTag.objects.create(post=post3, tag=tag2)
         PostTag.objects.create(post=post3, tag=tag3)
 
-    # api/post/club/:id/
+    # GET /api/post/club/:id/
     def test_post_club_id(self) -> None:
         # Check admin
         response = self.client.get("/api/post/club/1/")
