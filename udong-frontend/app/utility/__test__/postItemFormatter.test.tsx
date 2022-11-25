@@ -11,7 +11,7 @@ describe('postItemFormatter', () => {
             id: 1,
             author: {
                 id: 1,
-                gmail: '',
+                email: '',
                 imageUrl: '',
                 timeTable: '',
                 name: '',
