@@ -53,3 +53,12 @@ class CommentTestCase(MyTestCase):
                 "content": "NEW CONTENT",
             },
         )
+
+    def test_update_comment_fail(self) -> None:
+        client = Client()
+        response = client.put(
+            "/api/comment/2/",
+            json.dumps({"content": "NEW CONTENT"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 403)
