@@ -15,6 +15,7 @@ from post.serializers import ParticipationSerializer
 from user.models import UserClub
 from comment.models import Comment
 from comment.serializers import CommentSerializer
+from drf_yasg.utils import swagger_auto_schema
 from typing import Any, TYPE_CHECKING, TypeVar
 
 # Create your views here.
@@ -112,6 +113,9 @@ class PostClubViewSet(_PostGenericViewSet):
     serializer_class = PostBoardSerializer
 
     # TODO: Need to be optimized
+    @swagger_auto_schema(
+        responses={200: PostBoardSerializer(many=True)}
+    )
     def retrieve(self, request: Request, pk: Any = None) -> Response:
         try:
             auth = UserClub.objects.get(Q(user_id=request.user.id) & Q(club_id=pk)).auth
