@@ -177,7 +177,6 @@ class PostTestCase(MyTestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 201)
-        print(response.content)
         self.jsonEqual(
             response.content,
             {
