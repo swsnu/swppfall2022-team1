@@ -55,9 +55,10 @@ DEFAULT_RENDERER_CLASSES = (
     ]
 )
 REST_FRAMEWORK = {
-    # Authentication
-    "UNAUTHENTICATED_USER": "user.models.DummyUser",
     "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
 # Application definition

@@ -76,10 +76,8 @@ class PostTestCase(MyTestCase):
 
     # api/post/club/:id/
     def test_post_club_id(self) -> None:
-        client = Client()
-
         # Check admin
-        response = client.get("/api/post/club/1/")
+        response = self.client.get("/api/post/club/1/")
         self.assertEqual(response.status_code, 200)
         self.jsonEqual(
             response.content,
@@ -114,7 +112,7 @@ class PostTestCase(MyTestCase):
         )
 
         # Check member
-        response = client.get("/api/post/club/2/")
+        response = self.client.get("/api/post/club/2/")
         self.assertEqual(response.status_code, 200)
         self.jsonEqual(
             response.content,
