@@ -38,7 +38,6 @@ schema_view = get_schema_view(
 )
 
 urlpatterns: List[Union[URLPattern, URLResolver]] = [
-    path("admin/", admin.site.urls),
     path("api/", include("user.urls")),
     path("api/", include("club.urls")),
     path("api/", include("post.urls")),
@@ -47,6 +46,11 @@ urlpatterns: List[Union[URLPattern, URLResolver]] = [
 ]
 
 if settings.DEBUG:
+    # django-admin
+    urlpatterns += [
+        path("admin/", admin.site.urls),
+    ]
+
     # django-debug-toolbar
     urlpatterns += [
         path("__debug__/", include("debug_toolbar.urls")),
