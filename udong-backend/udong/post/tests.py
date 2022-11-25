@@ -1,3 +1,4 @@
+import json
 from common.utils import MyTestCase
 from post.models import Post, Enrollment, Scheduling, PostTag
 from club.models import Club
@@ -167,4 +168,28 @@ class PostTestCase(MyTestCase):
                     "content": "SECOND",
                 },
             ],
+        )
+
+    def test_post_post_id_comment(self) -> None:
+        response = self.client.post(
+            "/api/post/1/comment/",
+            json.dumps({"content": "NEW COMMENT"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        print(response.content)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 3,
+                "user": {
+                    "id": 1,
+                    "image": "image",
+                    "email": "alan@snu.ac.kr",
+                    "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                    "name": "Alan Turing",
+                },
+                "post_id": 1,
+                "content": "NEW COMMENT",
+            },
         )
