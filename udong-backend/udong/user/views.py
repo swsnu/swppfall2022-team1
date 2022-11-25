@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -52,3 +52,11 @@ class AuthViewSet(_GenereicViewSet):
 
         login(request, serializer.save())
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False, methods=["POST"])
+    def signout(self, request: Request) -> Response:
+        if request.user.is_authenticated:
+            logout(request)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
