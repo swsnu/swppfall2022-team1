@@ -1,7 +1,6 @@
-import axios from 'axios'
-
 import { User } from '../../domain/model/User'
 import { UserDto } from '../dto/UserDto'
+import { axiosConfig } from '../global'
 import { userTransformer } from '../transformer/UserTransformer'
 
 export const UserAPI = (() => {
@@ -10,7 +9,7 @@ export const UserAPI = (() => {
     function deleteAccount() { return }
 
     async function getUser(userId: number): Promise<User> {
-        const response = await axios.get<UserDto>(`/api/user/${userId}`)
+        const response = await axiosConfig.get<UserDto>(`/api/user/${userId}`)
         return userTransformer.fromDto(response.data)
     }
 

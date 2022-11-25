@@ -1,14 +1,13 @@
-import axios from 'axios'
-
 import { BoardPost } from '../../domain/model/ListItemPost'
 import { BoardPostDto } from '../dto/BoardPostDto'
+import { axiosConfig } from '../global'
 import { boardPostTransformer } from '../transformer/BoardPostTransformer'
 
 export const PostAPI = (() => {
     function getFeedPosts() { return }
 
     async function getClubPosts(clubId: number): Promise<Array<BoardPost>> {
-        const response = await axios.get<Array<BoardPostDto>>(`/api/post/club/${clubId}/`)
+        const response = await axiosConfig.get<Array<BoardPostDto>>(`/api/post/club/${clubId}/`)
         return response.data.map(boardPostTransformer.fromDto)
     }
 
