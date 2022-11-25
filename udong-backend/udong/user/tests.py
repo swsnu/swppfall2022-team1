@@ -1,6 +1,7 @@
 from django.test import Client
 from common.utils import MyTestCase
 from user.models import User
+import json
 
 # Create your tests here.
 
@@ -46,3 +47,12 @@ class UserTestCase(MyTestCase):
                 "name": "John Backus",
             },
         )
+
+    # api/auth/signin/
+    def test_signin(self) -> None:
+        response = self.client.post(
+            "/api/auth/signin/",
+            json.dumps({"email": "test@gmail.com", "token": "token", "name": "name"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
