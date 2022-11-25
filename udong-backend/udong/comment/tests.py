@@ -65,7 +65,7 @@ class CommentTestCase(MyTestCase):
     # DELETE /api/comment/:id
     def test_delete_comment(self) -> None:
         response = self.client.delete("/api/comment/1/")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 204)
 
     # DELETE /api/comment/:id (403)
     def test_delete_comment_fail(self) -> None:
