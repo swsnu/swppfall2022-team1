@@ -1,6 +1,9 @@
 import axios from 'axios'
+import getConfig from 'next/config'
+
+const { publicRuntimeConfig } = getConfig()
 
 export const axiosConfig = axios.create({
-    baseURL: 'http://ec2-43-201-28-80.ap-northeast-2.compute.amazonaws.com',
+    baseURL: publicRuntimeConfig.backendUrl,
     withCredentials: true,
 })
