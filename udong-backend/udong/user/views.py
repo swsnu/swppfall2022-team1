@@ -56,8 +56,5 @@ class AuthViewSet(_GenereicViewSet):
 
     @action(detail=False, methods=["POST"])
     def signout(self, request: Request) -> Response:
-        if request.user.is_authenticated:
-            logout(request)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        logout(request)
+        return Response(status=status.HTTP_204_NO_CONTENT)
