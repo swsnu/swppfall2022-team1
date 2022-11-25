@@ -48,7 +48,7 @@ class UserTestCase(MyTestCase):
             },
         )
 
-    # api/auth/signin/
+    # GET /api/auth/signin/
     def test_signin(self) -> None:
         response = self.client.post(
             "/api/auth/signin/",
@@ -56,3 +56,8 @@ class UserTestCase(MyTestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 400)
+
+    # GET /api/auth/signout/
+    def test_signout(self) -> None:
+        response = self.client.post("/api/auth/signout/")
+        self.assertEqual(response.status_code, 204)
