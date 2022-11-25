@@ -19,6 +19,7 @@ env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, "secret"),
     ALLOWED_HOSTS=(list, ["*"]),
+    CORS_ALLOWED_ORIGINS=(list, []),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -55,9 +56,10 @@ DEFAULT_RENDERER_CLASSES = (
     ]
 )
 REST_FRAMEWORK = {
-    # Authentication
-    "UNAUTHENTICATED_USER": "user.models.DummyUser",
     "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
 # Application definition
@@ -79,9 +81,11 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "rest_framework",
     "drf_yasg",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -91,6 +95,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+
+CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
 
 ROOT_URLCONF = "udong.urls"
 

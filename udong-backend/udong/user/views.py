@@ -4,6 +4,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
 from user.models import User
 from user.serializers import UserSerializer, AuthSerializer
 from typing import Any, TYPE_CHECKING
@@ -32,7 +33,7 @@ class AuthViewSet(_GenereicViewSet):
     queryset = User.objects.all()
     serializer_class = AuthSerializer
 
-    @action(detail=False, methods=["POST"])
+    @action(detail=False, methods=["POST"], permission_classes=[AllowAny])
     def signin(self, request: Request) -> Response:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -55,8 +56,5 @@ class AuthViewSet(_GenereicViewSet):
 
     @action(detail=False, methods=["POST"])
     def signout(self, request: Request) -> Response:
-        if request.user.is_authenticated:
-            logout(request)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        logout(request)
+        return Response(status=status.HTTP_204_NO_CONTENT)
