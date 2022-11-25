@@ -56,6 +56,9 @@ DEFAULT_RENDERER_CLASSES = (
 )
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
 # Application definition
