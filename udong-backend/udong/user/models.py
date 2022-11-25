@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.hashers import get_hasher
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, BaseUserManager
 from club.models import Club
@@ -9,7 +10,7 @@ from typing import Any, List, Dict
 
 class UserManager(BaseUserManager["User"]):
     def get_or_create_user(
-        self, email: str, password: str = "password", **extra_fields: str
+        self, email: str, password: str = "password", **extra_fields: Any
     ) -> "User":
         try:
             return User.objects.get(email=email)
@@ -17,12 +18,14 @@ class UserManager(BaseUserManager["User"]):
             return self.create_user(email, password, **extra_fields)
 
     def create_user(
-        self, email: str, password: str = "password", **extra_fields: str
+        self, email: str, password: str = "password", **extra_fields: Any
     ) -> "User":
         if "token" in extra_fields:
             del extra_fields["token"]
 
-        user = self.model(email=email, password=password, **extra_fields)
+        hasher = get_hasher("default")
+        encoded_password = hasher.encode(password, salt=hasher.salt())
+        user = self.model(email=email, password=encoded_password, **extra_fields)
         user.save()
         return user
 
@@ -34,6 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=255,
         unique=True,
     )
+    is_staff = models.BooleanField(default=False)
     USERNAME_FIELD: str = "email"
     REQUIRED_FIELDS: List[str] = []
     image = models.CharField(max_length=40)
