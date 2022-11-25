@@ -46,6 +46,12 @@ const mockStore = configureStore({
     },
 })
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<ClubContainer/>', () => {
     const ClubContainerWithStore = (tab: CLUB_TAB) => (
         <Provider store={mockStore}>

@@ -3,6 +3,12 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { dummyEvents } from '../../EventContainer'
 import { UnsettledEventList } from '../UnsettledEventList'
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<UnsettledEventList/>', () => {
     it('render unsettled event list',  () => {
         render(<UnsettledEventList

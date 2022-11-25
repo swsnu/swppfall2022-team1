@@ -16,6 +16,12 @@ const mockStore = configureStore({
     preloadedState: { event: stubEventInitialState },
 })
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 jest.mock('../../../../components/UdongSelectableIcon', () => ({
     UdongSelectableIcon: ({ selected, onClickUnSelected }: { selected: boolean, onClickUnSelected: ()=>void }) =>
         <div

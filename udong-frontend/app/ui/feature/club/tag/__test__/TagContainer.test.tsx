@@ -17,6 +17,12 @@ const mockStore = configureStore({
     preloadedState: { tag: stubInitialState },
 })
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<TagContainer/>', () => {
     const tagContainer: JSX.Element = (
         <Provider store={mockStore}>

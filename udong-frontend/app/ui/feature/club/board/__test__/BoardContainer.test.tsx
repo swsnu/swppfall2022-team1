@@ -15,6 +15,12 @@ const mockStore = configureStore({
     preloadedState: { post: stubInitialState },
 })
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<BoardContainer/>', () => {
     it ('render board container', () => {
         render(

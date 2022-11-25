@@ -37,6 +37,12 @@ jest.mock('../ClubItem', () => ({
         </div>,
 }))
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<MyDongContainer/>', () => {
     it('renders my dong container', () => {
         render(<Provider store={mockStore}>
