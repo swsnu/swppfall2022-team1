@@ -1,5 +1,11 @@
 import { enrollmentReducer } from '../post/enrollment/EnrollmentSlice'
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('enrollment reducer', () => {
     // let store: EnhancedStore<{ enrollment: EnrollmentState },
     //     AnyAction,

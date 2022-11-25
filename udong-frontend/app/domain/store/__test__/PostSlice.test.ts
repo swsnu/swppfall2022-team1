@@ -1,9 +1,9 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit'
-import axios from 'axios'
 import { AnyAction } from 'redux'
 import { ThunkMiddleware } from 'redux-thunk'
 
 import { BoardPostDto } from '../../../infra/dto/BoardPostDto'
+import { axiosConfig } from '../../../infra/global'
 import { BoardPost, ListItemPost, PostDisplayType } from '../../model/ListItemPost'
 import { PostType } from '../../model/PostType'
 import { getClubPosts, postReducer, PostState } from '../post/PostSlice'
@@ -31,6 +31,12 @@ const fakePost: PostState = {
     comments: [fakeComment1, fakeComment2],
 }
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('post reducer', () => {
     let store: EnhancedStore<{ post: PostState },
         AnyAction,
@@ -46,7 +52,7 @@ describe('post reducer', () => {
         })
     })
     it('should handle getClubPosts', async () => {
-        axios.get = jest.fn().mockResolvedValue({ data: fakePostDto.boardPosts } )
+        axiosConfig.get = jest.fn().mockResolvedValue({ data: fakePostDto.boardPosts } )
         await store.dispatch(getClubPosts(1))
         expect(store.getState().post.boardPosts).toEqual(fakePost.boardPosts)
     })

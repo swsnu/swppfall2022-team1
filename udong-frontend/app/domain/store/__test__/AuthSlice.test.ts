@@ -1,5 +1,11 @@
 import { authReducer } from '../auth/AuthSlice'
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('auth slice', () => {
     // let store: EnhancedStore<{ isLoggedIn: AuthState },
     //     AnyAction,
@@ -16,6 +22,6 @@ describe('auth slice', () => {
             isLoggedIn: false,
         })
     })
-    
+
     //should be implemented later
 })
