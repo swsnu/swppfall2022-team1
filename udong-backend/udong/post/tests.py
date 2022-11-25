@@ -2,6 +2,7 @@ import json
 from common.utils import MyTestCase
 from post.models import Post, Enrollment, Scheduling, PostTag
 from club.models import Club
+from post.models import Participation
 from user.models import UserClub
 from event.models import Event
 from tag.models import Tag, UserTag
@@ -47,7 +48,10 @@ class PostTestCase(MyTestCase):
             type="S",
         )
 
-        Enrollment.objects.create(post=post2, closed=False)
+        enrollment1 = Enrollment.objects.create(post=post2, closed=False)
+
+        Participation.objects.create(user=self.dummy_user, enrollment=enrollment1)
+
         Scheduling.objects.create(
             post=post3,
             type="D",
@@ -194,3 +198,30 @@ class PostTestCase(MyTestCase):
                 "content": "NEW COMMENT",
             },
         )
+
+    # GET /api/enroll/:id/status
+    def test_enrollment_enrollment_id_status(self) -> None:
+        response = self.client.get("/api/enroll/2/status/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            [
+                {
+                    "id": 1,
+                    "user": {
+                        "id": 1,
+                        "image": "image",
+                        "email": "alan@snu.ac.kr",
+                        "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                        "name": "Alan Turing",
+                    },
+                    "enrollment_id": 2,
+                },
+            ],
+        )
+
+    # PUT /api/enroll/:id/close
+    def test_enrollment_enrollment_id_close(self) -> None:
+        response = self.client.put("/api/enroll/2/close/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(response.content, {"post_id": 2, "closed": True})
