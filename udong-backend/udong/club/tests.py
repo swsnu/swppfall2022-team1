@@ -37,13 +37,13 @@ class ClubTestCase(MyTestCase):
         Tag.objects.create(club=club1, name="genius")
         Tag.objects.create(club=club1, name="winner")
 
-    # api/club/:id
+    # GET /api/club/:id
     def test_club_id(self) -> None:
         response = self.client.get("/api/club/1/")
         self.assertEqual(response.status_code, 200)
         self.jsonEqual(response.content, {"id": 1, "name": "Udong", "code": "swppfall"})
 
-    # api/club/
+    # GET /api/club/
     def test_club_list(self) -> None:
         response = self.client.get("/api/club/")
         self.assertEqual(response.status_code, 200)
@@ -51,7 +51,7 @@ class ClubTestCase(MyTestCase):
             response.content, [{"id": 1, "name": "Udong", "code": "swppfall"}]
         )
 
-    # api/club/:id/user/
+    # GET /api/club/:id/user/
     def test_club_user(self) -> None:
         response = self.client.get("/api/club/1/user/")
         self.assertEqual(response.status_code, 200)
@@ -71,7 +71,7 @@ class ClubTestCase(MyTestCase):
             ],
         )
 
-    # api/club/:id/event/
+    # GET /api/club/:id/event/
     def test_club_event(self) -> None:
         response = self.client.get("/api/club/1/event/")
         self.assertEqual(response.status_code, 200)
@@ -107,7 +107,7 @@ class ClubTestCase(MyTestCase):
             ],
         )
 
-    # api/club/:id/tag/
+    # GET /api/club/:id/tag/
     def test_club_tag(self) -> None:
         response = self.client.get("/api/club/1/tag/")
         self.assertEqual(response.status_code, 200)

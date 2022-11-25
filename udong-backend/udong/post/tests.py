@@ -78,7 +78,7 @@ class PostTestCase(MyTestCase):
         Comment.objects.create(user=self.dummy_user, post=post1, content="FIRST")
         Comment.objects.create(user=self.dummy_user, post=post1, content="SECOND")
 
-    # api/post/club/:id/
+    # GET /api/post/club/:id/
     def test_post_club_id(self) -> None:
         # Check admin
         response = self.client.get("/api/post/club/1/")
