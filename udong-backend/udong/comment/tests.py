@@ -62,3 +62,13 @@ class CommentTestCase(MyTestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 403)
+
+    def test_delete_comment(self) -> None:
+        client = Client()
+        response = client.delete("/api/comment/1/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_comment_fail(self) -> None:
+        client = Client()
+        response = client.delete("/api/comment/2/")
+        self.assertEqual(response.status_code, 403)
