@@ -17,10 +17,9 @@ class UserTestCase(MyTestCase):
 
     # api/user/me/
     def test_user_me(self) -> None:
-        client = Client()
         self.assertEqual(User.objects.all().count(), 2)
 
-        response = client.get("/api/user/me/")
+        response = self.client.get("/api/user/me/")
         self.assertEqual(response.status_code, 200)
         self.jsonEqual(
             response.content,
@@ -35,9 +34,7 @@ class UserTestCase(MyTestCase):
 
     # api/user/:id/
     def test_user_id(self) -> None:
-        client = Client()
-
-        response = client.get("/api/user/2/")
+        response = self.client.get("/api/user/2/")
         self.assertEqual(response.status_code, 200)
         self.jsonEqual(
             response.content,
