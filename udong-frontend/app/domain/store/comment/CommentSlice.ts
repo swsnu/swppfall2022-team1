@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { Comment } from '../../model/Comment'
 
-interface CommentState {
+export interface CommentState {
     selectedComment?: Comment
 }
 
