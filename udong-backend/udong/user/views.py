@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from user.models import User
 from user.serializers import UserSerializer, AuthSerializer
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.utils import swagger_auto_schema, no_body
 from typing import Any, TYPE_CHECKING
 import urllib3
 import json
@@ -56,7 +56,7 @@ class AuthViewSet(_GenereicViewSet):
         login(request, serializer.save())
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @swagger_auto_schema(responses={204: ""})
+    @swagger_auto_schema(responses={204: ""}, request_body=no_body)
     @action(detail=False, methods=["POST"])
     def signout(self, request: Request) -> Response:
         logout(request)
