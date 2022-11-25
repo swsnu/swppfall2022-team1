@@ -5,33 +5,22 @@ import { ThunkMiddleware } from 'redux-thunk'
 
 import { eventReducer, EventState, getEvents } from '../event/EventSlice'
 
+export const fakeEventDto1 = { id: 1, name: '단풍', created_at: '', updated_at: '' }
+export const fakeEventDto2 = { id: 2, name: '은행', created_at: '', updated_at: '' }
+export const fakeEvent1 = { id: 1, name: '단풍', createdAt: '', updatedAt: '' }
+export const fakeEvent2 = { id: 2, name: '은행', createdAt: '', updatedAt: '' }
+
 describe('event reducer', () => {
     let store: EnhancedStore<{ event: EventState },
         AnyAction,
         [ThunkMiddleware<{ event: EventState }, AnyAction, undefined>]>
     const fakeEventDto = {
-        selectedEvent: {
-            id: 1,
-            name: '단풍',
-            created_at: '',
-            updated_at: '',
-        },
-        events: [{
-            id: 1,
-            name: '단풍',
-            created_at: '',
-            updated_at: '',
-        }, {
-            id: 2,
-            name: '은행',
-            created_at: '',
-            updated_at: '',
-        },
-        ],
+        selectedEvent: fakeEventDto1,
+        events: [fakeEventDto1, fakeEventDto2],
     }
     const fakeEvent : EventState = {
-        selectedEvent: { id: 1, name: '단풍', createdAt: '', updatedAt: '' },
-        events: [{ id: 1, name: '단풍', createdAt: '', updatedAt: '' }, { id: 2, name: '은행', createdAt: '', updatedAt: '' }],
+        selectedEvent: fakeEvent1,
+        events: [fakeEvent1, fakeEvent2],
     }
 
     beforeAll(() => {

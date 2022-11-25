@@ -6,33 +6,41 @@ import { ThunkMiddleware } from 'redux-thunk'
 import { RoleType } from '../../model/RoleType'
 import { clubReducer, ClubState, getClub, getClubMembers, getMyClubs } from '../club/ClubSlice'
 
+export const fakeClub1 = { id: 1, name: '단풍', code: '1234' }
+export const fakeClub2 = { id: 2, name: '은행', code: '4321' }
+export const fakeUserDto1 = { id: 1, google: 'user@gmail.com', image: 'userImage', time_table: 'userTable', name: 'user',
+    created_at: '', updated_at: '' }
+export const fakeUserDto2 = { id: 2, google: 'user2@gmail.com', image: 'user2Image', time_table: 'user2Table', name: 'user2',
+    created_at: '', updated_at: '' }
+export const fakeUser1 = { id: 1, gmail: 'user@gmail.com', imageUrl: 'userImage', timeTable: 'userTable', name: 'user' }
+export const fakeUser2 = { id: 2, gmail: 'user2@gmail.com', imageUrl: 'user2Image', timeTable: 'user2Table', name: 'user2' }
+
 describe('club reducer', () => {
     let store: EnhancedStore<{ club: ClubState },
         AnyAction,
         [ThunkMiddleware<{ club: ClubState }, AnyAction, undefined>]>
+
     const fakeClubDto = {
-        selectedClub: { id: 1, name: '단풍', code: '1234' },
-        myClubs: [{ id: 1, name: '단풍', code: '1234' }, { id: 2, name: '계란', code: '4321' }],
+        selectedClub: fakeClub1,
+        myClubs: [fakeClub1, fakeClub2],
         members: [{
-            user: { id: 1, google: 'user@gmail.com', image: 'userImage', time_table: 'userTable', name: 'user',
-                created_at: '', updated_at: '' },
+            user: fakeUserDto1,
             auth: RoleType.ADMIN,
         },
         {
-            user: { id: 2, google: 'user2@gmail.com', image: 'user2Image', time_table: 'user2Table', name: 'user2',
-                created_at: '', updated_at: '' },
+            user: fakeUserDto2,
             auth: RoleType.MEMBER,
         }],
     }
     const fakeClub: ClubState = {
-        selectedClub: { id: 1, name: '단풍', code: '1234' },
-        myClubs: [{ id: 1, name: '단풍', code: '1234' }, { id: 2, name: '계란', code: '4321' }],
+        selectedClub: fakeClub1,
+        myClubs: [fakeClub1, fakeClub2],
         members: [{
-            user: { id: 1, gmail: 'user@gmail.com', imageUrl: 'userImage', timeTable: 'userTable', name: 'user' },
+            user: fakeUser1,
             role: RoleType.ADMIN,
         },
         {
-            user: { id: 2, gmail: 'user2@gmail.com', imageUrl: 'user2Image', timeTable: 'user2Table', name: 'user2' },
+            user: fakeUser2,
             role: RoleType.MEMBER,
         }],
     }
