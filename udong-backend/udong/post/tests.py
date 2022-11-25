@@ -137,6 +137,7 @@ class PostTestCase(MyTestCase):
             ],
         )
 
+    # GET /api/post/:id/comment/
     def test_get_post_id_comment(self) -> None:
         response = self.client.get("/api/post/1/comment/")
         self.assertEqual(response.status_code, 200)
@@ -170,6 +171,7 @@ class PostTestCase(MyTestCase):
             ],
         )
 
+    # POST /api/post/:id/comment/
     def test_post_post_id_comment(self) -> None:
         response = self.client.post(
             "/api/post/1/comment/",

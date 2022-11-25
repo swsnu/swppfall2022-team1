@@ -29,6 +29,7 @@ class CommentTestCase(MyTestCase):
         Comment.objects.create(user=self.dummy_user, post=post1, content="FIRST")
         Comment.objects.create(user=user1, post=post1, content="SECOND")
 
+    # PUT /api/comment/:id
     def test_update_comment(self) -> None:
         response = self.client.put(
             "/api/comment/1/",
@@ -52,6 +53,7 @@ class CommentTestCase(MyTestCase):
             },
         )
 
+    # PUT /api/comment/:id (403)
     def test_update_comment_fail(self) -> None:
         response = self.client.put(
             "/api/comment/2/",
@@ -60,10 +62,12 @@ class CommentTestCase(MyTestCase):
         )
         self.assertEqual(response.status_code, 403)
 
+    # DELETE /api/comment/:id
     def test_delete_comment(self) -> None:
         response = self.client.delete("/api/comment/1/")
         self.assertEqual(response.status_code, 200)
 
+    # DELETE /api/comment/:id (403)
     def test_delete_comment_fail(self) -> None:
         response = self.client.delete("/api/comment/2/")
         self.assertEqual(response.status_code, 403)
