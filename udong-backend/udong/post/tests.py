@@ -1,4 +1,3 @@
-from django.test import Client
 from common.utils import MyTestCase
 from post.models import Post, Enrollment, Scheduling, PostTag
 from club.models import Club
@@ -137,9 +136,8 @@ class PostTestCase(MyTestCase):
             ],
         )
 
-    def test_get_post_id_comment_id(self) -> None:
-        client = Client()
-        response = client.get("/api/post/1/comment/")
+    def test_get_post_id_comment(self) -> None:
+        response = self.client.get("/api/post/1/comment/")
         self.assertEqual(response.status_code, 200)
         self.jsonEqual(
             response.content,

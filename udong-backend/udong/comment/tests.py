@@ -1,5 +1,4 @@
 import json
-from django.test import Client
 from common.utils import MyTestCase
 from club.models import Club
 from user.models import UserClub, User
@@ -31,8 +30,7 @@ class CommentTestCase(MyTestCase):
         Comment.objects.create(user=user1, post=post1, content="SECOND")
 
     def test_update_comment(self) -> None:
-        client = Client()
-        response = client.put(
+        response = self.client.put(
             "/api/comment/1/",
             json.dumps({"content": "NEW CONTENT"}),
             content_type="application/json",
@@ -55,8 +53,7 @@ class CommentTestCase(MyTestCase):
         )
 
     def test_update_comment_fail(self) -> None:
-        client = Client()
-        response = client.put(
+        response = self.client.put(
             "/api/comment/2/",
             json.dumps({"content": "NEW CONTENT"}),
             content_type="application/json",
@@ -64,11 +61,9 @@ class CommentTestCase(MyTestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_delete_comment(self) -> None:
-        client = Client()
-        response = client.delete("/api/comment/1/")
+        response = self.client.delete("/api/comment/1/")
         self.assertEqual(response.status_code, 200)
 
     def test_delete_comment_fail(self) -> None:
-        client = Client()
-        response = client.delete("/api/comment/2/")
+        response = self.client.delete("/api/comment/2/")
         self.assertEqual(response.status_code, 403)
