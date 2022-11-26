@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-interface EnrollmentState {
+export interface EnrollmentState {
     isOpen: boolean
 }
 
@@ -24,7 +24,7 @@ export const getEnrollmentStatus = createAsyncThunk(
 )
 
 export const closeEnrollment = createAsyncThunk(
-    'enrollmnet/closeEnrollment',
+    'enrollment/closeEnrollment',
     async () => { return },
 )
 

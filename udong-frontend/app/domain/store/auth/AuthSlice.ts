@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { AuthAPI } from '../../../infra/api/AuthAPI'
 
-interface AuthState {
+export interface AuthState {
     isLoggedIn: boolean
 }
 

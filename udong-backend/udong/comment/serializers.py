@@ -5,6 +5,7 @@ from comment.models import Comment
 from user.models import User
 from user.serializers import UserSerializer
 from post.models import Post
+from drf_yasg.utils import swagger_serializer_method
 
 
 class CommentSerializer(serializers.ModelSerializer[Comment]):
@@ -17,6 +18,7 @@ class CommentSerializer(serializers.ModelSerializer[Comment]):
         model = Comment
         fields = ("id", "user", "post_id", "content", "created_at", "updated_at")
 
+    @swagger_serializer_method(serializer_or_field=UserSerializer())
     def get_user(self, comment: Comment) -> ReturnDict:
         return UserSerializer(comment.user).data
 

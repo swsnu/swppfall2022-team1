@@ -11,6 +11,7 @@ from club.serializers import (
     ClubEventSerializer,
     ClubTagSerializer,
 )
+from drf_yasg.utils import swagger_auto_schema
 from typing import Any, Type, TYPE_CHECKING
 
 # Create your views here.
@@ -42,6 +43,7 @@ class ClubViewSet(_GenereicViewSet):
         club = self.get_object()
         return Response(self.get_serializer(club).data)
 
+    @swagger_auto_schema(responses={200: ClubUserSerializer(many=True)})
     @action(detail=True, methods=["GET"])
     def user(self, request: Request, pk: Any) -> Response:
         club_user = (
@@ -52,6 +54,7 @@ class ClubViewSet(_GenereicViewSet):
         )
         return Response(self.get_serializer(club_user, many=True).data)
 
+    @swagger_auto_schema(responses={200: ClubEventSerializer(many=True)})
     @action(detail=True, methods=["GET"])
     def event(self, request: Request, pk: Any) -> Response:
         club_event = (
@@ -62,6 +65,7 @@ class ClubViewSet(_GenereicViewSet):
         )
         return Response(self.get_serializer(club_event, many=True).data)
 
+    @swagger_auto_schema(responses={200: ClubTagSerializer(many=True)})
     @action(detail=True, methods=["GET"])
     def tag(self, request: Request, pk: Any) -> Response:
         club_tag = self.get_object().tag_set
