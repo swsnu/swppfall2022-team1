@@ -29,5 +29,5 @@ jobs:
 
     - name: status check
       run: |
-        diff -w <(curl -s http://${{ secrets.HOST }}/ping/) <(echo "pong")
+        diff -w <(curl -s https://${{ secrets.HOST }}/ping/) <(echo "pong")
         exit $?
