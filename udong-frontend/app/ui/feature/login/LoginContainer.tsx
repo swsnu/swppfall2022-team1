@@ -26,13 +26,13 @@ export const LoginContainer = () => {
                 dispatch(authActions.login({ email: user.email, token: accessToken, name: user.name }))
             }
         }
-    }, [status])
+    }, [status]) // eslint-disable-line
 
     useEffect(() => {
         if (isLoggedIn) {
             router.push('/')
         }
-    }, [isLoggedIn])
+    }, [isLoggedIn]) // eslint-disable-line
 
     // TODO: 이미 로그인 되어있으면 백엔드 요청 X
 

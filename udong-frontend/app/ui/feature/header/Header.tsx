@@ -37,13 +37,13 @@ export const Header = ({ type, clubId }: HeaderProps) => {
         if (status === 'unauthenticated') {
             dispatch(authActions.logout())
         }
-    }, [status])
+    }, [status]) // eslint-disable-line
 
     useEffect(() => {
         if (!isLoggedIn) {
             router.push('/login')
         }
-    }, [isLoggedIn])
+    }, [isLoggedIn]) // eslint-disable-line
 
     const clubName = '단풍'
 
