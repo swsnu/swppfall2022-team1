@@ -20,6 +20,7 @@ env = environ.Env(
     SECRET_KEY=(str, "secret"),
     ALLOWED_HOSTS=(list, ["*"]),
     CORS_ALLOWED_ORIGINS=(list, []),
+    CSRF_TRUSTED_ORIGINS=(list, []),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -97,6 +98,14 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
+CSRF_COOKIE_SAMESITE = "None"
+
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = "None"
 
 ROOT_URLCONF = "udong.urls"
 
