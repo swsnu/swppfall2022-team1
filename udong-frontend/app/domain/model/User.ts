@@ -1,6 +1,6 @@
 export interface User {
     id: number
-    gmail: string
+    email: string
     imageUrl: string
     timeTable: string
     name: string
@@ -8,7 +8,7 @@ export interface User {
 
 export const dummyUserMe: User = {
     id: 1,
-    gmail: '',
+    email: '',
     imageUrl: '',
     timeTable: '',
     name: '이유빈',
@@ -16,7 +16,7 @@ export const dummyUserMe: User = {
 
 export const dummyUserNotMe: User = {
     id: 2,
-    gmail: '',
+    email: '',
     imageUrl: '',
     timeTable: '',
     name: '박지연',

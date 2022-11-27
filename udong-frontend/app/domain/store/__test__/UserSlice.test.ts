@@ -9,8 +9,8 @@ export const fakeUserDto1 = { id: 1, google: 'user@gmail.com', image: 'userImage
     created_at: '', updated_at: '' }
 export const fakeUserDto2 = { id: 2, google: 'user2@gmail.com', image: 'user2Image', time_table: 'user2Table', name: 'user2',
     created_at: '', updated_at: '' }
-export const fakeUser1 = { id: 1, gmail: 'user@gmail.com', imageUrl: 'userImage', timeTable: 'userTable', name: 'user' }
-export const fakeUser2 = { id: 2, gmail: 'user2@gmail.com', imageUrl: 'user2Image', timeTable: 'user2Table', name: 'user2' }
+export const fakeUser1 = { id: 1, email: 'user@gmail.com', imageUrl: 'userImage', timeTable: 'userTable', name: 'user' }
+export const fakeUser2 = { id: 2, email: 'user2@gmail.com', imageUrl: 'user2Image', timeTable: 'user2Table', name: 'user2' }
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {

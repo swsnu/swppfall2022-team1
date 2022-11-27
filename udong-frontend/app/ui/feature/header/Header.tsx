@@ -1,7 +1,12 @@
 import styled from '@emotion/styled'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { AppDispatch } from '../../../domain/store'
+import { authSelector } from '../../../domain/store/auth/AuthSelector'
+import { authActions } from '../../../domain/store/auth/AuthSlice'
 import { HStack } from '../../components/Stack'
 import { UdongImage } from '../../components/UdongImage'
 import { UdongText } from '../../components/UdongText'
@@ -24,6 +29,22 @@ export enum HEADER_PAGE {
 
 export const Header = ({ type, clubId }: HeaderProps) => {
     const router = useRouter()
+    const dispatch = useDispatch<AppDispatch>()
+    const { status } = useSession()
+    const isLoggedIn = useSelector(authSelector.isLoggedIn)
+
+    useEffect(() => {
+        if (status === 'unauthenticated') {
+            dispatch(authActions.logout())
+        }
+    }, [status]) // eslint-disable-line
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            router.push('/login')
+        }
+    }, [isLoggedIn]) // eslint-disable-line
+
     const clubName = '단풍'
 
     if (type === HEADER_PAGE.NONE) {return null}
@@ -68,7 +89,7 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                     alignItems={'center'}
                     gap={15}
                 >
-                    <HStack onClick={() => signOut({ callbackUrl: '/login' })}>
+                    <HStack onClick={() => signOut({ redirect: false })}>
                         <UdongText
                             style={'Header'}
                             color={UdongColors.GrayDark}
