@@ -30,6 +30,9 @@ class UserViewSet(_GenereicViewSet):
     def retrieve(self, request: Request, pk: Any = None) -> Response:
         return Response(self.get_serializer(self.get_object()).data)
 
+    @swagger_auto_schema(
+        method="DELETE", responses={204: "", 403: "User is admin in some clubs"}
+    )
     @action(detail=False, methods=["GET", "PUT", "DELETE"])
     def me(self, request: Request) -> Response:
         if request.method == "GET":
