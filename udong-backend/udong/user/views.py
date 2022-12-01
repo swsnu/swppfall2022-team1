@@ -32,6 +32,11 @@ class UserViewSet(_GenereicViewSet):
     def me(self, request: Request) -> Response:
         if request.method == "GET":
             return Response(self.get_serializer(request.user).data)
+        if request.method == "PUT":
+            serializer = self.get_serializer(request.user, request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
 
 
 class AuthViewSet(_GenereicViewSet):
