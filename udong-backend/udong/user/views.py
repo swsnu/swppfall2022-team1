@@ -26,8 +26,12 @@ class UserViewSet(_GenereicViewSet):
     serializer_class = UserSerializer
 
     def retrieve(self, request: Request, pk: Any = None) -> Response:
-        user = request.user if pk == "me" else self.get_object()
-        return Response(self.get_serializer(user).data)
+        return Response(self.get_serializer(self.get_object()).data)
+
+    @action(detail=False, methods=["GET", "PUT", "DELETE"])
+    def me(self, request: Request) -> Response:
+        if request.method == "GET":
+            return Response(self.get_serializer(request.user).data)
 
 
 class AuthViewSet(_GenereicViewSet):
