@@ -25,9 +25,6 @@ class CommentSerializer(serializers.ModelSerializer[Comment]):
     def create(self, validated_data: Dict[str, Any]) -> Comment:
         post = Post.objects.get(id=self.context["post_id"])
         comment = Comment.objects.create(
-            **validated_data,
-            post=post,
-            user=User.objects.get(id=self.context["user"].id)
-            # FIXME: user=self.context['user']
+            **validated_data, post=post, user=self.context["user"]
         )
         return comment
