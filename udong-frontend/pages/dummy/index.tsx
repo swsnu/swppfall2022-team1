@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState } from 'react'
 
 import { Spacer } from '../../app/ui/components/Spacer'
