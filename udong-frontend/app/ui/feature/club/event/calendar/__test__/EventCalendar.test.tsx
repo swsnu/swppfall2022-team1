@@ -30,10 +30,16 @@ describe('<EventCalendar/>', () => {
 
         const today = new Date()
         const moveButtons = screen.getAllByRole('button')
+        // click previous month (-1)
         await act( async () => {
             fireEvent.click(moveButtons[1])
         })
-        await waitFor(() => expect(screen.getByText(`${today.getFullYear()}.${today.getMonth()}`)).toBeDefined())
+        if (today.getMonth() === 0){
+            await waitFor(() => expect(screen.getByText(`${today.getFullYear() - 1}.12`)).toBeDefined())
+        } else {
+            await waitFor(() => expect(screen.getByText(`${today.getFullYear()}.${today.getMonth()}`)).toBeDefined())
+        }
+        //click next month (-1 + 1 = 0)
         await act( async () => {
             fireEvent.click(moveButtons[0])
         })
@@ -41,6 +47,11 @@ describe('<EventCalendar/>', () => {
         await act( async () => {
             fireEvent.click(moveButtons[2])
         })
-        await waitFor(() => expect(screen.getByText(`${today.getFullYear()}.${today.getMonth() + 2}`)).toBeDefined())
+        //click next month again (-1 + 1 + 1 = 1)
+        if (today.getMonth() === 11){
+            await waitFor(() => expect(screen.getByText(`${today.getFullYear() + 1}.1`)).toBeDefined())
+        } else {
+            await waitFor(() => expect(screen.getByText(`${today.getFullYear()}.${today.getMonth() + 2}`)).toBeDefined())
+        }
     })
 })
