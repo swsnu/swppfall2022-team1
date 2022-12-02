@@ -16,7 +16,14 @@ class CommentSerializer(serializers.ModelSerializer[Comment]):
 
     class Meta:
         model = Comment
-        fields = ("id", "user", "post_id", "content", "created_at", "updated_at")
+        fields = (
+            "id",
+            "user",
+            "post_id",
+            "content",
+            "created_at",
+            "updated_at",
+        )
 
     @swagger_serializer_method(serializer_or_field=UserSerializer())
     def get_user(self, comment: Comment) -> ReturnDict:
