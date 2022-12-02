@@ -1,11 +1,13 @@
 from django.shortcuts import render
+from django.db.models import Q
 from django.contrib.auth import login, logout
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
-from user.models import User
+from rest_framework.exceptions import MethodNotAllowed
+from user.models import User, UserClub
 from user.serializers import UserSerializer, AuthSerializer
 from drf_yasg.utils import swagger_auto_schema, no_body
 from typing import Any, TYPE_CHECKING
@@ -26,8 +28,33 @@ class UserViewSet(_GenereicViewSet):
     serializer_class = UserSerializer
 
     def retrieve(self, request: Request, pk: Any = None) -> Response:
-        user = request.user if pk == "me" else self.get_object()
-        return Response(self.get_serializer(user).data)
+        return Response(self.get_serializer(self.get_object()).data)
+
+    @swagger_auto_schema(
+        method="DELETE", responses={204: "", 403: "User is admin in some clubs"}
+    )
+    @action(detail=False, methods=["GET", "PUT", "DELETE"])
+    def me(self, request: Request) -> Response:
+        if request.method == "GET":
+            return Response(self.get_serializer(request.user).data)
+        if request.method == "PUT":
+            serializer = self.get_serializer(request.user, request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
+        if request.method == "DELETE":
+            user_club = UserClub.objects.filter(Q(user_id=request.user.id))
+            for club in user_club:
+                if club.auth == "A":
+                    return Response(
+                        "User is admin in some clubs", status=status.HTTP_403_FORBIDDEN
+                    )
+            request.user.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            raise MethodNotAllowed(
+                request.method if request.method else "unknown method"
+            )
 
 
 class AuthViewSet(_GenereicViewSet):
