@@ -45,4 +45,4 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         DISTRIBUTION_ID: ${{ secrets.AWS_DISTRIBUTION_ID }}
         AWS_REGION: 'ap-northeast-2'   # optional: defaults to us-east-1
-        SOURCE_DIR: 'out'      # optional: defaults to entire repository
+        SOURCE_DIR: 'udong-frontend/out'      # optional: defaults to entire repository
