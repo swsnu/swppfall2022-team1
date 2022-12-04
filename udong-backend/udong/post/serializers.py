@@ -6,8 +6,9 @@ from post.models import Enrollment
 from post.models import Participation
 from tag.serializers import TagPostSerializer
 from user.serializers import UserSerializer
+from event.serializers import EventNameSerializer
 from drf_yasg.utils import swagger_serializer_method
-from typing import Dict, Any
+from typing import Optional
 
 
 class PostBoardSerializer(serializers.ModelSerializer[Post]):
@@ -35,11 +36,11 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             "updated_at",
         )
 
-    def get_event(self, post: Post) -> str:
+    def get_event(self, post: Post) -> Optional[ReturnDict]:
         if post.event is None:
-            return ""
+            return None
         else:
-            return post.event.name
+            return EventNameSerializer(post.event).data
 
     def get_closed(self, post: Post) -> bool | None:
         if post.get_type_display() == "Announcement":
