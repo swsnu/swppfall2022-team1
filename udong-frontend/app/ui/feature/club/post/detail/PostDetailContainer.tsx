@@ -1,35 +1,24 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { PostType } from '../../../../../domain/model/PostType'
-import { dummyTagsDanpung } from '../../../../../domain/model/Tag'
-import { dummyUserMe } from '../../../../../domain/model/User'
+import { AppDispatch } from '../../../../../domain/store'
 import { postSelector } from '../../../../../domain/store/post/PostSelector'
+import { postActions } from '../../../../../domain/store/post/PostSlice'
+import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
-import { UdongChip } from '../../../../components/UdongChip'
 import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
+import { ClickableTag } from '../../../shared/ClickableTag'
 import { DeleteModal } from '../../../shared/DeleteModal'
 import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
 import { PostDetailCommentsView } from './PostDetailCommentsView'
 import { PostDetailEnrollmentView } from './PostDetailEnrollmentView'
 import { PostDetailSchedulingView } from './PostDetailSchedulingView'
-
-const getQueryParam = (queryParam: string | string[] | undefined): PostType => {
-    if (queryParam === undefined) {
-        return PostType.ANNOUNCEMENT
-    }
-
-    if (queryParam instanceof Array) {
-        return queryParam.join('') as PostType
-    } else {
-        return queryParam as PostType
-    }
-}
 
 const getSubtitle = (postType: PostType) => {
     switch(postType) {
@@ -46,26 +35,33 @@ const getSubtitle = (postType: PostType) => {
 
 export const PostDetailContainer = () => {
     const router = useRouter()
-    // const { type } = router.query
-    const [postType, setPostType] = useState<PostType>(PostType.ANNOUNCEMENT)
-    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const dispatch = useDispatch<AppDispatch>()
+    const { clubId: rawClubId, postId: rawPostId } = router.query
+    const clubId = convertQueryParamToString(rawClubId)
+    const postId = convertQueryParamToString(rawPostId)
 
     const post = useSelector(postSelector.selectedPost)
 
-    // 위에 default 값은 건드리지 말고 테스트할 때 여기서 값 바꿔가면서 쓰기!
+    const [postType, setPostType] = useState<PostType>(PostType.ANNOUNCEMENT)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+
     useEffect(() => {
         if (post) {
             setPostType(post.type)
         }
     }, [post])
 
-    // if (!post) {
-    //     return null
-    // }
+    useEffect(() => {
+        dispatch(postActions.getPost(postId))
+    }, [postId, dispatch])
+
+    if (!post) {
+        return null
+    }
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
-            title={post?.title ?? ''}
+            title={post.title}
             onGoBack={() => router.back()}
             subtitle={getSubtitle(postType)}
             rightButtons={<>
@@ -73,7 +69,7 @@ export const PostDetailContainer = () => {
                     style={'line'}
                     color={UdongColors.Primary}
                     height={40}
-                    onClick={() => router.push(`/club/1/post/1/edit/?type=${postType}`)}
+                    onClick={() => router.push(`/club/${clubId}/post/${postId}/edit/?type=${postType}`)}
                 >
                     수정하기
                 </UdongButton>
@@ -93,27 +89,35 @@ export const PostDetailContainer = () => {
         <Spacer height={45}/>
 
         <VStack alignItems={'center'}>
-            <VStack onClick={() => router.push('/club/1/event/1')}>
+            <VStack onClick={() => router.push(`/club/${clubId}/event/1`)}>
                 <UdongText
                     style={'ListContentUnderscore'}
                     cursor={'pointer'}
-                >{post?.eventName ?? '2022년 겨울 공연'}</UdongText>
+                >{post.eventName}</UdongText>
                 <Spacer height={15}/>
             </VStack>
 
-            <HStack justifyContent={'center'}>
-                {dummyTagsDanpung.map((tag) => {
-                    return <HStack
-                        key={tag.name}
-                        paddingHorizontal={6}
-                    >
-                        <UdongChip
-                            color={tag.users.includes(dummyUserMe) ? UdongColors.Primary : UdongColors.GrayNormal}
-                            style={'fill'}
+            <HStack alignItems={'center'}>
+                <HStack>
+                    {post.includedTags?.map((tag, index) => {
+                        return <ClickableTag
+                            key={tag.name + index}
                             text={tag.name}
+                            isIncluded={true}
+                            onClick={() => {return}}
                         />
-                    </HStack>
-                })}
+                    })}
+                </HStack>
+                <HStack>
+                    {post.excludedTags?.map((tag, index) => {
+                        return <ClickableTag
+                            key={tag.name + index}
+                            text={tag.name}
+                            isIncluded={false}
+                            onClick={() => {return}}
+                        />
+                    })}
+                </HStack>
             </HStack>
             <Spacer height={15}/>
         </VStack>
@@ -127,19 +131,7 @@ export const PostDetailContainer = () => {
                 style={'GeneralContent'}
                 whiteSpace={'pre-line'}
             >
-                {post?.content ?? `안녕하세요?
-            모두가 기다리던 MT를 드디어 가려고 합니다.
-
-            날짜는 그냥 마음대로 정했습니다.
-            되시는 분만 오시면 됩니다.
-
-            MT 장소는 제주도 서귀포입니다.
-            고등어회를 꼭 먹고 싶습니다. 고등어 봉초밥도 먹고싶습니다. 그냥 활어회도 좋습니다.
-            봄베이 브램블에 토닉을 1:6으로 섞어 같이 먹으려고 합니다.
-            소주는 밴입니다.
-
-            많은 참석 부탁드립니다.
-            이상입니다.`}
+                {post.content}
             </UdongText>
         </VStack>
 
@@ -148,7 +140,7 @@ export const PostDetailContainer = () => {
         {postType === PostType.SCHEDULING && <PostDetailSchedulingView/>}
 
         <HStack>
-            <UdongText style={'ListContentXS'}>{post?.updatedAt ?? '2022.09.10'}</UdongText>
+            <UdongText style={'ListContentXS'}>{post.updatedAt}</UdongText>
             <Spacer width={10}/>
             <UdongText style={'ListContentXS'}>박지연</UdongText>
         </HStack>

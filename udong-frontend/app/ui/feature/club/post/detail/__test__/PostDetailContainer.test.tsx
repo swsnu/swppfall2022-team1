@@ -1,11 +1,35 @@
+import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
 
+import { postReducer, PostState } from '../../../../../../domain/store/post/PostSlice'
 import { PostDetailContainer } from '../PostDetailContainer'
 
+const stubPostInitialState: PostState = {
+    feedPosts: [],
+    clubPosts: [],
+    comments: [],
+}
+
+const mockStore = configureStore({
+    reducer: { post: postReducer },
+    preloadedState: { post: stubPostInitialState },
+})
+
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<PostDetailContainer/>', () => {
+    const postDetailContainer: JSX.Element = <Provider store={mockStore}>
+        <PostDetailContainer/>
+    </Provider>
+
     it('renders Post Detail', async () => {
         const mockPush = jest.fn()
         const mockBack = jest.fn()
@@ -15,7 +39,7 @@ describe('<PostDetailContainer/>', () => {
             back: mockBack,
         } as unknown as NextRouter))
 
-        await act(async () => {render(<PostDetailContainer/>)})
+        await act(async () => {render(postDetailContainer)})
 
         const edit = screen.getByText(/수정하기/)
         await waitFor(() => expect(edit).toBeInTheDocument())
@@ -43,7 +67,7 @@ describe('<PostDetailContainer/>', () => {
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
 
-        await act(async () => {render(<PostDetailContainer/>)})
+        await act(async () => {render(postDetailContainer)})
         await waitFor(() => expect(screen.getByText(/공지글/)).toBeInTheDocument())
     })
     it('renders enrollment', async () => {
@@ -53,7 +77,7 @@ describe('<PostDetailContainer/>', () => {
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
 
-        await act(async () => {render(<PostDetailContainer/>)})
+        await act(async () => {render(postDetailContainer)})
         await waitFor(() => expect(screen.getByText(/모집글/)).toBeInTheDocument())
     })
     it('renders scheduling', async () => {
@@ -63,7 +87,7 @@ describe('<PostDetailContainer/>', () => {
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
 
-        await act(async () => {render(<PostDetailContainer/>)})
+        await act(async () => {render(postDetailContainer)})
         await waitFor(() => expect(screen.getByText(/수합글/)).toBeInTheDocument())
     })
     it('renders with no type', async () => {
@@ -73,7 +97,7 @@ describe('<PostDetailContainer/>', () => {
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
 
-        await act(async () => {render(<PostDetailContainer/>)})
+        await act(async () => {render(postDetailContainer)})
         await waitFor(() => expect(screen.getByText(/공지글/)).toBeInTheDocument())
     })
 })
