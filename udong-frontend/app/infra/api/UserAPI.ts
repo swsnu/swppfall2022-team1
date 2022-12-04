@@ -4,7 +4,10 @@ import { axiosConfig } from '../global'
 import { userTransformer } from '../transformer/UserTransformer'
 
 export const UserAPI = (() => {
-    function getMyProfile() { return }
+    async function getMyProfile(): Promise<User> {
+        const response = await axiosConfig.get<UserDto>(`/api/user/me`)
+        return userTransformer.fromDto(response.data)
+    }
     function editMyProfile() { return }
     function deleteAccount() { return }
 

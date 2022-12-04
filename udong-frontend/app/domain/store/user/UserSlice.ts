@@ -13,7 +13,9 @@ const initialState: UserState = {
 
 export const getMyProfile = createAsyncThunk(
     'user/getMyProfile',
-    async () => { return },
+    async () => {
+        return UserAPI.getMyProfile()
+    },
 )
 
 export const editMyProfile = createAsyncThunk(
@@ -41,11 +43,15 @@ const userSlice = createSlice({
         builder.addCase(getUser.fulfilled, (state, action) => {
             state.selectedUser = action.payload
         })
+        builder.addCase(getMyProfile.fulfilled, (state, action) => {
+            state.me = action.payload
+        })
     },
 })
 
 export const userActions = {
     ...userSlice.actions,
     getUser,
+    getMyProfile,
 }
 export const userReducer = userSlice.reducer

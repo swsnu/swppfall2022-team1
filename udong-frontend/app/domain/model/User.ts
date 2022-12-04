@@ -2,7 +2,7 @@ export interface User {
     id: number
     email: string
     imageUrl: string
-    timeTable: string
+    timeTable?: string
     name: string
 }
 
