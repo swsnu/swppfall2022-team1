@@ -1,3 +1,5 @@
+import { Optional } from '../../utility/helperTypes'
+
 export interface UserDto {
     id: number
     email: string
@@ -14,3 +16,6 @@ export interface UserEditDto {
     time_table?: string
     name?: string
 }
+
+type required = Required<UserEditDto>
+export type UserCommentDto = Optional<required, 'time_table'>

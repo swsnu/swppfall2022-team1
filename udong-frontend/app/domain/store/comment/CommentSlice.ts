@@ -22,8 +22,8 @@ export const getComments = createAsyncThunk(
 
 export const createComment = createAsyncThunk(
     'comment/createComment',
-    async ({ user, content }: { user: User, content: string }) => {
-        return PostAPI.createComment(user, content)
+    async ({ postId, user, content }: { postId: number, user: User, content: string }) => {
+        return PostAPI.createComment(postId, user, content)
     },
 )
 
@@ -45,11 +45,15 @@ const commentSlice = createSlice({
         builder.addCase(getComments.fulfilled, (state, action) => {
             state.postComments = action.payload
         })
+        builder.addCase(createComment.fulfilled, (state, action) => {
+            state.selectedComment = action.payload
+        })
     },
 })
 
 export const commentActions = {
     ...commentSlice.actions,
     getComments,
+    createComment,
 }
 export const commentReducer = commentSlice.reducer
