@@ -35,7 +35,7 @@ export const Header = ({ type, clubId }: HeaderProps) => {
     const isLoading = useSelector(authSelector.isLoading)
 
     useEffect(() => {
-        if (status === 'unauthenticated') {
+        if (type !== HEADER_PAGE.NONE && status === 'unauthenticated') {
             dispatch(authActions.logout())
         }
     }, [status]) // eslint-disable-line
