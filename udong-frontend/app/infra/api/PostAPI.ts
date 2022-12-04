@@ -1,4 +1,6 @@
+import postId from '../../../pages/club/[clubId]/post/[postId]'
 import { BoardPost } from '../../domain/model/ListItemPost'
+import { User } from '../../domain/model/User'
 import { BoardPostDto } from '../dto/BoardPostDto'
 import { axiosConfig } from '../global'
 import { boardPostTransformer } from '../transformer/BoardPostTransformer'
@@ -23,7 +25,10 @@ export const PostAPI = (() => {
     function deletePost() { return }
 
     function getComments() { return }
-    function createComment() { return }
+    async function createComment(user: User, content: string) {
+        const response = await axiosConfig.post(`/api/post/${postId}/comment/`)
+        return response.data
+    }
 
     return Object.freeze({
         getFeedPosts,
