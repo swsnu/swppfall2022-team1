@@ -69,6 +69,7 @@ export const EventDetailContainer = () => {
             warningText={'경고 문구'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
+            onClickDelete={() => {return}}
         />
     </VStack>
 }

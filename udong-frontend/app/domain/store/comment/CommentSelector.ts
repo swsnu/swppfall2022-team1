@@ -4,9 +4,9 @@ import { RootState } from '../index'
 
 const commentState = (state: RootState) => state.comment
 
-const selectedComment = createSelector(
+const selectedCommentId = createSelector(
     commentState,
-    state => state.selectedComment,
+    state => state.selectedCommentId,
 )
 
 const postComments = createSelector(
@@ -15,6 +15,6 @@ const postComments = createSelector(
 )
 
 export const commentSelector = {
-    selectedComment,
+    selectedCommentId,
     postComments,
 }

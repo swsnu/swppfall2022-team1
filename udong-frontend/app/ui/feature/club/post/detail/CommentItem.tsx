@@ -9,14 +9,15 @@ import del from '../../../../icons/IcTrash.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
 
 interface CommentItemProps {
+    id: number
     name: string
     content: string
     isAuthor?: boolean
-    showDeleteModal: (showModal: boolean) => void
+    onClickDelete: (commentId: number) => void
 }
 
 export const CommentItem = (props: CommentItemProps) => {
-    const { name, content, isAuthor = false, showDeleteModal } = props
+    const { id, name, content, isAuthor = false, onClickDelete } = props
     return <VStack>
         <Spacer height={20}/>
 
@@ -40,7 +41,7 @@ export const CommentItem = (props: CommentItemProps) => {
                         src={del.src}
                         height={20}
                         width={20}
-                        onClick={() => showDeleteModal(true)}
+                        onClick={() => onClickDelete(id)}
                     />
                 </HStack>
             }

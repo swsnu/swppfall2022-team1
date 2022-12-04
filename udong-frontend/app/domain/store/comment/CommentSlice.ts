@@ -1,11 +1,12 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { CommentAPI } from '../../../infra/api/CommentAPI'
 import { PostAPI } from '../../../infra/api/PostAPI'
 import { Comment } from '../../model/Comment'
 import { User } from '../../model/User'
 
 export interface CommentState {
-    selectedComment?: Comment
+    selectedCommentId?: number
     postComments: Array<Comment>
 }
 
@@ -34,20 +35,29 @@ export const editComment = createAsyncThunk(
 
 export const deleteComment = createAsyncThunk(
     'comment/deleteComment',
-    async () => { return },
+    async (commentId: number) => {
+        return CommentAPI.deleteComment(commentId)
+    },
 )
 
 const commentSlice = createSlice({
     name: 'comment',
     initialState,
-    reducers: {},
+    reducers: {
+        setSelectedCommentId: (state, action: PayloadAction<number>) => {
+            state.selectedCommentId = action.payload
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(getComments.fulfilled, (state, action) => {
             state.postComments = action.payload
         })
         builder.addCase(createComment.fulfilled, (state, action) => {
             state.postComments = state.postComments.concat(action.payload)
-            state.selectedComment = action.payload
+        })
+        builder.addCase(deleteComment.fulfilled, (state) => {
+            state.postComments = state.postComments.filter(comment => comment.id !== state.selectedCommentId)
+            state.selectedCommentId = undefined
         })
     },
 })
@@ -56,5 +66,6 @@ export const commentActions = {
     ...commentSlice.actions,
     getComments,
     createComment,
+    deleteComment,
 }
 export const commentReducer = commentSlice.reducer

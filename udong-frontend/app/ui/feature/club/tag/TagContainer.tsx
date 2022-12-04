@@ -126,6 +126,7 @@ export const TagContainer = (props: TagContainerProps) => {
             warningText={'경고 문구'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
+            onClickDelete={() => {return}}
         />
 
         <ScrollToTopButton/>

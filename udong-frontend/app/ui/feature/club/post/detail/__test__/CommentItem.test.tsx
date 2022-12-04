@@ -5,24 +5,26 @@ import { CommentItem } from '../CommentItem'
 
 describe('<CommentItem/>', () => {
     it('renders CommentItem', async () => {
-        const showModal = jest.fn()
+        const onDelete = jest.fn()
         await act(async () => {render(<CommentItem
+            id={1}
             name='name'
             content='content'
             isAuthor
-            showDeleteModal={showModal}
+            onClickDelete={onDelete}
         />)})
         const img = screen.getAllByRole('img')[1]
         await waitFor(() => expect(img).toBeInTheDocument())
         await act(async () => {fireEvent.click(img)})
-        await waitFor(() => expect(showModal).toHaveBeenCalled())
+        await waitFor(() => expect(onDelete).toHaveBeenCalled())
     })
     it('renders non author CommentItem', async () => {
-        const showModal = jest.fn()
+        const onDelete = jest.fn()
         await act(async () => {render(<CommentItem
+            id={1}
             name='name'
             content='content'
-            showDeleteModal={showModal}
+            onClickDelete={onDelete}
         />)})
         const img = screen.queryAllByRole('img')
         await waitFor(() => expect(img.length).toEqual(0))
