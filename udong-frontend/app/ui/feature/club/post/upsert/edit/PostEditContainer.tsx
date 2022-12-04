@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+import { PostType } from '../../../../../../domain/model/PostType'
 import { VStack } from '../../../../../components/Stack'
 import { UdongButton } from '../../../../../components/UdongButton'
 import { UdongHeader } from '../../../../../components/UdongHeader'
 import { UdongColors } from '../../../../../theme/ColorPalette'
-import { PostType } from '../create/PostCreateContainer'
 import { PostAdditionalFieldsView } from '../PostAdditionalFieldsView'
 import { PostInputView } from '../PostInputView'
 
@@ -44,7 +44,7 @@ export const PostEditContainer = (props: PostEditContainerProps) => {
             setContents={setContents}
         />
         <PostAdditionalFieldsView
-            showDateTimePicker={postType === 'scheduling'}
+            showDateTimePicker={postType === PostType.SCHEDULING}
             isEdit={true}
         />
     </VStack>}

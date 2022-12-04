@@ -1,8 +1,11 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
+import { PostType } from '../../../../../domain/model/PostType'
 import { dummyTagsDanpung } from '../../../../../domain/model/Tag'
 import { dummyUserMe } from '../../../../../domain/model/User'
+import { postSelector } from '../../../../../domain/store/post/PostSelector'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
@@ -12,7 +15,6 @@ import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { DeleteModal } from '../../../shared/DeleteModal'
 import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
-import { PostType } from '../upsert/create/PostCreateContainer'
 import { PostDetailCommentsView } from './PostDetailCommentsView'
 import { PostDetailContentView } from './PostDetailContentView'
 import { PostDetailEnrollmentView } from './PostDetailEnrollmentView'
@@ -20,7 +22,7 @@ import { PostDetailSchedulingView } from './PostDetailSchedulingView'
 
 const getQueryParam = (queryParam: string | string[] | undefined): PostType => {
     if (queryParam === undefined) {
-        return 'announcement'
+        return PostType.ANNOUNCEMENT
     }
 
     if (queryParam instanceof Array) {
@@ -32,11 +34,11 @@ const getQueryParam = (queryParam: string | string[] | undefined): PostType => {
 
 const getSubtitle = (postType: PostType) => {
     switch(postType) {
-        case 'announcement':
+        case PostType.ANNOUNCEMENT:
             return '일반 공지글'
-        case 'enrollment':
+        case PostType.ENROLLMENT:
             return '인원 모집글'
-        case 'scheduling':
+        case PostType.SCHEDULING:
             return '일정 수합글'
         default:
             return ''
@@ -45,14 +47,18 @@ const getSubtitle = (postType: PostType) => {
 
 export const PostDetailContainer = () => {
     const router = useRouter()
-    const { type } = router.query
-    const [postType, setPostType] = useState<PostType>('announcement')
+    // const { type } = router.query
+    const [postType, setPostType] = useState<PostType>(PostType.ANNOUNCEMENT)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+    const post = useSelector(postSelector.selectedPost)
 
     // 위에 default 값은 건드리지 말고 테스트할 때 여기서 값 바꿔가면서 쓰기!
     useEffect(() => {
-        setPostType(getQueryParam(type))
-    }, [type])
+        if (post) {
+            setPostType(post.type)
+        }
+    }, [])
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
@@ -115,9 +121,9 @@ export const PostDetailContainer = () => {
         />
         <PostDetailContentView/>
 
-        {postType === 'enrollment' && <PostDetailEnrollmentView/>}
+        {postType === PostType.ENROLLMENT && <PostDetailEnrollmentView/>}
 
-        {postType === 'scheduling' && <PostDetailSchedulingView/>}
+        {postType === PostType.SCHEDULING && <PostDetailSchedulingView/>}
 
         <HStack>
             <UdongText style={'ListContentXS'}>2022.09.10</UdongText>
