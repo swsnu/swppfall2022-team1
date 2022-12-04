@@ -7,7 +7,6 @@ import { axiosConfig } from '../../../infra/global'
 import { BoardPost, ListItemPost, PostDisplayType } from '../../model/ListItemPost'
 import { PostType } from '../../model/PostType'
 import { getClubPosts, postReducer, PostState } from '../post/PostSlice'
-import { fakeComment1, fakeComment2 } from './CommentSlice.test'
 import { fakeUser1 } from './UserSlice.test'
 
 const fakeListItemPost1: ListItemPost = { displayType: PostDisplayType.BOARD, id: 1, author: fakeUser1,
@@ -23,13 +22,11 @@ const fakeBoardPostDto2 :BoardPostDto = { id: 2, title: '', content: '', type: P
 const fakePostDto = {
     selectedPost: fakeBoardPostDto1,
     boardPosts: [fakeBoardPostDto1, fakeBoardPostDto2],
-    comments: [fakeComment1, fakeComment2],
 }
 const fakePost: PostState = {
     selectedPost: fakeListItemPost1,
     feedPosts: [],
     clubPosts: [fakeBoardPost1, fakeBoardPost2],
-    comments: [fakeComment1, fakeComment2],
 }
 
 jest.mock('next/config', () => () => ({
