@@ -3,10 +3,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AuthAPI } from '../../../infra/api/AuthAPI'
 
 export interface AuthState {
+    isLoading: boolean
     isLoggedIn: boolean
 }
 
 const initialState: AuthState = {
+    isLoading: true,
     isLoggedIn: false,
 }
 
@@ -30,7 +32,11 @@ const authSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
+        builder.addCase(login.pending, (state) => {
+            state.isLoading = true
+        })
         builder.addCase(login.fulfilled, (state) => {
+            state.isLoading = false
             state.isLoggedIn = true
         })
         builder.addCase(logout.fulfilled, (state) => {
