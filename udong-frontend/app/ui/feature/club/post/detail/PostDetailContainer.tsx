@@ -89,19 +89,21 @@ export const PostDetailContainer = () => {
         <Spacer height={45}/>
 
         <VStack alignItems={'center'}>
-            <VStack onClick={() => router.push(`/club/${clubId}/event/1`)}>
-                <UdongText
-                    style={'ListContentUnderscore'}
-                    cursor={'pointer'}
-                >{post.eventName}</UdongText>
-                <Spacer height={15}/>
-            </VStack>
+            {post.eventName &&
+                <VStack onClick={() => router.push(`/club/${clubId}/event/${post.eventName?.id}`)}>
+                    <UdongText
+                        style={'ListContentUnderscore'}
+                        cursor={'pointer'}
+                    >{post.eventName.name}</UdongText>
+                    <Spacer height={15}/>
+                </VStack>
+            }
 
             <HStack alignItems={'center'}>
                 <HStack>
                     {post.includedTags?.map((tag, index) => {
                         return <ClickableTag
-                            key={tag.name + index}
+                            key={`${tag.name}` + index}
                             text={tag.name}
                             isIncluded={true}
                             onClick={() => {return}}

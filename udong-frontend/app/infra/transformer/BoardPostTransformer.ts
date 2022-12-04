@@ -1,12 +1,13 @@
 import { BoardPost, PostDisplayType } from '../../domain/model/ListItemPost'
 import { BoardPostDto } from '../dto/BoardPostDto'
+import { eventNameTransformer } from './EventNameTransformer'
 import { postTagTransformer } from './PostTagTransformer'
 
 const fromDto = (dto: BoardPostDto): BoardPost => {
     return {
         displayType: PostDisplayType.BOARD,
         id: dto.id,
-        eventName: dto.event,
+        eventName: eventNameTransformer.fromDto(dto.event),
         title: dto.title,
         content: dto.content,
         type: dto.type,

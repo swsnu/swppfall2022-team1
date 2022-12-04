@@ -1,3 +1,4 @@
+import { EventName } from './ClubEvent'
 import { PostType } from './PostType'
 import { PostTag } from './Tag'
 import { User } from './User'
@@ -6,7 +7,7 @@ export interface ListItemPost {
     displayType: PostDisplayType
     id: number
     author: User
-    eventName?: string
+    eventName?: EventName
     clubName?: string
     title: string
     content: string
