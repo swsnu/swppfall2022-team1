@@ -6,6 +6,7 @@ import { PostType } from '../../../../../domain/model/PostType'
 import { AppDispatch } from '../../../../../domain/store'
 import { postSelector } from '../../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../../domain/store/post/PostSlice'
+import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -52,6 +53,7 @@ export const PostDetailContainer = () => {
     }, [post])
 
     useEffect(() => {
+        dispatch(userActions.getMyProfile())
         dispatch(postActions.getPost(postId))
     }, [postId, dispatch])
 

@@ -32,12 +32,11 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
     }, [dispatch, postId])
 
     const handleCommentSubmit = useCallback(() => {
-        console.log(user)
         if (user) {
-            console.log(commentInput)
-            // dispatch(commentActions.createComment({ postId, user, content: commentInput }))
+            dispatch(commentActions.createComment({ postId, user, content: commentInput }))
         }
-    }, [commentInput, user])
+        setCommentInput('')
+    }, [commentInput, user, postId, dispatch])
 
     return <VStack>
         <Spacer height={20}/>
@@ -47,6 +46,7 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
                 placeholder={'댓글을 입력해주세요'}
                 inputRef={inputRef}
                 onChange={() => setCommentInput(inputRef.current?.value ?? '')}
+                isCleared={commentInput === ''}
             />
             <Spacer width={20}/>
             <UdongImage

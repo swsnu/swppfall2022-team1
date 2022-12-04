@@ -46,6 +46,7 @@ const commentSlice = createSlice({
             state.postComments = action.payload
         })
         builder.addCase(createComment.fulfilled, (state, action) => {
+            state.postComments = state.postComments.concat(action.payload)
             state.selectedComment = action.payload
         })
     },
