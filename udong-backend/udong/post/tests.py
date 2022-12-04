@@ -92,7 +92,7 @@ class PostTestCase(MyTestCase):
             [
                 {
                     "id": 1,
-                    "event": "Turing award",
+                    "event": {"id": 1, "name": "Turing award"},
                     "title": "Turing award is coming!",
                     "content": "Turing award Turing award Turing award",
                     "type": "Announcement",
@@ -105,7 +105,7 @@ class PostTestCase(MyTestCase):
                 },
                 {
                     "id": 2,
-                    "event": "Nobel Prize",
+                    "event": {"id": 2, "name": "Nobel Prize"},
                     "title": "Nobel prize is coming!",
                     "content": "Nobel Prize Nobel Prize Nobel Prize",
                     "type": "Enrollment",
@@ -127,7 +127,7 @@ class PostTestCase(MyTestCase):
             [
                 {
                     "id": 3,
-                    "event": "",
+                    "event": None,
                     "title": "When to Meet?",
                     "content": "Really Boring",
                     "type": "Scheduling",
