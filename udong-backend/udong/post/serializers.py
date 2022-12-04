@@ -36,6 +36,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             "updated_at",
         )
 
+    @swagger_serializer_method(serializer_or_field=EventNameSerializer())
     def get_event(self, post: Post) -> Optional[ReturnDict]:
         if post.event is None:
             return None
