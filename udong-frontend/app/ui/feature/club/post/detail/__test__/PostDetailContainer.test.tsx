@@ -16,7 +16,10 @@ const dummyPost: BoardPost = {
     title: 'title',
     content: 'content',
     type: PostType.ANNOUNCEMENT,
-    eventName: 'event',
+    eventName: {
+        id: 1,
+        name: 'event',
+    },
 }
 
 const stubPostInitialState: PostState = {
