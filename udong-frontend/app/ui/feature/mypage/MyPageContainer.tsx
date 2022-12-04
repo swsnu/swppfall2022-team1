@@ -15,7 +15,7 @@ export const MyPageContainer = () => {
 
     useEffect(() => {
         dispatch(userActions.getMyProfile())
-    }, [])
+    }, [dispatch])
 
     if (!me) {
         return null
