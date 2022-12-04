@@ -92,6 +92,7 @@ class PostTestCase(MyTestCase):
             [
                 {
                     "id": 1,
+                    "author": "Alan Turing",
                     "event": {"id": 1, "name": "Turing award"},
                     "title": "Turing award is coming!",
                     "content": "Turing award Turing award Turing award",
@@ -105,6 +106,7 @@ class PostTestCase(MyTestCase):
                 },
                 {
                     "id": 2,
+                    "author": "Alan Turing",
                     "event": {"id": 2, "name": "Nobel Prize"},
                     "title": "Nobel prize is coming!",
                     "content": "Nobel Prize Nobel Prize Nobel Prize",
@@ -127,6 +129,7 @@ class PostTestCase(MyTestCase):
             [
                 {
                     "id": 3,
+                    "author": "Alan Turing",
                     "event": None,
                     "title": "When to Meet?",
                     "content": "Really Boring",
