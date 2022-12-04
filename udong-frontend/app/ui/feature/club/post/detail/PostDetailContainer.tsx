@@ -16,7 +16,6 @@ import { UdongColors } from '../../../../theme/ColorPalette'
 import { DeleteModal } from '../../../shared/DeleteModal'
 import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
 import { PostDetailCommentsView } from './PostDetailCommentsView'
-import { PostDetailContentView } from './PostDetailContentView'
 import { PostDetailEnrollmentView } from './PostDetailEnrollmentView'
 import { PostDetailSchedulingView } from './PostDetailSchedulingView'
 
@@ -58,11 +57,15 @@ export const PostDetailContainer = () => {
         if (post) {
             setPostType(post.type)
         }
-    }, [])
+    }, [post])
+
+    // if (!post) {
+    //     return null
+    // }
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
-            title={'겨울 공연 중요 공지!'}
+            title={post?.title ?? ''}
             onGoBack={() => router.back()}
             subtitle={getSubtitle(postType)}
             rightButtons={<>
@@ -94,7 +97,7 @@ export const PostDetailContainer = () => {
                 <UdongText
                     style={'ListContentUnderscore'}
                     cursor={'pointer'}
-                >2022년 겨울 공연</UdongText>
+                >{post?.eventName ?? '2022년 겨울 공연'}</UdongText>
                 <Spacer height={15}/>
             </VStack>
 
@@ -119,14 +122,33 @@ export const PostDetailContainer = () => {
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
-        <PostDetailContentView/>
+        <VStack paddingVertical={30}>
+            <UdongText
+                style={'GeneralContent'}
+                whiteSpace={'pre-line'}
+            >
+                {post?.content ?? `안녕하세요?
+            모두가 기다리던 MT를 드디어 가려고 합니다.
+
+            날짜는 그냥 마음대로 정했습니다.
+            되시는 분만 오시면 됩니다.
+
+            MT 장소는 제주도 서귀포입니다.
+            고등어회를 꼭 먹고 싶습니다. 고등어 봉초밥도 먹고싶습니다. 그냥 활어회도 좋습니다.
+            봄베이 브램블에 토닉을 1:6으로 섞어 같이 먹으려고 합니다.
+            소주는 밴입니다.
+
+            많은 참석 부탁드립니다.
+            이상입니다.`}
+            </UdongText>
+        </VStack>
 
         {postType === PostType.ENROLLMENT && <PostDetailEnrollmentView/>}
 
         {postType === PostType.SCHEDULING && <PostDetailSchedulingView/>}
 
         <HStack>
-            <UdongText style={'ListContentXS'}>2022.09.10</UdongText>
+            <UdongText style={'ListContentXS'}>{post?.updatedAt ?? '2022.09.10'}</UdongText>
             <Spacer width={10}/>
             <UdongText style={'ListContentXS'}>박지연</UdongText>
         </HStack>
