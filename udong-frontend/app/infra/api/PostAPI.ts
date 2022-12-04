@@ -14,7 +14,10 @@ export const PostAPI = (() => {
         return response.data.map(boardPostTransformer.fromDto)
     }
 
-    function getPost() { return }
+    async function getPost(postId: string): Promise<BoardPost> {
+        const response = await axiosConfig.get<BoardPostDto>(`/api/post/${postId}/`)
+        return boardPostTransformer.fromDto(response.data)
+    }
     function createPost() { return }
     function editPost() { return }
     function deletePost() { return }

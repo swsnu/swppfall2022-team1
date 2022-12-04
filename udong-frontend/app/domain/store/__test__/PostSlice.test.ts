@@ -8,18 +8,17 @@ import { BoardPost, ListItemPost, PostDisplayType } from '../../model/ListItemPo
 import { PostType } from '../../model/PostType'
 import { getClubPosts, postReducer, PostState } from '../post/PostSlice'
 import { fakeComment1, fakeComment2 } from './CommentSlice.test'
-import { fakeUser1 } from './UserSlice.test'
 
-const fakeListItemPost1: ListItemPost = { displayType: PostDisplayType.BOARD, id: 1, author: fakeUser1,
+const fakeListItemPost1: ListItemPost = { displayType: PostDisplayType.BOARD, id: 1, author: '',
     title: '', content: '', type: PostType.ANNOUNCEMENT }
 const fakeBoardPost1: BoardPost = { displayType: PostDisplayType.BOARD, id: 1, title: '', content: '', type: PostType.ANNOUNCEMENT,
-    eventName: '', closed: undefined, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '' }
+    eventName: { id: 1, name: '' }, closed: undefined, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '' }
 const fakeBoardPost2: BoardPost = { displayType: PostDisplayType.BOARD, id: 2, title: '', content: '', type: PostType.ENROLLMENT,
-    eventName: '', closed: true, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '' }
+    eventName: { id: 1, name: '' }, closed: true, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '' }
 const fakeBoardPostDto1 :BoardPostDto = { id: 1, title: '', content: '', type: PostType.ANNOUNCEMENT,
-    event: '', created_at: '', updated_at: '' }
+    event: { id: 1, name: '' }, created_at: '', updated_at: '' }
 const fakeBoardPostDto2 :BoardPostDto = { id: 2, title: '', content: '', type: PostType.ENROLLMENT, closed: true,
-    event: '', created_at: '', updated_at: '' }
+    event: { id: 1, name: '' }, created_at: '', updated_at: '' }
 const fakePostDto = {
     selectedPost: fakeBoardPostDto1,
     boardPosts: [fakeBoardPostDto1, fakeBoardPostDto2],

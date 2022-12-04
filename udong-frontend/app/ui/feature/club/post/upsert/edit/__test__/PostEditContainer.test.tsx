@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { PostType } from '../../../../../../../domain/model/PostType'
 import { PostEditContainer } from '../PostEditContainer'
 
 jest.mock('../../PostInputView', () => ({
@@ -12,7 +13,7 @@ jest.mock('../../PostAdditionalFieldsView', () => ({
 
 describe('<PostEditContainer/>', () => {
     it('renders post edit container',  () => {
-        render(<PostEditContainer postType={'announcement'}/>)
+        render(<PostEditContainer postType={PostType.ANNOUNCEMENT}/>)
         const inputView = screen.getByTestId('post-input-view')
         const additionalFieldsView = screen.getByTestId('post-additional-fields-view')
         expect(inputView).toBeDefined()
@@ -20,7 +21,7 @@ describe('<PostEditContainer/>', () => {
     })
 
     it('button click test', () => {
-        render(<PostEditContainer postType={'scheduling'}/>)
+        render(<PostEditContainer postType={PostType.SCHEDULING}/>)
         const saveButton = screen.getByRole('button')
         fireEvent.click(saveButton)
         // further implementation required after save api connect

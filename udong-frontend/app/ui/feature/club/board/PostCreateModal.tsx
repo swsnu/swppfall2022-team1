@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 
+import { PostType } from '../../../../domain/model/PostType'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -9,7 +10,6 @@ import { UdongModal } from '../../../components/UdongModal'
 import { UdongRadioButton } from '../../../components/UdongRadioButton'
 import { UdongText } from '../../../components/UdongText'
 import close from '../../../icons/IcClose.png'
-import { PostType } from '../post/upsert/create/PostCreateContainer'
 
 interface PostCreateModalProps {
     isOpen: boolean
@@ -19,7 +19,7 @@ interface PostCreateModalProps {
 export const PostCreateModal = (props: PostCreateModalProps) => {
     const { isOpen, setIsOpen } = props
     const router = useRouter()
-    const [postType, setPostType] = useState<PostType>('announcement')
+    const [postType, setPostType] = useState<PostType>(PostType.ANNOUNCEMENT)
 
     const handleOnClickCreate = useCallback(() => {
         router.push(`/club/1/post/create/?type=${postType}`)
@@ -56,20 +56,20 @@ export const PostCreateModal = (props: PostCreateModalProps) => {
                 <HStack>
                     <UdongRadioButton
                         text={'일반 공지글'}
-                        checked={postType === 'announcement'}
-                        onCheck={() => setPostType('announcement')}
+                        checked={postType === PostType.ANNOUNCEMENT}
+                        onCheck={() => setPostType(PostType.ANNOUNCEMENT)}
                         paddingRight={30}
                     />
                     <UdongRadioButton
                         text={'인원 모집 글'}
-                        checked={postType === 'enrollment'}
-                        onCheck={() => setPostType('enrollment')}
+                        checked={postType === PostType.ENROLLMENT}
+                        onCheck={() => setPostType(PostType.ENROLLMENT)}
                         paddingRight={30}
                     />
                     <UdongRadioButton
                         text={'일정 수합 글'}
-                        checked={postType === 'scheduling'}
-                        onCheck={() => setPostType('scheduling')}
+                        checked={postType === PostType.SCHEDULING}
+                        onCheck={() => setPostType(PostType.SCHEDULING)}
                         paddingRight={30}
                     />
                 </HStack>

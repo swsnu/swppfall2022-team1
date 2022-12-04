@@ -9,13 +9,7 @@ describe('postItemFormatter', () => {
         const element = formatPostItemInfo({
             displayType: PostDisplayType.BOARD,
             id: 1,
-            author: {
-                id: 1,
-                email: '',
-                imageUrl: '',
-                timeTable: '',
-                name: '',
-            },
+            author: '',
             title: '',
             content: '',
             type: PostType.ANNOUNCEMENT,

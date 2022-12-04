@@ -16,6 +16,7 @@ jest.mock('next/config', () => () => ({
 }))
 
 const stubAuthInitialState: AuthState = {
+    isLoading: true,
     isLoggedIn: true,
 }
 
