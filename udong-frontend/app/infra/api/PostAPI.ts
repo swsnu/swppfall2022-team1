@@ -4,7 +4,10 @@ import { axiosConfig } from '../global'
 import { boardPostTransformer } from '../transformer/BoardPostTransformer'
 
 export const PostAPI = (() => {
-    function getFeedPosts() { return }
+    async function getFeedPosts(): Promise<Array<BoardPost>> {
+        const response = await axiosConfig.get<Array<BoardPostDto>>(`/api/post/`)
+        return response.data.map(boardPostTransformer.fromDto)
+    }
 
     async function getClubPosts(clubId: number): Promise<Array<BoardPost>> {
         const response = await axiosConfig.get<Array<BoardPostDto>>(`/api/post/club/${clubId}/`)
