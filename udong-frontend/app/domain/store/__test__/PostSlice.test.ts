@@ -46,7 +46,6 @@ describe('post reducer', () => {
         expect(postReducer(undefined, { type: 'unknown' })).toEqual({
             feedPosts: [],
             clubPosts: [],
-            comments: [],
         })
     })
     it('should handle getClubPosts', async () => {

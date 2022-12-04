@@ -7,7 +7,10 @@ import { Provider } from 'react-redux'
 
 import { BoardPost, PostDisplayType } from '../../../../../../domain/model/ListItemPost'
 import { PostType } from '../../../../../../domain/model/PostType'
+import { dummyUserMe } from '../../../../../../domain/model/User'
+import { commentReducer, CommentState } from '../../../../../../domain/store/comment/CommentSlice'
 import { postReducer, PostState } from '../../../../../../domain/store/post/PostSlice'
+import { userReducer, UserState } from '../../../../../../domain/store/user/UserSlice'
 import { PostDetailContainer } from '../PostDetailContainer'
 
 const dummyPost: BoardPost = {
@@ -26,12 +29,20 @@ const stubPostInitialState: PostState = {
     selectedPost: dummyPost,
     feedPosts: [],
     clubPosts: [],
-    comments: [],
+}
+
+const stubCommentInitialState: CommentState = {
+    postComments: [],
+}
+
+const stubUserInitialState: UserState = {
+    selectedUser: dummyUserMe,
+    me: dummyUserMe,
 }
 
 const mockStore = configureStore({
-    reducer: { post: postReducer },
-    preloadedState: { post: stubPostInitialState },
+    reducer: { post: postReducer, comment: commentReducer, user: userReducer },
+    preloadedState: { post: stubPostInitialState, comment: stubCommentInitialState, user: stubUserInitialState },
 })
 
 jest.mock('next/config', () => () => ({
