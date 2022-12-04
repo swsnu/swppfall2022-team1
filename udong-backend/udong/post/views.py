@@ -54,18 +54,19 @@ class PostViewSet(_PostGenericViewSet):
                 self.get_queryset()
                 .select_related("event")
                 .select_related("author")
+                .select_related("club")
                 .prefetch_related("post_tag_set__tag__tag_user_set")
                 .filter(club_id=club_id)
             )
             if auth == "A":
                 response.extend(
                     self.get_serializer(
-                        post, many=True, context={"id": request.user.id}
+                        post, many=True, context={"id": request.user.id, "club": True}
                     ).data
                 )
             elif auth == "M":
                 all_post = self.get_serializer(
-                    post, many=True, context={"id": request.user.id}
+                    post, many=True, context={"id": request.user.id, "club": True}
                 ).data
                 response.extend(
                     filter(lambda post: len(post["include_tag"]) != 0, all_post)
@@ -81,7 +82,11 @@ class PostViewSet(_PostGenericViewSet):
             .prefetch_related("post_tag_set__tag__tag_user_set")
             .get(id=pk)
         )
-        return Response(self.get_serializer(post, context={"id": request.user.id}).data)
+        return Response(
+            self.get_serializer(
+                post, context={"id": request.user.id, "club": False}
+            ).data
+        )
 
     @action(detail=True, methods=["GET", "POST"])
     def comment(self, request: Request, pk: Any) -> Response:
@@ -132,12 +137,12 @@ class PostClubViewSet(_PostGenericViewSet):
         if auth == "A":
             return Response(
                 self.get_serializer(
-                    post, many=True, context={"id": request.user.id}
+                    post, many=True, context={"id": request.user.id, "club": False}
                 ).data
             )
         elif auth == "M":
             all_post = self.get_serializer(
-                post, many=True, context={"id": request.user.id}
+                post, many=True, context={"id": request.user.id, "club": False}
             ).data
             result = filter(lambda post: len(post["include_tag"]) != 0, all_post)
             return Response(result)
