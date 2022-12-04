@@ -7,12 +7,14 @@ from post.models import Participation
 from tag.serializers import TagPostSerializer
 from user.serializers import UserSerializer
 from event.serializers import EventNameSerializer
+from club.serializers import ClubSerializer
 from drf_yasg.utils import swagger_serializer_method
 from typing import Optional
 
 
 class PostBoardSerializer(serializers.ModelSerializer[Post]):
     author = serializers.SerializerMethodField()
+    club = serializers.SerializerMethodField()
     event = serializers.SerializerMethodField()
     title = serializers.CharField(max_length=255)
     type = serializers.CharField(source="get_type_display")
@@ -27,6 +29,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         fields = (
             "id",
             "author",
+            "club",
             "event",
             "title",
             "content",
@@ -37,6 +40,12 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             "created_at",
             "updated_at",
         )
+
+    @swagger_serializer_method(serializer_or_field=ClubSerializer())
+    def get_club(self, post: Post) -> Optional[ReturnDict]:
+        if self.context["club"]:
+            return ClubSerializer(post.club).data
+        return None
 
     def get_author(self, post: Post) -> Optional[str]:
         if post.author is None:
