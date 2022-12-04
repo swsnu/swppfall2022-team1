@@ -12,6 +12,7 @@ from typing import Optional
 
 
 class PostBoardSerializer(serializers.ModelSerializer[Post]):
+    author = serializers.SerializerMethodField()
     event = serializers.SerializerMethodField()
     title = serializers.CharField(max_length=255)
     type = serializers.CharField(source="get_type_display")
@@ -25,6 +26,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         model = Post
         fields = (
             "id",
+            "author",
             "event",
             "title",
             "content",
@@ -35,6 +37,12 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             "created_at",
             "updated_at",
         )
+
+    def get_author(self, post: Post) -> Optional[str]:
+        if post.author is None:
+            return None
+        else:
+            return post.author.name
 
     @swagger_serializer_method(serializer_or_field=EventNameSerializer())
     def get_event(self, post: Post) -> Optional[ReturnDict]:
