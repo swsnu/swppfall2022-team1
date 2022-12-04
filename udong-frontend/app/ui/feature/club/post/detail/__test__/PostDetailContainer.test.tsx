@@ -78,7 +78,7 @@ describe('<PostDetailContainer/>', () => {
     it('renders announcement', async () => {
         const mockPush = jest.fn()
         jest.spyOn(router, 'useRouter').mockImplementation(() => ({
-            query: { type: 'announcement' },
+            query: { type: 'Announcement' },
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
 

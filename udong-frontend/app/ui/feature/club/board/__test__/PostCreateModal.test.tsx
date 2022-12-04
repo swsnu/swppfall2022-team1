@@ -17,7 +17,7 @@ describe('<PostCreateModal/>', () => {
     it ('should handle on click select', () => {
         const mockPush = jest.fn()
         jest.spyOn(router, 'useRouter').mockImplementation(() => ({
-            query: { type: 'announcement', clubId: 1 },
+            query: { type: 'Announcement', clubId: 1 },
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
 
@@ -27,7 +27,7 @@ describe('<PostCreateModal/>', () => {
         />)
         const text = screen.getByText('선택하기')
         fireEvent.click(text)
-        expect(mockPush).toHaveBeenCalledWith(`/club/1/post/create/?type=announcement`)
+        expect(mockPush).toHaveBeenCalledWith(`/club/1/post/create/?type=Announcement`)
     })
 
     it ('should handle on click close', () => {
