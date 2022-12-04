@@ -1,5 +1,10 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { AppDispatch } from '../../../../../domain/store'
+import { commentSelector } from '../../../../../domain/store/comment/CommentSelector'
+import { commentActions } from '../../../../../domain/store/comment/CommentSlice'
+import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongImage } from '../../../../components/UdongImage'
@@ -8,9 +13,22 @@ import send from '../../../../icons/IcSend.png'
 import { DeleteModal } from '../../../shared/DeleteModal'
 import { CommentItem } from './CommentItem'
 
-export const PostDetailCommentsView = () => {
+interface PostDetailCommentsViewProps {
+    postId: number
+}
+
+export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
+    const { postId } = props
+    const dispatch = useDispatch<AppDispatch>()
+    const comments = useSelector(commentSelector.postComments)
+    const userMe = useSelector(userSelector.userMe)
+
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const inputRef = useRef<HTMLInputElement | undefined>(null)
+
+    useEffect(() => {
+        dispatch(commentActions.getComments(postId))
+    }, [])
 
     return <VStack>
         <Spacer height={20}/>
@@ -29,20 +47,15 @@ export const PostDetailCommentsView = () => {
             />
         </HStack>
 
-        <CommentItem
-            isAuthor={true}
-            name={'박지연'}
-            content={'안녕하세요! 이 편지는 서울특별시 송파구 투썸플레이스 롯데월드점에서 시작되어 현재 총 12033명에게 전달되었으며, 당신은 12034번째 수신인입니다.'}
-            showDeleteModal={setShowDeleteModal}
-        />
-        <CommentItem
-            isAuthor={false}
-            name={'임유진'}
-            content={'안녕하세요! 이 편지는 서울특별시 송파구 투썸플레이스 롯데월드점에서 시작되어 현재 총 12033명에게 전달되었으며, 당신은 12034번째 수신인입니다.' +
-                '안녕하세요! 이 편지는 서울특별시 송파구 투썸플레이스 롯데월드점에서 시작되어 현재 총 12033명에게 전달되었으며, 당신은 12034번째 수신인입니다.'
-            }
-            showDeleteModal={setShowDeleteModal}
-        />
+        {comments.map((comment) => {
+            return <CommentItem
+                isAuthor={userMe?.id === comment.user.id}
+                key={`${comment.user.name}` + `${comment.id}`}
+                name={comment.user.name}
+                content={comment.content}
+                showDeleteModal={setShowDeleteModal}
+            />
+        })}
 
         <Spacer height={20}/>
 
