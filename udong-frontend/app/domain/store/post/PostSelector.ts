@@ -9,9 +9,14 @@ const selectedPost = createSelector(
     state => state.selectedPost,
 )
 
-const boardPosts = createSelector(
+const feedPosts = createSelector(
     postState,
-    state => state.boardPosts,
+    state => state.feedPosts,
+)
+
+const clubPosts = createSelector(
+    postState,
+    state => state.clubPosts,
 )
 
 const comments = createSelector(
@@ -21,6 +26,7 @@ const comments = createSelector(
 
 export const postSelector = {
     selectedPost,
-    boardPosts,
+    feedPosts,
+    clubPosts,
     comments,
 }

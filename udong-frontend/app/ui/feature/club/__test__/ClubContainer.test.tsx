@@ -18,7 +18,8 @@ const stubUserInitialState: UserState = {
 }
 
 const stubPostInitialState: PostState = {
-    boardPosts: [],
+    feedPosts: [],
+    clubPosts: [],
     comments: [],
 }
 

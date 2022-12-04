@@ -27,7 +27,8 @@ const fakePostDto = {
 }
 const fakePost: PostState = {
     selectedPost: fakeListItemPost1,
-    boardPosts: [fakeBoardPost1, fakeBoardPost2],
+    feedPosts: [],
+    clubPosts: [fakeBoardPost1, fakeBoardPost2],
     comments: [fakeComment1, fakeComment2],
 }
 
@@ -47,14 +48,15 @@ describe('post reducer', () => {
     })
     it('should handle initial state', () => {
         expect(postReducer(undefined, { type: 'unknown' })).toEqual({
-            boardPosts: [],
+            feedPosts: [],
+            clubPosts: [],
             comments: [],
         })
     })
     it('should handle getClubPosts', async () => {
         axiosConfig.get = jest.fn().mockResolvedValue({ data: fakePostDto.boardPosts } )
         await store.dispatch(getClubPosts(1))
-        expect(store.getState().post.boardPosts).toEqual(fakePost.boardPosts)
+        expect(store.getState().post.clubPosts).toEqual(fakePost.clubPosts)
     })
 
 })
