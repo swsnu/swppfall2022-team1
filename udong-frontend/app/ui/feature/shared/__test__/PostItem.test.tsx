@@ -9,7 +9,10 @@ import { PostItem } from '../PostItem'
 const dummyPost: BoardPost = {
     displayType: PostDisplayType.BOARD,
     id: 1,
-    eventName: '',
+    eventName: {
+        id: 1,
+        name: '',
+    },
     title: '겨울 공연 중요 공지!',
     content: '',
     type: PostType.ANNOUNCEMENT,
