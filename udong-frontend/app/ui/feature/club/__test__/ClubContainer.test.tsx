@@ -20,7 +20,6 @@ const stubUserInitialState: UserState = {
 const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
-    comments: [],
 }
 
 const stubClubInitialState: ClubState = {

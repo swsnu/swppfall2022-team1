@@ -9,6 +9,12 @@ const selectedComment = createSelector(
     state => state.selectedComment,
 )
 
+const postComments = createSelector(
+    commentState,
+    state => state.postComments,
+)
+
 export const commentSelector = {
     selectedComment,
+    postComments,
 }

@@ -8,7 +8,6 @@ import { FeedContainer } from '../FeedContainer'
 const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
-    comments: [],
 }
 
 const mockStore = configureStore({

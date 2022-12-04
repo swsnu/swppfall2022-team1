@@ -19,14 +19,8 @@ const clubPosts = createSelector(
     state => state.clubPosts,
 )
 
-const comments = createSelector(
-    postState,
-    state => state.comments,
-)
-
 export const postSelector = {
     selectedPost,
     feedPosts,
     clubPosts,
-    comments,
 }

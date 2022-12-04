@@ -1,7 +1,10 @@
+import { Comment } from '../../domain/model/Comment'
 import { BoardPost } from '../../domain/model/ListItemPost'
 import { BoardPostDto } from '../dto/BoardPostDto'
+import { CommentDto } from '../dto/CommentDto'
 import { axiosConfig } from '../global'
 import { boardPostTransformer } from '../transformer/BoardPostTransformer'
+import { commentTransformer } from '../transformer/CommentTransformer'
 
 export const PostAPI = (() => {
     async function getFeedPosts(): Promise<Array<BoardPost>> {
@@ -22,7 +25,10 @@ export const PostAPI = (() => {
     function editPost() { return }
     function deletePost() { return }
 
-    function getComments() { return }
+    async function getComments(postId: number): Promise<Array<Comment>> {
+        const response = await axiosConfig.get<Array<CommentDto>>(`/api/post/${postId}/comment/`)
+        return response.data.map(commentTransformer.fromDto)
+    }
     function createComment() { return }
 
     return Object.freeze({
