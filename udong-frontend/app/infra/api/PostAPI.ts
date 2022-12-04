@@ -1,10 +1,12 @@
 import { Comment } from '../../domain/model/Comment'
 import { BoardPost } from '../../domain/model/ListItemPost'
+import { User } from '../../domain/model/User'
 import { BoardPostDto } from '../dto/BoardPostDto'
 import { CommentDto } from '../dto/CommentDto'
 import { axiosConfig } from '../global'
 import { boardPostTransformer } from '../transformer/BoardPostTransformer'
 import { commentTransformer } from '../transformer/CommentTransformer'
+import { userTransformer } from '../transformer/UserTransformer'
 
 export const PostAPI = (() => {
     async function getFeedPosts(): Promise<Array<BoardPost>> {
@@ -29,7 +31,17 @@ export const PostAPI = (() => {
         const response = await axiosConfig.get<Array<CommentDto>>(`/api/post/${postId}/comment/`)
         return response.data.map(commentTransformer.fromDto)
     }
-    function createComment() { return }
+
+    async function createComment(postId: number, user: User, content: string): Promise<Comment> {
+        const response = await axiosConfig.post<CommentDto>(
+            `/api/post/${postId}/comment/`,
+            {
+                user: userTransformer.toUserCommentDto(user),
+                content,
+            },
+        )
+        return commentTransformer.fromDto(response.data)
+    }
 
     return Object.freeze({
         getFeedPosts,

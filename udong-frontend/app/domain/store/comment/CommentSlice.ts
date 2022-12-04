@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { PostAPI } from '../../../infra/api/PostAPI'
 import { Comment } from '../../model/Comment'
+import { User } from '../../model/User'
 
 export interface CommentState {
     selectedComment?: Comment
@@ -21,7 +22,9 @@ export const getComments = createAsyncThunk(
 
 export const createComment = createAsyncThunk(
     'comment/createComment',
-    async () => { return },
+    async ({ postId, user, content }: { postId: number, user: User, content: string }) => {
+        return PostAPI.createComment(postId, user, content)
+    },
 )
 
 export const editComment = createAsyncThunk(
@@ -42,11 +45,16 @@ const commentSlice = createSlice({
         builder.addCase(getComments.fulfilled, (state, action) => {
             state.postComments = action.payload
         })
+        builder.addCase(createComment.fulfilled, (state, action) => {
+            state.postComments = state.postComments.concat(action.payload)
+            state.selectedComment = action.payload
+        })
     },
 })
 
 export const commentActions = {
     ...commentSlice.actions,
     getComments,
+    createComment,
 }
 export const commentReducer = commentSlice.reducer

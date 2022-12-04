@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
@@ -21,14 +21,22 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
     const { postId } = props
     const dispatch = useDispatch<AppDispatch>()
     const comments = useSelector(commentSelector.postComments)
-    const userMe = useSelector(userSelector.userMe)
+    const user = useSelector(userSelector.userMe)
 
+    const [commentInput, setCommentInput] = useState('')
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const inputRef = useRef<HTMLInputElement | undefined>(null)
 
     useEffect(() => {
         dispatch(commentActions.getComments(postId))
     }, [dispatch, postId])
+
+    const handleCommentSubmit = useCallback(() => {
+        if (user) {
+            dispatch(commentActions.createComment({ postId, user, content: commentInput }))
+        }
+        setCommentInput('')
+    }, [commentInput, user, postId, dispatch])
 
     return <VStack>
         <Spacer height={20}/>
@@ -37,19 +45,21 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
             <UdongTextField
                 placeholder={'댓글을 입력해주세요'}
                 inputRef={inputRef}
-                onChange={() => {return}}
+                onChange={() => setCommentInput(inputRef.current?.value ?? '')}
+                isCleared={commentInput === ''}
             />
             <Spacer width={20}/>
             <UdongImage
                 src={send.src}
                 height={24}
                 width={24}
+                onClick={handleCommentSubmit}
             />
         </HStack>
 
         {comments.map((comment) => {
             return <CommentItem
-                isAuthor={userMe?.id === comment.user.id}
+                isAuthor={user?.id === comment.user.id}
                 key={`${comment.user.name}` + `${comment.id}`}
                 name={comment.user.name}
                 content={comment.content}

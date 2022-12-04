@@ -1,5 +1,5 @@
 import { User } from '../../domain/model/User'
-import { UserDto, UserEditDto } from '../dto/UserDto'
+import { UserCommentDto, UserDto, UserEditDto } from '../dto/UserDto'
 
 const fromDto = (dto: UserDto): User => {
     return {
@@ -20,7 +20,17 @@ const toEditDto = (model: User): UserEditDto => {
     }
 }
 
+const toUserCommentDto = (model: User): UserCommentDto => {
+    return {
+        image: model.imageUrl,
+        email: model.email,
+        time_table: model.timeTable,
+        name: model.name,
+    }
+}
+
 export const userTransformer = {
     fromDto,
     toEditDto,
+    toUserCommentDto,
 }
