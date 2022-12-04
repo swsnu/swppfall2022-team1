@@ -21,11 +21,12 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
     const { postId } = props
     const dispatch = useDispatch<AppDispatch>()
     const comments = useSelector(commentSelector.postComments)
+    const commentId = useSelector(commentSelector.selectedCommentId)
     const user = useSelector(userSelector.userMe)
 
+    const inputRef = useRef<HTMLInputElement | undefined>(null)
     const [commentInput, setCommentInput] = useState('')
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const inputRef = useRef<HTMLInputElement | undefined>(null)
 
     useEffect(() => {
         dispatch(commentActions.getComments(postId))
@@ -37,6 +38,18 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
         }
         setCommentInput('')
     }, [commentInput, user, postId, dispatch])
+
+    const handleClickCommentDelete = useCallback((id: number) => {
+        dispatch(commentActions.setSelectedCommentId(id))
+        setShowDeleteModal(true)
+    }, [dispatch])
+
+    const handleConfirmCommentDelete = useCallback(() => {
+        if (commentId) {
+            dispatch(commentActions.deleteComment(commentId))
+            setShowDeleteModal(false)
+        }
+    }, [dispatch, commentId])
 
     return <VStack>
         <Spacer height={20}/>
@@ -59,11 +72,12 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
 
         {comments.map((comment) => {
             return <CommentItem
-                isAuthor={user?.id === comment.user.id}
                 key={`${comment.user.name}` + `${comment.id}`}
+                id={comment.id}
                 name={comment.user.name}
                 content={comment.content}
-                showDeleteModal={setShowDeleteModal}
+                isAuthor={user?.id === comment.user.id}
+                onClickDelete={handleClickCommentDelete}
             />
         })}
 
@@ -74,6 +88,7 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
             warningText={'경고 문구'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
+            onClickDelete={handleConfirmCommentDelete}
         />
     </VStack>
 }

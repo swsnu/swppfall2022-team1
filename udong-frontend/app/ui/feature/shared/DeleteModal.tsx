@@ -11,10 +11,11 @@ interface DeleteModalProps {
     warningText?: string
     isOpen: boolean
     setIsOpen: (open: boolean) => void
+    onClickDelete: () => void
 }
 
 export const DeleteModal = (props: DeleteModalProps) => {
-    const { deleteObjectText, warningText, isOpen, setIsOpen } = props
+    const { deleteObjectText, warningText, isOpen, setIsOpen, onClickDelete } = props
     return <UdongModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -43,7 +44,7 @@ export const DeleteModal = (props: DeleteModalProps) => {
                     <UdongButton
                         style={'line'}
                         color={UdongColors.Warning}
-                        onClick={() => {return}}
+                        onClick={onClickDelete}
                     >
                         삭제하기
                     </UdongButton>

@@ -41,6 +41,7 @@ export const InfoContainer = (props: InfoContainerProps) => {
             warningText={'경고 문구'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
+            onClickDelete={() => {return}}
         />
     </VStack>
 }
