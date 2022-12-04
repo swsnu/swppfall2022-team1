@@ -5,6 +5,7 @@ import { NextRouter } from 'next/router'
 import { Provider } from 'react-redux'
 
 import { clubReducer, ClubState } from '../../../../domain/store/club/ClubSlice'
+import { postReducer, PostState } from '../../../../domain/store/post/PostSlice'
 import { HomeContainer } from '../HomeContainer'
 
 const stubInitialState: ClubState = {
@@ -12,9 +13,15 @@ const stubInitialState: ClubState = {
     members: [],
 }
 
+const stubPostInitialState: PostState = {
+    feedPosts: [],
+    clubPosts: [],
+    comments: [],
+}
+
 const mockStore = configureStore({
-    reducer: { club: clubReducer },
-    preloadedState: { club: stubInitialState },
+    reducer: { club: clubReducer, post: postReducer },
+    preloadedState: { club: stubInitialState, post: stubPostInitialState },
 })
 
 jest.mock('next/config', () => () => ({
@@ -23,9 +30,15 @@ jest.mock('next/config', () => () => ({
     },
 }))
 
+const renderHomeContainer = (tab: 'feed' | 'mydong'): JSX.Element => {
+    return <Provider store={mockStore}>
+        <HomeContainer tab={tab}/>
+    </Provider>
+}
+
 describe('<HomeContainer/>', () => {
     it ('renders home container', () => {
-        render(<HomeContainer tab={'feed'}/>)
+        render(renderHomeContainer('feed'))
         const text = screen.getByText('피드')
         expect(text).toBeDefined()
     })
@@ -37,17 +50,14 @@ describe('<HomeContainer/>', () => {
             replace: (url: string) => mockReplace(url),
         } as unknown as NextRouter))
 
-        render(<HomeContainer tab={'feed'}/>)
+        render(renderHomeContainer('feed'))
         const text = screen.getByText('피드')
         fireEvent.click(text)
         expect(mockReplace).toHaveBeenCalledWith('/?tab=feed')
     })
 
     it ('should render feed page', () => {
-        render(<Provider store={mockStore}>
-            <HomeContainer tab={'mydong'}/>
-        </Provider>,
-        )
+        render(renderHomeContainer('mydong'))
         const text = screen.getByText('my동')
         expect(text).toBeDefined()
     })

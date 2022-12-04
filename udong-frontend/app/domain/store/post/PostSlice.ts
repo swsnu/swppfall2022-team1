@@ -6,18 +6,22 @@ import { BoardPost, ListItemPost } from '../../model/ListItemPost'
 
 export interface PostState {
     selectedPost?: ListItemPost
-    boardPosts: Array<BoardPost>
+    feedPosts: Array<BoardPost>
+    clubPosts: Array<BoardPost>
     comments: Array<Comment>
 }
 
 const initialState: PostState = {
-    boardPosts: [],
+    feedPosts: [],
+    clubPosts: [],
     comments: [],
 }
 
 export const getFeedPosts = createAsyncThunk(
     'post/getFeedPosts',
-    async () => { return },
+    async () => {
+        return PostAPI.getFeedPosts()
+    },
 )
 
 export const getClubPosts = createAsyncThunk(
@@ -52,8 +56,11 @@ const postSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
+        builder.addCase(getFeedPosts.fulfilled, (state, action) => {
+            state.feedPosts = action.payload
+        })
         builder.addCase(getClubPosts.fulfilled, (state, action) => {
-            state.boardPosts = action.payload
+            state.clubPosts = action.payload
         })
     },
 })
@@ -61,5 +68,6 @@ const postSlice = createSlice({
 export const postActions = {
     ...postSlice.actions,
     getClubPosts,
+    getFeedPosts,
 }
 export const postReducer = postSlice.reducer

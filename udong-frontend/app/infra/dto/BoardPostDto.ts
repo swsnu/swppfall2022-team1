@@ -8,8 +8,8 @@ export interface BoardPostDto {
     content: string
     type: PostType
     closed?: boolean
-    included_tags?: Array<PostTagDto>
-    excluded_tags?: Array<PostTagDto>
+    include_tag?: Array<PostTagDto>
+    exclude_tag?: Array<PostTagDto>
     created_at?: string
     updated_at?: string
 }

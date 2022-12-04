@@ -11,8 +11,8 @@ const fromDto = (dto: BoardPostDto): BoardPost => {
         content: dto.content,
         type: dto.type,
         closed: dto.closed,
-        includedTags: dto.included_tags?.map(postTagTransformer.fromDto),
-        excludedTags: dto.excluded_tags?.map(postTagTransformer.fromDto),
+        includedTags: dto.include_tag?.map(postTagTransformer.fromDto),
+        excludedTags: dto.exclude_tag?.map(postTagTransformer.fromDto),
         createdAt: dto.created_at,
         updatedAt: dto.updated_at,
     }

@@ -32,18 +32,19 @@ export const Header = ({ type, clubId }: HeaderProps) => {
     const dispatch = useDispatch<AppDispatch>()
     const { status } = useSession()
     const isLoggedIn = useSelector(authSelector.isLoggedIn)
+    const isLoading = useSelector(authSelector.isLoading)
 
     useEffect(() => {
-        if (status === 'unauthenticated') {
+        if (type !== HEADER_PAGE.NONE && status === 'unauthenticated') {
             dispatch(authActions.logout())
         }
     }, [status]) // eslint-disable-line
 
     useEffect(() => {
-        if (!isLoggedIn) {
+        if (!isLoading && !isLoggedIn) {
             router.push('/login')
         }
-    }, [isLoggedIn]) // eslint-disable-line
+    }, [isLoggedIn, isLoading]) // eslint-disable-line
 
     const clubName = '단풍'
 

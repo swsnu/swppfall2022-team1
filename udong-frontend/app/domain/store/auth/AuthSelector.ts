@@ -9,6 +9,12 @@ const isLoggedIn = createSelector(
     state => state.isLoggedIn,
 )
 
+const isLoading = createSelector(
+    authState,
+    state => state.isLoading,
+)
+
 export const authSelector = {
     isLoggedIn,
+    isLoading,
 }
