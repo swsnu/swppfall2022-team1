@@ -9,9 +9,10 @@ export const UserAPI = (() => {
         return userTransformer.fromDto(response.data)
     }
     async function editMyProfile(user: User): Promise<User> {
+        const userDto = userTransformer.toEditDto(user)
         const response = await axiosConfig.put<UserDto>(
             `/api/user/me/`,
-            { user },
+            userDto,
         )
         return userTransformer.fromDto(response.data)
     }
