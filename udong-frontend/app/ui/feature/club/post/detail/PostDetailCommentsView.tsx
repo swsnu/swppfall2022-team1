@@ -28,7 +28,7 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
 
     useEffect(() => {
         dispatch(commentActions.getComments(postId))
-    }, [])
+    }, [dispatch, postId])
 
     return <VStack>
         <Spacer height={20}/>
