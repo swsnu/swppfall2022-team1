@@ -16,9 +16,9 @@ import { UdongColors } from '../../theme/ColorPalette'
 interface ProfileViewProps {
     name: string
     code?: string
+    email?: string
     showCameraButton?: boolean
     showEditButton?: boolean
-    showGoogleAccount?: boolean
     showAdminBadge?: boolean
     bottomItem: ReactNode
 }
@@ -27,9 +27,9 @@ export const ProfileView = (props: ProfileViewProps) => {
     const {
         name,
         code,
+        email,
         showCameraButton = false,
         showEditButton = false,
-        showGoogleAccount = false,
         showAdminBadge = false,
         bottomItem,
     } = props
@@ -83,7 +83,7 @@ export const ProfileView = (props: ProfileViewProps) => {
             </HStack>
         }
 
-        {showGoogleAccount &&
+        {email &&
             <HStack>
                 <UdongImage
                     src={google.src}
@@ -91,7 +91,7 @@ export const ProfileView = (props: ProfileViewProps) => {
                     width={20}
                 />
                 <Spacer width={5}/>
-                <UdongText style={'ListContentS'}>yblee2001@gmail.com</UdongText>
+                <UdongText style={'ListContentS'}>{email}</UdongText>
             </HStack>
         }
 

@@ -7,9 +7,16 @@ import { UdongText } from '../../components/UdongText'
 import { UdongColors } from '../../theme/ColorPalette'
 import { ProfileView } from '../shared/ProfileView'
 
-export const MyProfileView = () => {
+interface MyProfileViewProps {
+    name: string
+    email: string
+}
+
+export const MyProfileView = (props: MyProfileViewProps) => {
+    const { name, email } = props
+
     const renderDeleteAccountButton = useCallback(() => {
-        return <HStack onClick={() => console.log('우동 영구 탈퇴~')}>
+        return <HStack onClick={() => {return}}>
             <UdongText
                 style={'ListContentS'}
                 color={UdongColors.GrayNormal}
@@ -28,10 +35,10 @@ export const MyProfileView = () => {
         <Spacer height={90}/>
 
         <ProfileView
-            name={'이유빈'}
+            name={name}
+            email={email}
             showCameraButton={true}
             showEditButton={true}
-            showGoogleAccount={true}
             bottomItem={
                 <HStack>
                     {renderDeleteAccountButton()}
