@@ -25,7 +25,6 @@ export const MyProfileView = (props: MyProfileViewProps) => {
             ...me,
             name,
         }))
-        console.log('hello world')
     }, [dispatch, me])
 
     const renderDeleteAccountButton = useCallback(() => {

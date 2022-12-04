@@ -21,7 +21,6 @@ export const getMyProfile = createAsyncThunk(
 export const editMyProfile = createAsyncThunk(
     'user/editMyProfile',
     async (user: User) => {
-        console.log('user sliced edit')
         return UserAPI.editMyProfile(user)
     },
 )
