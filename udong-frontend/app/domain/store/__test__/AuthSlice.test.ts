@@ -20,6 +20,7 @@ describe('auth slice', () => {
     it('should handle initial state', () => {
         expect(authReducer(undefined, { type: 'unknown' })).toEqual({
             isLoggedIn: false,
+            isLoading: true,
         })
     })
 
