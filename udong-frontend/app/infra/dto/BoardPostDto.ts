@@ -4,6 +4,7 @@ import { PostTagDto } from './PostTagDto'
 
 export interface BoardPostDto {
     id: number
+    author?: string
     event?: EventNameDto
     title: string
     content: string

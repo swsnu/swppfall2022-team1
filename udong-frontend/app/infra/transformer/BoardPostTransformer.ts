@@ -7,6 +7,7 @@ const fromDto = (dto: BoardPostDto): BoardPost => {
     return {
         displayType: PostDisplayType.BOARD,
         id: dto.id,
+        author: dto.author,
         eventName: eventNameTransformer.fromDto(dto.event),
         title: dto.title,
         content: dto.content,

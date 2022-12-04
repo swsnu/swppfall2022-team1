@@ -144,7 +144,7 @@ export const PostDetailContainer = () => {
         <HStack>
             <UdongText style={'ListContentXS'}>{post.updatedAt}</UdongText>
             <Spacer width={10}/>
-            <UdongText style={'ListContentXS'}>박지연</UdongText>
+            <UdongText style={'ListContentXS'}>{post.author}</UdongText>
         </HStack>
 
         <Spacer height={10}/>
