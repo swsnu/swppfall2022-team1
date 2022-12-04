@@ -86,16 +86,16 @@ describe('<PostDetailContainer/>', () => {
         fireEvent.click(eventBtn)
         await waitFor(() => expect(mockPush).toHaveBeenCalledTimes(2))
     })
-    it('renders announcement', async () => {
-        const mockPush = jest.fn()
-        jest.spyOn(router, 'useRouter').mockImplementation(() => ({
-            query: { type: 'Announcement' },
-            push: (url: string) => mockPush(url),
-        } as unknown as NextRouter))
-
-        await act(async () => {render(postDetailContainer)})
-        await waitFor(() => expect(screen.getByText(/공지글/)).toBeInTheDocument())
-    })
+    // it('renders announcement', async () => {
+    //     const mockPush = jest.fn()
+    //     jest.spyOn(router, 'useRouter').mockImplementation(() => ({
+    //         query: { type: 'Announcement' },
+    //         push: (url: string) => mockPush(url),
+    //     } as unknown as NextRouter))
+    //
+    //     await act(async () => {render(postDetailContainer)})
+    //     await waitFor(() => expect(screen.getByText(/공지글/)).toBeInTheDocument())
+    // })
     // it('renders enrollment', async () => {
     //     const mockPush = jest.fn()
     //     jest.spyOn(router, 'useRouter').mockImplementation(() => ({
