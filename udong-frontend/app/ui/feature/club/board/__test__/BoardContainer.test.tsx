@@ -6,7 +6,7 @@ import { postReducer, PostState } from '../../../../../domain/store/post/PostSli
 import { BoardContainer } from '../BoardContainer'
 
 const stubInitialState: PostState = {
-    boardPosts: [],
+    clubPosts: [],
     comments: [],
 }
 

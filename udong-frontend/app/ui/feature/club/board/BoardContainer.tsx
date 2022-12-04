@@ -15,7 +15,7 @@ import { PostCreateModal } from './PostCreateModal'
 
 export const BoardContainer = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const boardPosts = useSelector(postSelector.boardPosts)
+    const boardPosts = useSelector(postSelector.clubPosts)
 
     const [loading, setLoading] = useState(true)
     const [showPostCreateModal, setShowPostCreateModal] = useState(false)
