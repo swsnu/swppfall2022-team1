@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../../domain/store'
@@ -19,6 +19,7 @@ export const BoardContainer = () => {
 
     const [loading, setLoading] = useState(true)
     const [showPostCreateModal, setShowPostCreateModal] = useState(false)
+    const searchRef = useRef<HTMLInputElement | undefined>(null)
 
     useEffect(() => {
         dispatch(postActions.getClubPosts(1))
@@ -37,7 +38,10 @@ export const BoardContainer = () => {
         </HStack>
         <Spacer height={20}/>
 
-        <UdongSearchBar/>
+        <UdongSearchBar
+            onChange={() => {return}}
+            inputRef={searchRef}
+        />
         <Spacer height={8}/>
 
         {loading ? <UdongLoader height={400}/> :

@@ -1,12 +1,14 @@
 import styled from '@emotion/styled'
-import { ReactNode } from 'react'
+import { ReactNode, useCallback, useRef, useState } from 'react'
 
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
 import { UdongChip } from '../../components/UdongChip'
 import { UdongImage } from '../../components/UdongImage'
 import { UdongText } from '../../components/UdongText'
+import { UdongTextField } from '../../components/UdongTextField'
 import camera from '../../icons/IcCamera.png'
+import check from '../../icons/IcCheck.png'
 import udong from '../../icons/IcDong.png'
 import google from '../../icons/IcGoogle.png'
 import edit from '../../icons/IcPencil.png'
@@ -18,7 +20,7 @@ interface ProfileViewProps {
     code?: string
     email?: string
     showCameraButton?: boolean
-    showEditButton?: boolean
+    onClickEditNameButton?: (name: string) => void
     showAdminBadge?: boolean
     bottomItem: ReactNode
 }
@@ -29,10 +31,25 @@ export const ProfileView = (props: ProfileViewProps) => {
         code,
         email,
         showCameraButton = false,
-        showEditButton = false,
+        onClickEditNameButton,
         showAdminBadge = false,
         bottomItem,
     } = props
+    const [isNameInputVisible, setIsNameInputVisible] = useState(false)
+    const [changedName, setChangedName] = useState('')
+
+    const nameRef = useRef<HTMLInputElement | undefined>(null)
+
+    const handleEditNickname = useCallback(() => {
+        if (!isNameInputVisible) {
+            setIsNameInputVisible(true)
+        } else {
+            if (onClickEditNameButton) {
+                onClickEditNameButton(changedName)
+            }
+            setIsNameInputVisible(false)
+        }
+    }, [isNameInputVisible, changedName, onClickEditNameButton])
 
     return <VStack alignItems={'center'}>
         <BackgroundCircle>
@@ -56,14 +73,24 @@ export const ProfileView = (props: ProfileViewProps) => {
         </BackgroundCircle>
 
         <Spacer height={15}/>
-        <HStack>
-            <UdongText style={'GeneralContent'}>{name}</UdongText>
-            {showEditButton &&
+        <HStack alignItems={'center'}>
+            {isNameInputVisible ?
+                <UdongTextField
+                    inputRef={nameRef}
+                    defaultValue={name}
+                    onChange={() => setChangedName(nameRef.current?.value ?? '')}
+                />
+                :
+                <UdongText style={'GeneralContent'}>{name}</UdongText>
+            }
+
+            {onClickEditNameButton &&
                 <UdongImage
-                    src={edit.src}
+                    src={isNameInputVisible ? check.src : edit.src}
                     height={20}
                     width={20}
                     style={{ marginLeft: 8 }}
+                    onClick={handleEditNickname}
                 />
             }
         </HStack>

@@ -7,7 +7,6 @@ import { UdongButton } from '../../app/ui/components/UdongButton'
 import { UdongChip } from '../../app/ui/components/UdongChip'
 import { UdongModal } from '../../app/ui/components/UdongModal'
 import { UdongText } from '../../app/ui/components/UdongText'
-import { UdongTextField } from '../../app/ui/components/UdongTextField'
 import { DraggableTimeTable } from '../../app/ui/feature/shared/DraggableTimeTable'
 import { CellIdx } from '../../app/ui/feature/shared/TimeTable'
 import { UdongColors } from '../../app/ui/theme/ColorPalette'
@@ -81,11 +80,6 @@ const DummyPage = () => {
                 onClick={() => console.log('hello world')}
                 text={'hello world'}
             />
-        </HStack>
-
-        <Spacer height={16}/>
-        <HStack>
-            <UdongTextField defaultValue={''}/>
         </HStack>
 
         <Spacer height={24}/>

@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -21,6 +23,8 @@ interface TagUpsertModalProps {
 
 export const TagUpsertModal = (props: TagUpsertModalProps) => {
     const { isOpen, setIsOpen, title } = props
+    const searchRef = useRef<HTMLInputElement | undefined>(null)
+
     return <UdongModal
         width={'60vw'}
         isOpen={isOpen}
@@ -60,7 +64,10 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
 
             <HStack width={'100%'}>
                 <VStack flex={1}>
-                    <UdongSearchBar/>
+                    <UdongSearchBar
+                        inputRef={searchRef}
+                        onChange={() => {return}}
+                    />
                     <Spacer height={15}/>
 
                     <VStack

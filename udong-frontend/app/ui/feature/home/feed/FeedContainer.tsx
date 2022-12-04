@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Spacer } from '../../../components/Spacer'
 import { VStack } from '../../../components/Stack'
@@ -8,6 +8,7 @@ import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 
 export const FeedContainer = () => {
     const [loading, setLoading] = useState(true)
+    const searchRef = useRef<HTMLInputElement | undefined>(null)
 
     useEffect(() => {
         setTimeout(() => setLoading(false), 600)
@@ -15,7 +16,10 @@ export const FeedContainer = () => {
     }, [])
 
     return <VStack>
-        <UdongSearchBar/>
+        <UdongSearchBar
+            inputRef={searchRef}
+            onChange={() => {return}}
+        />
         <Spacer height={8}/>
 
         <ScrollToTopButton/>

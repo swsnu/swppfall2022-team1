@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -13,6 +15,8 @@ interface CreateClubModalProps {
 
 export const CreateClubModal = (props: CreateClubModalProps) => {
     const { isOpen, setIsOpen } = props
+    const inputRef = useRef<HTMLInputElement | undefined>(null)
+
     return <UdongModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -30,7 +34,8 @@ export const CreateClubModal = (props: CreateClubModalProps) => {
             <Spacer height={20}/>
 
             <UdongTextField
-                defaultValue={''}
+                onChange={() => {return}}
+                inputRef={inputRef}
             />
             <Spacer height={27}/>
 

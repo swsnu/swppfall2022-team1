@@ -20,7 +20,10 @@ export const getMyProfile = createAsyncThunk(
 
 export const editMyProfile = createAsyncThunk(
     'user/editMyProfile',
-    async () => { return },
+    async (user: User) => {
+        console.log('user sliced edit')
+        return UserAPI.editMyProfile(user)
+    },
 )
 
 export const deleteAccount = createAsyncThunk(
@@ -46,6 +49,9 @@ const userSlice = createSlice({
         builder.addCase(getMyProfile.fulfilled, (state, action) => {
             state.me = action.payload
         })
+        builder.addCase(editMyProfile.fulfilled, (state, action) => {
+            state.me = action.payload
+        })
     },
 })
 
@@ -53,5 +59,6 @@ export const userActions = {
     ...userSlice.actions,
     getUser,
     getMyProfile,
+    editMyProfile,
 }
 export const userReducer = userSlice.reducer

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -10,12 +10,17 @@ import { CommentItem } from './CommentItem'
 
 export const PostDetailCommentsView = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const inputRef = useRef<HTMLInputElement | undefined>(null)
 
     return <VStack>
         <Spacer height={20}/>
 
         <HStack alignItems={'center'}>
-            <UdongTextField defaultValue={'댓글을 입력해주세요'}/>
+            <UdongTextField
+                placeholder={'댓글을 입력해주세요'}
+                inputRef={inputRef}
+                onChange={() => {return}}
+            />
             <Spacer width={20}/>
             <UdongImage
                 src={send.src}

@@ -1,5 +1,9 @@
 import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 
+import { User } from '../../../domain/model/User'
+import { AppDispatch } from '../../../domain/store'
+import { userActions } from '../../../domain/store/user/UserSlice'
 import { Spacer } from '../../components/Spacer'
 import { HStack } from '../../components/Stack'
 import { UdongFloatingContainer } from '../../components/UdongFloatingContainer'
@@ -8,12 +12,21 @@ import { UdongColors } from '../../theme/ColorPalette'
 import { ProfileView } from '../shared/ProfileView'
 
 interface MyProfileViewProps {
-    name: string
-    email: string
+    me: User
 }
 
 export const MyProfileView = (props: MyProfileViewProps) => {
-    const { name, email } = props
+    const { me } = props
+    const { name, email } = me
+    const dispatch = useDispatch<AppDispatch>()
+
+    const handleEditNickname = useCallback((name: string) => {
+        dispatch(userActions.editMyProfile({
+            ...me,
+            name,
+        }))
+        console.log('hello world')
+    }, [dispatch, me])
 
     const renderDeleteAccountButton = useCallback(() => {
         return <HStack onClick={() => {return}}>
@@ -38,7 +51,7 @@ export const MyProfileView = (props: MyProfileViewProps) => {
             name={name}
             email={email}
             showCameraButton={true}
-            showEditButton={true}
+            onClickEditNameButton={handleEditNickname}
             bottomItem={
                 <HStack>
                     {renderDeleteAccountButton()}
