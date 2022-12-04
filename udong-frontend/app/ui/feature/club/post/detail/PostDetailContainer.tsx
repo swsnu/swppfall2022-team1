@@ -1,42 +1,32 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { dummyTagsDanpung } from '../../../../../domain/model/Tag'
-import { dummyUserMe } from '../../../../../domain/model/User'
+import { PostType } from '../../../../../domain/model/PostType'
+import { AppDispatch } from '../../../../../domain/store'
+import { postSelector } from '../../../../../domain/store/post/PostSelector'
+import { postActions } from '../../../../../domain/store/post/PostSlice'
+import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
-import { UdongChip } from '../../../../components/UdongChip'
 import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
+import { ClickableTag } from '../../../shared/ClickableTag'
 import { DeleteModal } from '../../../shared/DeleteModal'
 import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
-import { PostType } from '../upsert/create/PostCreateContainer'
 import { PostDetailCommentsView } from './PostDetailCommentsView'
-import { PostDetailContentView } from './PostDetailContentView'
 import { PostDetailEnrollmentView } from './PostDetailEnrollmentView'
 import { PostDetailSchedulingView } from './PostDetailSchedulingView'
 
-const getQueryParam = (queryParam: string | string[] | undefined): PostType => {
-    if (queryParam === undefined) {
-        return 'announcement'
-    }
-
-    if (queryParam instanceof Array) {
-        return queryParam.join('') as PostType
-    } else {
-        return queryParam as PostType
-    }
-}
-
 const getSubtitle = (postType: PostType) => {
     switch(postType) {
-        case 'announcement':
+        case PostType.ANNOUNCEMENT:
             return '일반 공지글'
-        case 'enrollment':
+        case PostType.ENROLLMENT:
             return '인원 모집글'
-        case 'scheduling':
+        case PostType.SCHEDULING:
             return '일정 수합글'
         default:
             return ''
@@ -45,18 +35,33 @@ const getSubtitle = (postType: PostType) => {
 
 export const PostDetailContainer = () => {
     const router = useRouter()
-    const { type } = router.query
-    const [postType, setPostType] = useState<PostType>('announcement')
+    const dispatch = useDispatch<AppDispatch>()
+    const { clubId: rawClubId, postId: rawPostId } = router.query
+    const clubId = convertQueryParamToString(rawClubId)
+    const postId = convertQueryParamToString(rawPostId)
+
+    const post = useSelector(postSelector.selectedPost)
+
+    const [postType, setPostType] = useState<PostType>(PostType.ANNOUNCEMENT)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-    // 위에 default 값은 건드리지 말고 테스트할 때 여기서 값 바꿔가면서 쓰기!
     useEffect(() => {
-        setPostType(getQueryParam(type))
-    }, [type])
+        if (post) {
+            setPostType(post.type)
+        }
+    }, [post])
+
+    useEffect(() => {
+        dispatch(postActions.getPost(postId))
+    }, [postId, dispatch])
+
+    if (!post) {
+        return null
+    }
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
-            title={'겨울 공연 중요 공지!'}
+            title={post.title}
             onGoBack={() => router.back()}
             subtitle={getSubtitle(postType)}
             rightButtons={<>
@@ -64,7 +69,7 @@ export const PostDetailContainer = () => {
                     style={'line'}
                     color={UdongColors.Primary}
                     height={40}
-                    onClick={() => router.push(`/club/1/post/1/edit/?type=${postType}`)}
+                    onClick={() => router.push(`/club/${clubId}/post/${postId}/edit/?type=${postType}`)}
                 >
                     수정하기
                 </UdongButton>
@@ -84,27 +89,37 @@ export const PostDetailContainer = () => {
         <Spacer height={45}/>
 
         <VStack alignItems={'center'}>
-            <VStack onClick={() => router.push('/club/1/event/1')}>
-                <UdongText
-                    style={'ListContentUnderscore'}
-                    cursor={'pointer'}
-                >2022년 겨울 공연</UdongText>
-                <Spacer height={15}/>
-            </VStack>
+            {post.eventName &&
+                <VStack onClick={() => router.push(`/club/${clubId}/event/${post.eventName?.id}`)}>
+                    <UdongText
+                        style={'ListContentUnderscore'}
+                        cursor={'pointer'}
+                    >{post.eventName.name}</UdongText>
+                    <Spacer height={15}/>
+                </VStack>
+            }
 
-            <HStack justifyContent={'center'}>
-                {dummyTagsDanpung.map((tag) => {
-                    return <HStack
-                        key={tag.name}
-                        paddingHorizontal={6}
-                    >
-                        <UdongChip
-                            color={tag.users.includes(dummyUserMe) ? UdongColors.Primary : UdongColors.GrayNormal}
-                            style={'fill'}
+            <HStack alignItems={'center'}>
+                <HStack>
+                    {post.includedTags?.map((tag, index) => {
+                        return <ClickableTag
+                            key={`${tag.name}` + index}
                             text={tag.name}
+                            isIncluded={true}
+                            onClick={() => {return}}
                         />
-                    </HStack>
-                })}
+                    })}
+                </HStack>
+                <HStack>
+                    {post.excludedTags?.map((tag, index) => {
+                        return <ClickableTag
+                            key={tag.name + index}
+                            text={tag.name}
+                            isIncluded={false}
+                            onClick={() => {return}}
+                        />
+                    })}
+                </HStack>
             </HStack>
             <Spacer height={15}/>
         </VStack>
@@ -113,16 +128,23 @@ export const PostDetailContainer = () => {
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
-        <PostDetailContentView/>
+        <VStack paddingVertical={30}>
+            <UdongText
+                style={'GeneralContent'}
+                whiteSpace={'pre-line'}
+            >
+                {post.content}
+            </UdongText>
+        </VStack>
 
-        {postType === 'enrollment' && <PostDetailEnrollmentView/>}
+        {postType === PostType.ENROLLMENT && <PostDetailEnrollmentView/>}
 
-        {postType === 'scheduling' && <PostDetailSchedulingView/>}
+        {postType === PostType.SCHEDULING && <PostDetailSchedulingView/>}
 
         <HStack>
-            <UdongText style={'ListContentXS'}>2022.09.10</UdongText>
+            <UdongText style={'ListContentXS'}>{post.updatedAt}</UdongText>
             <Spacer width={10}/>
-            <UdongText style={'ListContentXS'}>박지연</UdongText>
+            <UdongText style={'ListContentXS'}>{post.author}</UdongText>
         </HStack>
 
         <Spacer height={10}/>

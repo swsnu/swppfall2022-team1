@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+import { PostType } from '../../../../../../domain/model/PostType'
 import { VStack } from '../../../../../components/Stack'
 import { UdongButton } from '../../../../../components/UdongButton'
 import { UdongHeader } from '../../../../../components/UdongHeader'
@@ -8,19 +9,17 @@ import { UdongColors } from '../../../../../theme/ColorPalette'
 import { PostAdditionalFieldsView } from '../PostAdditionalFieldsView'
 import { PostInputView } from '../PostInputView'
 
-export type PostType = 'announcement' | 'enrollment' | 'scheduling'
-
 interface PostCreateContainerProps {
     postType: PostType
 }
 
 const getSubtitle = (postType: PostType) => {
     switch(postType) {
-        case 'announcement':
+        case PostType.ANNOUNCEMENT:
             return '일반 공지글'
-        case 'enrollment':
+        case PostType.ENROLLMENT:
             return '인원 모집글'
-        case 'scheduling':
+        case PostType.SCHEDULING:
             return '일정 수합글'
         default:
             return ''
@@ -57,7 +56,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
             setContents={setContents}
         />
         <PostAdditionalFieldsView
-            showDateTimePicker={postType === 'scheduling'}
+            showDateTimePicker={postType === PostType.SCHEDULING}
             isEdit={false}
         />
     </VStack>

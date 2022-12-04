@@ -1,9 +1,11 @@
 import { PostType } from '../../domain/model/PostType'
+import { EventNameDto } from './EventNameDto'
 import { PostTagDto } from './PostTagDto'
 
 export interface BoardPostDto {
     id: number
-    event?: string
+    author?: string
+    event?: EventNameDto
     title: string
     content: string
     type: PostType

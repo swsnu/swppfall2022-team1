@@ -19,7 +19,7 @@ export const formatPostItemInfo = (
                     >
                         {'>'}
                     </UdongText>
-                    <UdongText style={'ListContentUnderscore'}>{eventName}</UdongText>
+                    <UdongText style={'ListContentUnderscore'}>{eventName.name}</UdongText>
                 </HStack>
             }
             <Spacer width={30}/>
@@ -32,7 +32,7 @@ export const formatPostItemInfo = (
             return null
         }
         return <HStack>
-            <UdongText style={'ListContentUnderscore'}>{eventName}</UdongText>
+            <UdongText style={'ListContentUnderscore'}>{eventName.name}</UdongText>
             <Spacer width={30}/>
         </HStack>
     }
