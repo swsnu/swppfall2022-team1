@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
@@ -20,6 +20,7 @@ interface UserListModalProps {
 
 export const UserListModal = (props: UserListModalProps) => {
     const { isOpen, setIsOpen, title } = props
+    const searchRef = useRef<HTMLInputElement | undefined>(null)
 
     const handleOnClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         setIsOpen(false)
@@ -53,7 +54,10 @@ export const UserListModal = (props: UserListModalProps) => {
             <UdongText style={'GeneralTitle'}>{title}</UdongText>
             <Spacer height={45}/>
 
-            <UdongSearchBar/>
+            <UdongSearchBar
+                inputRef={searchRef}
+                onChange={() => {return}}
+            />
             <Spacer height={15}/>
 
             <VStack

@@ -4,8 +4,11 @@ import { UdongColors } from '../theme/ColorPalette'
 import { HStack } from './Stack'
 import { UdongImage } from './UdongImage'
 
-interface UdongTextFieldProps {
-    defaultValue: string
+export interface UdongTextFieldProps {
+    onChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>
+    inputRef: React.Ref<any> // eslint-disable-line
+    defaultValue?: string
+    placeholder?: string
     width?: number | string
     imageSrc?: string
 }
@@ -16,10 +19,11 @@ interface UdongTextFieldProps {
  *
  * */
 export const UdongTextField = (props: UdongTextFieldProps) => {
-    const { defaultValue, width, imageSrc } = props
-    const [value, setValue] = useState('')
+    const { onChange, inputRef, defaultValue, width, imageSrc, placeholder } = props
+    const [value, setValue] = useState(defaultValue)
 
     const handleOnChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        onChange(event)
         setValue(event.target.value)
     }, [])
 
@@ -32,10 +36,11 @@ export const UdongTextField = (props: UdongTextFieldProps) => {
         width={width ?? '100%'}
     >
         <input
+            ref={inputRef}
             type={'text'}
             value={value}
             onChange={handleOnChange}
-            placeholder={defaultValue}
+            placeholder={placeholder}
             style={{
                 backgroundColor: UdongColors.GrayBright,
                 borderRadius: 14,
@@ -46,6 +51,7 @@ export const UdongTextField = (props: UdongTextFieldProps) => {
                 color: UdongColors.GrayNormal,
                 padding: '8px 16px',
                 width: width ?? '100%',
+                minWidth: width ?? '100%',
             }}
         />
         {imageSrc &&

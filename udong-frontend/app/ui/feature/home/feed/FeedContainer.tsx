@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../../domain/store'
@@ -15,6 +15,7 @@ export const FeedContainer = () => {
     const dispatch = useDispatch<AppDispatch>()
     const posts = useSelector(postSelector.feedPosts)
     const [loading, setLoading] = useState(true)
+    const searchRef = useRef<HTMLInputElement | undefined>(null)
 
     useEffect(() => {
         dispatch(postActions.getFeedPosts())
@@ -22,7 +23,10 @@ export const FeedContainer = () => {
     }, [])
 
     return <VStack>
-        <UdongSearchBar/>
+        <UdongSearchBar
+            inputRef={searchRef}
+            onChange={() => {return}}
+        />
         <Spacer height={8}/>
 
         <ScrollToTopButton/>

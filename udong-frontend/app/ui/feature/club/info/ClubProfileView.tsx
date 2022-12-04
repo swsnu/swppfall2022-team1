@@ -51,7 +51,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             name={name}
             code={code}
             showCameraButton={true}
-            showEditButton={true}
+            onClickEditNameButton={() => {return}}
             bottomItem={
                 <HStack>
                     {renderLeaveClubButton()}

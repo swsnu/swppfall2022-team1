@@ -7,3 +7,10 @@ export interface UserDto {
     created_at: string //Date-time
     updated_at: string //Date-time
 }
+
+export interface UserEditDto {
+    email?: string
+    image?: string
+    time_table?: string
+    name?: string
+}
