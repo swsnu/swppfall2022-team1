@@ -39,6 +39,13 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
         setCommentInput('')
     }, [commentInput, user, postId, dispatch])
 
+    const handleConfirmCommentEdit = useCallback((id: number, content: string) => {
+        if (user) {
+            dispatch(commentActions.setSelectedCommentId(id))
+            dispatch(commentActions.editComment({ commentId: id, content, user }))
+        }
+    }, [dispatch, user])
+
     const handleClickCommentDelete = useCallback((id: number) => {
         dispatch(commentActions.setSelectedCommentId(id))
         setShowDeleteModal(true)
@@ -78,6 +85,7 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
                 content={comment.content}
                 isAuthor={user?.id === comment.user.id}
                 onClickDelete={handleClickCommentDelete}
+                onSubmitEditedComment={handleConfirmCommentEdit}
             />
         })}
 

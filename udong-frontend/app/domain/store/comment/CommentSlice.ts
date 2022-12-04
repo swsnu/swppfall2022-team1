@@ -30,7 +30,9 @@ export const createComment = createAsyncThunk(
 
 export const editComment = createAsyncThunk(
     'comment/editComment',
-    async () => { return },
+    async ({ commentId, user, content }: { commentId: number, user: User, content: string }) => {
+        return CommentAPI.editComment(commentId, user, content)
+    },
 )
 
 export const deleteComment = createAsyncThunk(
@@ -55,8 +57,19 @@ const commentSlice = createSlice({
         builder.addCase(createComment.fulfilled, (state, action) => {
             state.postComments = state.postComments.concat(action.payload)
         })
+        builder.addCase(editComment.fulfilled, (state, action) => {
+            state.postComments = state.postComments
+                .map(comment => comment.id === state.selectedCommentId ? { ...comment, ...action.payload } : comment)
+            state.selectedCommentId = undefined
+        })
+        builder.addCase(editComment.rejected, (state) => {
+            state.selectedCommentId = undefined
+        })
         builder.addCase(deleteComment.fulfilled, (state) => {
             state.postComments = state.postComments.filter(comment => comment.id !== state.selectedCommentId)
+            state.selectedCommentId = undefined
+        })
+        builder.addCase(deleteComment.rejected, (state) => {
             state.selectedCommentId = undefined
         })
     },
@@ -66,6 +79,7 @@ export const commentActions = {
     ...commentSlice.actions,
     getComments,
     createComment,
+    editComment,
     deleteComment,
 }
 export const commentReducer = commentSlice.reducer
