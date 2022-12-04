@@ -1,20 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { PostAPI } from '../../../infra/api/PostAPI'
-import { Comment } from '../../model/Comment'
 import { BoardPost } from '../../model/ListItemPost'
 
 export interface PostState {
     selectedPost?: BoardPost
     feedPosts: Array<BoardPost>
     clubPosts: Array<BoardPost>
-    comments: Array<Comment>
 }
 
 const initialState: PostState = {
     feedPosts: [],
     clubPosts: [],
-    comments: [],
 }
 
 export const getFeedPosts = createAsyncThunk(

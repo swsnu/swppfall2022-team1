@@ -153,7 +153,7 @@ export const PostDetailContainer = () => {
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
-        <PostDetailCommentsView/>
+        <PostDetailCommentsView postId={post.id}/>
 
         <ScrollToTopButton/>
 

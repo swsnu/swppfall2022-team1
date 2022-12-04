@@ -19,6 +19,7 @@ class ClubSerializer(serializers.ModelSerializer[Club]):
         fields = (
             "id",
             "name",
+            "image",
             "code",
             "created_at",
             "updated_at",
