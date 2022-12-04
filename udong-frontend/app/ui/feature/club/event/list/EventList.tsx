@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import { ClubEvent } from '../../../../../domain/model/ClubEvent'
 import { Spacer } from '../../../../components/Spacer'
@@ -13,8 +13,13 @@ interface EventListProps{
 }
 
 export const EventList = ({ events, onClickEvent } : EventListProps) => {
+    const searchRef = useRef<HTMLInputElement | undefined>(null)
+
     return <VStack width={'100%'}>
-        <UdongSearchBar/>
+        <UdongSearchBar
+            onChange={() => {return}}
+            inputRef={searchRef}
+        />
         <Spacer height={8}/>
         {events.map((event) =>(
             <EventItem

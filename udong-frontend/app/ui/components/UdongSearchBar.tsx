@@ -1,9 +1,10 @@
 import IcSearch from '../icons/IcSearch.png'
-import { UdongTextField } from './UdongTextField'
+import { UdongTextField, UdongTextFieldProps } from './UdongTextField'
 
-export const UdongSearchBar = () => {
+export const UdongSearchBar = (props: UdongTextFieldProps) => {
     return <UdongTextField
-        defaultValue={'검색어를 입력해주세요'}
+        placeholder={'검색어를 입력해주세요'}
         imageSrc={IcSearch.src}
+        {...props}
     />
 }

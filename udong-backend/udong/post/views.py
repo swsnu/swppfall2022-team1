@@ -53,6 +53,7 @@ class PostViewSet(_PostGenericViewSet):
             post = (
                 self.get_queryset()
                 .select_related("event")
+                .select_related("author")
                 .prefetch_related("post_tag_set__tag__tag_user_set")
                 .filter(club_id=club_id)
             )
@@ -76,6 +77,7 @@ class PostViewSet(_PostGenericViewSet):
     def retrieve(self, request: Request, pk: Any) -> Response:
         post = (
             self.get_queryset()
+            .select_related("author")
             .prefetch_related("post_tag_set__tag__tag_user_set")
             .get(id=pk)
         )
@@ -123,6 +125,7 @@ class PostClubViewSet(_PostGenericViewSet):
         post = (
             self.get_queryset()
             .select_related("event")
+            .select_related("author")
             .prefetch_related("post_tag_set__tag__tag_user_set")
             .filter(club_id=pk)
         )

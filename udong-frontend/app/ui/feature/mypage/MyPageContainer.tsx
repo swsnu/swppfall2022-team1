@@ -35,10 +35,7 @@ export const MyPageContainer = () => {
                 alignItems={'center'}
                 width={'100%'}
             >
-                <MyProfileView
-                    name={me.name}
-                    email={me.email}
-                />
+                <MyProfileView me={me}/>
                 <Spacer width={50}/>
                 <AddMyScheduleView/>
             </HStack>

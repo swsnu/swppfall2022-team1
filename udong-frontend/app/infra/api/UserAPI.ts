@@ -5,14 +5,21 @@ import { userTransformer } from '../transformer/UserTransformer'
 
 export const UserAPI = (() => {
     async function getMyProfile(): Promise<User> {
-        const response = await axiosConfig.get<UserDto>(`/api/user/me`)
+        const response = await axiosConfig.get<UserDto>(`/api/user/me/`)
         return userTransformer.fromDto(response.data)
     }
-    function editMyProfile() { return }
+    async function editMyProfile(user: User): Promise<User> {
+        const userDto = userTransformer.toEditDto(user)
+        const response = await axiosConfig.put<UserDto>(
+            `/api/user/me/`,
+            userDto,
+        )
+        return userTransformer.fromDto(response.data)
+    }
     function deleteAccount() { return }
 
     async function getUser(userId: number): Promise<User> {
-        const response = await axiosConfig.get<UserDto>(`/api/user/${userId}`)
+        const response = await axiosConfig.get<UserDto>(`/api/user/${userId}/`)
         return userTransformer.fromDto(response.data)
     }
 

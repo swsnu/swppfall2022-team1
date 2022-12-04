@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
@@ -16,10 +16,12 @@ interface UdongModalProps {
 
 export const SchedulingCloseModal = (props: UdongModalProps) => {
     const { isOpen, setIsOpen } = props
-    const [createTag, setCreateTag] = useState<boolean>(false)
-    const [saveTime, setSaveTime] = useState<boolean>(false)
     const router = useRouter()
     const { clubId, postId } = router.query
+
+    const [createTag, setCreateTag] = useState<boolean>(false)
+    const [saveTime, setSaveTime] = useState<boolean>(false)
+    const inputRef = useRef<HTMLInputElement | undefined>(null)
 
     return (
         <UdongModal
@@ -40,7 +42,13 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
                     checked={createTag}
                     onChange={setCreateTag}
                 />
-                {createTag && <UdongTextField defaultValue='생성할 태그의 이름을 입력하세요'/>}
+                {createTag &&
+                    <UdongTextField
+                        placeholder={'생성할 태그의 이름을 입력하세요'}
+                        inputRef={inputRef}
+                        onChange={() => {return}}
+                    />
+                }
                 <UdongCheckbox
                     text={'선택한 시간을 행사 시간으로 설정하기'}
                     checked={saveTime}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../../domain/store'
@@ -76,6 +76,7 @@ export const TagContainer = (props: TagContainerProps) => {
     const [showUpsertModal, setShowUpsertModal] = useState(false)
     const [showMembers, setShowMembers] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const searchRef = useRef<HTMLInputElement | undefined>(null)
 
     return <VStack>
         <HStack justifyContent={'end'}>
@@ -88,7 +89,10 @@ export const TagContainer = (props: TagContainerProps) => {
         </HStack>
         <Spacer height={20}/>
 
-        <UdongSearchBar/>
+        <UdongSearchBar
+            inputRef={searchRef}
+            onChange={() => {return}}
+        />
         <Spacer height={8}/>
 
         {tags.map((tag, index) => {

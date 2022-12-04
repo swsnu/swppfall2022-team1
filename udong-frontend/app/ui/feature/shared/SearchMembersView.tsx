@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { ClubUser } from '../../../domain/model/ClubUser'
 import { RoleType } from '../../../domain/model/RoleType'
@@ -17,6 +17,7 @@ export const SearchMembersView = (props: SearchMembersViewProps) => {
 
     const [showMemberProfile, setShowMemberProfile] = useState(false)
     const [selectedMember, setSelectedMember] = useState<ClubUser | undefined>(undefined)
+    const searchRef = useRef<HTMLInputElement | undefined>(null)
 
     const handleMemberClick = useCallback((user: ClubUser) => {
         setSelectedMember(user)
@@ -24,7 +25,10 @@ export const SearchMembersView = (props: SearchMembersViewProps) => {
     }, [])
 
     return <VStack>
-        <UdongSearchBar/>
+        <UdongSearchBar
+            inputRef={searchRef}
+            onChange={() => {return}}
+        />
         <Spacer height={15}/>
 
         <VStack
