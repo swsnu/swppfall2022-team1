@@ -2,7 +2,7 @@ from django.db.models import Q
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
 from post.models import Post
-from post.models import Club
+from club.models import Club
 from post.models import Enrollment
 from post.models import Participation
 from tag.serializers import TagPostSerializer

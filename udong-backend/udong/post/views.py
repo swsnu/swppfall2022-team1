@@ -6,12 +6,14 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 from rest_framework.decorators import action
+from tag.models import Tag
 from post.models import Post
 from post.models import Enrollment
 from post.models import Participation
 from post.serializers import PostBoardSerializer
 from post.serializers import EnrollmentSerializer
 from post.serializers import ParticipationSerializer
+from tag.models import UserTag
 from user.models import UserClub
 from comment.models import Comment
 from comment.serializers import CommentSerializer
@@ -118,7 +120,7 @@ class PostViewSet(_PostGenericViewSet):
     @swagger_auto_schema(
         responses={204: "", 403: "When the non-admin user try to delete"}
     )
-    def destroy(self, request, pk=None):
+    def destroy(self, request: Request, pk: Any = None) -> Response:
         post = self.get_object()
 
         try:
@@ -201,6 +203,7 @@ class PostClubViewSet(_PostGenericViewSet):
             return Response("User is not in the club", status=status.HTTP_404_NOT_FOUND)
         if auth != "A":
             raise PermissionDenied()
+        # tag_list = Tag.objects.filter(id__in= request.data.get("tag_list"))
         serializer = self.get_serializer(
             data=request.data, context={"club_id": pk, "user": request.user}
         )
