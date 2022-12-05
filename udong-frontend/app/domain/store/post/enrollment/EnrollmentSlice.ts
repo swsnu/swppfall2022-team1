@@ -9,7 +9,7 @@ export interface EnrollmentState {
 }
 
 const initialState: EnrollmentState = {
-    isOpen: false,
+    isOpen: true,
 }
 
 export const participateInEnrollment = createAsyncThunk(
@@ -31,7 +31,9 @@ export const getEnrollmentStatus = createAsyncThunk(
 
 export const closeEnrollment = createAsyncThunk(
     'enrollment/closeEnrollment',
-    async () => { return },
+    async (postId: number) => {
+        return EnrollmentAPI.closeEnrollment(postId)
+    },
 )
 
 const enrollmentSlice = createSlice({
@@ -42,11 +44,15 @@ const enrollmentSlice = createSlice({
         builder.addCase(getEnrollmentStatus.fulfilled, (state, action) => {
             state.selectedEnrollmentStatus = action.payload
         })
+        builder.addCase(closeEnrollment.fulfilled, (state) => {
+            state.isOpen = false
+        })
     },
 })
 
 export const enrollmentActions = {
     ...enrollmentSlice.actions,
     getEnrollmentStatus,
+    closeEnrollment,
 }
 export const enrollmentReducer = enrollmentSlice.reducer

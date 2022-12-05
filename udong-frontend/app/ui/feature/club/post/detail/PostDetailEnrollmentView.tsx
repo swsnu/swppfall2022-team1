@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
@@ -18,11 +18,16 @@ interface PostDetailEnrollmentViewProps {
 export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) => {
     const { postId } = props
     const dispatch = useDispatch<AppDispatch>()
+    const isOpen = useSelector(enrollmentSelector.isOpen)
     const enrollmentStatus = useSelector(enrollmentSelector.selectedEnrollmentStatus) // eslint-disable-line
     const [showEnrolled, setShowEnrolled] = useState(false)
 
     useEffect(() => {
         dispatch(enrollmentActions.getEnrollmentStatus(postId))
+    }, [dispatch, postId])
+
+    const handleCloseEnrollment = useCallback(() => {
+        dispatch(enrollmentActions.closeEnrollment(postId))
     }, [dispatch, postId])
 
     return <VStack>
@@ -59,7 +64,9 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
 
                 <UdongButton
                     style={'fill'}
+                    color={isOpen ? UdongColors.Primary : UdongColors.GrayNormal}
                     onClick={() => {return}}
+                    disabled={!isOpen}
                 >
                     지원하기
                 </UdongButton>
@@ -72,7 +79,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
             >
                 <UdongButton
                     style={'line'}
-                    onClick={() => {return}}
+                    onClick={handleCloseEnrollment}
                 >
                     마감하기
                 </UdongButton>
