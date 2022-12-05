@@ -106,6 +106,15 @@ class PostViewSet(_PostGenericViewSet):
         serializer.save()
         return Response(serializer.data)
 
+    @swagger_auto_schema(
+        responses={204: "", 403: "When the non-admin user try to delete"}
+    )
+    def destroy(self, request, pk=None):
+        post = self.get_object()
+        # 권한 설정
+        post.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     @action(detail=True, methods=["GET", "POST"])
     def comment(self, request: Request, pk: Any) -> Response:
         if request.method == "GET":
