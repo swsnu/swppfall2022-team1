@@ -9,6 +9,12 @@ const isOpen = createSelector(
     state => state.isOpen,
 )
 
+const selectedEnrollmentStatus = createSelector(
+    enrollmentState,
+    state => state.selectedEnrollmentStatus,
+)
+
 export const enrollmentSelector = {
     isOpen,
+    selectedEnrollmentStatus,
 }

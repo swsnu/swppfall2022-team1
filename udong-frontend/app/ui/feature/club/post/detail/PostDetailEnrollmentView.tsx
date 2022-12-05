@@ -1,5 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { AppDispatch } from '../../../../../domain/store'
+import { enrollmentSelector } from '../../../../../domain/store/post/enrollment/EnrollmentSelector'
+import { enrollmentActions } from '../../../../../domain/store/post/enrollment/EnrollmentSlice'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
@@ -7,8 +11,19 @@ import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { UserListModal } from '../../../shared/UserListModal'
 
-export const PostDetailEnrollmentView = () => {
+interface PostDetailEnrollmentViewProps {
+    postId: number
+}
+
+export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) => {
+    const { postId } = props
+    const dispatch = useDispatch<AppDispatch>()
+    const enrollmentStatus = useSelector(enrollmentSelector.selectedEnrollmentStatus) // eslint-disable-line
     const [showEnrolled, setShowEnrolled] = useState(false)
+
+    useEffect(() => {
+        dispatch(enrollmentActions.getEnrollmentStatus(postId))
+    }, [dispatch, postId])
 
     return <VStack>
         <Spacer height={60}/>

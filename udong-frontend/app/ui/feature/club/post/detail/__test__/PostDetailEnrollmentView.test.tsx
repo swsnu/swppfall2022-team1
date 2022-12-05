@@ -1,22 +1,46 @@
+import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
 
+import { enrollmentReducer, EnrollmentState } from '../../../../../../domain/store/post/enrollment/EnrollmentSlice'
 import { PostDetailEnrollmentView } from '../PostDetailEnrollmentView'
+
+const stubEnrollmentInitialState: EnrollmentState = {
+    isOpen: false,
+}
+
+const mockStore = configureStore({
+    reducer: { enrollment: enrollmentReducer },
+    preloadedState: { enrollment: stubEnrollmentInitialState },
+})
+
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
 
 describe('<PostDetailEnrollmentView/>', () => {
     it('renders EnrollmentView', async () => {
-        await act(async () => {render(<PostDetailEnrollmentView/>)})
+        await act(async () => {
+            render(
+                <Provider store={mockStore}>
+                    <PostDetailEnrollmentView postId={2}/>
+                </Provider>,
+            )
+        })
 
-        const status = screen.getByText(/현황/)
+        const status = screen.getByText(/현황 보기/)
         await waitFor(() => expect(status).toBeInTheDocument())
-        await act(async () => {fireEvent.click(status)})
+        fireEvent.click(status)
 
         const enroll = screen.getByText(/지원하기/)
         await waitFor(() => expect(enroll).toBeInTheDocument())
-        await act(async () => {fireEvent.click(enroll)})
+        fireEvent.click(enroll)
 
-        const close = screen.getByText(/마감/)
+        const close = screen.getByText(/마감하기/)
         await waitFor(() => expect(close).toBeInTheDocument())
-        await act(async () => {fireEvent.click(close)})
+        fireEvent.click(close)
     })
 })
