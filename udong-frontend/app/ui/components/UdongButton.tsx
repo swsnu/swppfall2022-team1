@@ -9,6 +9,7 @@ interface UdongButtonProps {
     style: 'fill' | 'line'
     color?: string
     onClick: () => void
+    disabled?: boolean
 }
 
 /**
@@ -28,7 +29,7 @@ interface UdongButtonProps {
  * </UdongButton>
  * */
 export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
-    const { children, style, color, onClick } = props
+    const { children, style, color, onClick, disabled } = props
 
     return <StyledButton
         style={{
@@ -37,13 +38,14 @@ export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
             border: `1px solid ${color ?? UdongColors.Primary}`,
             borderRadius: 10,
             padding: '8px 16px',
-            color: style === 'line' ? (color ?? UdongColors.Primary) : UdongColors.White,
             fontSize: 16,
             cursor: 'pointer',
             ...props,
+            color: style === 'line' ? (color ?? UdongColors.Primary) : UdongColors.White,
         }}
         color={color}
         onClick={onClick}
+        disabled={disabled}
     >
         {children}
     </StyledButton>

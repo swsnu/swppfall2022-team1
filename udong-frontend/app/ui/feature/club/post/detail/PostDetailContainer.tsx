@@ -139,7 +139,7 @@ export const PostDetailContainer = () => {
             </UdongText>
         </VStack>
 
-        {postType === PostType.ENROLLMENT && <PostDetailEnrollmentView/>}
+        {postType === PostType.ENROLLMENT && <PostDetailEnrollmentView postId={post.id}/>}
 
         {postType === PostType.SCHEDULING && <PostDetailSchedulingView/>}
 
