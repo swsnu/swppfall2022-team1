@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
+import { EnrollmentAPI } from '../../../../infra/api/EnrollmentAPI'
+
 export interface EnrollmentState {
     isOpen: boolean
 }
 
 const initialState: EnrollmentState = {
-    isOpen: false,
+    isOpen: true,
 }
 
 export const participateInEnrollment = createAsyncThunk(
@@ -25,14 +27,24 @@ export const getEnrollmentStatus = createAsyncThunk(
 
 export const closeEnrollment = createAsyncThunk(
     'enrollment/closeEnrollment',
-    async () => { return },
+    async (postId: number) => {
+        return EnrollmentAPI.closeEnrollment(postId)
+    },
 )
 
 const enrollmentSlice = createSlice({
     name: 'enrollment',
     initialState,
     reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(closeEnrollment.fulfilled, (state) => {
+            state.isOpen = false
+        })
+    },
 })
 
-export const enrollmentActions = enrollmentSlice.actions
+export const enrollmentActions = {
+    ...enrollmentSlice.actions,
+    closeEnrollment,
+}
 export const enrollmentReducer = enrollmentSlice.reducer

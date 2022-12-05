@@ -22,7 +22,7 @@ describe('enrollment reducer', () => {
     })
     it('should handle initial state', () => {
         expect(enrollmentReducer(undefined, { type: 'unknown' })).toEqual({
-            isOpen: false,
+            isOpen: true,
         })
     })
 })
