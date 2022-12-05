@@ -1,7 +1,7 @@
 from django.db.models import Q, Model
 from rest_framework import viewsets, status
 from rest_framework.utils.serializer_helpers import ReturnDict
-from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.exceptions import MethodNotAllowed, PermissionDenied
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
@@ -96,7 +96,16 @@ class PostViewSet(_PostGenericViewSet):
     )
     def update(self, request: Request, pk: Any = None) -> Response:
         post = self.get_object()
-        # 권한 설정
+
+        try:
+            auth = UserClub.objects.get(
+                Q(user_id=request.user.id) & Q(club_id=post.club_id)
+            ).auth
+        except UserClub.DoesNotExist:
+            return Response("User is not in the club", status=status.HTTP_404_NOT_FOUND)
+        if auth != "A":
+            raise PermissionDenied()
+
         serializer = self.get_serializer(
             post,
             data={request.data},
@@ -111,7 +120,16 @@ class PostViewSet(_PostGenericViewSet):
     )
     def destroy(self, request, pk=None):
         post = self.get_object()
-        # 권한 설정
+
+        try:
+            auth = UserClub.objects.get(
+                Q(user_id=request.user.id) & Q(club_id=post.club_id)
+            ).auth
+        except UserClub.DoesNotExist:
+            return Response("User is not in the club", status=status.HTTP_404_NOT_FOUND)
+        if auth != "A":
+            raise PermissionDenied()
+
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -177,6 +195,12 @@ class PostClubViewSet(_PostGenericViewSet):
             return Response()
 
     def create(self, request: Request, pk: Any) -> Response:
+        try:
+            auth = UserClub.objects.get(Q(user_id=request.user.id) & Q(club_id=pk)).auth
+        except UserClub.DoesNotExist:
+            return Response("User is not in the club", status=status.HTTP_404_NOT_FOUND)
+        if auth != "A":
+            raise PermissionDenied()
         serializer = self.get_serializer(
             data=request.data, context={"club_id": pk, "user": request.user}
         )
