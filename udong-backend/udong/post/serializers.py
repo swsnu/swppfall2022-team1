@@ -2,6 +2,7 @@ from django.db.models import Q
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
 from post.models import Post
+from post.models import Club
 from post.models import Enrollment
 from post.models import Participation
 from tag.serializers import TagPostSerializer
@@ -10,6 +11,7 @@ from event.serializers import EventNameSerializer
 from club.serializers import ClubSerializer
 from drf_yasg.utils import swagger_serializer_method
 from typing import Optional
+from typing import Dict, Any
 
 
 class PostBoardSerializer(serializers.ModelSerializer[Post]):
@@ -84,6 +86,13 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         )
         tags = list(map(lambda post_tag: post_tag.tag, post_tag_list))
         return TagPostSerializer(tags, many=True).data
+
+    def create(self, validated_data: Dict[str, Any]) -> Post:
+        club = Club.objects.get(id=self.context["club_id"])
+        post = Post.objects.create(
+            **validated_data, club=club, author=self.context["user"]
+        )
+        return post
 
 
 class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):

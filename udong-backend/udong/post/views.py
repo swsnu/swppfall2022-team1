@@ -149,6 +149,14 @@ class PostClubViewSet(_PostGenericViewSet):
         else:
             return Response()
 
+    def create(self, request: Request, pk: Any) -> Response:
+        serializer = self.get_serializer(
+            data=request.data, context={"club_id": pk, "user": request.user}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class EnrollmentViewSet(_EnrollmentGenericViewSet):
     queryset = Enrollment.objects.all()
