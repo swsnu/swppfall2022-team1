@@ -88,6 +88,24 @@ class PostViewSet(_PostGenericViewSet):
             ).data
         )
 
+    @swagger_auto_schema(
+        responses={
+            200: PostBoardSerializer(),
+            403: "When the non-admin user try to update",
+        }
+    )
+    def update(self, request: Request, pk: Any = None) -> Response:
+        post = self.get_object()
+        # 권한 설정
+        serializer = self.get_serializer(
+            post,
+            data={request.data},
+            partial=True,
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
     @action(detail=True, methods=["GET", "POST"])
     def comment(self, request: Request, pk: Any) -> Response:
         if request.method == "GET":
