@@ -8,6 +8,7 @@ describe('<DeleteModal/>', () => {
             deleteObjectText={'게시글'}
             isOpen={true}
             setIsOpen={() => {return}}
+            onClickDelete={() => {return}}
         />)
         const component = screen.getByText('삭제하기')
         fireEvent.click(component)

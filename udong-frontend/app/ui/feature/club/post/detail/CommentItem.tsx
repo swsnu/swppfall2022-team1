@@ -1,9 +1,12 @@
 import styled from '@emotion/styled'
+import { useCallback, useRef, useState } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongImage } from '../../../../components/UdongImage'
 import { UdongText } from '../../../../components/UdongText'
+import { UdongTextField } from '../../../../components/UdongTextField'
+import check from '../../../../icons/IcCheck.png'
 import edit from '../../../../icons/IcPencil.png'
 import del from '../../../../icons/IcTrash.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
@@ -14,10 +17,24 @@ interface CommentItemProps {
     content: string
     isAuthor?: boolean
     onClickDelete: (commentId: number) => void
+    onSubmitEditedComment: (commentId: number, content: string) => void
 }
 
 export const CommentItem = (props: CommentItemProps) => {
-    const { id, name, content, isAuthor = false, onClickDelete } = props
+    const { id, name, content, isAuthor = false, onClickDelete, onSubmitEditedComment } = props
+    const inputRef = useRef<HTMLInputElement | undefined>(null)
+    const [isInputVisible, setIsInputVisible] = useState(false)
+    const [changedComment, setChangedComment] = useState('')
+
+    const handleEditComment = useCallback(() => {
+        if (!isInputVisible) {
+            setIsInputVisible(true)
+        } else {
+            onSubmitEditedComment(id, changedComment)
+            setIsInputVisible(false)
+        }
+    }, [isInputVisible, onSubmitEditedComment, changedComment, id])
+
     return <VStack>
         <Spacer height={20}/>
 
@@ -32,9 +49,10 @@ export const CommentItem = (props: CommentItemProps) => {
                 <HStack>
                     <Spacer width={30}/>
                     <UdongImage
-                        src={edit.src}
+                        src={isInputVisible ? check.src : edit.src}
                         height={20}
                         width={20}
+                        onClick={handleEditComment}
                     />
                     <Spacer width={10}/>
                     <UdongImage
@@ -48,7 +66,16 @@ export const CommentItem = (props: CommentItemProps) => {
         </HStack>
 
         <Spacer height={10}/>
-        <UdongText style={'GeneralContent'}>{content}</UdongText>
+
+        {isInputVisible ?
+            <UdongTextField
+                inputRef={inputRef}
+                defaultValue={content}
+                onChange={() => setChangedComment(inputRef.current?.value ?? '')}
+            />
+            :
+            <UdongText style={'GeneralContent'}>{content}</UdongText>
+        }
     </VStack>
 }
 
