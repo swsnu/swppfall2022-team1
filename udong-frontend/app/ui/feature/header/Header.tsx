@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../domain/store'
@@ -34,19 +34,24 @@ export const Header = ({ type, clubId }: HeaderProps) => {
     const isLoggedIn = useSelector(authSelector.isLoggedIn)
     const isLoading = useSelector(authSelector.isLoading)
 
+    const clubName = '단풍'
+
+    const handleLogout = useCallback(() => {
+        dispatch(authActions.logout())
+        signOut({ redirect: false })
+    }, [dispatch])
+
     useEffect(() => {
         if (type !== HEADER_PAGE.NONE && status === 'unauthenticated') {
-            dispatch(authActions.logout())
+            handleLogout()
         }
-    }, [status]) // eslint-disable-line
+    }, [handleLogout, status, type])
 
     useEffect(() => {
         if (!isLoading && !isLoggedIn) {
             router.push('/login')
         }
     }, [isLoggedIn, isLoading]) // eslint-disable-line
-
-    const clubName = '단풍'
 
     if (type === HEADER_PAGE.NONE) {return null}
 
@@ -90,7 +95,7 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                     alignItems={'center'}
                     gap={15}
                 >
-                    <HStack onClick={() => signOut({ redirect: false })}>
+                    <HStack onClick={handleLogout}>
                         <UdongText
                             style={'Header'}
                             color={UdongColors.GrayDark}
