@@ -38,7 +38,7 @@ class PostViewSet(_PostGenericViewSet):
     serializer_class = CommentSerializer
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
-        if self.action in ("list", "retrieve"):
+        if self.action in ("list", "retrieve", "update"):
             return PostBoardSerializer
         elif self.action == "comment":
             return CommentSerializer
