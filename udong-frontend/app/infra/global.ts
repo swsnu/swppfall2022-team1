@@ -6,5 +6,3 @@ export const axiosConfig = axios.create({
     xsrfCookieName: 'csrftoken',
     xsrfHeaderName: 'X-Csrftoken',
 })
-// axiosConfig.defaults.xsrfCookieName = 'csrftoken'
-// axiosConfig.defaults.xsrfHeaderName = 'X-CSRFToken'
