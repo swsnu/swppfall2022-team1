@@ -1,11 +1,8 @@
 import axios from 'axios'
-import getConfig from 'next/config'
-
-const { publicRuntimeConfig } = getConfig()
 
 export const axiosConfig = axios.create({
-    baseURL: publicRuntimeConfig.backendUrl,
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
     withCredentials: true,
     xsrfCookieName: 'csrftoken',
-    xsrfHeaderName: 'X-CSRFTOKEN',
+    xsrfHeaderName: 'X-Csrftoken',
 })
