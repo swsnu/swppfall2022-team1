@@ -55,7 +55,7 @@ class ClubViewSet(_GenereicViewSet):
         return Response(self.get_serializer(club).data)
 
     def create(self, request: Request) -> Response:
-        serializer = self.serializer_class(
+        serializer = self.get_serializer(
             data=request.data, context={"user": request.user}
         )
         serializer.is_valid(raise_exception=True)
@@ -66,7 +66,7 @@ class ClubViewSet(_GenereicViewSet):
     def update(self, request: Request, pk: Any) -> Response:
         club = self.get_object()
         self.check_object_permissions(request, club)
-        serializer = self.serializer_class(club, request.data, partial=True)
+        serializer = self.get_serializer(club, request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
