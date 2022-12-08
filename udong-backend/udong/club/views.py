@@ -220,7 +220,7 @@ class ClubViewSet(_GenericClubViewSet):
         serializer = self.get_serializer(
             data=request.data,
             context={
-                "club_id": pk,
+                "club_obj": club,
                 "user": request.user,
                 "id": request.user.id,
                 "club": False,

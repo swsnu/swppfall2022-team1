@@ -87,10 +87,9 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         return TagPostSerializer(tags, many=True).data
 
     def create(self, validated_data: Dict[str, Any]) -> Post:
-        club = Club.objects.get(id=self.context["club_id"])
         post = Post.objects.create(
             **validated_data,
-            club=club,
+            club=self.context["club_obj"],
             author=self.context["user"],
             event=self.context["event"]
         )
