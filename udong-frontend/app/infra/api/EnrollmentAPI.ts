@@ -7,9 +7,9 @@ import { enrollmentTransformer } from '../transformer/EnrollmentTransformer'
 import { participationTransformer } from '../transformer/ParticipationTransformer'
 
 export const EnrollmentAPI = (() => {
-    async function getEnrollmentStatus(postId: string): Promise<EnrollmentStatus> {
-        const response = await axiosConfig.get<ParticipationDto>(`/api/enroll/${postId}/status/`)
-        return participationTransformer.fromDto(response.data)
+    async function getEnrollmentStatus(postId: string): Promise<Array<EnrollmentStatus>> {
+        const response = await axiosConfig.get<Array<ParticipationDto>>(`/api/enroll/${postId}/status/`)
+        return response.data.map(participationTransformer.fromDto)
     }
 
     async function closeEnrollment(postId: number): Promise<Enrollment> {

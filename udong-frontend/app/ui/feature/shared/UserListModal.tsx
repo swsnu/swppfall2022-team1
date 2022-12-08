@@ -1,5 +1,10 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { User } from '../../../domain/model/User'
+import { AppDispatch } from '../../../domain/store'
+import { userSelector } from '../../../domain/store/user/UserSelector'
+import { userActions } from '../../../domain/store/user/UserSlice'
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
 import { UdongImage } from '../../components/UdongImage'
@@ -16,11 +21,18 @@ interface UserListModalProps {
     isOpen: boolean
     setIsOpen: (open: boolean) => void
     title: string
+    users: Array<User>
 }
 
 export const UserListModal = (props: UserListModalProps) => {
-    const { isOpen, setIsOpen, title } = props
+    const { isOpen, setIsOpen, title, users } = props
+    const dispatch = useDispatch<AppDispatch>()
+    const userMe = useSelector(userSelector.userMe)
     const searchRef = useRef<HTMLInputElement | undefined>(null)
+
+    useEffect(() => {
+        dispatch(userActions.getMyProfile)
+    }, [])
 
     const handleOnClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         setIsOpen(false)
@@ -70,9 +82,10 @@ export const UserListModal = (props: UserListModalProps) => {
                     name={'이유빈'}
                     isMe={true}
                 />
-                {dummy.map((user, index) => {
+                {users.map((user, index) => {
                     return <UserItem
-                        name={user}
+                        name={user.name}
+                        isMe={user.id === userMe?.id}
                         key={`${user}/${index}`}
                     />
                 })}

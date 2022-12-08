@@ -7,7 +7,6 @@ import { enrollmentReducer, EnrollmentState } from '../../../../../../domain/sto
 import { PostDetailEnrollmentView } from '../PostDetailEnrollmentView'
 
 const stubEnrollmentInitialState: EnrollmentState = {
-    isOpen: false,
 }
 
 const mockStore = configureStore({
@@ -26,7 +25,10 @@ describe('<PostDetailEnrollmentView/>', () => {
         await act(async () => {
             render(
                 <Provider store={mockStore}>
-                    <PostDetailEnrollmentView postId={2}/>
+                    <PostDetailEnrollmentView
+                        postId={2}
+                        isOpen={true}
+                    />
                 </Provider>,
             )
         })

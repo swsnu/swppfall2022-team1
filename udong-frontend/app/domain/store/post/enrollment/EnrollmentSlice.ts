@@ -4,13 +4,10 @@ import { EnrollmentAPI } from '../../../../infra/api/EnrollmentAPI'
 import { EnrollmentStatus } from '../../../model/EnrollmentStatus'
 
 export interface EnrollmentState {
-    isOpen: boolean
-    selectedEnrollmentStatus?: EnrollmentStatus
+    selectedEnrollmentStatus?: Array<EnrollmentStatus>
 }
 
-const initialState: EnrollmentState = {
-    isOpen: true,
-}
+const initialState: EnrollmentState = {}
 
 export const participateInEnrollment = createAsyncThunk(
     'enrollment/participateInEnrollment',
@@ -43,9 +40,6 @@ const enrollmentSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(getEnrollmentStatus.fulfilled, (state, action) => {
             state.selectedEnrollmentStatus = action.payload
-        })
-        builder.addCase(closeEnrollment.fulfilled, (state) => {
-            state.isOpen = false
         })
     },
 })
