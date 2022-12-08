@@ -67,7 +67,7 @@ export const UdongTextField = (props: UdongTextFieldProps) => {
                 width={20}
                 height={20}
                 style={{
-                    marginRight: 10,
+                    margin: '0 10px',
                 }}
             />
         }
