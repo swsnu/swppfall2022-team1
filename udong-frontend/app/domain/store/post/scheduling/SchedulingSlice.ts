@@ -4,7 +4,7 @@ import { SchedulingAPI } from '../../../../infra/api/SchedulingAPI'
 import { DateSchedulingPost } from '../../../model/DateSchedulingPost'
 import { WeekdaySchedulingPost } from '../../../model/WeekdaySchedulingPost'
 
-interface SchedulingState {
+export interface SchedulingState {
     isOpen: boolean
     schedulingStatus?: DateSchedulingPost | WeekdaySchedulingPost
 }
