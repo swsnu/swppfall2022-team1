@@ -37,12 +37,20 @@ class TagViewSet(_GenericViewSet):
     def retrieve(self, request: Request, pk: Any = None) -> Response:
         return Response(self.get_serializer(self.get_object()).data)
 
-    @swagger_auto_schema(responses={204: "", 403: "User is not admin"})
-    def update(self, request: Request, pk: Any = None) -> Response:
+    @swagger_auto_schema(
+        responses={
+            204: "",
+            400: "Cannot modify user in default tag",
+            403: "User is not admin",
+        }
+    )
+    def update(self, request: Request, pk: Any) -> Response:
         tag = self.get_object()
         self.check_object_permissions(request, tag.club)
         serializer = self.get_serializer(tag, request.data, partial=True)
         serializer.is_valid(raise_exception=True)
+        if tag.is_default and "new_users" in serializer.validated_data:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data)
 
