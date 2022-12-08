@@ -6,7 +6,6 @@ app_name = "post"
 
 router = SimpleRouter()
 router.register("post", PostViewSet)
-router.register("post/club", PostClubViewSet)
 router.register("enroll", EnrollmentViewSet)
 
 urlpatterns = router.urls

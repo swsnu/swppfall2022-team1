@@ -3,6 +3,7 @@ from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
 from post.models import Post
 from club.models import Club
+from event.models import Event
 from post.models import Enrollment
 from post.models import Participation
 from tag.serializers import TagPostSerializer
@@ -90,7 +91,10 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     def create(self, validated_data: Dict[str, Any]) -> Post:
         club = Club.objects.get(id=self.context["club_id"])
         post = Post.objects.create(
-            **validated_data, club=club, author=self.context["user"]
+            **validated_data,
+            club=club,
+            author=self.context["user"],
+            event=self.context["event"]
         )
         return post
 
