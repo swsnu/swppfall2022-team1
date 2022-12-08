@@ -34,5 +34,7 @@ class TagUserSerializer(serializers.ModelSerializer[Tag]):
 
     @swagger_serializer_method(serializer_or_field=UserSerializer(many=True))
     def get_users(self, tag: Tag) -> ReturnDict:
-        users = list(map(lambda user_tag: user_tag.user, tag.tag_user_set.all()))
+        users = list(
+            map(lambda user_tag: user_tag.user, tag.tag_user_set.select_related("user"))
+        )
         return UserSerializer(users, many=True).data
