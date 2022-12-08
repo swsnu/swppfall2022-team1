@@ -15,6 +15,7 @@ from club.serializers import (
     ClubUserSerializer,
     ClubEventSerializer,
     ClubTagSerializer,
+    ClubRegisterSerializer,
 )
 from common.permissions import IsAdmin
 from drf_yasg.utils import swagger_auto_schema, no_body
@@ -46,6 +47,8 @@ class ClubViewSet(_GenericClubViewSet):
     def get_serializer_class(self) -> Type[BaseSerializer[Club]]:
         if self.action == "user":
             return ClubUserSerializer
+        if self.action == "register":
+            return ClubRegisterSerializer
         if self.action == "event":
             return ClubEventSerializer
         if self.action == "tag":
@@ -68,6 +71,23 @@ class ClubViewSet(_GenericClubViewSet):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @swagger_auto_schema(
+        method="POST",
+        request_body=ClubRegisterSerializer(),
+        responses={204: "", 400: "User already in the club", 404: "Invalid Code"},
+    )
+    @action(detail=False, methods=["POST"])
+    def register(self, request: Request) -> Response:
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        club = get_object_or_404(Club, **serializer.validated_data)
+        try:
+            # request.user is not anonymous
+            UserClub.objects.create(user=request.user, club=club, auth="M")  # type: ignore
+        except IntegrityError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     @swagger_auto_schema(responses={200: ClubSerializer(), 403: "User is not admin"})
     def update(self, request: Request, pk: Any) -> Response:
         club = self.get_object()
@@ -86,11 +106,6 @@ class ClubViewSet(_GenericClubViewSet):
 
     @swagger_auto_schema(method="GET", responses={200: ClubUserSerializer(many=True)})
     @swagger_auto_schema(
-        method="POST",
-        request_body=no_body,
-        responses={204: "", 400: "User already in the club"},
-    )
-    @swagger_auto_schema(
         method="DELETE",
         responses={
             204: "",
@@ -98,7 +113,7 @@ class ClubViewSet(_GenericClubViewSet):
             404: "User is not in the club",
         },
     )
-    @action(detail=True, methods=["GET", "POST", "DELETE"])
+    @action(detail=True, methods=["GET", "DELETE"])
     def user(self, request: Request, pk: Any) -> Response:
         if request.method == "GET":
             club_user = (
@@ -108,14 +123,6 @@ class ClubViewSet(_GenericClubViewSet):
                 .club_user_set
             )
             return Response(self.get_serializer(club_user, many=True).data)
-        elif request.method == "POST":
-            club = self.get_object()
-            try:
-                # request.user is not anonymous
-                UserClub.objects.create(user=request.user, club=club, auth="M")  # type: ignore
-            except IntegrityError:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            return Response(status=status.HTTP_204_NO_CONTENT)
         elif request.method == "DELETE":
             user_club = get_object_or_404(
                 UserClub, Q(user_id=request.user.id) & Q(club_id=pk)

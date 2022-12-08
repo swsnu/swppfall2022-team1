@@ -37,6 +37,14 @@ class ClubSerializer(serializers.ModelSerializer[Club]):
         return club
 
 
+class ClubRegisterSerializer(serializers.ModelSerializer[Club]):
+    code = serializers.CharField(max_length=10, write_only=True)
+
+    class Meta:
+        model = Club
+        fields = ("code",)
+
+
 class ClubUserSerializer(serializers.ModelSerializer[UserClub]):
     user = UserSerializer()
     auth = serializers.CharField(source="get_auth_display")
