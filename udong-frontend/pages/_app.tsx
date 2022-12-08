@@ -1,12 +1,29 @@
 import '../styles/globals.css'
-import { SessionProvider } from 'next-auth/react'
+import { SessionProvider, signOut } from 'next-auth/react'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { Provider } from 'react-redux'
 
 import { store } from '../app/domain/store'
+import { authActions } from '../app/domain/store/auth/AuthSlice'
+import { axiosConfig } from '../app/infra/global'
 import { VStack } from '../app/ui/components/Stack'
 import { Header, HEADER_PAGE } from '../app/ui/feature/header/Header'
+
+axiosConfig.interceptors.response.use(
+    function (response){
+        return response
+    },
+    function (error) {
+        if (error.response && error.response.status){
+            if (error.response.status === 401){
+                signOut({ redirect: false })
+                store.dispatch(authActions.authExpired())
+            }
+        }
+        return Promise.reject(error)
+    },
+)
 
 const findHeaderType = (url: string) => {
     switch (url) {
