@@ -1,9 +1,13 @@
-import { ListItemPost } from './ListItemPost'
 import { SchedulingPostType } from './SchedulingPostType'
 
 export interface SchedulingPost {
-    post: ListItemPost
     type: SchedulingPostType
     startTime: number
     endTime: number
+    dates?: Array<Date>
+    weekdays?: boolean[]
+    repeat_start?: Date
+    repeat_end?: Date
+    closed: boolean
+    confirmed_time?: boolean[][]
 }
