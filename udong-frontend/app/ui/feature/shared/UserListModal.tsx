@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react'
 
+import { User } from '../../../domain/model/User'
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
 import { UdongImage } from '../../components/UdongImage'
@@ -9,17 +10,15 @@ import { UdongText } from '../../components/UdongText'
 import close from '../../icons/IcClose.png'
 import { UserItem } from './UserItem'
 
-const dummyUserData = ['고동현', '박지연', '임유진', '이유빈']
-const dummy: Array<string> = [...dummyUserData].concat(dummyUserData).concat(dummyUserData).concat(dummyUserData)
-
 interface UserListModalProps {
     isOpen: boolean
     setIsOpen: (open: boolean) => void
     title: string
+    users: Array<User>
 }
 
 export const UserListModal = (props: UserListModalProps) => {
-    const { isOpen, setIsOpen, title } = props
+    const { isOpen, setIsOpen, title, users } = props
     const searchRef = useRef<HTMLInputElement | undefined>(null)
 
     const handleOnClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -60,23 +59,25 @@ export const UserListModal = (props: UserListModalProps) => {
             />
             <Spacer height={15}/>
 
-            <VStack
-                width={'100%'}
-                height={'50vh'}
-                alignItems={'start'}
-                style={{ overflow: 'scroll', paddingBottom: 15 }}
-            >
-                <UserItem
-                    name={'이유빈'}
-                    isMe={true}
-                />
-                {dummy.map((user, index) => {
-                    return <UserItem
-                        name={user}
-                        key={`${user}/${index}`}
-                    />
-                })}
-            </VStack>
+            {users.length > 0 ?
+                <VStack
+                    width={'100%'}
+                    height={'50vh'}
+                    alignItems={'start'}
+                    style={{ overflow: 'scroll', paddingBottom: 15 }}
+                >
+                    {users.map((user, index) => {
+                        return <UserItem
+                            name={user.name}
+                            key={`${user}/${index}`}
+                        />
+                    })}
+                </VStack>
+                :
+                <VStack paddingVertical={100}>
+                    <UdongText style={'GeneralContent'}>유저가 없습니다.</UdongText>
+                </VStack>
+            }
         </VStack>
     </UdongModal>
 }
