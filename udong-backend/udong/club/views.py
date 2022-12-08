@@ -1,11 +1,14 @@
 from django.shortcuts import render
+from django.db.utils import IntegrityError
 from rest_framework import viewsets, status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.serializers import BaseSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import MethodNotAllowed
 from club.models import Club
+from user.models import UserClub
 from club.serializers import (
     ClubSerializer,
     ClubUserSerializer,
@@ -13,7 +16,7 @@ from club.serializers import (
     ClubTagSerializer,
 )
 from common.permissions import IsAdmin
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.utils import swagger_auto_schema, no_body
 from typing import Any, Type, TYPE_CHECKING
 
 # Create your views here.
@@ -78,16 +81,34 @@ class ClubViewSet(_GenereicViewSet):
         club.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @swagger_auto_schema(responses={200: ClubUserSerializer(many=True)})
-    @action(detail=True, methods=["GET"])
+    @swagger_auto_schema(method="GET", responses={200: ClubUserSerializer(many=True)})
+    @swagger_auto_schema(
+        method="POST",
+        request_body=no_body,
+        responses={204: "", 400: "User already in club"},
+    )
+    @action(detail=True, methods=["GET", "POST"])
     def user(self, request: Request, pk: Any) -> Response:
-        club_user = (
-            self.get_queryset()
-            .prefetch_related("club_user_set__user")
-            .get(id=pk)
-            .club_user_set
-        )
-        return Response(self.get_serializer(club_user, many=True).data)
+        if request.method == "GET":
+            club_user = (
+                self.get_queryset()
+                .prefetch_related("club_user_set__user")
+                .get(id=pk)
+                .club_user_set
+            )
+            return Response(self.get_serializer(club_user, many=True).data)
+        elif request.method == "POST":
+            club = self.get_object()
+            try:
+                # request.user is not anonymous
+                UserClub.objects.create(user=request.user, club=club, auth="M")  # type: ignore
+            except IntegrityError:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            raise MethodNotAllowed(
+                request.method if request.method else "unknown method"
+            )
 
     @swagger_auto_schema(responses={200: ClubEventSerializer(many=True)})
     @action(detail=True, methods=["GET"])
