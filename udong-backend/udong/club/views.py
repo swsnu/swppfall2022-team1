@@ -161,7 +161,7 @@ class ClubUserViewSet(_GenericClubUserViewSet):
     @swagger_auto_schema(
         responses={
             204: "",
-            400: "User can delete himself",
+            400: "Admin cannot be kicked out",
             403: "User is not admin",
             404: "User is not in the club / Invalid club",
         },
@@ -169,9 +169,9 @@ class ClubUserViewSet(_GenericClubUserViewSet):
     def destroy(self, request: Request, club_id: Any, user_id: Any) -> Response:
         club = get_object_or_404(Club, id=club_id)
         self.check_object_permissions(request, club)
-        if int(user_id) == request.user.id:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
         user_club = get_object_or_404(UserClub, Q(user_id=user_id) & Q(club_id=club_id))
+        if user_club.auth == "A":
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         user_club.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
