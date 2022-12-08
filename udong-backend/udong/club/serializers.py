@@ -82,18 +82,3 @@ class ClubEventSerializer(serializers.ModelSerializer[Event]):
     @swagger_serializer_method(serializer_or_field=PureTimeSerializer(many=True))
     def get_time(self, event: Event) -> ReturnDict:
         return PureTimeSerializer(event.time_set, many=True, context=self.context).data
-
-
-class ClubTagSerializer(serializers.ModelSerializer[Tag]):
-    name = serializers.CharField(max_length=255)
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
-
-    class Meta:
-        model = Tag
-        fields = (
-            "id",
-            "name",
-            "created_at",
-            "updated_at",
-        )
