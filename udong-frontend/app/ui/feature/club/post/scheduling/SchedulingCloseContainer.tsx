@@ -1,7 +1,13 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
+import { AppDispatch } from '../../../../../domain/store'
+import { clubActions } from '../../../../../domain/store/club/ClubSlice'
+import { schedulingActions } from '../../../../../domain/store/post/scheduling/SchedulingSlice'
+import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { new2dArray } from '../../../../../utility/functions'
+import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongHeader } from '../../../../components/UdongHeader'
@@ -15,10 +21,26 @@ import { SchedulingUserListView } from './SchedulingUserListView'
 
 export const SchedulingCloseContainer = () => {
     const router = useRouter()
+    const { clubId: rawClubId, postId: rawPostId } = router.query
+    const postId = convertQueryParamToString(rawPostId)
+    const clubId = convertQueryParamToString(rawClubId)
 
     const [selected, setSelected] = useState<boolean[][]|null>(null)
     const [hover, setHover] = useState<CellIdx|null>(null)
     const [modalOpen, setModalOpen] = useState(false)
+    const dispatch = useDispatch<AppDispatch>()
+
+    useEffect(() => {
+        if(postId) { dispatch(schedulingActions.getSchedulingStatus(postId)) }
+    }, [dispatch, postId])
+
+    useEffect(() => {
+        if(clubId) { dispatch(clubActions.getClubMembers(+clubId))}
+    }, [dispatch, clubId])
+
+    useEffect(() => {
+        dispatch(userActions.getMyProfile())
+    }, [dispatch])
 
     const { schedulingStatus, allUsers, participatedUserIds, cnt, best } = useData()
     useEffect(() => {
