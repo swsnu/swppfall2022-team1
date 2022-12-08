@@ -61,7 +61,7 @@ class PostTestCase(MyTestCase):
             closed=True,
         )
 
-        tag1 = Tag.objects.create(club=club1, name="genius")
+        tag1 = Tag.objects.create(club=club1, name="genius", is_default=True)
         tag2 = Tag.objects.create(club=club1, name="winner")
         tag3 = Tag.objects.create(club=club1, name="loser")
 
@@ -99,10 +99,10 @@ class PostTestCase(MyTestCase):
                     "content": "Turing award Turing award Turing award",
                     "type": "Announcement",
                     "closed": None,
-                    "include_tag": [{"id": 1, "name": "genius"}],
+                    "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
                     "exclude_tag": [
-                        {"id": 2, "name": "winner"},
-                        {"id": 3, "name": "loser"},
+                        {"id": 2, "name": "winner", "is_default": False},
+                        {"id": 3, "name": "loser", "is_default": False},
                     ],
                 },
                 {
@@ -114,10 +114,10 @@ class PostTestCase(MyTestCase):
                     "content": "Nobel Prize Nobel Prize Nobel Prize",
                     "type": "Enrollment",
                     "closed": False,
-                    "include_tag": [{"id": 1, "name": "genius"}],
+                    "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
                     "exclude_tag": [
-                        {"id": 2, "name": "winner"},
-                        {"id": 3, "name": "loser"},
+                        {"id": 2, "name": "winner", "is_default": False},
+                        {"id": 3, "name": "loser", "is_default": False},
                     ],
                 },
             ],
@@ -138,10 +138,10 @@ class PostTestCase(MyTestCase):
                     "content": "Really Boring",
                     "type": "Scheduling",
                     "closed": True,
-                    "include_tag": [{"id": 1, "name": "genius"}],
+                    "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
                     "exclude_tag": [
-                        {"id": 2, "name": "winner"},
-                        {"id": 3, "name": "loser"},
+                        {"id": 2, "name": "winner", "is_default": False},
+                        {"id": 3, "name": "loser", "is_default": False},
                     ],
                 }
             ],
