@@ -36,6 +36,6 @@ class TagViewSet(_GenericViewSet):
     @swagger_auto_schema(responses={204: "", 403: "User is not admin"})
     def destroy(self, request: Request, pk: Any = None) -> Response:
         tag = self.get_object()
-        self.check_object_permissions(request, tag)
+        self.check_object_permissions(request, tag.club)
         tag.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
