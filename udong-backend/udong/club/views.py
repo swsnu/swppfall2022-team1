@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import MethodNotAllowed, PermissionDenied
 from rest_framework.serializers import BaseSerializer
 from club.models import Club
+from tag.models import Tag
 from event.models import Event
 from club.serializers import (
     ClubSerializer,
@@ -19,6 +20,8 @@ from typing import Any, Type, TYPE_CHECKING
 
 from post.models import Post
 from post.serializers import PostBoardSerializer
+from post.models import PostTag
+from post.models import Enrollment, Scheduling
 from user.models import UserClub
 
 # Create your views here.
@@ -127,7 +130,12 @@ class ClubViewSet(_GenereicViewSet):
             return Response("User is not in the club", status=status.HTTP_404_NOT_FOUND)
         if auth != "A":
             raise PermissionDenied()
-        event = Event.objects.get(id=request.data.get("event_id", 0))
+
+        try:
+            event = Event.objects.get(id=request.data.get("event_id", -1))
+        except Event.DoesNotExist:
+            event = None
+
         serializer = self.get_serializer(
             data=request.data,
             context={
@@ -139,7 +147,13 @@ class ClubViewSet(_GenereicViewSet):
             },
         )
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        # tag_list = Tag.objects.filter(id__in= request.data.get("tag_list"))
+        post = serializer.save()
+
+        if post.type == "E":  # type: ignore
+            Enrollment.objects.create(post=post, closed=False)  # type: ignore
+
+        tag_list = Tag.objects.filter(id__in=request.data.get("tag_list", []))
+        for tag in tag_list:
+            PostTag.objects.create(post=post, tag=tag)  # type: ignore
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
