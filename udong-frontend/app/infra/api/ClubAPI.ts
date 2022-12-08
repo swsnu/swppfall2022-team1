@@ -23,6 +23,11 @@ export const ClubAPI = (() => {
         return clubTransformer.fromDto(response.data)
     }
 
+    async function registerClub(code: string): Promise<Club> {
+        const response = await axiosConfig.post<ClubDto>(`/api/club/register/`, { code })
+        return clubTransformer.fromDto(response.data)
+    }
+
     function createClub() { return } // /club (POST)
     function editClub() { return }
     function deleteClub() { return }
@@ -56,6 +61,7 @@ export const ClubAPI = (() => {
     return Object.freeze({
         getClubs,
         getClub,
+        registerClub,
         createClub,
         editClub,
         deleteClub,

@@ -12,6 +12,7 @@ export interface UdongTextFieldProps {
     placeholder?: string
     width?: number | string
     imageSrc?: string
+    maxLength?: number
 }
 
 /**
@@ -20,7 +21,7 @@ export interface UdongTextFieldProps {
  *
  * */
 export const UdongTextField = (props: UdongTextFieldProps) => {
-    const { onChange, isCleared, inputRef, defaultValue, width, imageSrc, placeholder } = props
+    const { onChange, isCleared, inputRef, defaultValue, width, imageSrc, placeholder, maxLength } = props
     const [value, setValue] = useState(defaultValue ?? '')
 
     useEffect(() => {
@@ -48,6 +49,7 @@ export const UdongTextField = (props: UdongTextFieldProps) => {
             value={value}
             onChange={handleOnChange}
             placeholder={placeholder}
+            maxLength={maxLength}
             style={{
                 backgroundColor: UdongColors.GrayBright,
                 borderRadius: 14,
