@@ -13,6 +13,78 @@ from typing import Optional
 from typing import Dict, Any
 
 
+class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):
+    closed = serializers.BooleanField(default=False)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Enrollment
+        fields = (
+            "post_id",
+            "closed",
+            "created_at",
+            "updated_at",
+        )
+
+    def create(self, validated_data: Dict[str, Any]) -> Enrollment:
+        enrollment = Enrollment.objects.create(**validated_data)
+        return enrollment
+
+
+class ParticipationSerializer(serializers.ModelSerializer[Participation]):
+    user = serializers.SerializerMethodField()
+    enrollment_id = serializers.IntegerField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Participation
+        fields = (
+            "id",
+            "user",
+            "enrollment_id",
+            "created_at",
+            "updated_at",
+        )
+
+    @swagger_serializer_method(serializer_or_field=UserSerializer())
+    def get_user(self, participation: Participation) -> ReturnDict:
+        return UserSerializer(participation.user).data
+
+
+class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
+    closed = serializers.BooleanField(default=False)
+    available_times = serializers.SerializerMethodField()
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Scheduling
+        fields = (
+            "post_id",
+            "type",
+            "start_time",
+            "end_time",
+            "dates",
+            "weekdays",
+            "repeat_start",
+            "repeat_end",
+            "closed",
+            "available_times",
+            "created_at",
+            "updated_at",
+        )
+
+    @swagger_serializer_method(serializer_or_field=AvailableTimeSerializer())
+    def get_available_times(self, scheduling: Scheduling) -> ReturnDict:
+        return AvailableTimeSerializer(scheduling.available_time_set, many=True).data
+
+    def create(self, validated_data: Dict[str, Any]) -> Scheduling:
+        scheduling = Scheduling.objects.create(**validated_data)
+        return scheduling
+
+
 class PostBoardSerializer(serializers.ModelSerializer[Post]):
     author = serializers.SerializerMethodField()
     club = serializers.SerializerMethodField()
@@ -24,6 +96,8 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     exclude_tag = serializers.SerializerMethodField()
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
+    scheduling = SchedulingSerializer(allow_null=True, required=False)
+    enrollment = EnrollmentSerializer(allow_null=True, required=False)
 
     class Meta:
         model = Post
@@ -35,6 +109,8 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             "title",
             "content",
             "type",
+            "scheduling",
+            "enrollment",
             "closed",
             "include_tag",
             "exclude_tag",
@@ -87,74 +163,19 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         return TagPostSerializer(tags, many=True).data
 
     def create(self, validated_data: Dict[str, Any]) -> Post:
+        scheduling = validated_data.pop("scheduling", None)
+        enrollment = validated_data.pop("enrollment", None)
+
         post = Post.objects.create(
             **validated_data,
             club=self.context["club_obj"],
             author=self.context["user"],
             event=self.context["event"]
         )
+
+        if scheduling:
+            Scheduling.objects.create(**scheduling, post=post)
+        if enrollment:
+            Enrollment.objects.create(**enrollment, post=post)
+
         return post
-
-
-class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):
-    post_id = serializers.IntegerField(read_only=True)
-    closed = serializers.BooleanField(read_only=True)
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
-
-    class Meta:
-        model = Enrollment
-        fields = (
-            "post_id",
-            "closed",
-            "created_at",
-            "updated_at",
-        )
-
-
-class ParticipationSerializer(serializers.ModelSerializer[Participation]):
-    user = serializers.SerializerMethodField()
-    enrollment_id = serializers.IntegerField(read_only=True)
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
-
-    class Meta:
-        model = Participation
-        fields = (
-            "id",
-            "user",
-            "enrollment_id",
-            "created_at",
-            "updated_at",
-        )
-
-    @swagger_serializer_method(serializer_or_field=UserSerializer())
-    def get_user(self, participation: Participation) -> ReturnDict:
-        return UserSerializer(participation.user).data
-
-
-class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
-    available_times = serializers.SerializerMethodField()
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
-
-    class Meta:
-        model = Scheduling
-        fields = (
-            "post_id",
-            "type",
-            "start_time",
-            "end_time",
-            "dates",
-            "weekdays",
-            "repeat_start",
-            "repeat_end",
-            "closed",
-            "available_times",
-            "created_at",
-            "updated_at",
-        )
-
-    @swagger_serializer_method(serializer_or_field=AvailableTimeSerializer())
-    def get_available_times(self, scheduling: Scheduling) -> ReturnDict:
-        return AvailableTimeSerializer(scheduling.available_time_set, many=True).data

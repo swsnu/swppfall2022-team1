@@ -209,7 +209,7 @@ class ClubViewSet(_GenericClubViewSet):
             return Response()
 
     def _post_post(self, request: Request, pk: Any) -> Response:
-        club = Club.objects.get(id=pk)
+        club = self.get_object()
         self.check_object_permissions(request, club)
 
         try:
@@ -232,8 +232,6 @@ class ClubViewSet(_GenericClubViewSet):
 
         if post.type == "E":  # type: ignore
             Enrollment.objects.create(post=post, closed=False)  # type: ignore
-        if post.type == "S":  # type: ignore
-            Scheduling.objects.create(**request.data.get("scheduling", {}), post=post, closed=False)  # type: ignore
 
         tag_list = Tag.objects.filter(id__in=request.data.get("tag_list", []))
         for tag in tag_list:
