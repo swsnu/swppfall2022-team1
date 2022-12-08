@@ -47,7 +47,6 @@ export const registerClub = createAsyncThunk<Club | undefined, string, { rejectV
                 } else {
                     return rejectWithValue('error')
                 }
-                return rejectWithValue('error')
             }
         }
     },
