@@ -26,7 +26,7 @@ const toUserCommentDto = (model: User): UserCommentDto => {
     return {
         image: model.imageUrl,
         email: model.email,
-        time_table: boolToStr(model.timeTable ?? new2dArray(48, 7, false)),
+        time_table: boolToStr(model.timeTable ?? new2dArray(7, 48, false)),
         name: model.name,
     }
 }

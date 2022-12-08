@@ -12,7 +12,7 @@ export const dummyUserMe: User = {
     id: 1,
     email: '',
     imageUrl: '',
-    timeTable: new2dArray(48, 7, false),
+    timeTable: new2dArray(7, 48, false),
     name: '이유빈',
 }
 
@@ -20,6 +20,6 @@ export const dummyUserNotMe: User = {
     id: 2,
     email: '',
     imageUrl: '',
-    timeTable: new2dArray(48, 7, false),
+    timeTable: new2dArray(7, 48, false),
     name: '박지연',
 }
