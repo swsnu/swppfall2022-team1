@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import { authMiddleware } from '../../../middleware'
 import { authReducer } from './auth/AuthSlice'
 import { clubReducer } from './club/ClubSlice'
 import { commentReducer } from './comment/CommentSlice'
@@ -23,7 +22,6 @@ export const store = configureStore({
         event: eventReducer,
         tag: tagReducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authMiddleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>
