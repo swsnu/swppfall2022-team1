@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import MethodNotAllowed
 from club.models import Club
 from user.models import UserClub
+from tag.models import Tag, UserTag
 from club.serializers import (
     ClubSerializer,
     ClubUserSerializer,
@@ -86,6 +87,10 @@ class ClubViewSet(_GenericClubViewSet):
             UserClub.objects.create(user=request.user, club=club, auth="M")  # type: ignore
         except IntegrityError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        default_tag = Tag.objects.get(Q(club_id=club) & Q(is_default=True))
+        # request.user is not anonymous
+        UserTag.objects.create(user=request.user, tag=default_tag)  # type: ignore
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @swagger_auto_schema(responses={200: ClubSerializer(), 403: "User is not admin"})
