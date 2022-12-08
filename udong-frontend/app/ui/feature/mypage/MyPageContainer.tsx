@@ -37,7 +37,7 @@ export const MyPageContainer = () => {
             >
                 <MyProfileView me={me}/>
                 <Spacer width={50}/>
-                <AddMyScheduleView/>
+                <AddMyScheduleView me={me}/>
             </HStack>
         </HStack>
     </HStack>
