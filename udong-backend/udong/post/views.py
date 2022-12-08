@@ -190,9 +190,8 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
         try:
             scheduling = (
                 self.get_queryset()
-                .prefetch_related("available_time_set")
-                .filter(post_id=pk)
-                .get()
+                .prefetch_related("available_time_set__user")
+                .get(post_id=pk)
             )
         except Scheduling.DoesNotExist:
             return Response(
