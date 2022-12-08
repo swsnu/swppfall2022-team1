@@ -43,9 +43,17 @@ class TagViewSet(_GenericViewSet):
         serializer.save()
         return Response(serializer.data)
 
-    @swagger_auto_schema(responses={204: "", 403: "User is not admin"})
+    @swagger_auto_schema(
+        responses={
+            204: "",
+            400: "Default tag cannot be destroyed",
+            403: "User is not admin",
+        }
+    )
     def destroy(self, request: Request, pk: Any = None) -> Response:
         tag = self.get_object()
         self.check_object_permissions(request, tag.club)
+        if tag.is_default == True:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         tag.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

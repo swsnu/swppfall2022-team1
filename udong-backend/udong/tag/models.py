@@ -9,6 +9,7 @@ class Tag(models.Model):
     # id: auto-generated
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name="tag_set")
     name = models.CharField(max_length=255)
+    is_default = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

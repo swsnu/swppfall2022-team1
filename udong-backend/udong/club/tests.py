@@ -34,7 +34,7 @@ class ClubTestCase(MyTestCase):
             start_time=15,
             end_time=35,
         )
-        Tag.objects.create(club=club1, name="genius")
+        Tag.objects.create(club=club1, name="genius", is_default=True)
         Tag.objects.create(club=club1, name="winner")
 
     # GET /api/club/:id
@@ -121,10 +121,12 @@ class ClubTestCase(MyTestCase):
                 {
                     "id": 1,
                     "name": "genius",
+                    "is_default": True,
                 },
                 {
                     "id": 2,
                     "name": "winner",
+                    "is_default": False,
                 },
             ],
         )
