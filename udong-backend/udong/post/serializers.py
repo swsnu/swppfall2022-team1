@@ -20,7 +20,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     club = serializers.SerializerMethodField()
     event = serializers.SerializerMethodField()
     title = serializers.CharField(max_length=255)
-    type = serializers.CharField(source="get_type_display")
+    type = serializers.ChoiceField(choices=["A", "E", "S"])
     closed = serializers.SerializerMethodField()
     include_tag = serializers.SerializerMethodField()
     exclude_tag = serializers.SerializerMethodField()
@@ -64,11 +64,11 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             return EventNameSerializer(post.event).data
 
     def get_closed(self, post: Post) -> Optional[bool]:
-        if post.get_type_display() == "Announcement":
+        if post.type == "A":
             return None
-        if post.get_type_display() == "Enrollment":
+        if post.type == "E":
             return post.enrollment.closed
-        if post.get_type_display() == "Scheduling":
+        if post.type == "S":
             return post.scheduling.closed
         return None
 
