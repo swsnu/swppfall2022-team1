@@ -12,6 +12,6 @@ router = SimpleRouter()
 router.register("post", PostViewSet)
 router.register("post/club", PostClubViewSet)
 router.register("enroll", EnrollmentViewSet)
-router.register("scheduling", SchedulingViewSet)
+router.register("schedule", SchedulingViewSet)
 
 urlpatterns = router.urls
