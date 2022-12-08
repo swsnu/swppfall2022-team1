@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
+import { SchedulingAPI } from '../../../../infra/api/SchedulingAPI'
+import { SchedulingPost } from '../../../model/SchedulingPost'
+
 interface SchedulingState {
     isOpen: boolean
+    schedulingStatus?: SchedulingPost
 }
 
 const initialState: SchedulingState = {
@@ -15,7 +19,7 @@ export const participateInScheduling = createAsyncThunk(
 
 export const getSchedulingStatus = createAsyncThunk(
     'scheduling/getSchedulingStatus',
-    async () => { return },
+    async (postId: number) => { return SchedulingAPI.getSchedulingStatus(postId) },
 )
 
 export const closeScheduling = createAsyncThunk(
@@ -27,7 +31,12 @@ const schedulingSlice = createSlice({
     name: 'scheduling',
     initialState,
     reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(getSchedulingStatus.fulfilled, (state, action) => {
+            state.schedulingStatus = action.payload
+        })
+    },
 })
 
-export const schedulingActions = schedulingSlice.actions
+export const schedulingActions = { ...schedulingSlice.actions, getSchedulingStatus }
 export const schedulingReducer = schedulingSlice.reducer
