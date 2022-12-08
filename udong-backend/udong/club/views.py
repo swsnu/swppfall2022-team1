@@ -13,10 +13,10 @@ from user.models import UserClub
 from tag.models import Tag, UserTag
 from club.serializers import (
     ClubSerializer,
-    ClubEventSerializer,
     ClubRegisterSerializer,
 )
 from user.serializers import UserClubSerializer
+from event.serializers import ClubEventSerializer
 from tag.serializers import TagClubSerializer
 from common.permissions import IsAdmin
 from drf_yasg.utils import swagger_auto_schema, no_body
