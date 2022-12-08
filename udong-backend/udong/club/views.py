@@ -94,8 +94,8 @@ class ClubViewSet(_GenericClubViewSet):
         method="DELETE",
         responses={
             204: "",
-            400: "User is not in the club",
             403: "User is the only admin in the club",
+            404: "User is not in the club",
         },
     )
     @action(detail=True, methods=["GET", "POST", "DELETE"])
@@ -117,16 +117,17 @@ class ClubViewSet(_GenericClubViewSet):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             return Response(status=status.HTTP_204_NO_CONTENT)
         elif request.method == "DELETE":
-            user_club = UserClub.objects.get(Q(user_id=request.user.id) & Q(club_id=pk))
-            if user_club is None:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            elif (
-                user_club.auth == "A" and UserClub.objects.filter(auth="A").count() == 1
+            user_club = get_object_or_404(
+                UserClub, Q(user_id=request.user.id) & Q(club_id=pk)
+            )
+            if (
+                user_club.auth == "A"
+                and UserClub.objects.filter(Q(club_id=pk) & Q(auth="A")).count() == 1
             ):
                 return Response(status=status.HTTP_403_FORBIDDEN)
             else:
                 user_club.delete()
-                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             raise MethodNotAllowed(
                 request.method if request.method else "unknown method"
