@@ -124,6 +124,8 @@ class ParticipationSerializer(serializers.ModelSerializer[Participation]):
 
 class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
     available_times = serializers.SerializerMethodField()
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Scheduling
@@ -138,6 +140,8 @@ class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
             "repeat_end",
             "closed",
             "available_times",
+            "created_at",
+            "updated_at",
         )
 
     @swagger_serializer_method(serializer_or_field=AvailableTimeSerializer())
