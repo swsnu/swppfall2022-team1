@@ -33,7 +33,7 @@ class ClubViewSet(_GenereicViewSet):
     serializer_class = ClubSerializer
 
     def get_permissions(self) -> _SupportsHasPermissionType:
-        if self.action in ("update",):
+        if self.action in ("update", "destroy"):
             return [IsAuthenticated(), IsAdmin()]
         return super().get_permissions()
 
@@ -70,6 +70,13 @@ class ClubViewSet(_GenereicViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+    @swagger_auto_schema(responses={204: "", 403: "User is not admin"})
+    def destroy(self, request: Request, pk: Any) -> Response:
+        club = self.get_object()
+        self.check_object_permissions(request, club)
+        club.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @swagger_auto_schema(responses={200: ClubUserSerializer(many=True)})
     @action(detail=True, methods=["GET"])
