@@ -229,8 +229,6 @@ class ClubTestCase(MyTestCase):
                     "content": "Turing award Turing award Turing award",
                     "type": "A",
                     "closed": None,
-                    "scheduling": None,
-                    "enrollment": None,
                     "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
                     "exclude_tag": [
                         {"id": 2, "name": "winner", "is_default": False},
@@ -246,11 +244,6 @@ class ClubTestCase(MyTestCase):
                     "content": "Nobel Prize Nobel Prize Nobel Prize",
                     "type": "E",
                     "closed": False,
-                    "scheduling": None,
-                    "enrollment": {
-                        "post_id": 2,
-                        "closed": False,
-                    },
                     "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
                     "exclude_tag": [
                         {"id": 2, "name": "winner", "is_default": False},
@@ -275,19 +268,6 @@ class ClubTestCase(MyTestCase):
                     "content": "Really Boring",
                     "type": "S",
                     "closed": True,
-                    "scheduling": {
-                        "post_id": 3,
-                        "type": "D",
-                        "start_time": 25,
-                        "end_time": 40,
-                        "dates": ["2022-11-07"],
-                        "weekdays": None,
-                        "repeat_start": None,
-                        "repeat_end": None,
-                        "closed": True,
-                        "available_times": [],
-                    },
-                    "enrollment": None,
                     "include_tag": [{"id": 6, "name": "loser", "is_default": False}],
                     "exclude_tag": [
                         {"id": 4, "name": "genius", "is_default": True},
