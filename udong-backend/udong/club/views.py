@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 from django.db.utils import IntegrityError
 from rest_framework import viewsets, status
 from rest_framework.request import Request
@@ -85,9 +86,17 @@ class ClubViewSet(_GenereicViewSet):
     @swagger_auto_schema(
         method="POST",
         request_body=no_body,
-        responses={204: "", 400: "User already in club"},
+        responses={204: "", 400: "User already in the club"},
     )
-    @action(detail=True, methods=["GET", "POST"])
+    @swagger_auto_schema(
+        method="DELETE",
+        responses={
+            204: "",
+            400: "User is not in the club",
+            403: "User is the only admin in the club",
+        },
+    )
+    @action(detail=True, methods=["GET", "POST", "DELETE"])
     def user(self, request: Request, pk: Any) -> Response:
         if request.method == "GET":
             club_user = (
@@ -105,6 +114,17 @@ class ClubViewSet(_GenereicViewSet):
             except IntegrityError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             return Response(status=status.HTTP_204_NO_CONTENT)
+        elif request.method == "DELETE":
+            user_club = UserClub.objects.get(Q(user_id=request.user.id) & Q(club_id=pk))
+            if user_club is None:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            elif (
+                user_club.auth == "A" and UserClub.objects.filter(auth="A").count() == 1
+            ):
+                return Response(status=status.HTTP_403_FORBIDDEN)
+            else:
+                user_club.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             raise MethodNotAllowed(
                 request.method if request.method else "unknown method"
