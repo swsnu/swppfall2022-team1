@@ -171,6 +171,16 @@ class ClubUserViewSet(_GenericClubUserViewSet):
     lookup_field: str = "user_id"
 
     @swagger_auto_schema(
+        responses={200: UserClubSerializer(), 404: "User is not in the club"}
+    )
+    @action(detail=False, methods=["GET"])
+    def me(self, request: Request, club_id: Any) -> Response:
+        user_club = get_object_or_404(
+            UserClub, Q(user_id=request.user.id) & Q(club_id=club_id)
+        )
+        return Response(self.get_serializer(user_club).data)
+
+    @swagger_auto_schema(
         responses={
             204: "",
             400: "Admin cannot be kicked out",
