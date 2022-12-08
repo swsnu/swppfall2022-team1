@@ -36,6 +36,7 @@ const stubCommentInitialState: CommentState = {
 }
 
 const stubUserInitialState: UserState = {
+    isAdmin: false,
     selectedUser: dummyUserMe,
     me: dummyUserMe,
 }

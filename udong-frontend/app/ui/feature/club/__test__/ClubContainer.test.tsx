@@ -14,6 +14,7 @@ import { ClubContainer } from '../ClubContainer'
 import { CLUB_TAB } from '../ClubTabView'
 
 const stubUserInitialState: UserState = {
+    isAdmin: false,
     selectedUser: dummyUserMe,
 }
 

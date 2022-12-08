@@ -14,6 +14,7 @@ const dummyMembers: Array<ClubUser> = [{
 }]
 
 const stubInitialState: UserState = {
+    isAdmin: false,
     selectedUser: dummyUserMe,
 }
 
