@@ -207,6 +207,7 @@ class ClubTestCase(MyTestCase):
                 {
                     "id": 3,
                     "name": "loser",
+                    "is_default": False,
                 },
             ],
         )
@@ -230,10 +231,10 @@ class ClubTestCase(MyTestCase):
                     "closed": None,
                     "scheduling": None,
                     "enrollment": None,
-                    "include_tag": [{"id": 1, "name": "genius"}],
+                    "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
                     "exclude_tag": [
-                        {"id": 2, "name": "winner"},
-                        {"id": 3, "name": "loser"},
+                        {"id": 2, "name": "winner", "is_default": False},
+                        {"id": 3, "name": "loser", "is_default": False},
                     ],
                 },
                 {
@@ -250,10 +251,10 @@ class ClubTestCase(MyTestCase):
                         "post_id": 2,
                         "closed": False,
                     },
-                    "include_tag": [{"id": 1, "name": "genius"}],
+                    "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
                     "exclude_tag": [
-                        {"id": 2, "name": "winner"},
-                        {"id": 3, "name": "loser"},
+                        {"id": 2, "name": "winner", "is_default": False},
+                        {"id": 3, "name": "loser", "is_default": False},
                     ],
                 },
             ],
@@ -287,10 +288,10 @@ class ClubTestCase(MyTestCase):
                         "available_times": [],
                     },
                     "enrollment": None,
-                    "include_tag": [{"id": 6, "name": "loser"}],
+                    "include_tag": [{"id": 6, "name": "loser", "is_default": False}],
                     "exclude_tag": [
-                        {"id": 4, "name": "genius"},
-                        {"id": 5, "name": "winner"},
+                        {"id": 4, "name": "genius", "is_default": True},
+                        {"id": 5, "name": "winner", "is_default": False},
                     ],
                 }
             ],
