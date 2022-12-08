@@ -1,3 +1,4 @@
+import { AvailableTime } from './AvailableTime'
 import { SchedulingPostType } from './SchedulingPostType'
 
 export interface SchedulingPost {
@@ -5,5 +6,6 @@ export interface SchedulingPost {
     startTime: number
     endTime: number
     closed: boolean
-    confirmed_time?: boolean[][]
+    confirmedTime: boolean[][] | null
+    availableTime: Array<AvailableTime>
 }

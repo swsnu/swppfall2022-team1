@@ -1,7 +1,7 @@
 import { UserDto } from './UserDto'
 
-export interface AvailableTime {
+export interface AvailableTimeDto {
     id: number
     user: UserDto
-    time: boolean[][]
+    time: string
 }
