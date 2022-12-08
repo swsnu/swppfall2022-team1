@@ -1,13 +1,12 @@
 from django.db.models import Q
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
-from post.models import Post
-from post.models import Enrollment
-from post.models import Participation
+from post.models import Post, Enrollment, Participation, Scheduling
 from tag.serializers import TagPostSerializer
 from user.serializers import UserSerializer
 from event.serializers import EventNameSerializer
 from club.serializers import ClubSerializer
+from timedata.serializers import AvailableTimeSerializer
 from drf_yasg.utils import swagger_serializer_method
 from typing import Optional
 
@@ -121,3 +120,30 @@ class ParticipationSerializer(serializers.ModelSerializer[Participation]):
     @swagger_serializer_method(serializer_or_field=UserSerializer())
     def get_user(self, participation: Participation) -> ReturnDict:
         return UserSerializer(participation.user).data
+
+
+class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
+    available_times = serializers.SerializerMethodField()
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Scheduling
+        fields = (
+            "post_id",
+            "type",
+            "start_time",
+            "end_time",
+            "dates",
+            "weekdays",
+            "repeat_start",
+            "repeat_end",
+            "closed",
+            "available_times",
+            "created_at",
+            "updated_at",
+        )
+
+    @swagger_serializer_method(serializer_or_field=AvailableTimeSerializer())
+    def get_available_times(self, scheduling: Scheduling) -> ReturnDict:
+        return AvailableTimeSerializer(scheduling.available_time_set, many=True).data
