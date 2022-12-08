@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { Tag } from '../../../../domain/model/Tag'
 import { AppDispatch } from '../../../../domain/store'
 import { tagSelector } from '../../../../domain/store/tag/TagSelector'
 import { tagActions } from '../../../../domain/store/tag/TagSlice'
@@ -44,6 +45,18 @@ export const TagContainer = (props: TagContainerProps) => {
         }
     }, [dispatch])
 
+    const handleClickTagDelete = useCallback((tag: Tag) => {
+        dispatch(tagActions.setSelectedTag(tag))
+        setShowDeleteModal(true)
+    }, [dispatch])
+
+    const handleConfirmTagDelete = useCallback(() => {
+        if (selectedTag) {
+            dispatch(tagActions.deleteTag(selectedTag.id))
+        }
+        setShowDeleteModal(false)
+    }, [dispatch, selectedTag])
+
     if (!userMe) {
         return null
     }
@@ -76,7 +89,7 @@ export const TagContainer = (props: TagContainerProps) => {
                     updatedAt={tag.updatedAt}
                     isUserIncluded={tag.users.some(user => user.id === userMe.id)}
                     showEditModal={setShowUpsertModal}
-                    onClickDelete={setShowDeleteModal}
+                    onClickDelete={() => handleClickTagDelete(tag)}
                 />
             </VStack>
         })}
@@ -98,10 +111,10 @@ export const TagContainer = (props: TagContainerProps) => {
 
         <DeleteModal
             deleteObjectText={'태그'}
-            warningText={'경고 문구'}
+            warningText={'태그 삭제 후 복구가 불가능합니다.'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
-            onClickDelete={() => {return}}
+            onClickDelete={handleConfirmTagDelete}
         />
 
         <ScrollToTopButton/>
