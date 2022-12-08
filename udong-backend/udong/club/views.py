@@ -5,10 +5,13 @@ from rest_framework import viewsets, status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.exceptions import MethodNotAllowed, PermissionDenied
 from rest_framework.serializers import BaseSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import MethodNotAllowed
 from club.models import Club
+from tag.models import Tag
+from event.models import Event
 from user.models import UserClub
 from tag.models import Tag, UserTag
 from club.serializers import (
@@ -21,6 +24,12 @@ from tag.serializers import ClubTagSerializer
 from common.permissions import IsAdmin
 from drf_yasg.utils import swagger_auto_schema, no_body
 from typing import Any, Type, TYPE_CHECKING
+
+from post.models import Post
+from post.serializers import PostBoardSerializer
+from post.models import PostTag
+from post.models import Enrollment, Scheduling
+from user.models import UserClub
 
 # Create your views here.
 
@@ -41,7 +50,7 @@ class ClubViewSet(_GenericClubViewSet):
     serializer_class = ClubSerializer
 
     def get_permissions(self) -> _SupportsHasPermissionType:
-        if self.action in ("update", "destroy"):
+        if self.action in ("update", "destroy", "post"):
             return [IsAuthenticated(), IsAdmin()]
         return super().get_permissions()
 
@@ -54,6 +63,8 @@ class ClubViewSet(_GenericClubViewSet):
             return ClubEventSerializer
         if self.action == "tag":
             return ClubTagSerializer
+        if self.action == "post":
+            return PostBoardSerializer
         return ClubSerializer
 
     def list(self, request: Request) -> Response:
@@ -161,6 +172,77 @@ class ClubViewSet(_GenericClubViewSet):
     def tag(self, request: Request, pk: Any) -> Response:
         club_tag = self.get_object().tag_set
         return Response(self.get_serializer(club_tag, many=True).data)
+
+    @action(detail=True, methods=["GET", "POST"])
+    def post(self, request: Request, pk: Any) -> Response:
+        if request.method == "GET":
+            return self._get_posts(request, pk)
+        elif request.method == "POST":
+            return self._post_post(request, pk)
+        else:
+            raise MethodNotAllowed(
+                request.method if request.method else "unknown method"
+            )
+
+    @swagger_auto_schema(responses={200: PostBoardSerializer(many=True)})
+    def _get_posts(self, request: Request, pk: Any) -> Response:
+        try:
+            auth = UserClub.objects.get(Q(user_id=request.user.id) & Q(club_id=pk)).auth
+        except UserClub.DoesNotExist:
+            return Response("User is not in the club", status=status.HTTP_404_NOT_FOUND)
+
+        post = (
+            Post.objects.get_queryset()
+            .select_related("event")
+            .select_related("author")
+            .prefetch_related("post_tag_set__tag__tag_user_set")
+            .filter(club_id=pk)
+        )
+        if auth == "A":
+            return Response(
+                self.get_serializer(
+                    post, many=True, context={"id": request.user.id, "club": False}
+                ).data
+            )
+        elif auth == "M":
+            all_post = self.get_serializer(
+                post, many=True, context={"id": request.user.id, "club": False}
+            ).data
+            result = filter(lambda post: len(post["include_tag"]) != 0, all_post)
+            return Response(result)
+        else:
+            return Response()
+
+    def _post_post(self, request: Request, pk: Any) -> Response:
+        club = self.get_object()
+        self.check_object_permissions(request, club)
+
+        try:
+            event = Event.objects.get(id=request.data.get("event_id", -1))
+        except Event.DoesNotExist:
+            event = None
+
+        serializer = self.get_serializer(
+            data=request.data,
+            context={
+                "club_obj": club,
+                "user": request.user,
+                "id": request.user.id,
+                "club": False,
+                "event": event,
+            },
+        )
+        serializer.is_valid(raise_exception=True)
+        post = serializer.save()
+
+        if post.type == "E":  # type: ignore
+            Enrollment.objects.create(post=post, closed=False)  # type: ignore
+
+        tag_list = Tag.objects.filter(id__in=request.data.get("tag_list", []))
+        for tag in tag_list:
+            PostTag.objects.create(post=post, tag=tag)  # type: ignore
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ClubUserViewSet(_GenericClubUserViewSet):
