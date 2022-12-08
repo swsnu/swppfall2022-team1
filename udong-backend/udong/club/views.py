@@ -152,6 +152,7 @@ class ClubViewSet(_GenericClubViewSet):
 
 class ClubUserViewSet(_GenericClubUserViewSet):
     queryset = UserClub.objects.all()
+    serializer_class = ClubUserSerializer
     permission_classes = [IsAuthenticated, IsAdmin]
 
     lookup_field: str = "user_id"
@@ -160,8 +161,8 @@ class ClubUserViewSet(_GenericClubUserViewSet):
         responses={
             204: "",
             400: "User can delete himself",
-            404: "User is not in the club / Invalid club",
             403: "User is not admin",
+            404: "User is not in the club / Invalid club",
         },
     )
     def destroy(self, request: Request, club_id: Any, user_id: Any) -> Response:
@@ -172,3 +173,29 @@ class ClubUserViewSet(_GenericClubUserViewSet):
         user_club = get_object_or_404(UserClub, Q(user_id=user_id) & Q(club_id=club_id))
         user_club.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @swagger_auto_schema(
+        request_body=no_body,
+        responses={
+            200: ClubUserSerializer(),
+            400: "User is not in the club",
+            403: "User is not admin",
+            404: "User is not in the club / Invalid club",
+        },
+    )
+    @action(detail=True, methods=["PUT"])
+    def role(self, request: Request, club_id: Any, user_id: Any) -> Response:
+        club = get_object_or_404(Club, id=club_id)
+        self.check_object_permissions(request, club)
+        if (
+            int(user_id) == request.user.id
+            and UserClub.objects.filter(Q(club_id=club_id) & Q(auth="A")).count() == 1
+        ):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        user_club = get_object_or_404(UserClub, Q(user_id=user_id) & Q(club_id=club_id))
+        if user_club.auth == "M":
+            user_club.auth = "A"
+        else:
+            user_club.auth = "M"
+        user_club.save()
+        return Response(self.get_serializer(user_club).data)
