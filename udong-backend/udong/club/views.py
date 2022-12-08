@@ -49,7 +49,7 @@ class ClubViewSet(_GenericClubViewSet):
     serializer_class = ClubSerializer
 
     def get_permissions(self) -> _SupportsHasPermissionType:
-        if self.action in ("update", "destroy"):
+        if self.action in ("update", "destroy", "post"):
             return [IsAuthenticated(), IsAdmin()]
         return super().get_permissions()
 
@@ -209,12 +209,8 @@ class ClubViewSet(_GenericClubViewSet):
             return Response()
 
     def _post_post(self, request: Request, pk: Any) -> Response:
-        try:
-            auth = UserClub.objects.get(Q(user_id=request.user.id) & Q(club_id=pk)).auth
-        except UserClub.DoesNotExist:
-            return Response("User is not in the club", status=status.HTTP_404_NOT_FOUND)
-        if auth != "A":
-            raise PermissionDenied()
+        club = Club.objects.get(id=pk)
+        self.check_object_permissions(request, club)
 
         try:
             event = Event.objects.get(id=request.data.get("event_id", -1))
