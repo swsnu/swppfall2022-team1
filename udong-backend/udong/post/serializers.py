@@ -96,8 +96,8 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     exclude_tag = serializers.SerializerMethodField()
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
-    scheduling = SchedulingSerializer(allow_null=True, required=False)
-    enrollment = EnrollmentSerializer(allow_null=True, required=False)
+    scheduling = SchedulingSerializer(allow_null=True, required=False, write_only=True)
+    enrollment = EnrollmentSerializer(allow_null=True, required=False, write_only=True)
 
     class Meta:
         model = Post
