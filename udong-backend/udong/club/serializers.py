@@ -1,3 +1,5 @@
+import string
+import random
 from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 from club.models import Club
@@ -7,10 +9,11 @@ from tag.models import Tag
 from user.serializers import UserSerializer
 from timedata.serializers import PureTimeSerializer
 from drf_yasg.utils import swagger_serializer_method
+from typing import Dict, Any
 
 
 class ClubSerializer(serializers.ModelSerializer[Club]):
-    code = serializers.CharField(max_length=10, default="swppfall")
+    code = serializers.CharField(max_length=10, default="swppfall", read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
@@ -24,6 +27,14 @@ class ClubSerializer(serializers.ModelSerializer[Club]):
             "created_at",
             "updated_at",
         )
+
+    def create(self, validated_data: Dict[str, Any]) -> Club:
+        code = "".join(
+            random.choice(string.ascii_letters + string.digits) for _ in range(10)
+        )
+        club = Club.objects.create(**validated_data, code=code)
+        UserClub.objects.create(user=self.context["user"], club=club, auth="A")
+        return club
 
 
 class ClubUserSerializer(serializers.ModelSerializer[UserClub]):
