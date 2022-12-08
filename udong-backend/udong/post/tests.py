@@ -61,7 +61,7 @@ class PostTestCase(MyTestCase):
             closed=True,
         )
 
-        tag1 = Tag.objects.create(club=club1, name="genius")
+        tag1 = Tag.objects.create(club=club1, name="genius", is_default=True)
         tag2 = Tag.objects.create(club=club1, name="winner")
         tag3 = Tag.objects.create(club=club1, name="loser")
 
@@ -81,71 +81,6 @@ class PostTestCase(MyTestCase):
 
         Comment.objects.create(user=self.dummy_user, post=post1, content="FIRST")
         Comment.objects.create(user=self.dummy_user, post=post1, content="SECOND")
-
-    # GET /api/post/club/:id/
-    def test_post_club_id(self) -> None:
-        # Check admin
-        response = self.client.get("/api/post/club/1/")
-        self.assertEqual(response.status_code, 200)
-        self.jsonEqual(
-            response.content,
-            [
-                {
-                    "id": 1,
-                    "author": "Alan Turing",
-                    "club": None,
-                    "event": {"id": 1, "name": "Turing award"},
-                    "title": "Turing award is coming!",
-                    "content": "Turing award Turing award Turing award",
-                    "type": "Announcement",
-                    "closed": None,
-                    "include_tag": [{"id": 1, "name": "genius"}],
-                    "exclude_tag": [
-                        {"id": 2, "name": "winner"},
-                        {"id": 3, "name": "loser"},
-                    ],
-                },
-                {
-                    "id": 2,
-                    "author": "Alan Turing",
-                    "club": None,
-                    "event": {"id": 2, "name": "Nobel Prize"},
-                    "title": "Nobel prize is coming!",
-                    "content": "Nobel Prize Nobel Prize Nobel Prize",
-                    "type": "Enrollment",
-                    "closed": False,
-                    "include_tag": [{"id": 1, "name": "genius"}],
-                    "exclude_tag": [
-                        {"id": 2, "name": "winner"},
-                        {"id": 3, "name": "loser"},
-                    ],
-                },
-            ],
-        )
-
-        # Check member
-        response = self.client.get("/api/post/club/2/")
-        self.assertEqual(response.status_code, 200)
-        self.jsonEqual(
-            response.content,
-            [
-                {
-                    "id": 3,
-                    "author": "Alan Turing",
-                    "club": None,
-                    "event": None,
-                    "title": "When to Meet?",
-                    "content": "Really Boring",
-                    "type": "Scheduling",
-                    "closed": True,
-                    "include_tag": [{"id": 1, "name": "genius"}],
-                    "exclude_tag": [
-                        {"id": 2, "name": "winner"},
-                        {"id": 3, "name": "loser"},
-                    ],
-                }
-            ],
-        )
 
     # GET /api/post/:id/comment/
     def test_get_post_id_comment(self) -> None:

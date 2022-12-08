@@ -9,16 +9,17 @@ import edit from '../../../icons/IcPencil.png'
 import trash from '../../../icons/IcTrash.png'
 import { UdongColors } from '../../../theme/ColorPalette'
 
-// TODO: 나중에는 tag 타입 전체를 props로 넘기는게 좋을듯
 interface TagItemProps {
     name: string
+    createdAt: string
+    updatedAt: string
     isUserIncluded: boolean
     showEditModal: (showEditModal: boolean) => void
     onClickDelete: (showDeleteModal: boolean) => void
 }
 
 export const TagItem = (props: TagItemProps) => {
-    const { name, isUserIncluded, showEditModal, onClickDelete } = props
+    const { name, createdAt, updatedAt, isUserIncluded, showEditModal, onClickDelete } = props
 
     const handleOnClickEdit = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
@@ -53,14 +54,14 @@ export const TagItem = (props: TagItemProps) => {
                     style={'ListContentS'}
                     whiteSpace={'nowrap'}
                 >
-                    생성일: 2012.04.13
+                    {`생성일: ${createdAt}`}
                 </UdongText>
                 <Spacer width={30}/>
                 <UdongText
                     style={'ListContentS'}
                     whiteSpace={'nowrap'}
                 >
-                    수정일: 2022.11.01
+                    {`수정일: ${updatedAt}`}
                 </UdongText>
 
                 <Spacer width={30}/>

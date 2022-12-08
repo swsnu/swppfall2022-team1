@@ -89,6 +89,7 @@ export const PostItem = (props: PostItemProps) => {
         </VStack>
 
         <UserListModal
+            users={[]}
             isOpen={isMemberListOpen}
             setIsOpen={setIsMemberListOpen}
             title={currentTag}

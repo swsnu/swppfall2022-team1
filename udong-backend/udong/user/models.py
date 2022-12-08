@@ -63,3 +63,8 @@ class UserClub(models.Model):
     auth = models.CharField(max_length=1, choices=[("M", "Member"), ("A", "Admin")])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "club"], name="unique register")
+        ]
