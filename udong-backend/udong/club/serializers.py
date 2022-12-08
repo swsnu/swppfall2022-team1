@@ -5,7 +5,7 @@ from rest_framework.utils.serializer_helpers import ReturnDict
 from club.models import Club
 from user.models import UserClub
 from event.models import Event
-from tag.models import Tag
+from tag.models import Tag, UserTag
 from user.serializers import UserSerializer
 from timedata.serializers import PureTimeSerializer
 from drf_yasg.utils import swagger_serializer_method
@@ -34,6 +34,8 @@ class ClubSerializer(serializers.ModelSerializer[Club]):
         )
         club = Club.objects.create(**validated_data, code=code)
         UserClub.objects.create(user=self.context["user"], club=club, auth="A")
+        tag = Tag.objects.create(club=club, name="전체", is_default=True)
+        UserTag.objects.create(user=self.context["user"], tag=tag)
         return club
 
 
