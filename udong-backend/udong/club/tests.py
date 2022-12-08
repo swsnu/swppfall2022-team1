@@ -85,7 +85,7 @@ class ClubTestCase(MyTestCase):
             closed=True,
         )
 
-        tag1 = Tag.objects.create(club=club1, name="genius")
+        tag1 = Tag.objects.create(club=club1, name="genius", is_default=True)
         tag2 = Tag.objects.create(club=club1, name="winner")
         tag3 = Tag.objects.create(club=club1, name="loser")
 
@@ -99,7 +99,7 @@ class ClubTestCase(MyTestCase):
         PostTag.objects.create(post=post2, tag=tag2)
         PostTag.objects.create(post=post2, tag=tag3)
 
-        tag4 = Tag.objects.create(club=club2, name="genius")
+        tag4 = Tag.objects.create(club=club2, name="genius", is_default=True)
         tag5 = Tag.objects.create(club=club2, name="winner")
         tag6 = Tag.objects.create(club=club2, name="loser")
 
@@ -197,10 +197,12 @@ class ClubTestCase(MyTestCase):
                 {
                     "id": 1,
                     "name": "genius",
+                    "is_default": True,
                 },
                 {
                     "id": 2,
                     "name": "winner",
+                    "is_default": False,
                 },
                 {
                     "id": 3,

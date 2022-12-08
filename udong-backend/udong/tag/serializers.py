@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 from drf_yasg.utils import swagger_serializer_method
-from tag.models import Tag, UserTag
+from tag.models import Tag
 from user.serializers import UserSerializer
 
 
@@ -13,6 +13,23 @@ class TagPostSerializer(serializers.ModelSerializer[Tag]):
         fields = (
             "id",
             "name",
+            "is_default",
+        )
+
+
+class ClubTagSerializer(serializers.ModelSerializer[Tag]):
+    name = serializers.CharField(max_length=255)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Tag
+        fields = (
+            "id",
+            "name",
+            "is_default",
+            "created_at",
+            "updated_at",
         )
 
 
@@ -27,6 +44,7 @@ class TagUserSerializer(serializers.ModelSerializer[Tag]):
         fields = (
             "id",
             "name",
+            "is_default",
             "users",
             "created_at",
             "updated_at",

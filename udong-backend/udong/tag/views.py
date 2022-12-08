@@ -3,6 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.serializers import BaseSerializer
 from tag.models import Tag
 from tag.serializers import TagUserSerializer
 from typing import TYPE_CHECKING, Any
@@ -34,8 +35,25 @@ class TagViewSet(_GenericViewSet):
         return Response(self.get_serializer(self.get_object()).data)
 
     @swagger_auto_schema(responses={204: "", 403: "User is not admin"})
+    def update(self, request: Request, pk: Any = None) -> Response:
+        tag = self.get_object()
+        self.check_object_permissions(request, tag.club)
+        serializer = self.get_serializer(tag, request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        responses={
+            204: "",
+            400: "Default tag cannot be destroyed",
+            403: "User is not admin",
+        }
+    )
     def destroy(self, request: Request, pk: Any = None) -> Response:
         tag = self.get_object()
         self.check_object_permissions(request, tag.club)
+        if tag.is_default == True:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         tag.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

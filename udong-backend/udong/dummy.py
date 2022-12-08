@@ -26,6 +26,15 @@ user2 = User.objects.create_user(
 club1 = Club.objects.create(name="Udong", code="swppfall")
 club2 = Club.objects.create(name="Ramen", code="random")
 
+# Create dummy tag
+tag1 = Tag.objects.create(club=club1, name="전체", is_default=True)
+tag2 = Tag.objects.create(club=club1, name="winner")
+tag3 = Tag.objects.create(club=club1, name="loser")
+
+# Add user in tag
+UserTag.objects.create(user=user1, tag=tag1)
+
+
 # Register club
 UserClub.objects.create(user=user1, club=club1, auth="A")
 UserClub.objects.create(user=user2, club=club1, auth="M")
@@ -53,15 +62,6 @@ time2 = Time.objects.create(
     start_time=15,
     end_time=35,
 )
-
-# Create dummy tag
-tag1 = Tag.objects.create(club=club1, name="genius")
-tag2 = Tag.objects.create(club=club1, name="winner")
-tag3 = Tag.objects.create(club=club1, name="loser")
-
-# Add user in tag
-UserTag.objects.create(user=user1, tag=tag1)
-
 
 # Create dummy post
 post1 = Post.objects.create(

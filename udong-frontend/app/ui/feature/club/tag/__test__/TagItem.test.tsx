@@ -9,6 +9,8 @@ describe('<TagItem/>', () => {
             isUserIncluded={true}
             showEditModal={() => {return}}
             onClickDelete={() => {return}}
+            createdAt={''}
+            updatedAt={''}
         />)
         const text = screen.getByText('hello world')
         expect(text).toBeDefined()
@@ -20,6 +22,8 @@ describe('<TagItem/>', () => {
             isUserIncluded={true}
             showEditModal={() => {return}}
             onClickDelete={() => {return}}
+            createdAt={''}
+            updatedAt={''}
         />)
         const component = screen.getAllByRole('img')[0]
         fireEvent.click(component)
@@ -32,6 +36,8 @@ describe('<TagItem/>', () => {
             isUserIncluded={true}
             showEditModal={() => {return}}
             onClickDelete={() => {return}}
+            createdAt={''}
+            updatedAt={''}
         />)
         const component = screen.getAllByRole('img')[1]
         fireEvent.click(component)

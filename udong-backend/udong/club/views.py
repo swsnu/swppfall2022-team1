@@ -13,13 +13,14 @@ from club.models import Club
 from tag.models import Tag
 from event.models import Event
 from user.models import UserClub
+from tag.models import Tag, UserTag
 from club.serializers import (
     ClubSerializer,
-    ClubUserSerializer,
-    ClubEventSerializer,
-    ClubTagSerializer,
     ClubRegisterSerializer,
 )
+from user.serializers import UserClubSerializer
+from event.serializers import ClubEventSerializer
+from tag.serializers import ClubTagSerializer
 from common.permissions import IsAdmin
 from drf_yasg.utils import swagger_auto_schema, no_body
 from typing import Any, Type, TYPE_CHECKING
@@ -55,7 +56,7 @@ class ClubViewSet(_GenericClubViewSet):
 
     def get_serializer_class(self) -> Type[BaseSerializer[Club]]:
         if self.action == "user":
-            return ClubUserSerializer
+            return UserClubSerializer
         if self.action == "register":
             return ClubRegisterSerializer
         if self.action == "event":
@@ -97,6 +98,10 @@ class ClubViewSet(_GenericClubViewSet):
             UserClub.objects.create(user=request.user, club=club, auth="M")  # type: ignore
         except IntegrityError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        default_tag = Tag.objects.get(Q(club_id=club) & Q(is_default=True))
+        # request.user is not anonymous
+        UserTag.objects.create(user=request.user, tag=default_tag)  # type: ignore
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @swagger_auto_schema(responses={200: ClubSerializer(), 403: "User is not admin"})
@@ -115,7 +120,7 @@ class ClubViewSet(_GenericClubViewSet):
         club.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @swagger_auto_schema(method="GET", responses={200: ClubUserSerializer(many=True)})
+    @swagger_auto_schema(method="GET", responses={200: UserClubSerializer(many=True)})
     @swagger_auto_schema(
         method="DELETE",
         responses={
@@ -242,7 +247,7 @@ class ClubViewSet(_GenericClubViewSet):
 
 class ClubUserViewSet(_GenericClubUserViewSet):
     queryset = UserClub.objects.all()
-    serializer_class = ClubUserSerializer
+    serializer_class = UserClubSerializer
     permission_classes = [IsAuthenticated, IsAdmin]
 
     lookup_field: str = "user_id"
@@ -267,7 +272,7 @@ class ClubUserViewSet(_GenericClubUserViewSet):
     @swagger_auto_schema(
         request_body=no_body,
         responses={
-            200: ClubUserSerializer(),
+            200: UserClubSerializer(),
             400: "User is not in the club",
             403: "User is not admin",
             404: "User is not in the club / Invalid club",

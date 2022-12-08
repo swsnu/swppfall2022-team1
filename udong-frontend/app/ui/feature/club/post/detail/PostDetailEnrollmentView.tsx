@@ -83,6 +83,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
         </HStack>
 
         <UserListModal
+            users={[]}
             isOpen={showEnrolled}
             setIsOpen={setShowEnrolled}
             title={'2022년 겨울 공연 2팀'}

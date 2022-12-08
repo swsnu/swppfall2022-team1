@@ -61,7 +61,7 @@ class PostTestCase(MyTestCase):
             closed=True,
         )
 
-        tag1 = Tag.objects.create(club=club1, name="genius")
+        tag1 = Tag.objects.create(club=club1, name="genius", is_default=True)
         tag2 = Tag.objects.create(club=club1, name="winner")
         tag3 = Tag.objects.create(club=club1, name="loser")
 
