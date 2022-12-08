@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -42,6 +42,14 @@ class ClubViewSet(_GenereicViewSet):
     def retrieve(self, request: Request, pk: Any = None) -> Response:
         club = self.get_object()
         return Response(self.get_serializer(club).data)
+
+    def create(self, request: Request) -> Response:
+        serializer = self.serializer_class(
+            data=request.data, context={"user": request.user}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(responses={200: ClubUserSerializer(many=True)})
     @action(detail=True, methods=["GET"])
