@@ -169,19 +169,16 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
     serializer_class = EnrollmentSerializer
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
-        if self.action == "status":
+        if self.action in ("status"):
             return ParticipationSerializer
         elif self.action == "close":
             return EnrollmentSerializer
         return self.serializer_class
-
+       
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
-        participation_list = self.get_serializer(
-            Participation.objects.select_related("user").filter(enrollment_id=pk),
-            many=True,
-        ).data
-        return Response(participation_list)
+        user_list = Participation.objects.values_list("user", flat=True)
+        return Response(user_list)
 
     @action(detail=True, methods=["PUT"])
     def close(self, request: Request, pk: Any = None) -> Response:
