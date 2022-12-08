@@ -165,56 +165,6 @@ class PostViewSet(_PostGenericViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class PostClubViewSet(_PostGenericViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostBoardSerializer
-
-    # TODO: Need to be optimized
-    @swagger_auto_schema(responses={200: PostBoardSerializer(many=True)})
-    def retrieve(self, request: Request, pk: Any = None) -> Response:
-        try:
-            auth = UserClub.objects.get(Q(user_id=request.user.id) & Q(club_id=pk)).auth
-        except UserClub.DoesNotExist:
-            return Response("User is not in the club", status=status.HTTP_404_NOT_FOUND)
-
-        post = (
-            self.get_queryset()
-            .select_related("event")
-            .select_related("author")
-            .prefetch_related("post_tag_set__tag__tag_user_set")
-            .filter(club_id=pk)
-        )
-        if auth == "A":
-            return Response(
-                self.get_serializer(
-                    post, many=True, context={"id": request.user.id, "club": False}
-                ).data
-            )
-        elif auth == "M":
-            all_post = self.get_serializer(
-                post, many=True, context={"id": request.user.id, "club": False}
-            ).data
-            result = filter(lambda post: len(post["include_tag"]) != 0, all_post)
-            return Response(result)
-        else:
-            return Response()
-
-    def create(self, request: Request, pk: Any) -> Response:
-        try:
-            auth = UserClub.objects.get(Q(user_id=request.user.id) & Q(club_id=pk)).auth
-        except UserClub.DoesNotExist:
-            return Response("User is not in the club", status=status.HTTP_404_NOT_FOUND)
-        if auth != "A":
-            raise PermissionDenied()
-        # tag_list = Tag.objects.filter(id__in= request.data.get("tag_list"))
-        serializer = self.get_serializer(
-            data=request.data, context={"club_id": pk, "user": request.user}
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
 class EnrollmentViewSet(_EnrollmentGenericViewSet):
     queryset = Enrollment.objects.all()
     serializer_class = EnrollmentSerializer

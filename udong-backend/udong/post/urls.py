@@ -1,7 +1,6 @@
 from rest_framework.routers import SimpleRouter
 from post.views import (
     PostViewSet,
-    PostClubViewSet,
     EnrollmentViewSet,
     SchedulingViewSet,
 )
