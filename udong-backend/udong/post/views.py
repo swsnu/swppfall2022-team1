@@ -6,12 +6,13 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 from rest_framework.decorators import action
-from post.models import Post
-from post.models import Enrollment
-from post.models import Participation
-from post.serializers import PostBoardSerializer
-from post.serializers import EnrollmentSerializer
-from post.serializers import ParticipationSerializer
+from post.models import Post, Enrollment, Participation, Scheduling
+from post.serializers import (
+    PostBoardSerializer,
+    EnrollmentSerializer,
+    ParticipationSerializer,
+    SchedulingSerializer,
+)
 from user.models import UserClub
 from comment.models import Comment
 from comment.serializers import CommentSerializer
@@ -24,9 +25,11 @@ from typing import Any, TYPE_CHECKING, TypeVar
 if TYPE_CHECKING:
     _PostGenericViewSet = viewsets.GenericViewSet[Post]
     _EnrollmentGenericViewSet = viewsets.GenericViewSet[Enrollment]
+    _SchedulingGenericViewSet = viewsets.GenericViewSet[Scheduling]
 else:
     _PostGenericViewSet = viewsets.GenericViewSet
     _EnrollmentGenericViewSet = viewsets.GenericViewSet
+    _SchedulingGenericViewSet = viewsets.GenericViewSet
 
 _MT_co = TypeVar("_MT_co", bound=Model, covariant=True)
 
@@ -175,4 +178,25 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
         enrollment.closed = True
         enrollment.save()
         serializer = self.get_serializer(enrollment)
+        return Response(serializer.data)
+
+
+class SchedulingViewSet(_SchedulingGenericViewSet):
+    queryset = Scheduling.objects.all()
+    serializer_class = SchedulingSerializer
+
+    @action(detail=True, methods=["GET"])
+    def status(self, request: Request, pk: Any) -> Response:
+        try:
+            scheduling = (
+                self.get_queryset()
+                .prefetch_related("available_time_set")
+                .filter(post_id=pk)
+                .get()
+            )
+        except Scheduling.DoesNotExist:
+            return Response(
+                "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = self.get_serializer(scheduling)
         return Response(serializer.data)
