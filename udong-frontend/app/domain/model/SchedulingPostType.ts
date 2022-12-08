@@ -1,4 +1,4 @@
 export enum SchedulingPostType {
-    DATES = 'Date',
-    DAYS = 'Weekday'
+    DATES = 'D',
+    DAYS = 'W'
 }

@@ -6,11 +6,11 @@ import { SchedulingDto } from '../dto/SchedulingDto'
 import { availableTimeTransformer } from './AvailableTimeTransformer'
 
 const fromDto = (dto: SchedulingDto): DateSchedulingPost | WeekdaySchedulingPost => {
-    const timeDuration = dto.endTime - dto.startTime
+    const timeDuration = dto.end_time - dto.start_time
     const common = {
         type: dto.type,
-        startTime: dto.startTime,
-        endTime: dto.endTime,
+        startTime: dto.start_time,
+        endTime: dto.end_time,
         closed: dto.closed,
         confirmedTime: dto.confirmed_time ? strToBool(dto.confirmed_time, dto.confirmed_time.length / timeDuration, timeDuration) : null,
         availableTime: dto.available_times.map((x) => availableTimeTransformer.fromDto(x, timeDuration)),

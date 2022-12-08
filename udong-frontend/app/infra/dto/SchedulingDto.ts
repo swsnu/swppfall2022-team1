@@ -3,8 +3,8 @@ import { AvailableTimeDto } from './AvailableTimeDto'
 
 export interface SchedulingDto {
     type: SchedulingPostType
-    startTime: number
-    endTime: number
+    start_time: number
+    end_time: number
     dates: Array<string> | null
     weekdays: string | null
     repeat_start: Date | null
