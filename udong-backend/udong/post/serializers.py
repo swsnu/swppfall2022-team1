@@ -139,6 +139,7 @@ class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
             "repeat_start",
             "repeat_end",
             "closed",
+            "confirmed_time",
             "available_times",
             "created_at",
             "updated_at",
