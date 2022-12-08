@@ -47,22 +47,6 @@ class ClubRegisterSerializer(serializers.ModelSerializer[Club]):
         fields = ("code",)
 
 
-class ClubUserSerializer(serializers.ModelSerializer[UserClub]):
-    user = UserSerializer()
-    auth = serializers.CharField(source="get_auth_display")
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
-
-    class Meta:
-        model = UserClub
-        fields = (
-            "user",
-            "auth",
-            "created_at",
-            "updated_at",
-        )
-
-
 class ClubEventSerializer(serializers.ModelSerializer[Event]):
     name = serializers.CharField(max_length=255)
     time = serializers.SerializerMethodField(read_only=True)
