@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.db.utils import IntegrityError
 from rest_framework import viewsets, status
@@ -23,16 +23,18 @@ from typing import Any, Type, TYPE_CHECKING
 # Create your views here.
 
 if TYPE_CHECKING:
-    _GenereicViewSet = viewsets.GenericViewSet[Club]
+    _GenericClubViewSet = viewsets.GenericViewSet[Club]
+    _GenericClubUserViewSet = viewsets.GenericViewSet[UserClub]
     from rest_framework.permissions import _SupportsHasPermission
 
     _SupportsHasPermissionType = list[_SupportsHasPermission]
 else:
-    _GenereicViewSet = viewsets.GenericViewSet
+    _GenericClubViewSet = viewsets.GenericViewSet
+    _GenericClubUserViewSet = viewsets.GenericViewSet
     _SupportsHasPermissionType = list
 
 
-class ClubViewSet(_GenereicViewSet):
+class ClubViewSet(_GenericClubViewSet):
     queryset = Club.objects.all()
     serializer_class = ClubSerializer
 
@@ -146,3 +148,27 @@ class ClubViewSet(_GenereicViewSet):
     def tag(self, request: Request, pk: Any) -> Response:
         club_tag = self.get_object().tag_set
         return Response(self.get_serializer(club_tag, many=True).data)
+
+
+class ClubUserViewSet(_GenericClubUserViewSet):
+    queryset = UserClub.objects.all()
+    permission_classes = [IsAuthenticated, IsAdmin]
+
+    lookup_field: str = "user_id"
+
+    @swagger_auto_schema(
+        responses={
+            204: "",
+            400: "User can delete himself",
+            404: "User is not in the club / Invalid club",
+            403: "User is not admin",
+        },
+    )
+    def destroy(self, request: Request, club_id: Any, user_id: Any) -> Response:
+        club = get_object_or_404(Club, id=club_id)
+        self.check_object_permissions(request, club)
+        if int(user_id) == request.user.id:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        user_club = get_object_or_404(UserClub, Q(user_id=user_id) & Q(club_id=club_id))
+        user_club.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
