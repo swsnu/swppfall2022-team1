@@ -17,6 +17,7 @@ const stubInitialState: TagState = {
 }
 
 const stubUserInitialState: UserState = {
+    isAdmin: false,
     me: {
         id: 1,
         email: '',

@@ -8,6 +8,7 @@ import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { MyProfileView } from '../MyProfileView'
 
 const stubUserInitialState: UserState = {
+    isAdmin: false,
     selectedUser: dummyUserMe,
 }
 

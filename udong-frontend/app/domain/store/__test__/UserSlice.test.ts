@@ -29,6 +29,7 @@ describe('user reducer', () => {
     })
     it('should handle initial state', () => {
         expect(userReducer(undefined, { type: 'unknown' })).toEqual({
+            isAdmin: false,
         })
     })
     it('should handle getUser', async () => {

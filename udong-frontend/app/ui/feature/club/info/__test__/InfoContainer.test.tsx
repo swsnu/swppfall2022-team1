@@ -10,6 +10,7 @@ import { userReducer, UserState } from '../../../../../domain/store/user/UserSli
 import { InfoContainer } from '../InfoContainer'
 
 const stubUserInitialState: UserState = {
+    isAdmin: false,
     selectedUser: dummyUserMe,
 }
 
