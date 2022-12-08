@@ -186,6 +186,8 @@ class ClubViewSet(_GenereicViewSet):
 
         if post.type == "E":  # type: ignore
             Enrollment.objects.create(post=post, closed=False)  # type: ignore
+        if post.type == "S":  # type: ignore
+            Scheduling.objects.create(**request.data.get("scheduling", {}), post=post, closed=False)  # type: ignore
 
         tag_list = Tag.objects.filter(id__in=request.data.get("tag_list", []))
         for tag in tag_list:
