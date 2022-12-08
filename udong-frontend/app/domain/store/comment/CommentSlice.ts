@@ -43,7 +43,7 @@ export const deleteComment = createAsyncThunk<void, number, { rejectValue: Comme
     'comment/deleteComment',
     async (commentId: number, { rejectWithValue }) => {
         try {
-            return CommentAPI.deleteComment(commentId)
+            return await CommentAPI.deleteComment(commentId)
         } catch (e) {
             if (axios.isAxiosError(e)) {
                 if (e.response?.status === 403) {
