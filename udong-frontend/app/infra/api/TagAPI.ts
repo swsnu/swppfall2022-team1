@@ -9,7 +9,10 @@ export const TagAPI = (() => {
         return tagUserTransformer.fromDto(response.data)
     }
     function editTag() { return }
-    function deleteTag() { return }
+
+    async function deleteTag(tagId: number): Promise<void> {
+        return await axiosConfig.delete(`/api/tag/${tagId}/`)
+    }
 
     return Object.freeze({
         getTag,
