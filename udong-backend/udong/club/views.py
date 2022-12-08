@@ -17,7 +17,7 @@ from club.serializers import (
 )
 from user.serializers import UserClubSerializer
 from event.serializers import ClubEventSerializer
-from tag.serializers import TagClubSerializer
+from tag.serializers import ClubTagSerializer
 from common.permissions import IsAdmin
 from drf_yasg.utils import swagger_auto_schema, no_body
 from typing import Any, Type, TYPE_CHECKING
@@ -53,7 +53,7 @@ class ClubViewSet(_GenericClubViewSet):
         if self.action == "event":
             return ClubEventSerializer
         if self.action == "tag":
-            return TagClubSerializer
+            return ClubTagSerializer
         return ClubSerializer
 
     def list(self, request: Request) -> Response:
@@ -156,7 +156,7 @@ class ClubViewSet(_GenericClubViewSet):
         )
         return Response(self.get_serializer(club_event, many=True).data)
 
-    @swagger_auto_schema(responses={200: TagClubSerializer(many=True)})
+    @swagger_auto_schema(responses={200: ClubTagSerializer(many=True)})
     @action(detail=True, methods=["GET"])
     def tag(self, request: Request, pk: Any) -> Response:
         club_tag = self.get_object().tag_set
