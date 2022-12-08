@@ -29,7 +29,9 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     useEffect(() => {
-        dispatch(commentActions.getComments(postId))
+        if (postId) {
+            dispatch(commentActions.getComments(postId))
+        }
     }, [dispatch, postId])
 
     const handleCommentSubmit = useCallback(() => {

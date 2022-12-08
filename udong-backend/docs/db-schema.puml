@@ -46,7 +46,6 @@ entity Time {
   *id: int <<generated>>
   --
   event_id: int <<FK>>
-  scheduling_id: int <<FK>>
   *type: "Date" | "Weekday"
   // Date
   start_date: dateTime
@@ -114,6 +113,7 @@ entity Scheduling {
   repeat_start: date
   repeat_end: date
   *closed: boolean
+  confirmed_time: text
   *created_at: dateTime
   *updated_at: dateTime
 }
@@ -156,22 +156,21 @@ entity PostTag {
   *updated_at: dateTime
 }
 
-User ||--o{ UserClub
+User ||-r-o{ UserClub
 Club ||--o{ UserClub
 Club ||--o{ Event
-Time }o-left-|| Event
+Time }o-r-|| Event
 User ||--o{ UserTag
 Tag ||--o{ UserTag
 Event |o-down-o{ Post
-Post }o-up-|| User
+Post }o-left-|| User
 Enrollment |o-up-|| Post
 Scheduling |o-up-|| Post
-Scheduling ||--o{ Time
 User ||--o{ Participation
 Enrollment ||--o{ Participation
 User ||--o{ AvailableTime
-AvailableTime }o-d-|| Scheduling
-User ||--o{ Comment
+AvailableTime }o-l-|| Scheduling
+Comment }o--|| User
 Post ||--o{ PostTag
 Tag }o-up-|| Club
 Tag ||--o{ PostTag
