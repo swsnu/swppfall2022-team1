@@ -1,14 +1,16 @@
 from django.shortcuts import render
+from django.db.models import Model
 from rest_framework import viewsets, status
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.serializers import BaseSerializer
 from tag.models import Tag
 from tag.serializers import TagUserSerializer
-from typing import TYPE_CHECKING, Any
 from common.permissions import IsAdmin
 from drf_yasg.utils import swagger_auto_schema
+from typing import TYPE_CHECKING, Any, TypeVar
 
 # Create your views here.
 
@@ -31,6 +33,7 @@ class TagViewSet(_GenericViewSet):
             return [IsAuthenticated(), IsAdmin()]
         return super().get_permissions()
 
+    @swagger_auto_schema(operation_description="new_users is only in the request")
     def retrieve(self, request: Request, pk: Any = None) -> Response:
         return Response(self.get_serializer(self.get_object()).data)
 
