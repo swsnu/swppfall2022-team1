@@ -1,33 +1,53 @@
 import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
+import { AppDispatch } from '../../../../../domain/store'
+import { clubActions } from '../../../../../domain/store/club/ClubSlice'
+import { schedulingActions } from '../../../../../domain/store/post/scheduling/SchedulingSlice'
+import { userActions } from '../../../../../domain/store/user/UserSlice'
+import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { CellIdx } from '../../../shared/TimeTable'
 import { BestTimeView } from './BestTimeView'
 import { SchedulingCloseModal } from './SchedulingCloseModal'
-import { getAva, parseUsers, useData } from './SchedulingHooks'
+import { getAva, useData } from './SchedulingHooks'
 import { SchedulingStatusTableView } from './SchedulingStatusTableView'
 import { SchedulingUserListView } from './SchedulingUserListView'
 
-const allUsersDummy = [
-    { id: 1, name: 'user1', auth: 'A' },
-    { id: 2, name: 'user2', auth: 'M' },
-    { id: 3, name: 'user3', auth: 'A' },
-]
-
 export const SchedulingStatusContainer = () => {
     const router = useRouter()
+    const { clubId: rawClubId, postId: rawPostId } = router.query
+    const postId = convertQueryParamToString(rawPostId)
+    const clubId = convertQueryParamToString(rawClubId)
 
     const [selected, setSelected] = useState<CellIdx|null>(null)
     const [hover, setHover] = useState<CellIdx|null>(null)
     const [modalOpen, setModalOpen] = useState(false)
+    const dispatch = useDispatch<AppDispatch>()
 
-    const { data, users, cnt, best } = useData()
-    const allUsers = useMemo(() => parseUsers(allUsersDummy), [])
+    useEffect(() => {
+        if(postId) { dispatch(schedulingActions.getSchedulingStatus(postId)) }
+    }, [dispatch, postId])
 
-    const ava = useMemo(() => hover ? getAva(data, hover) : selected ? getAva(data, selected) : [], [data, hover, selected])
+    useEffect(() => {
+        if(clubId) { dispatch(clubActions.getClubMembers(+clubId))}
+    }, [dispatch, clubId])
+
+    useEffect(() => {
+        dispatch(userActions.getMyProfile())
+    }, [dispatch])
+
+    const { schedulingStatus, allUsers, participatedUserIds, cnt, best } = useData()
+    if(!schedulingStatus) {return null}
+
+    const ava = hover
+        ? getAva(schedulingStatus, hover)
+        : selected
+            ? getAva(schedulingStatus, selected)
+            : []
 
     return (
         <VStack
@@ -45,7 +65,7 @@ export const SchedulingStatusContainer = () => {
                 justifyContent={'center'}
             >
                 <SchedulingStatusTableView
-                    data={data}
+                    data={schedulingStatus}
                     selected={selected}
                     setSelected={setSelected}
                     setHover={setHover}
@@ -62,16 +82,16 @@ export const SchedulingStatusContainer = () => {
                             <SchedulingUserListView
                                 leftTitle='가능'
                                 rightTitle='불가능'
-                                leftList={users.filter(({ id }) => ava.includes(id))}
-                                rightList={users.filter(({ id }) => !ava.includes(id))}
+                                leftList={allUsers.filter(({ id }) => ava.includes(id))}
+                                rightList={allUsers.filter(({ id }) => !ava.includes(id) && participatedUserIds.includes(id))}
                                 color={UdongColors.Primary}
                             />
                         ) : (
                             <SchedulingUserListView
                                 leftTitle='참여'
                                 rightTitle='미참여'
-                                leftList={users}
-                                rightList={allUsers.filter(({ id }) => users.map(({ id }) => id).includes(id))}
+                                leftList={allUsers.filter(({ id }) => participatedUserIds.includes(id))}
+                                rightList={allUsers.filter(({ id }) => !participatedUserIds.includes(id))}
                                 color={UdongColors.GrayNormal}
                             />
                         )
