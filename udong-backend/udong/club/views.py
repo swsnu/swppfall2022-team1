@@ -51,6 +51,13 @@ class ClubViewSet(_GenereicViewSet):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    def update(self, request: Request, pk: Any) -> Response:
+        club = self.get_object()
+        serializer = self.serializer_class(club, request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
     @swagger_auto_schema(responses={200: ClubUserSerializer(many=True)})
     @action(detail=True, methods=["GET"])
     def user(self, request: Request, pk: Any) -> Response:
