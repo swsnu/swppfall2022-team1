@@ -39,7 +39,9 @@ export const parseUsers = (users: ClubUser[], myId: number): SchedulingListUserT
 
 export const useData = () => {
     const schedulingStatus = useSelector(schedulingSelector.schedulingStatus)
-    const myId = useSelector(userSelector.userMe)?.id
+    const me = useSelector(userSelector.userMe)
+    const myId = me?.id
+    const myTimeTable = me?.timeTable
     const clubUsers = useSelector(clubSelector.members)
 
     if(!schedulingStatus) {
@@ -80,7 +82,7 @@ export const useData = () => {
         [] as ({ cnt: number, day: string, time: number })[],
     ).sort((a, b) => b.cnt - a.cnt).slice(0, 3)
 
-    return { schedulingStatus, allUsers, participatedUserIds, cnt, best }
+    return { schedulingStatus, allUsers, participatedUserIds, cnt, best, myTimeTable }
 }
 
 export const getHeader = (data: DateSchedulingPost | WeekdaySchedulingPost) => (
