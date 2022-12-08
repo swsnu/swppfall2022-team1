@@ -168,7 +168,6 @@ class ClubViewSet(_GenericClubViewSet):
         club_tag = self.get_object().tag_set
         return Response(self.get_serializer(club_tag, many=True).data)
 
-<<<<<<< HEAD
     @action(detail=True, methods=["GET", "POST"])
     def post(self, request: Request, pk: Any) -> Response:
         if request.method == "GET":
@@ -245,7 +244,7 @@ class ClubViewSet(_GenericClubViewSet):
             PostTag.objects.create(post=post, tag=tag)  # type: ignore
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-=======
+
 
 class ClubUserViewSet(_GenericClubUserViewSet):
     queryset = UserClub.objects.all()
@@ -296,4 +295,3 @@ class ClubUserViewSet(_GenericClubUserViewSet):
             user_club.auth = "M"
         user_club.save()
         return Response(self.get_serializer(user_club).data)
->>>>>>> origin/main
