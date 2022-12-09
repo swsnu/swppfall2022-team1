@@ -171,11 +171,34 @@ class ClubViewSet(_GenericClubViewSet):
         )
         return Response(self.get_serializer(club_event, many=True).data)
 
-    @swagger_auto_schema(responses={200: ClubTagSerializer(many=True)})
-    @action(detail=True, methods=["GET"])
+    @action(detail=True, methods=["GET", "POST"])
     def tag(self, request: Request, pk: Any) -> Response:
+        if request.method == "GET":
+            return self._get_tags(request, pk)
+        else:
+            return self._create_tag(request, pk)
+
+    @swagger_auto_schema(responses={200: ClubTagSerializer(many=True)})
+    def _get_tags(self, request: Request, pk: Any) -> Response:
         club_tag = self.get_object().tag_set
         return Response(self.get_serializer(club_tag, many=True).data)
+
+    @swagger_auto_schema(responses={201: ClubTagSerializer(many=True)})
+    def _create_tag(self, request: Request, pk: Any) -> Response:
+        club = self.get_object()
+
+        obj_permission = IsAdmin()
+        if not obj_permission.has_object_permission(request, self, club):
+            self.permission_denied(
+                request,
+                message=getattr(obj_permission, "message", None),
+                code=getattr(obj_permission, "code", None),
+            )
+
+        serializer = self.get_serializer(data=request.data, context={"club": club})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     @action(detail=True, methods=["GET", "POST"])
     def post(self, request: Request, pk: Any) -> Response:
