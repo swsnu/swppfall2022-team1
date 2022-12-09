@@ -28,7 +28,7 @@ export const CreateClubModal = (props: CreateClubModalProps) => {
             dispatch(clubActions.createClub(name))
             setIsOpen(false)
         }
-    }, [dispatch, name])
+    }, [dispatch, name, setIsOpen])
 
     return <UdongModal
         isOpen={isOpen}
