@@ -7,6 +7,7 @@ from drf_yasg.utils import swagger_auto_schema
 from botocore.exceptions import ClientError
 from pathlib import Path
 from typing import Optional
+from datetime import datetime
 import os
 import environ  # type: ignore[import]
 import boto3
@@ -42,12 +43,30 @@ class ImageViewSet(viewsets.ViewSet):
             pass
         return url
 
-    @swagger_auto_schema(responses={200: "presigned url", 400: "Can't download"})
+    @swagger_auto_schema(
+        operation_description="queryparam: ?key=key",
+        responses={200: "presigned url", 400: "Can't download"},
+    )
     @action(detail=False, methods=["GET"])
     def download(self, request: Request) -> Response:
         url = self.generate_presigned_url(
             "get_object",
             {"Bucket": env("BUCKET_NAME"), "Key": request.GET["key"]},
+        )
+        if url is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(url)
+
+    @swagger_auto_schema(
+        operation_description="queyparam: ?file=filename",
+        responses={200: "presigned url", 400: "Can't upload"},
+    )
+    @action(detail=False, methods=["GET"])
+    def upload(self, request: Request) -> Response:
+        key: str = datetime.now().isoformat() + "_" + request.GET["file"]
+        url = self.generate_presigned_url(
+            "put_object",
+            {"Bucket": env("BUCKET_NAME"), "Key": key},
         )
         if url is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
