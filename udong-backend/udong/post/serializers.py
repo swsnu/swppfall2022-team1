@@ -52,6 +52,12 @@ class ParticipationSerializer(serializers.ModelSerializer[Participation]):
     def get_user(self, participation: Participation) -> ReturnDict:
         return UserSerializer(participation.user).data
 
+    def create(self, validated_data: Dict[str, Any]) -> Participation:
+        participation = Participation.objects.create(
+            user=self.context["user"], enrollment=self.context["enrollment"]
+        )
+        return participation
+
 
 class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
     closed = serializers.BooleanField(default=False)

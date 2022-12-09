@@ -17,6 +17,7 @@ from post.serializers import (
     SchedulingSerializer,
 )
 from club.models import Club
+from user.serializers import UserSerializer
 from user.models import UserClub
 from comment.models import Comment
 from common.permissions import IsAdmin
@@ -169,16 +170,41 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
     serializer_class = EnrollmentSerializer
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
-        if self.action in ("status"):
+        if self.action in ("participate", "status"):
             return ParticipationSerializer
         elif self.action == "close":
             return EnrollmentSerializer
         return self.serializer_class
-       
+
+    @action(detail=True, methods=["POST"])
+    def participate(self, request: Request, pk: Any) -> Response:
+        try:
+            enrollment = Enrollment.objects.get(post=pk)
+        except Enrollment.DoesNotExist:
+            return Response(
+                "Enrollment does not exist", status=status.HTTP_404_NOT_FOUND
+            )
+        try:
+            Participation.objects.get(Q(user_id=request.user.id) & Q(enrollment_id=pk))
+            return Response("Already registered", status=status.HTTP_400_BAD_REQUEST)
+        except Participation.DoesNotExist:
+            serializer = self.get_serializer(
+                data=request.data,
+                context={"user": request.user, "enrollment": enrollment},
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
-        user_list = Participation.objects.values_list("user", flat=True)
-        return Response(user_list)
+        participation_list = (
+            Participation.objects.all().select_related("user").filter(enrollment_id=pk)
+        )
+        user_list = list(
+            map(lambda participation: participation.user, participation_list)
+        )
+        return Response(UserSerializer(user_list, many=True).data)
 
     @action(detail=True, methods=["PUT"])
     def close(self, request: Request, pk: Any = None) -> Response:
