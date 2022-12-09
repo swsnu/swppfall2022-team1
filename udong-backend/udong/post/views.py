@@ -256,13 +256,13 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
             return Response(
                 "Scheduling is already closed", status=status.HTTP_400_BAD_REQUEST
             )
-        scheduling.closed = True
-        try:
-            scheduling.confirmed_time = request.data["confirmed_time"]
-        except KeyError:
+        data = request.data
+        if "confirmed_time" not in data:
             return Response(
-                "Confirmed time is not given", status=status.HTTP_400_BAD_REQUEST
+                "confirmed_time field required", status=status.HTTP_400_BAD_REQUEST
             )
-        scheduling.save()
-        serializer = self.get_serializer(scheduling)
+        data["closed"] = True
+        serializer = self.get_serializer(scheduling, data=data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data)
