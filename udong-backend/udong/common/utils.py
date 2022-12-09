@@ -15,16 +15,15 @@ class MyJson:
     @staticmethod
     def remove_field(json: JsonType, exclude_field: list[str] = []) -> None:
         if isinstance(json, dict):
-            exclude_field.extend(["created_at", "updated_at"])
             for key in exclude_field:
                 if key in json:
                     del json[key]
             for value in json.values():
-                MyJson.remove_field(value)
+                MyJson.remove_field(value, exclude_field)
 
         elif isinstance(json, list):
             for dictionary in json:
-                MyJson.remove_field(dictionary)
+                MyJson.remove_field(dictionary, exclude_field)
 
     @staticmethod
     def compare(json1: JsonType, json2: JsonType) -> bool:
@@ -70,6 +69,7 @@ class MyTestCase(TestCase):
         json_j1 = MyJson(json.loads(j1))
         json_j2 = MyJson(json.loads(json.dumps(j2)))
 
+        exclude_field.extend(["created_at", "updated_at"])
         MyJson.remove_field(json_j1.json, exclude_field)
         self.assertEqual(json_j1, json_j2)
 
