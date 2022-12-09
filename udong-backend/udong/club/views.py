@@ -160,9 +160,15 @@ class ClubViewSet(_GenericClubViewSet):
                 request.method if request.method else "unknown method"
             )
 
-    @swagger_auto_schema(responses={200: ClubEventSerializer(many=True)})
-    @action(detail=True, methods=["GET"])
+    @action(detail=True, methods=["GET", "POST"])
     def event(self, request: Request, pk: Any) -> Response:
+        if request.method == "GET":
+            return self._get_events(request, pk)
+        else:
+            return self._create_event(request, pk)
+
+    @swagger_auto_schema(responses={200: ClubEventSerializer(many=True)})
+    def _get_events(self, reqeust: Request, pk: Any) -> Response:
         club_event = (
             self.get_queryset()
             .prefetch_related("event_set__time_set")
@@ -170,6 +176,23 @@ class ClubViewSet(_GenericClubViewSet):
             .event_set
         )
         return Response(self.get_serializer(club_event, many=True).data)
+
+    @swagger_auto_schema(responses={201: ClubEventSerializer()})
+    def _create_event(self, request: Request, pk: Any) -> Response:
+        club = self.get_object()
+
+        obj_permission = IsAdmin()
+        if not obj_permission.has_object_permission(request, self, club):
+            self.permission_denied(
+                request,
+                message=getattr(obj_permission, "message", None),
+                code=getattr(obj_permission, "code", None),
+            )
+
+        serializer = self.get_serializer(data=request.data, context={"club": club})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     @action(detail=True, methods=["GET", "POST"])
     def tag(self, request: Request, pk: Any) -> Response:
@@ -183,7 +206,7 @@ class ClubViewSet(_GenericClubViewSet):
         club_tag = self.get_object().tag_set
         return Response(self.get_serializer(club_tag, many=True).data)
 
-    @swagger_auto_schema(responses={201: ClubTagSerializer(many=True)})
+    @swagger_auto_schema(responses={201: ClubTagSerializer()})
     def _create_tag(self, request: Request, pk: Any) -> Response:
         club = self.get_object()
 
