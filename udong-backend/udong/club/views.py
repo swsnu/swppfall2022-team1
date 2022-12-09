@@ -260,14 +260,7 @@ class ClubViewSet(_GenericClubViewSet):
             },
         )
         serializer.is_valid(raise_exception=True)
-        post = serializer.save()
-
-        if post.type == "E":  # type: ignore
-            Enrollment.objects.create(post=post, closed=False)  # type: ignore
-
-        tag_list = Tag.objects.filter(id__in=request.data.get("tag_list", []))
-        for tag in tag_list:
-            PostTag.objects.create(post=post, tag=tag)  # type: ignore
+        serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
