@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
 import { clubActions } from '../../../../../domain/store/club/ClubSlice'
+import { postSelector } from '../../../../../domain/store/post/PostSelector'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
@@ -32,13 +34,14 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
     const inputRef = useRef<HTMLInputElement | undefined>(null)
     const [tagName, setTagName] = useState<string>('')
     const dispatch = useDispatch<AppDispatch>()
+    const post = useSelector(postSelector.selectedPost)
 
     const buttonDisable = useMemo(() => createTag && !tagName, [createTag, tagName])
 
     const handleClose = useCallback(() => {
         if(!buttonDisable) {
             if(createTag) { dispatch(clubActions.createClubTag({ clubId: +clubId, tagName, userIds: inc })) }
-            if(saveTime) { dispatch(clubActions.editClub())}
+            if(saveTime) { return }
             router.push(`/club/${clubId}/post/${postId}`)
         }
     }, [router, clubId, postId, createTag, dispatch, saveTime, buttonDisable, tagName, inc])

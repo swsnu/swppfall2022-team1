@@ -7,6 +7,7 @@ export interface ListItemPost {
     id: number
     author?: string
     eventName?: EventName
+    eventId?: number
     clubName?: string
     title: string
     content: string
