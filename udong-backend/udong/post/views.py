@@ -18,6 +18,8 @@ from post.serializers import (
 )
 from club.models import Club
 from user.serializers import UserSerializer
+from timedata.serializers import AvailableTimeSerializer
+from timedata.models import AvailableTime
 from user.models import UserClub
 from comment.models import Comment
 from common.permissions import IsAdmin
@@ -252,6 +254,42 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
     queryset = Scheduling.objects.all()
     serializer_class = SchedulingSerializer
 
+    def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
+        if self.action == "participate":
+            return AvailableTimeSerializer
+        elif self.action in ("close", "status"):
+            return SchedulingSerializer
+        return self.serializer_class
+
+    @action(detail=True, methods=["POST"])
+    def participate(self, request: Request, pk: Any) -> Response:
+        try:
+            scheduling = Scheduling.objects.get(post=pk)
+            if scheduling.closed:
+                return Response(
+                    "Scheduling is closed", status=status.HTTP_400_BAD_REQUEST
+                )
+        except Scheduling.DoesNotExist:
+            return Response(
+                "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
+            )
+        try:
+            availableTime = AvailableTime.objects.get(
+                Q(user_id=request.user.id) & Q(scheduling_id=pk)
+            )
+            serializer = self.get_serializer(availableTime, request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
+        except AvailableTime.DoesNotExist:
+            serializer = self.get_serializer(
+                data=request.data,
+                context={"user": request.user, "scheduling": scheduling},
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
         try:
@@ -265,4 +303,22 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
                 "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
             )
         serializer = self.get_serializer(scheduling)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["PUT"])
+    def close(self, request: Request, pk: Any = None) -> Response:
+        scheduling = self.get_object()
+        if scheduling.closed:
+            return Response(
+                "Scheduling is already closed", status=status.HTTP_400_BAD_REQUEST
+            )
+        data = request.data
+        if "confirmed_time" not in data:
+            return Response(
+                "confirmed_time field required", status=status.HTTP_400_BAD_REQUEST
+            )
+        data["closed"] = True
+        serializer = self.get_serializer(scheduling, data=data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data)

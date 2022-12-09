@@ -1,13 +1,17 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 import { CommentAPI } from '../../../infra/api/CommentAPI'
 import { PostAPI } from '../../../infra/api/PostAPI'
 import { Comment } from '../../model/Comment'
 import { User } from '../../model/User'
 
+type CommentAPIErrorType = 'error' | 'forbidden'
+
 export interface CommentState {
     selectedCommentId?: number
     postComments: Array<Comment>
+    error?: CommentAPIErrorType
 }
 
 const initialState: CommentState = {
@@ -35,10 +39,19 @@ export const editComment = createAsyncThunk(
     },
 )
 
-export const deleteComment = createAsyncThunk(
+export const deleteComment = createAsyncThunk<void, number, { rejectValue: CommentAPIErrorType }>(
     'comment/deleteComment',
-    async (commentId: number) => {
-        return CommentAPI.deleteComment(commentId)
+    async (commentId: number, { rejectWithValue }) => {
+        try {
+            return await CommentAPI.deleteComment(commentId)
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                if (e.response?.status === 403) {
+                    return rejectWithValue('forbidden')
+                }
+            }
+            return rejectWithValue('error')
+        }
     },
 )
 
@@ -68,8 +81,10 @@ const commentSlice = createSlice({
         builder.addCase(deleteComment.fulfilled, (state) => {
             state.postComments = state.postComments.filter(comment => comment.id !== state.selectedCommentId)
             state.selectedCommentId = undefined
+            state.error = undefined
         })
-        builder.addCase(deleteComment.rejected, (state) => {
+        builder.addCase(deleteComment.rejected, (state, action) => {
+            state.error = action.payload
             state.selectedCommentId = undefined
         })
     },

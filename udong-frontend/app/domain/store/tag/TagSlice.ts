@@ -51,8 +51,7 @@ export const deleteTag = createAsyncThunk<void, number, { rejectValue: TagAPIErr
     'tag/deleteTag',
     async (tagId: number, { rejectWithValue }) => {
         try {
-            const response = await TagAPI.deleteTag(tagId)
-            return response
+            return await TagAPI.deleteTag(tagId)
         } catch (e) {
             if (axios.isAxiosError(e)) {
                 if (e.response?.status === 403) {
@@ -82,6 +81,7 @@ const tagSlice = createSlice({
         builder.addCase(deleteTag.fulfilled, (state) => {
             state.tags = state.tags.filter(tag => tag.id !== state.selectedTag?.id)
             state.selectedTag = undefined
+            state.error = undefined
         })
         builder.addCase(deleteTag.rejected, (state, action) => {
             state.error = action.payload

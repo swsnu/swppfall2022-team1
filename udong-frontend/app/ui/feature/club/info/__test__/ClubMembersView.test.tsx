@@ -13,6 +13,7 @@ const stubClubInitialState: ClubState = {
 }
 
 const stubUserInitialState: UserState = {
+    isAdmin: false,
     selectedUser: dummyUserMe,
 }
 

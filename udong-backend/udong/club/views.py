@@ -86,7 +86,11 @@ class ClubViewSet(_GenericClubViewSet):
     @swagger_auto_schema(
         method="POST",
         request_body=ClubRegisterSerializer(),
-        responses={204: "", 400: "User already in the club", 404: "Invalid Code"},
+        responses={
+            200: ClubSerializer(),
+            400: "User already in the club",
+            404: "Invalid Code",
+        },
     )
     @action(detail=False, methods=["POST"])
     def register(self, request: Request) -> Response:
@@ -102,7 +106,7 @@ class ClubViewSet(_GenericClubViewSet):
         default_tag = Tag.objects.get(Q(club_id=club) & Q(is_default=True))
         # request.user is not anonymous
         UserTag.objects.create(user=request.user, tag=default_tag)  # type: ignore
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(ClubSerializer(club).data)
 
     @swagger_auto_schema(responses={200: ClubSerializer(), 403: "User is not admin"})
     def update(self, request: Request, pk: Any) -> Response:

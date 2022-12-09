@@ -62,6 +62,7 @@ class ParticipationSerializer(serializers.ModelSerializer[Participation]):
 class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
     closed = serializers.BooleanField(default=False)
     available_times = serializers.SerializerMethodField()
+    confirmed_time = serializers.CharField(allow_null=True, default=None)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
@@ -78,6 +79,7 @@ class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
             "repeat_end",
             "closed",
             "available_times",
+            "confirmed_time",
             "created_at",
             "updated_at",
         )
