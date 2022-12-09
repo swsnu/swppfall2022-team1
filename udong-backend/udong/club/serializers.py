@@ -8,7 +8,8 @@ from typing import Dict, Any
 
 
 class ClubSerializer(serializers.ModelSerializer[Club]):
-    code = serializers.CharField(max_length=10, default="swppfall", read_only=True)
+    code = serializers.CharField(max_length=10, read_only=True)
+    image = serializers.CharField(default="default")
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
