@@ -89,6 +89,11 @@ export const assignClubMemberRole = createAsyncThunk(
     async () => { return },
 )
 
+export const createClubTag = createAsyncThunk(
+    'club/createTag',
+    async () => { return },
+)
+
 const clubSlice = createSlice({
     name: 'club',
     initialState,
@@ -126,5 +131,7 @@ export const clubActions = {
     getClub,
     getClubMembers,
     registerClub,
+    createClubTag,
+    editClub,
 }
 export const clubReducer = clubSlice.reducer

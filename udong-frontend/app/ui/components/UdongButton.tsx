@@ -39,7 +39,7 @@ export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
             borderRadius: 10,
             padding: '8px 16px',
             fontSize: 16,
-            cursor: 'pointer',
+            cursor: (disabled ? 'default' : 'pointer'),
             ...props,
             color: style === 'line' ? (color ?? UdongColors.Primary) : UdongColors.White,
         }}
@@ -54,7 +54,7 @@ export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
 const StyledButton = styled.button`
     ${props => {
         const color = `${props.color ?? UdongColors.Primary}10`
-        return css`
+        return props.disabled ? '' : css`
             &:hover {
                 box-shadow: 200px 0 0 0 ${color} inset,
                             -200px 0 0 0 ${color} inset;

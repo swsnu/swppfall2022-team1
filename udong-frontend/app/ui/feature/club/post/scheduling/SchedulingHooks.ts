@@ -95,12 +95,14 @@ export const getHeader = (data: DateSchedulingPost | WeekdaySchedulingPost) => (
         : ['MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT', 'SUN'].filter((_, idx) => data.weekdays?.[idx])
 )
 
-export const getAva = (data: SchedulingPost, hover: CellIdx|null) => (
-    data.availableTime.filter(({ time }) => (hover && time[hover.col][hover.row])).map(({ user }) => user.id)
-)
+export const getAva = (data: SchedulingPost | undefined, hover: CellIdx|null) => {
+    if(data === undefined) {return []}
+    return data.availableTime.filter(({ time }) => (hover && time[hover.col][hover.row])).map(({ user }) => user.id)
+}
 
-export const getInc = (data: SchedulingPost, selected: boolean[][]) => (
-    data.availableTime.filter(({ time }) => (
+export const getInc = (data: SchedulingPost | undefined, selected: boolean[][] | null) => {
+    if(!data || !selected) {return []}
+    return data.availableTime.filter(({ time }) => (
         selected !== null && time.map((timeRow, col) => timeRow.map((x, row) => x && selected[col][row]).some(x => x)).some(x => x)
     )).map(({ user }) => user.id)
-)
+}

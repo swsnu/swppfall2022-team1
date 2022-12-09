@@ -44,12 +44,12 @@ const schedulingInitialState: SchedulingState = {
 
 const clubInitialState: ClubState = { myClubs: [], members: [] }
 
-const mockStore = configureStore({
+export const mockStore = configureStore({
     reducer: { club: clubReducer, scheduling: schedulingReducer, user: userReducer },
     preloadedState: {
         scheduling: schedulingInitialState,
         club: clubInitialState,
-        user: { me: dummyUserMe },
+        user: { me: dummyUserMe, isAdmin: true },
     },
 })
 

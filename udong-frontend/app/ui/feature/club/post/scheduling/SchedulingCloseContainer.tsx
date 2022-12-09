@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
@@ -44,13 +44,15 @@ export const SchedulingCloseContainer = () => {
 
     const { schedulingStatus, allUsers, participatedUserIds, cnt, best } = useData()
     useEffect(() => {
-        if(schedulingStatus)
-        {setSelected(new2dArray(getDayCnt(schedulingStatus), schedulingStatus.endTime - schedulingStatus.startTime, false))}
+        if(schedulingStatus) {
+            setSelected(new2dArray(getDayCnt(schedulingStatus), schedulingStatus.endTime - schedulingStatus.startTime, false))
+        }
     }, [schedulingStatus])
-    if(!schedulingStatus) {return null}
 
-    const ava = getAva(schedulingStatus, hover)
-    const inc = selected ? getInc(schedulingStatus, selected) : []
+    const ava = useMemo(() => getAva(schedulingStatus, hover), [schedulingStatus, hover])
+    const inc = useMemo(() => getInc(schedulingStatus, selected), [schedulingStatus, selected])
+
+    if(!schedulingStatus) {return null}
 
     return (
         <VStack
@@ -108,6 +110,8 @@ export const SchedulingCloseContainer = () => {
             <SchedulingCloseModal
                 isOpen={modalOpen}
                 setIsOpen={setModalOpen}
+                selected={selected ?? new2dArray(getDayCnt(schedulingStatus), schedulingStatus.endTime - schedulingStatus.startTime, false)}
+                inc={inc}
             />
         </VStack>
     )
