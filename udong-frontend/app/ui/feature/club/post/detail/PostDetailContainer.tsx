@@ -37,14 +37,19 @@ const getSubtitle = (postType: PostType) => {
 export const PostDetailContainer = () => {
     const router = useRouter()
     const dispatch = useDispatch<AppDispatch>()
-    const { clubId: rawClubId, postId: rawPostId } = router.query
+    const { clubId: rawClubId, postId: rawPostId, from } = router.query
     const clubId = convertQueryParamToString(rawClubId)
     const postId = convertQueryParamToString(rawPostId)
+    const routeFrom = convertQueryParamToString(from)
 
     const post = useSelector(postSelector.selectedPost)
 
     const [postType, setPostType] = useState<PostType>(PostType.ANNOUNCEMENT)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+    useEffect(() => {
+        dispatch(postActions.resetSelectedPost())
+    }, [])
 
     useEffect(() => {
         if (post) {
@@ -66,7 +71,7 @@ export const PostDetailContainer = () => {
     return <VStack paddingHorizontal={16}>
         <UdongHeader
             title={post.title}
-            onGoBack={() => router.back()}
+            onGoBack={() => routeFrom === 'create' ? router.push(`/club/${clubId}`) : router.back()}
             subtitle={getSubtitle(postType)}
             rightButtons={<>
                 <UdongButton

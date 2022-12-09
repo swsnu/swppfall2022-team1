@@ -7,6 +7,7 @@ import { CreatePost } from '../../model/CreatePost'
 
 export interface PostState {
     selectedPost?: BoardPost
+    createdPostId?: number
     feedPosts: Array<BoardPost>
     clubPosts: Array<BoardPost>
 }
@@ -57,7 +58,11 @@ export const deletePost = createAsyncThunk(
 const postSlice = createSlice({
     name: 'post',
     initialState,
-    reducers: {},
+    reducers: {
+        resetSelectedPost: (state) => {
+            state.selectedPost = undefined
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(getFeedPosts.fulfilled, (state, action) => {
             state.feedPosts = action.payload
@@ -67,8 +72,10 @@ const postSlice = createSlice({
         })
         builder.addCase(getPost.fulfilled, (state, action) => {
             state.selectedPost = action.payload
+            state.createdPostId = undefined
         })
         builder.addCase(createPost.fulfilled, (state, action) => {
+            state.createdPostId = action.payload.id
             state.selectedPost = action.payload
         })
     },

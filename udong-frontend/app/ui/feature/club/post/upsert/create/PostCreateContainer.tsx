@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { PostType } from '../../../../../../domain/model/PostType'
 import { AppDispatch } from '../../../../../../domain/store'
+import { postSelector } from '../../../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../../../domain/store/post/PostSlice'
 import { convertQueryParamToString } from '../../../../../../utility/handleQueryParams'
 import { VStack } from '../../../../../components/Stack'
@@ -37,8 +38,15 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
     const { clubId: rawClubId } = router.query
     const clubId = convertQueryParamToString(rawClubId)
 
+    const newPostId = useSelector(postSelector.createdPostId)
     const [title, setTitle] = useState<string>('')
     const [contents, setContents] = useState<string>('')
+
+    useEffect(() => {
+        if (newPostId) {
+            router.push(`/club/1/post/${newPostId}/?from=create`)
+        }
+    }, [newPostId, dispatch, router])
 
     const handleCreatePost = useCallback(() => {
         if (clubId) {
@@ -52,7 +60,6 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
                 },
             }))
         }
-        router.push('/club/1/post/1?type=scheduling')
     }, [clubId, contents, dispatch, postType, title])
 
     return <VStack paddingHorizontal={16}>
