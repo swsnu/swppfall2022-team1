@@ -242,10 +242,6 @@ class ClubViewSet(_GenericClubViewSet):
         if post.type == "E":  # type: ignore
             Enrollment.objects.create(post=post, closed=False)  # type: ignore
 
-        tag_list = Tag.objects.filter(id__in=request.data.get("tag_list", []))
-        for tag in tag_list:
-            PostTag.objects.create(post=post, tag=tag)  # type: ignore
-
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 

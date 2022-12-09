@@ -2,7 +2,8 @@ from django.db.models import Q
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
 from club.models import Club
-from post.models import Post, Enrollment, Participation, Scheduling
+from tag.models import Tag
+from post.models import Post, Enrollment, Participation, Scheduling, PostTag
 from tag.serializers import TagPostSerializer
 from user.serializers import UserSerializer
 from event.serializers import EventNameSerializer
@@ -103,6 +104,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     closed = serializers.SerializerMethodField()
     include_tag = serializers.SerializerMethodField()
     exclude_tag = serializers.SerializerMethodField()
+    tag_list = serializers.ListField(child=serializers.IntegerField(), write_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
     scheduling = SchedulingSerializer(allow_null=True, required=False, write_only=True)
@@ -121,6 +123,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             "scheduling",
             "enrollment",
             "closed",
+            "tag_list",
             "include_tag",
             "exclude_tag",
             "created_at",
@@ -174,6 +177,9 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     def create(self, validated_data: Dict[str, Any]) -> Post:
         scheduling = validated_data.pop("scheduling", None)
         enrollment = validated_data.pop("enrollment", None)
+        tag_list = validated_data.pop("tag_list", None)
+        if not isinstance(tag_list, list):
+            raise Exception()
 
         post = Post.objects.create(
             **validated_data,
@@ -182,6 +188,9 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             event=self.context["event"]
         )
 
+        tags = Tag.objects.filter(id__in=tag_list)
+        for tag in tags:
+            PostTag.objects.create(post=post, tag=tag)
         if scheduling:
             Scheduling.objects.create(**scheduling, post=post)
         if enrollment:
