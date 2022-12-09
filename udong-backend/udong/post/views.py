@@ -176,10 +176,9 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
             return EnrollmentSerializer
         return self.serializer_class
 
-    @action(detail=True, methods=["POST"])
-    def participate(self, request: Request, pk: Any) -> Response:
+    def _check_enrollment_validity(self, id: Any) -> Response | Enrollment:
         try:
-            enrollment = Enrollment.objects.get(post=pk)
+            enrollment = Enrollment.objects.get(post=id)
             if enrollment.closed:
                 return Response(
                     "Enrollment is closed", status=status.HTTP_400_BAD_REQUEST
@@ -188,38 +187,47 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
             return Response(
                 "Enrollment does not exist", status=status.HTTP_404_NOT_FOUND
             )
-        try:
-            Participation.objects.get(Q(user_id=request.user.id) & Q(enrollment_id=pk))
-            return Response("Already registered", status=status.HTTP_400_BAD_REQUEST)
-        except Participation.DoesNotExist:
-            serializer = self.get_serializer(
-                data=request.data,
-                context={"user": request.user, "enrollment": enrollment},
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return enrollment
+
+    @action(detail=True, methods=["POST"])
+    def participate(self, request: Request, pk: Any) -> Response:
+        result = self._check_enrollment_validity(pk)
+        if isinstance(result, Response):
+            return result
+        else:
+            enrollment = result
+            try:
+                Participation.objects.get(
+                    Q(user_id=request.user.id) & Q(enrollment_id=pk)
+                )
+                return Response(
+                    "Already registered", status=status.HTTP_400_BAD_REQUEST
+                )
+            except Participation.DoesNotExist:
+                serializer = self.get_serializer(
+                    data=request.data,
+                    context={"user": request.user, "enrollment": enrollment},
+                )
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=["POST"])
     def unparticipate(self, request: Request, pk: Any) -> Response:
-        try:
-            enrollment = Enrollment.objects.get(post=pk)
-            if enrollment.closed:
-                return Response(
-                    "Enrollment is closed", status=status.HTTP_400_BAD_REQUEST
+        result = self._check_enrollment_validity(pk)
+        if isinstance(result, Response):
+            return result
+        else:
+            try:
+                participation = Participation.objects.get(
+                    Q(user_id=request.user.id) & Q(enrollment_id=pk)
                 )
-        except Enrollment.DoesNotExist:
-            return Response(
-                "Enrollment does not exist", status=status.HTTP_404_NOT_FOUND
-            )
-        try:
-            participation = Participation.objects.get(
-                Q(user_id=request.user.id) & Q(enrollment_id=pk)
-            )
-            participation.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except Participation.DoesNotExist:
-            return Response("Didn't registered yet", status=status.HTTP_400_BAD_REQUEST)
+                participation.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            except Participation.DoesNotExist:
+                return Response(
+                    "Didn't registered yet", status=status.HTTP_400_BAD_REQUEST
+                )
 
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
