@@ -6,6 +6,7 @@ from tag.models import Tag
 from event.models import Event
 from post.models import Post, Enrollment, Participation, Scheduling, PostTag
 from tag.serializers import TagPostSerializer
+from common.utils import myIntListComparison
 from user.serializers import UserSerializer
 from event.serializers import EventNameSerializer
 from club.serializers import ClubSerializer
@@ -214,3 +215,33 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             PostTag.objects.create(post=post, tag=tag)
 
         return post
+
+    def update(self, instance: Post, validated_data: Dict[str, Any]) -> Post:
+        old_tags = [
+            post_tag.id for post_tag in PostTag.objects.filter(post_id=instance.id)
+        ]
+        new_tags = validated_data.pop("tag_list", None)
+        if not isinstance(new_tags, list):
+            raise Exception()
+        delete_list, add_list = myIntListComparison(old_tags, new_tags)
+        PostTag.objects.filter(id__in=delete_list).delete()
+        for id in add_list:
+            PostTag.objects.create(post=instance, tag_id=id)
+
+        event_id = validated_data.pop("event_id", None)
+        if instance.event_id != event_id:
+            instance.event = Event.objects.get(id=event_id)
+
+        if "title" in validated_data:
+            instance.title = validated_data["title"]
+            instance.save()
+        if "content" in validated_data:
+            instance.content = validated_data["content"]
+            instance.save()
+
+        if instance.type == "S":
+            scheduling = validated_data.pop("scheduling", {})
+            scheduleSerializer = SchedulingSerializer(data=scheduling, partial=True)
+            scheduleSerializer.is_valid(raise_exception=True)
+            scheduleSerializer.save()
+        return instance
