@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
@@ -184,7 +185,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         tag_list = validated_data.pop("tag_list", None)
         scheduling = validated_data.pop("scheduling", {})
         event_id = validated_data.pop("event_id", None)
-        event = Event.objects.get(id=event_id)
+        event = get_object_or_404(Event, id=event_id)
 
         if not isinstance(tag_list, list):
             raise Exception()
@@ -230,7 +231,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
 
         event_id = validated_data.pop("event_id", None)
         if instance.event_id != event_id:
-            instance.event = Event.objects.get(id=event_id)
+            instance.event= get_object_or_404(Event, id=event_id)
 
         if "title" in validated_data:
             instance.title = validated_data["title"]
@@ -238,10 +239,4 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             instance.content = validated_data["content"]
 
         instance.save()
-
-        if instance.type == "S":
-            scheduling = validated_data.pop("scheduling", {})
-            scheduleSerializer = SchedulingSerializer(data=scheduling, partial=True)
-            scheduleSerializer.is_valid(raise_exception=True)
-            scheduleSerializer.save()
         return instance
