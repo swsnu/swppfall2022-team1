@@ -3,6 +3,7 @@ import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 import { act } from 'react-dom/test-utils'
 
+import { SchedulingPostType } from '../../../../../../domain/model/SchedulingPostType'
 import { SchedulingStatusTableView } from '../SchedulingStatusTableView'
 
 describe('<SchedulingStatusTableView/>', () => {
@@ -17,11 +18,15 @@ describe('<SchedulingStatusTableView/>', () => {
 
         await act(async () => {render(<SchedulingStatusTableView
             data={{
+                type: SchedulingPostType.DAYS,
                 startTime: 14,
                 endTime: 15,
-                dates: null,
-                weekdays: [false, false, true, true, false, false, false],
+                closed: false,
+                confirmedTime: null,
                 availableTime: [],
+                weekdays: [false, false, true, true, false, false, false],
+                repeatStart: new Date('2022-12-9'),
+                repeatEnd: new Date('2022-12-25'),
             }}
             selected={{ col: 0, row: 0 }}
             setSelected={mockSetSelected}

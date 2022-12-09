@@ -9,6 +9,12 @@ const isOpen = createSelector(
     state => state.isOpen,
 )
 
+const schedulingStatus = createSelector(
+    schedulingState,
+    state => state.schedulingStatus,
+)
+
 export const schedulingSelector = {
     isOpen,
+    schedulingStatus,
 }

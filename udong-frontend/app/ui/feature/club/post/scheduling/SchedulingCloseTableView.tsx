@@ -1,13 +1,15 @@
 import { Dispatch, SetStateAction, useMemo } from 'react'
 
+import { DateSchedulingPost } from '../../../../../domain/model/DateSchedulingPost'
+import { WeekdaySchedulingPost } from '../../../../../domain/model/WeekdaySchedulingPost'
 import { VStack } from '../../../../components/Stack'
 import { UdongText } from '../../../../components/UdongText'
 import { DraggableTimeTable } from '../../../shared/DraggableTimeTable'
 import { CellIdx } from '../../../shared/TimeTable'
-import { getHeader, SchedulingDataType } from './SchedulingHooks'
+import { getHeader } from './SchedulingHooks'
 
 interface SchedulingStatusTableViewProps {
-    data: SchedulingDataType
+    data: DateSchedulingPost | WeekdaySchedulingPost
     selected: boolean[][]|null
     setSelected: Dispatch<SetStateAction<boolean[][] | null>>
     setHover: (idx: CellIdx | null) => void

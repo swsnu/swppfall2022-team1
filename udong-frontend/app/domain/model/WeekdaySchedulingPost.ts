@@ -1,8 +1,7 @@
 import { SchedulingPost } from './SchedulingPost'
 
 export interface WeekdaySchedulingPost extends SchedulingPost {
-    weekdays: string
+    weekdays: boolean[]
     repeatStart: Date
     repeatEnd: Date
-    closed: boolean
 }

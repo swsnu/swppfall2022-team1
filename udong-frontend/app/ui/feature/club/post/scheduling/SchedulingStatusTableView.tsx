@@ -1,14 +1,16 @@
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 
+import { DateSchedulingPost } from '../../../../../domain/model/DateSchedulingPost'
+import { WeekdaySchedulingPost } from '../../../../../domain/model/WeekdaySchedulingPost'
 import { new2dArray } from '../../../../../utility/functions'
 import { VStack } from '../../../../components/Stack'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { CellIdx, TimeTable } from '../../../shared/TimeTable'
-import { getHeader, SchedulingDataType } from './SchedulingHooks'
+import { getHeader } from './SchedulingHooks'
 
 interface SchedulingStatusTableViewProps {
-    data: SchedulingDataType
+    data: DateSchedulingPost | WeekdaySchedulingPost
     selected: CellIdx|null
     setSelected: Dispatch<SetStateAction<CellIdx|null>>
     setHover: (idx: CellIdx | null) => void
