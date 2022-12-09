@@ -5,6 +5,7 @@ from club.models import Club
 from user.models import UserClub
 from tag.models import Tag, UserTag
 from typing import Dict, Any
+from common.random import Random
 
 
 class ClubSerializer(serializers.ModelSerializer[Club]):
@@ -28,7 +29,12 @@ class ClubSerializer(serializers.ModelSerializer[Club]):
         code = "".join(
             random.choice(string.ascii_letters + string.digits) for _ in range(10)
         )
-        club = Club.objects.create(**validated_data, code=code)
+        if "image" in validated_data:
+            del validated_data["image"]
+
+        club = Club.objects.create(
+            **validated_data, code=code, image=Random.choice_image()
+        )
         UserClub.objects.create(user=self.context["user"], club=club, auth="A")
         tag = Tag.objects.create(club=club, name="전체", is_default=True)
         UserTag.objects.create(user=self.context["user"], tag=tag)

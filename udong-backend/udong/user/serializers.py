@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer[User]):
 
 class AuthSerializer(serializers.ModelSerializer[User]):
     token = serializers.CharField(write_only=True)
-    image = serializers.CharField(default="", read_only=True)
+    image = serializers.CharField(read_only=True)
     email = serializers.EmailField(max_length=255, validators=[])
     time_table = serializers.CharField(default="", read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
