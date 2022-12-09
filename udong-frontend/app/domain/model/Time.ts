@@ -1,12 +1,20 @@
 import { SchedulingPostType } from './SchedulingPostType'
 
-export interface Time {
+export interface BaseTime {
     type: SchedulingPostType
-    startDate: string
-    endDate: string
-    repeatStart?: string
-    repeatEnd?: string
-    weekday?: string
     startTime: number
     endTime: number
 }
+
+export interface WeekdayTime extends BaseTime {
+    repeatStart?: string
+    repeatEnd?: string
+    weekday?: string
+}
+
+export interface DayTime extends BaseTime {
+    startDate: string
+    endDate: string
+}
+
+export type Time = WeekdayTime | DayTime
