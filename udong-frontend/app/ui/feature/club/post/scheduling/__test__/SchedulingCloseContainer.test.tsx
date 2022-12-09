@@ -52,6 +52,13 @@ const mockStore = configureStore({
         user: { me: dummyUserMe },
     },
 })
+
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        backendUrl: '',
+    },
+}))
+
 describe('<SchedulingCloseContainer/>', () => {
     it('renders SchedulingCloseContainer', async () => {
         const mockBack = jest.fn()
