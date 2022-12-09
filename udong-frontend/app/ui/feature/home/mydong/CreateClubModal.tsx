@@ -10,6 +10,7 @@ import { UdongCloseButton } from '../../../components/UdongCloseButton'
 import { UdongModal } from '../../../components/UdongModal'
 import { UdongText } from '../../../components/UdongText'
 import { UdongTextField } from '../../../components/UdongTextField'
+import { UdongColors } from '../../../theme/ColorPalette'
 
 interface CreateClubModalProps {
     isOpen: boolean
@@ -57,6 +58,7 @@ export const CreateClubModal = (props: CreateClubModalProps) => {
             >
                 <UdongButton
                     style={'fill'}
+                    color={name ? UdongColors.Primary : UdongColors.GrayNormal}
                     onClick={handleCreateClub}
                     padding={'10px 25px'}
                 >
