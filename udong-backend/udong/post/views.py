@@ -1,14 +1,12 @@
 from django.db.models import Q, Model
 from rest_framework import viewsets, status
 from rest_framework.utils.serializer_helpers import ReturnDict
-from rest_framework.exceptions import MethodNotAllowed, PermissionDenied
+from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
-from tag.models import Tag, UserTag
-from tag.models import UserTag
 from post.models import Post, Enrollment, Participation, Scheduling
 from post.serializers import (
     PostBoardSerializer,
@@ -22,7 +20,7 @@ from timedata.serializers import AvailableTimeSerializer
 from timedata.models import AvailableTime
 from user.models import UserClub
 from comment.models import Comment
-from common.permissions import IsAdmin
+from common.permissions import IsAdmin, CanReadPost
 from comment.serializers import CommentSerializer
 from drf_yasg.utils import swagger_auto_schema
 from typing import Any, TYPE_CHECKING, TypeVar
@@ -53,6 +51,8 @@ class PostViewSet(_PostGenericViewSet):
     def get_permissions(self) -> _SupportsHasPermissionType:
         if self.action in ("update", "destroy"):
             return [IsAuthenticated(), IsAdmin()]
+        if self.action in ("retrieve", "comment"):
+            return [IsAuthenticated(), CanReadPost()]
         return super().get_permissions()
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
@@ -102,6 +102,7 @@ class PostViewSet(_PostGenericViewSet):
             .prefetch_related("post_tag_set__tag__tag_user_set")
             .get(id=pk)
         )
+        self.check_object_permissions(request, post)
         return Response(
             self.get_serializer(
                 post, context={"id": request.user.id, "club": False}
@@ -142,6 +143,7 @@ class PostViewSet(_PostGenericViewSet):
 
     @action(detail=True, methods=["GET", "POST"])
     def comment(self, request: Request, pk: Any) -> Response:
+        self.get_object()
         if request.method == "GET":
             return self._get_comments(request, pk)
         elif request.method == "POST":
@@ -170,6 +172,13 @@ class PostViewSet(_PostGenericViewSet):
 class EnrollmentViewSet(_EnrollmentGenericViewSet):
     queryset = Enrollment.objects.all()
     serializer_class = EnrollmentSerializer
+    permission_classes = [IsAuthenticated, CanReadPost]
+
+    def get_permissions(self) -> _SupportsHasPermissionType:
+        if self.action == "close":
+            return [IsAuthenticated(), IsAdmin()]
+        else:
+            return super().get_permissions()
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
         if self.action in ("participate", "status"):
@@ -198,6 +207,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
             return result
         else:
             enrollment = result
+            self.check_object_permissions(request, enrollment)
             try:
                 Participation.objects.get(
                     Q(user_id=request.user.id) & Q(enrollment_id=pk)
@@ -220,6 +230,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
         if isinstance(result, Response):
             return result
         else:
+            self.check_object_permissions(request, result)
             try:
                 participation = Participation.objects.get(
                     Q(user_id=request.user.id) & Q(enrollment_id=pk)
@@ -233,6 +244,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
 
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
+        self.get_object()
         participation_list = (
             Participation.objects.all().select_related("user").filter(enrollment_id=pk)
         )
@@ -244,6 +256,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
     @action(detail=True, methods=["PUT"])
     def close(self, request: Request, pk: Any = None) -> Response:
         enrollment = self.get_object()
+        self.check_object_permissions(request, enrollment.post.club)
         enrollment.closed = True
         enrollment.save()
         serializer = self.get_serializer(enrollment)
@@ -253,6 +266,13 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
 class SchedulingViewSet(_SchedulingGenericViewSet):
     queryset = Scheduling.objects.all()
     serializer_class = SchedulingSerializer
+    permission_classes = [IsAuthenticated, CanReadPost]
+
+    def get_permissions(self) -> _SupportsHasPermissionType:
+        if self.action == "close":
+            return [IsAuthenticated(), IsAdmin()]
+        else:
+            return super().get_permissions()
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
         if self.action == "participate":
@@ -265,6 +285,7 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
     def participate(self, request: Request, pk: Any) -> Response:
         try:
             scheduling = Scheduling.objects.get(post=pk)
+            self.check_object_permissions(request, scheduling)
             if scheduling.closed:
                 return Response(
                     "Scheduling is closed", status=status.HTTP_400_BAD_REQUEST
@@ -298,6 +319,7 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
                 .prefetch_related("available_time_set__user")
                 .get(post_id=pk)
             )
+            self.check_object_permissions(request, scheduling)
         except Scheduling.DoesNotExist:
             return Response(
                 "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
