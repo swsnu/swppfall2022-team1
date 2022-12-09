@@ -18,7 +18,7 @@ const fromDto = (dto: SchedulingDto): DateSchedulingPost | WeekdaySchedulingPost
     if(dto.type === SchedulingPostType.DATES) {
         return {
             ...common,
-            dates: dto.dates ? dto.dates.map((date) => new Date(date)) : [],
+            dates: dto.dates ?? [],
         }
     }
     else {

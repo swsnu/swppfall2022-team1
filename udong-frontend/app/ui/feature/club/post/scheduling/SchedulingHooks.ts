@@ -68,7 +68,8 @@ export const useData = () => {
 
     const calculateDay = (colIdx: number) => {
         if('dates' in schedulingStatus) {
-            return `${schedulingStatus.dates[colIdx].getMonth() + 1}/${schedulingStatus.dates[colIdx].getDate()}`
+            const d = new Date(schedulingStatus.dates[colIdx])
+            return `${d.getMonth() + 1}/${d.getDate()}`
         }
         else {
             return ['월', '화', '수', '목', '금', '토', '일'].filter((_, idx) => schedulingStatus.weekdays?.[idx])[colIdx]
@@ -87,7 +88,10 @@ export const useData = () => {
 
 export const getHeader = (data: DateSchedulingPost | WeekdaySchedulingPost) => (
     'dates' in data ?
-        data.dates.map(date => `${date.getMonth() + 1}/${date.getDate()}`)
+        data.dates.map(date => {
+            const d = new Date(date)
+            return `${d.getMonth() + 1}/${d.getDate()}`
+        })
         : ['SUN', 'MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT'].filter((_, idx) => data.weekdays?.[idx])
 )
 

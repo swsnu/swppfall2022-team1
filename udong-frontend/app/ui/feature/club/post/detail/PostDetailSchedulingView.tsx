@@ -56,9 +56,12 @@ export const PostDetailSchedulingView = () => {
     if (!schedulingStatus) {return null}
 
     if('dates' in schedulingStatus) {
-        header = schedulingStatus.dates.map(date => `${date.getMonth() + 1}/${date.getDate()}`)
+        header = schedulingStatus.dates.map(date => {
+            const d = new Date(date)
+            return `${d.getMonth() + 1}/${d.getDate()}`
+        })
         fixed = schedulingStatus.dates.map(date => (
-            myTimeTable[getDay(date)].slice(schedulingStatus.startTime, schedulingStatus.endTime)),
+            myTimeTable[getDay(new Date(date))].slice(schedulingStatus.startTime, schedulingStatus.endTime)),
         )
     }
     else {
