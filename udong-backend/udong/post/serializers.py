@@ -231,7 +231,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
 
         event_id = validated_data.pop("event_id", None)
         if instance.event_id != event_id:
-            instance.event= get_object_or_404(Event, id=event_id)
+            instance.event = get_object_or_404(Event, id=event_id)
 
         if "title" in validated_data:
             instance.title = validated_data["title"]
