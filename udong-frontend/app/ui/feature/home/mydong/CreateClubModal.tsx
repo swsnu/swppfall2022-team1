@@ -1,5 +1,8 @@
-import { useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
+import { AppDispatch } from '../../../../domain/store'
+import { clubActions } from '../../../../domain/store/club/ClubSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -15,7 +18,16 @@ interface CreateClubModalProps {
 
 export const CreateClubModal = (props: CreateClubModalProps) => {
     const { isOpen, setIsOpen } = props
+    const dispatch = useDispatch<AppDispatch>()
     const inputRef = useRef<HTMLInputElement | undefined>(null)
+    const [name, setName] = useState('')
+
+    const handleCreateClub = useCallback(() => {
+        if (name) {
+            dispatch(clubActions.createClub(name))
+            setIsOpen(false)
+        }
+    }, [dispatch, name])
 
     return <UdongModal
         isOpen={isOpen}
@@ -34,7 +46,7 @@ export const CreateClubModal = (props: CreateClubModalProps) => {
             <Spacer height={20}/>
 
             <UdongTextField
-                onChange={() => {return}}
+                onChange={() => setName(inputRef.current?.value ?? '')}
                 inputRef={inputRef}
             />
             <Spacer height={27}/>
@@ -45,7 +57,7 @@ export const CreateClubModal = (props: CreateClubModalProps) => {
             >
                 <UdongButton
                     style={'fill'}
-                    onClick={() => setIsOpen(true)}
+                    onClick={handleCreateClub}
                     padding={'10px 25px'}
                 >
                     생성하기
