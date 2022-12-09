@@ -3,6 +3,7 @@ from rest_framework.utils.serializer_helpers import ReturnDict
 from drf_yasg.utils import swagger_serializer_method
 from timedata.models import Time, AvailableTime
 from user.serializers import UserSerializer
+from typing import Dict, Any
 
 
 class PureTimeSerializer(serializers.ModelSerializer[Time]):
@@ -38,3 +39,9 @@ class AvailableTimeSerializer(serializers.ModelSerializer[AvailableTime]):
     @swagger_serializer_method(serializer_or_field=UserSerializer())
     def get_user(self, availableTime: AvailableTime) -> ReturnDict:
         return UserSerializer(availableTime.user).data
+
+    def create(self, validated_data: Dict[str, Any]) -> AvailableTime:
+        availableTime = AvailableTime.objects.create(
+            user=self.context["user"], scheduling=self.context["scheduling"]
+        )
+        return availableTime

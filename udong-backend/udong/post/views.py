@@ -17,6 +17,8 @@ from post.serializers import (
     SchedulingSerializer,
 )
 from club.models import Club
+from timedata.serializers import AvailableTimeSerializer
+from timedata.models import AvailableTime
 from user.models import UserClub
 from comment.models import Comment
 from common.permissions import IsAdmin
@@ -196,6 +198,33 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
     queryset = Scheduling.objects.all()
     serializer_class = SchedulingSerializer
 
+    def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
+        if self.action == "participate":
+            return AvailableTimeSerializer
+        elif self.action in ("close", "status"):
+            return SchedulingSerializer
+        return self.serializer_class
+
+    @action(detail=True, methods=["POST"])
+    def participate(self, request: Request, pk: Any) -> Response:
+        try:
+            scheduling = Scheduling.objects.get(post=pk)
+        except Scheduling.DoesNotExist:
+            return Response(
+                "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
+            )
+        try:
+            AvailableTime.objects.get(Q(user_id=request.user.id) & Q(scheduling_id=pk))
+            return Response("Already registered", status=status.HTTP_400_BAD_REQUEST)
+        except AvailableTime.DoesNotExist:
+            serializer = self.get_serializer(
+                data=request.data,
+                context={"user": request.user, "scheduling": scheduling},
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
         try:
@@ -208,5 +237,14 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
             return Response(
                 "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
             )
+        serializer = self.get_serializer(scheduling)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["PUT"])
+    def close(self, request: Request, pk: Any = None) -> Response:
+        scheduling = self.get_object()
+        scheduling.closed = True
+        scheduling.confirmed_time = request.data["time"]
+        scheduling.save()
         serializer = self.get_serializer(scheduling)
         return Response(serializer.data)
