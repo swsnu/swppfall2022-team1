@@ -5,7 +5,7 @@ import secrets
 
 
 env = environ.Env(
-    DEFAULT_IMAGES=(list, []),
+    DEFAULT_IMAGES=(list, [""]),
 )
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
