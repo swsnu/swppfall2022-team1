@@ -48,8 +48,7 @@ class CanReadPost(BasePermission):
                     obj.post_tag_set.select_related("tag")
                     .prefetch_related("post_tag_set__tag__tag_user_set")
                     .filter(tag__tag_user_set__user__id=request.user.id)
-                    .count()
-                    > 0
+                    .exists()
                 )
             except:
                 return False
