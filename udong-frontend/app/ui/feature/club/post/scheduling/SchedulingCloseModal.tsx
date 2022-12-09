@@ -1,6 +1,9 @@
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
+import { AppDispatch } from '../../../../../domain/store'
+import { clubActions } from '../../../../../domain/store/club/ClubSlice'
 import { VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongCheckbox } from '../../../../components/UdongCheckbox'
@@ -12,6 +15,8 @@ import { UdongTextField } from '../../../../components/UdongTextField'
 interface UdongModalProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
+  selected: boolean[][]
+  inc: number[]
 }
 
 export const SchedulingCloseModal = (props: UdongModalProps) => {
@@ -22,6 +27,13 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
     const [createTag, setCreateTag] = useState<boolean>(false)
     const [saveTime, setSaveTime] = useState<boolean>(false)
     const inputRef = useRef<HTMLInputElement | undefined>(null)
+    const dispatch = useDispatch<AppDispatch>()
+
+    const handleClose = useCallback(() => {
+        if(createTag) { dispatch(clubActions.createClubTag()) }
+        if(saveTime) { dispatch(clubActions.editClub())}
+        router.push(`/club/${clubId}/post/${postId}`)
+    }, [router, clubId, postId, createTag, dispatch, saveTime])
 
     return (
         <UdongModal
@@ -59,12 +71,12 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
                     marginLeft={30}
                     marginTop={-10}
                 >
-                    ※ 기존 행사 시간은 삭제됩니다. (수 23:00 ~ 24:00, 목 10:00 ~ 19:00, ...)
+                    ※ 기존 행사 시간은 삭제됩니다.
                 </UdongText>
                 <UdongButton
                     style={'line'}
                     alignSelf={'center'}
-                    onClick={() => {router.push(`/club/${clubId}/post/${postId}`)}}
+                    onClick={handleClose}
                     paddingTop={10}
                 >마감하기</UdongButton>
             </VStack>
