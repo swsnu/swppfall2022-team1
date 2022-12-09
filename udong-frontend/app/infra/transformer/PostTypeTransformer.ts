@@ -14,6 +14,19 @@ const fromDto = (dto: PostTypeDto): PostType => {
     }
 }
 
+const toDto = (postType: PostType): PostTypeDto => {
+    switch (postType) {
+        case PostType.ENROLLMENT:
+            return PostTypeDto.ENROLLMENT
+        case PostType.SCHEDULING:
+            return PostTypeDto.SCHEDULING
+        case PostType.ANNOUNCEMENT:
+        default:
+            return PostTypeDto.ANNOUNCEMENT
+    }
+}
+
 export const postTypeTransformer = {
     fromDto,
+    toDto,
 }

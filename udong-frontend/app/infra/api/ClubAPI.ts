@@ -2,6 +2,7 @@ import { BoardPost, PostDisplayType } from '../../domain/model/BoardPost'
 import { Club } from '../../domain/model/Club'
 import { ClubEvent } from '../../domain/model/ClubEvent'
 import { ClubUser } from '../../domain/model/ClubUser'
+import { CreatePost } from '../../domain/model/CreatePost'
 import { ClubTag } from '../../domain/model/Tag'
 import { BoardPostDto } from '../dto/BoardPostDto'
 import { ClubDto } from '../dto/ClubDto'
@@ -48,7 +49,7 @@ export const ClubAPI = (() => {
     function removeClubMember() { return }
     function assignClubMemberRole() { return }
 
-    async function createClubPost(clubId: number, post: BoardPost): Promise<BoardPost> {
+    async function createClubPost(clubId: number, post: CreatePost): Promise<BoardPost> {
         const response = await axiosConfig.post<BoardPostDto>(
             `/api/club/${clubId}/post/`,
             { post },

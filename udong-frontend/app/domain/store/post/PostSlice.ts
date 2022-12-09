@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { PostAPI } from '../../../infra/api/PostAPI'
 import { BoardPost } from '../../model/BoardPost'
+import { CreatePost } from '../../model/CreatePost'
 
 export interface PostState {
     selectedPost?: BoardPost
@@ -38,7 +39,7 @@ export const getPost = createAsyncThunk(
 
 export const createPost = createAsyncThunk(
     'post/createPost',
-    async ({ clubId, post }: { clubId: number, post: BoardPost }) => {
+    async ({ clubId, post }: { clubId: number, post: CreatePost }) => {
         return ClubAPI.createClubPost(clubId, post)
     },
 )
