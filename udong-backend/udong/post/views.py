@@ -234,29 +234,6 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=["POST"])
-    def unparticipate(self, request: Request, pk: Any) -> Response:
-        try:
-            scheduling = Scheduling.objects.get(post=pk)
-            if scheduling.closed:
-                return Response(
-                    "Scheduling is closed", status=status.HTTP_400_BAD_REQUEST
-                )
-
-        except Scheduling.DoesNotExist:
-            return Response(
-                "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
-            )
-
-        try:
-            availabletime = AvailableTime.objects.get(
-                Q(user_id=request.user.id) & Q(scheduling_id=pk)
-            )
-            availabletime.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except AvailableTime.DoesNotExist:
-            return Response("Didn't register yet", status=status.HTTP_400_BAD_REQUEST)
-
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
         try:
