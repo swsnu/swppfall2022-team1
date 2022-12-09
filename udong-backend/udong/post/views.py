@@ -213,14 +213,18 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
                 return Response(
                     "Scheduling is closed", status=status.HTTP_400_BAD_REQUEST
                 )
-
         except Scheduling.DoesNotExist:
             return Response(
                 "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
             )
         try:
-            AvailableTime.objects.get(Q(user_id=request.user.id) & Q(scheduling_id=pk))
-            return Response("Already registered", status=status.HTTP_400_BAD_REQUEST)
+            availableTime = AvailableTime.objects.get(
+                Q(user_id=request.user.id) & Q(scheduling_id=pk)
+            )
+            serializer = self.get_serializer(availableTime, request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
         except AvailableTime.DoesNotExist:
             serializer = self.get_serializer(
                 data=request.data,
