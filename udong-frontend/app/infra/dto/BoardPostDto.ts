@@ -1,8 +1,8 @@
-import { PostType } from '../../domain/model/PostType'
 import { ClubDto } from './ClubDto'
 import { EnrollmentDto } from './EnrollmentDto'
 import { EventNameDto } from './EventNameDto'
 import { PostTagDto } from './PostTagDto'
+import { PostTypeDto } from './PostTypeDto'
 import { SchedulingDto } from './SchedulingDto'
 
 export interface BoardPostDto {
@@ -12,7 +12,7 @@ export interface BoardPostDto {
     event?: EventNameDto
     title: string
     content: string
-    type: PostType
+    type: PostTypeDto
     scheduling?: SchedulingDto
     enrollment?: EnrollmentDto
     closed?: boolean

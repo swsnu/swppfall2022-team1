@@ -3,6 +3,7 @@ import { BoardPostDto } from '../dto/BoardPostDto'
 import { enrollmentTransformer } from './EnrollmentTransformer'
 import { eventNameTransformer } from './EventNameTransformer'
 import { postTagTransformer } from './PostTagTransformer'
+import { postTypeTransformer } from './PostTypeTransformer'
 import { schedulingTransformer } from './SchedulingTransformer'
 
 const fromDto = (dto: BoardPostDto, displayType: PostDisplayType): BoardPost => {
@@ -14,7 +15,7 @@ const fromDto = (dto: BoardPostDto, displayType: PostDisplayType): BoardPost => 
         eventName: eventNameTransformer.fromDto(dto.event),
         title: dto.title,
         content: dto.content,
-        type: dto.type,
+        type: postTypeTransformer.fromDto(dto.type),
         scheduling: dto.scheduling ? schedulingTransformer.fromDto(dto.scheduling) : undefined,
         enrollment: dto.enrollment ? enrollmentTransformer.fromDto(dto.enrollment) : undefined,
         closed: dto.closed,
