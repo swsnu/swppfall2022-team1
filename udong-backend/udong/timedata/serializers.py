@@ -7,7 +7,7 @@ from typing import Dict, Any
 
 
 class PureTimeSerializer(serializers.ModelSerializer[Time]):
-    type = serializers.CharField()
+    type = serializers.ChoiceField(choices=["D", "W"])
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
@@ -25,6 +25,9 @@ class PureTimeSerializer(serializers.ModelSerializer[Time]):
             "created_at",
             "updated_at",
         )
+
+    def create(self, validated_data: Dict[str, Any]) -> Time:
+        return Time.objects.create(**validated_data, event=self.context["event"])
 
 
 class AvailableTimeSerializer(serializers.ModelSerializer[AvailableTime]):

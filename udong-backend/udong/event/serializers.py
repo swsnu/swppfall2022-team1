@@ -39,7 +39,16 @@ class ClubEventSerializer(serializers.ModelSerializer[Event]):
         return PureTimeSerializer(event.time_set, many=True, context=self.context).data
 
     def create(self, validated_data: Dict[str, Any]) -> Event:
-        return Event.objects.create(**validated_data, club=self.context["club"])
+        if "new_time" in validated_data:
+            times = validated_data.pop("new_time")
+        else:
+            times = []
+        event = Event.objects.create(**validated_data, club=self.context["club"])
+        for time in times:
+            timeSerializer = PureTimeSerializer(data=time, context={"event": event})
+            timeSerializer.is_valid(raise_exception=True)
+            timeSerializer.save()
+        return event
 
     def update(self, instance: Event, validated_data: Dict[str, Any]) -> Event:
         if "name" in validated_data:
