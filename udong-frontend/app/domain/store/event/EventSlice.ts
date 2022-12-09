@@ -55,6 +55,7 @@ const eventSlice = createSlice({
 
 export const eventActions = {
     ...eventSlice.actions,
+    editEvent,
     getEvents,
 }
 export const eventReducer = eventSlice.reducer
