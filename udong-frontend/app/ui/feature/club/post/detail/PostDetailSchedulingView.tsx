@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
+import { clubActions } from '../../../../../domain/store/club/ClubSlice'
 import { schedulingActions } from '../../../../../domain/store/post/scheduling/SchedulingSlice'
+import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { getDay, new2dArray } from '../../../../../utility/functions'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -30,6 +32,14 @@ export const PostDetailSchedulingView = () => {
     useEffect(() => {
         if(postId) { dispatch(schedulingActions.getSchedulingStatus(postId)) }
     }, [dispatch, postId])
+
+    useEffect(() => {
+        if(clubId) { dispatch(clubActions.getClubMembers(+clubId))}
+    }, [dispatch, clubId])
+
+    useEffect(() => {
+        dispatch(userActions.getMyProfile())
+    }, [dispatch])
 
     const data = useData()
     const { schedulingStatus } = data
