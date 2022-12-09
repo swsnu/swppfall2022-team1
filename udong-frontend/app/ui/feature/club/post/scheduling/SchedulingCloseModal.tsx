@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
 import { clubActions } from '../../../../../domain/store/club/ClubSlice'
+import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongCheckbox } from '../../../../components/UdongCheckbox'
@@ -21,9 +22,10 @@ interface UdongModalProps {
 }
 
 export const SchedulingCloseModal = (props: UdongModalProps) => {
-    const { isOpen, setIsOpen } = props
+    const { isOpen, setIsOpen, inc } = props
     const router = useRouter()
-    const { clubId, postId } = router.query
+    const { clubId: rawClubId, postId } = router.query
+    const clubId = convertQueryParamToString(rawClubId)
 
     const [createTag, setCreateTag] = useState<boolean>(false)
     const [saveTime, setSaveTime] = useState<boolean>(false)
@@ -35,11 +37,11 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
 
     const handleClose = useCallback(() => {
         if(!buttonDisable) {
-            if(createTag) { dispatch(clubActions.createClubTag()) }
+            if(createTag) { dispatch(clubActions.createClubTag({ clubId: +clubId, tagName, userIds: inc })) }
             if(saveTime) { dispatch(clubActions.editClub())}
             router.push(`/club/${clubId}/post/${postId}`)
         }
-    }, [router, clubId, postId, createTag, dispatch, saveTime, buttonDisable])
+    }, [router, clubId, postId, createTag, dispatch, saveTime, buttonDisable, tagName, inc])
 
     return (
         <UdongModal
