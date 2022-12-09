@@ -31,9 +31,12 @@ export const PostAdditionalFieldsView = ({ isEdit, showDateTimePicker = false }:
             <HStack alignItems={'center'}>
                 <UdongText style={'GeneralTitle'}>행사</UdongText>
                 <Spacer width={70}/>
-                <AdditionalFieldItem item={<UdongText style={'ListContentUnderscore'}>교촌 허니콤보 먹고 싶다</UdongText>}/>
-                <AdditionalFieldItem item={<UdongText style={'ListContentUnderscore'}>교촌 허니콤보 먹고 싶다</UdongText>}/>
-                <AdditionalFieldItem item={<UdongText style={'ListContentUnderscore'}>교촌 허니콤보 먹고 싶다</UdongText>}/>
+                {[].map((item, index) => {
+                    return <AdditionalFieldItem
+                        key={item + index}
+                        item={<UdongText style={'ListContentUnderscore'}>교촌 허니콤보 먹고 싶다</UdongText>}
+                    />
+                })}
             </HStack>
             <UdongImage
                 src={add.src}
@@ -54,20 +57,16 @@ export const PostAdditionalFieldsView = ({ isEdit, showDateTimePicker = false }:
             <HStack>
                 <UdongText style={'GeneralTitle'}>태그</UdongText>
                 <Spacer width={70}/>
-                <AdditionalFieldItem
-                    item={<UdongChip
-                        color={UdongColors.Primary}
-                        style={'fill'}
-                        text={'전체'}
-                    />}
-                />
-                <AdditionalFieldItem
-                    item={<UdongChip
-                        color={UdongColors.GrayNormal}
-                        style={'fill'}
-                        text={'2팀'}
-                    />}
-                />
+                {[].map((item, index) => {
+                    return <AdditionalFieldItem
+                        key={item + index}
+                        item={<UdongChip
+                            color={UdongColors.Primary}
+                            style={'fill'}
+                            text={'전체'}
+                        />}
+                    />
+                })}
             </HStack>
             <UdongImage
                 src={add.src}
