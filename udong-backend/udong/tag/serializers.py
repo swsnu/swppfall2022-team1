@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 from drf_yasg.utils import swagger_serializer_method
+from club.models import Club
 from tag.models import Tag, UserTag
 from user.serializers import UserSerializer
 from typing import Dict, Any
@@ -32,6 +33,9 @@ class ClubTagSerializer(serializers.ModelSerializer[Tag]):
             "created_at",
             "updated_at",
         )
+
+    def create(self, validated_data: Dict[str, Any]) -> Tag:
+        return Tag.objects.create(**validated_data, club=self.context["club"])
 
 
 class TagUserSerializer(serializers.ModelSerializer[Tag]):
