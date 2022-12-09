@@ -6,10 +6,10 @@ import { PostAdditionalFieldsView } from '../PostAdditionalFieldsView'
 describe('<PostAdditionalFieldsView />', () => {
     it('should render', () => {
         render(<PostAdditionalFieldsView isEdit={true} />)
-        expect(screen.getAllByText(/교촌 허니콤보 먹고 싶다/)[0]).toBeInTheDocument()
+        expect(screen.getByText('태그')).toBeInTheDocument()
     })
 
-    it('should render', async () => {
+    it('should render date time picker', async () => {
         await act(async () => {
             render(<PostAdditionalFieldsView
                 isEdit={false}

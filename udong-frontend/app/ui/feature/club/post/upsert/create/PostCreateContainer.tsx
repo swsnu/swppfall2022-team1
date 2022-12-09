@@ -41,7 +41,6 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
     const [contents, setContents] = useState<string>('')
 
     const handleCreatePost = useCallback(() => {
-        console.log(contents)
         if (clubId) {
             dispatch(postActions.createPost({
                 clubId: parseInt(clubId),
@@ -53,7 +52,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
                 },
             }))
         }
-        // router.push('/club/1/post/1?type=scheduling')
+        router.push('/club/1/post/1?type=scheduling')
     }, [clubId, contents, dispatch, postType, title])
 
     return <VStack paddingHorizontal={16}>

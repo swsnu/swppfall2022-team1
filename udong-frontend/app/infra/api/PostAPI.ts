@@ -14,11 +14,6 @@ export const PostAPI = (() => {
         return response.data.map(dto => boardPostTransformer.fromDto(dto, PostDisplayType.FEED))
     }
 
-    async function getClubPosts(clubId: number): Promise<Array<BoardPost>> {
-        const response = await axiosConfig.get<Array<BoardPostDto>>(`/api/post/club/${clubId}/`)
-        return response.data.map(dto => boardPostTransformer.fromDto(dto, PostDisplayType.CLUB))
-    }
-
     async function getPost(postId: string): Promise<BoardPost> {
         const response = await axiosConfig.get<BoardPostDto>(`/api/post/${postId}/`)
         return boardPostTransformer.fromDto(response.data, PostDisplayType.CLUB)
@@ -44,7 +39,6 @@ export const PostAPI = (() => {
 
     return Object.freeze({
         getFeedPosts,
-        getClubPosts,
         getPost,
         editPost,
         deletePost,

@@ -26,7 +26,7 @@ export const getFeedPosts = createAsyncThunk(
 export const getClubPosts = createAsyncThunk(
     'post/getClubPosts',
     async (clubId: number) => {
-        return PostAPI.getClubPosts(clubId)
+        return ClubAPI.getClubPosts(clubId)
     },
 )
 

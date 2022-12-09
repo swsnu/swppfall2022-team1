@@ -14,7 +14,7 @@ import { userReducer, UserState } from '../../../../../../domain/store/user/User
 import { PostDetailContainer } from '../PostDetailContainer'
 
 const dummyPost: BoardPost = {
-    displayType: PostDisplayType.BOARD,
+    displayType: PostDisplayType.CLUB,
     id: 1,
     title: 'title',
     content: 'content',

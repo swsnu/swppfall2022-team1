@@ -3,20 +3,21 @@ import { AnyAction } from 'redux'
 import { ThunkMiddleware } from 'redux-thunk'
 
 import { BoardPostDto } from '../../../infra/dto/BoardPostDto'
+import { PostTypeDto } from '../../../infra/dto/PostTypeDto'
 import { axiosConfig } from '../../../infra/global'
-import { BoardPost, ListItemPost, PostDisplayType } from '../../model/BoardPost'
+import { BoardPost, PostDisplayType } from '../../model/BoardPost'
 import { PostType } from '../../model/PostType'
 import { getClubPosts, postReducer, PostState } from '../post/PostSlice'
 
-const fakeListItemPost1: ListItemPost = { displayType: PostDisplayType.BOARD, id: 1, author: '',
+const fakeListItemPost1: BoardPost = { displayType: PostDisplayType.CLUB, id: 1, author: '',
     title: '', content: '', type: PostType.ANNOUNCEMENT }
-const fakeBoardPost1: BoardPost = { displayType: PostDisplayType.BOARD, id: 1, title: '', content: '', type: PostType.ANNOUNCEMENT,
+const fakeBoardPost1: BoardPost = { displayType: PostDisplayType.CLUB, id: 1, title: '', content: '', type: PostType.ANNOUNCEMENT,
     eventName: { id: 1, name: '' }, closed: undefined, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '' }
-const fakeBoardPost2: BoardPost = { displayType: PostDisplayType.BOARD, id: 2, title: '', content: '', type: PostType.ENROLLMENT,
+const fakeBoardPost2: BoardPost = { displayType: PostDisplayType.CLUB, id: 2, title: '', content: '', type: PostType.ENROLLMENT,
     eventName: { id: 1, name: '' }, closed: true, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '' }
-const fakeBoardPostDto1 :BoardPostDto = { id: 1, title: '', content: '', type: PostType.ANNOUNCEMENT,
+const fakeBoardPostDto1 :BoardPostDto = { id: 1, title: '', content: '', type: PostTypeDto.ANNOUNCEMENT,
     event: { id: 1, name: '' }, created_at: '', updated_at: '' }
-const fakeBoardPostDto2 :BoardPostDto = { id: 2, title: '', content: '', type: PostType.ENROLLMENT, closed: true,
+const fakeBoardPostDto2 :BoardPostDto = { id: 2, title: '', content: '', type: PostTypeDto.ENROLLMENT, closed: true,
     event: { id: 1, name: '' }, created_at: '', updated_at: '' }
 const fakePostDto = {
     selectedPost: fakeBoardPostDto1,

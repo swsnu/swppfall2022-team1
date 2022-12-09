@@ -7,7 +7,7 @@ import { PostType } from '../../../../domain/model/PostType'
 import { PostItem } from '../PostItem'
 
 const dummyPost: BoardPost = {
-    displayType: PostDisplayType.BOARD,
+    displayType: PostDisplayType.CLUB,
     id: 1,
     eventName: {
         id: 1,

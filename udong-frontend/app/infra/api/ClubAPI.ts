@@ -50,6 +50,11 @@ export const ClubAPI = (() => {
     function removeClubMember() { return }
     function assignClubMemberRole() { return }
 
+    async function getClubPosts(clubId: number): Promise<Array<BoardPost>> {
+        const response = await axiosConfig.get<Array<BoardPostDto>>(`/api/club/${clubId}/post/`)
+        return response.data.map(dto => boardPostTransformer.fromDto(dto, PostDisplayType.CLUB))
+    }
+
     async function createClubPost(clubId: number, post: CreatePost): Promise<BoardPost> {
         const response = await axiosConfig.post<BoardPostDto>(
             `/api/club/${clubId}/post/`,
@@ -82,6 +87,7 @@ export const ClubAPI = (() => {
         getMyClubProfile,
         removeClubMember,
         assignClubMemberRole,
+        getClubPosts,
         createClubPost,
         getClubEvents,
         createClubEvent,

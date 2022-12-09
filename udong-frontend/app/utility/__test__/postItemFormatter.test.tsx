@@ -7,7 +7,7 @@ import { formatPostItemInfo } from '../postItemFormatter'
 describe('postItemFormatter', () => {
     it ('should test postItemFormatter render', () => {
         const element = formatPostItemInfo({
-            displayType: PostDisplayType.BOARD,
+            displayType: PostDisplayType.CLUB,
             id: 1,
             author: '',
             title: '',

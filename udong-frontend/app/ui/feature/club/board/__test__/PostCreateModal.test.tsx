@@ -27,7 +27,7 @@ describe('<PostCreateModal/>', () => {
         />)
         const text = screen.getByText('선택하기')
         fireEvent.click(text)
-        expect(mockPush).toHaveBeenCalledWith(`/club/1/post/create/?type=A`)
+        expect(mockPush).toHaveBeenCalledWith(`/club/1/post/create/?type=announcement`)
     })
 
     it ('should handle on click close', () => {
