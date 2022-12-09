@@ -1,12 +1,15 @@
+import { BoardPost, PostDisplayType } from '../../domain/model/BoardPost'
 import { Club } from '../../domain/model/Club'
 import { ClubEvent } from '../../domain/model/ClubEvent'
 import { ClubUser } from '../../domain/model/ClubUser'
 import { ClubTag } from '../../domain/model/Tag'
+import { BoardPostDto } from '../dto/BoardPostDto'
 import { ClubDto } from '../dto/ClubDto'
 import { ClubEventDto } from '../dto/ClubEventDto'
 import { ClubTagDto } from '../dto/ClubTagDto'
 import { ClubUserDto } from '../dto/ClubUserDto'
 import { axiosConfig } from '../global'
+import { boardPostTransformer } from '../transformer/BoardPostTransformer'
 import { clubEventTransformer } from '../transformer/ClubEventTransformer'
 import { clubTagTransformer } from '../transformer/ClubTagTransformer'
 import { clubTransformer } from '../transformer/ClubTransformer'
@@ -45,6 +48,14 @@ export const ClubAPI = (() => {
     function removeClubMember() { return }
     function assignClubMemberRole() { return }
 
+    async function createClubPost(clubId: number, post: BoardPost): Promise<BoardPost> {
+        const response = await axiosConfig.post<BoardPostDto>(
+            `/api/club/${clubId}/post/`,
+            { post },
+        )
+        return boardPostTransformer.fromDto(response.data, PostDisplayType.CLUB)
+    }
+
     async function getClubEvents(clubId: number): Promise<Array<ClubEvent>> {
         const response = await axiosConfig.get<Array<ClubEventDto>>(`/api/club/${clubId}/event/`)
         return response.data.map(clubEventTransformer.fromDto)
@@ -69,6 +80,7 @@ export const ClubAPI = (() => {
         getMyClubProfile,
         removeClubMember,
         assignClubMemberRole,
+        createClubPost,
         getClubEvents,
         createClubEvent,
         getClubTags,

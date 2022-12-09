@@ -5,7 +5,7 @@ import { NextRouter } from 'next/router'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 
-import { BoardPost, PostDisplayType } from '../../../../../../domain/model/ListItemPost'
+import { BoardPost, PostDisplayType } from '../../../../../../domain/model/BoardPost'
 import { PostType } from '../../../../../../domain/model/PostType'
 import { dummyUserMe } from '../../../../../../domain/model/User'
 import { commentReducer, CommentState } from '../../../../../../domain/store/comment/CommentSlice'

@@ -4,7 +4,7 @@ import { ThunkMiddleware } from 'redux-thunk'
 
 import { BoardPostDto } from '../../../infra/dto/BoardPostDto'
 import { axiosConfig } from '../../../infra/global'
-import { BoardPost, ListItemPost, PostDisplayType } from '../../model/ListItemPost'
+import { BoardPost, ListItemPost, PostDisplayType } from '../../model/BoardPost'
 import { PostType } from '../../model/PostType'
 import { getClubPosts, postReducer, PostState } from '../post/PostSlice'
 

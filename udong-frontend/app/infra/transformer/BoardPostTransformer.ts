@@ -1,17 +1,22 @@
-import { BoardPost, PostDisplayType } from '../../domain/model/ListItemPost'
+import { BoardPost, PostDisplayType } from '../../domain/model/BoardPost'
 import { BoardPostDto } from '../dto/BoardPostDto'
+import { enrollmentTransformer } from './EnrollmentTransformer'
 import { eventNameTransformer } from './EventNameTransformer'
 import { postTagTransformer } from './PostTagTransformer'
+import { schedulingTransformer } from './SchedulingTransformer'
 
-const fromDto = (dto: BoardPostDto): BoardPost => {
+const fromDto = (dto: BoardPostDto, displayType: PostDisplayType): BoardPost => {
     return {
-        displayType: PostDisplayType.BOARD,
+        displayType,
         id: dto.id,
         author: dto.author,
+        club: dto.club,
         eventName: eventNameTransformer.fromDto(dto.event),
         title: dto.title,
         content: dto.content,
         type: dto.type,
+        scheduling: dto.scheduling ? schedulingTransformer.fromDto(dto.scheduling) : undefined,
+        enrollment: dto.enrollment ? enrollmentTransformer.fromDto(dto.enrollment) : undefined,
         closed: dto.closed,
         includedTags: dto.include_tag?.map(postTagTransformer.fromDto),
         excludedTags: dto.exclude_tag?.map(postTagTransformer.fromDto),

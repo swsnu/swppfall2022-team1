@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import { PostDisplayType } from '../../domain/model/ListItemPost'
+import { PostDisplayType } from '../../domain/model/BoardPost'
 import { PostType } from '../../domain/model/PostType'
 import { formatPostItemInfo } from '../postItemFormatter'
 

@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 
-import { BoardPost, PostDisplayType } from '../../../../domain/model/ListItemPost'
+import { BoardPost, PostDisplayType } from '../../../../domain/model/BoardPost'
 import { PostType } from '../../../../domain/model/PostType'
 import { PostItem } from '../PostItem'
 
