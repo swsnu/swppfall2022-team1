@@ -21,6 +21,7 @@ class TagPostSerializer(serializers.ModelSerializer[Tag]):
 
 class ClubTagSerializer(serializers.ModelSerializer[Tag]):
     name = serializers.CharField(max_length=255)
+    is_default = serializers.BooleanField(read_only=True, default=False)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 

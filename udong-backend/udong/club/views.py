@@ -199,9 +199,7 @@ class ClubViewSet(_GenericClubViewSet):
             return Response(
                 "is_default is not a valid field", status=status.HTTP_400_BAD_REQUEST
             )
-        data = request.data.copy()
-        data["is_default"] = False
-        serializer = self.get_serializer(data=data, context={"club": club})
+        serializer = self.get_serializer(data=request.data, context={"club": club})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
