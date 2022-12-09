@@ -17,7 +17,7 @@ import { SchedulingStatusContainer } from '../SchedulingStatusContainer'
 const schedulingInitialState: SchedulingState = {
     isOpen: false,
     schedulingStatus: {
-        type: SchedulingPostType.DAYS,
+        type: SchedulingPostType.DATES,
         startTime: 12,
         endTime: 18,
         dates: [
