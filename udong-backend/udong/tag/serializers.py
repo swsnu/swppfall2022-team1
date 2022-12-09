@@ -3,6 +3,7 @@ from rest_framework.utils.serializer_helpers import ReturnDict
 from drf_yasg.utils import swagger_serializer_method
 from club.models import Club
 from tag.models import Tag, UserTag
+from common.utils import myIntListComparison
 from user.serializers import UserSerializer
 from typing import Dict, Any
 
@@ -86,26 +87,7 @@ class TagUserSerializer(serializers.ModelSerializer[Tag]):
                 raise Exception()
             new_users.sort()
 
-            old_pos: int = 0
-            new_pos: int = 0
-            delete_list = []
-            add_list = []
-            while old_pos < len(old_users) and new_pos < len(new_users):
-                if old_users[old_pos] < new_users[new_pos]:
-                    delete_list.append(old_users[old_pos])
-                    old_pos += 1
-                elif old_users[old_pos] > new_users[new_pos]:
-                    add_list.append(new_users[new_pos])
-                    new_pos += 1
-                else:
-                    old_pos += 1
-                    new_pos += 1
-            while old_pos < len(old_users):
-                delete_list.append(old_users[old_pos])
-                old_pos += 1
-            while new_pos < len(new_users):
-                add_list.append(new_users[new_pos])
-                new_pos += 1
+            delete_list, add_list = myIntListComparison(old_users, new_users)
 
             UserTag.objects.filter(user__id__in=delete_list).delete()
             for id in add_list:
