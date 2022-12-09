@@ -47,7 +47,7 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
     const handleClose = useCallback(() => {
         if(!buttonDisable && schedulingStatus && post) {
             if(createTag) { dispatch(clubActions.createClubTag({ clubId: +clubId, tagName, userIds: inc })) }
-            if(saveTime) {
+            if(saveTime && post.eventId) {
                 const dayInfos = 'dates' in schedulingStatus ?
                     schedulingStatus.dates.map(x => ({
                         type: SchedulingPostType.DATES,
@@ -85,7 +85,7 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
                     }
                     return res
                 }).reduce((x, y) => x.concat(y), [])
-                dispatch(eventActions.editEvent({ eventId: post.eventId ?? 0, content: { times: eventTimes } }))
+                dispatch(eventActions.editEvent({ eventId: post.eventId, name: null, time: eventTimes }))
             }
             router.push(`/club/${clubId}/post/${postId}`)
         }
