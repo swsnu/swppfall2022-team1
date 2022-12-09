@@ -234,10 +234,10 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
 
         if "title" in validated_data:
             instance.title = validated_data["title"]
-            instance.save()
         if "content" in validated_data:
             instance.content = validated_data["content"]
-            instance.save()
+
+        instance.save()
 
         if instance.type == "S":
             scheduling = validated_data.pop("scheduling", {})
