@@ -1,13 +1,16 @@
-from urllib.request import Request
 from django.db.models import Q, Model
 from typing import TYPE_CHECKING
 from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 from event.models import Event
+from post.models import Post
+from event.serializers import ClubEventSerializer
+from user.models import UserClub
 from typing import Any, TYPE_CHECKING, TypeVar
 
-from event.serializers import EventDetailSerializer
 from post.serializers import PostBoardSerializer
 
 if TYPE_CHECKING:
@@ -20,11 +23,11 @@ _MT_co = TypeVar("_MT_co", bound=Model, covariant=True)
 
 class EventViewSet(_GenericViewSet):
     queryset = Event.objects.all()
-    serializer_class = EventDetailSerializer
+    serializer_class = ClubEventSerializer 
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
         if self.action in ("retrieve", "update", "destroy"):
-            return EventDetailSerializer
+            return ClubEventSerializer 
         elif self.action == "post":
             return PostBoardSerializer
         return self.serializer_class

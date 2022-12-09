@@ -14,23 +14,6 @@ class EventNameSerializer(serializers.ModelSerializer[Event]):
         model = Event
         fields = ("id", "name")
 
-
-class EventDetailSerializer(serializers.ModelSerializer[Event]):
-    name = serializers.CharField(max_length=255)
-    club = ClubSerializer(write_only=True)
-    time_list = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Event
-        fields = ("id", "name", "club", "time_list")
-
-    def get_time_list(self, event: Event) -> ReturnDict:
-        return PureTimeSerializer(event.time_set, many=True).data
-
-    def create(self, validated_data: Dict[str, Any]) -> Event:
-        return Event.objects.create(**validated_data, club=self.context["club"])
-
-
 class ClubEventSerializer(serializers.ModelSerializer[Event]):
     name = serializers.CharField(max_length=255)
     time = serializers.SerializerMethodField(read_only=True)
