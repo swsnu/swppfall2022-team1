@@ -1,13 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { Club } from '../../model/Club'
 import { ClubUser } from '../../model/ClubUser'
 
+export type ClubRegisterAPIErrorType = 'already_registered' | 'invalid_code' | 'error'
+
 export interface ClubState {
     selectedClub?: Club
     myClubs: Array<Club>
     members: Array<ClubUser>
+    clubRegisterError?: ClubRegisterAPIErrorType
 }
 
 const initialState: ClubState = {
@@ -29,9 +33,23 @@ export const getClub = createAsyncThunk(
     },
 )
 
-export const registerClub = createAsyncThunk(
+export const registerClub = createAsyncThunk<Club | undefined, string, { rejectValue: ClubRegisterAPIErrorType }>(
     'club/registerClub',
-    async () => { return },
+    async (code: string, { rejectWithValue }) => {
+        try {
+            return await ClubAPI.registerClub(code)
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                if (e.response?.status === 400) {
+                    return rejectWithValue('already_registered')
+                } else if (e.response?.status === 404) {
+                    return rejectWithValue('invalid_code')
+                } else {
+                    return rejectWithValue('error')
+                }
+            }
+        }
+    },
 )
 
 export const createClub = createAsyncThunk(
@@ -74,7 +92,11 @@ export const assignClubMemberRole = createAsyncThunk(
 const clubSlice = createSlice({
     name: 'club',
     initialState,
-    reducers: {},
+    reducers: {
+        resetClubRegisterErrror: (state) => {
+            state.clubRegisterError = undefined
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(getMyClubs.fulfilled, (state, action) => {
             state.myClubs = action.payload
@@ -82,8 +104,18 @@ const clubSlice = createSlice({
         builder.addCase(getClub.fulfilled, (state, action) => {
             state.selectedClub = action.payload
         })
+        builder.addCase(getClub.rejected, (state) => {
+            state.selectedClub = undefined
+        })
         builder.addCase(getClubMembers.fulfilled, (state, action) => {
             state.members = action.payload
+        })
+        builder.addCase(registerClub.fulfilled, (state, action) => {
+            state.selectedClub = action.payload
+        })
+        builder.addCase(registerClub.rejected, (state, action) => {
+            state.clubRegisterError = action.payload
+            state.selectedClub = undefined
         })
     },
 })
@@ -93,5 +125,6 @@ export const clubActions = {
     getMyClubs,
     getClub,
     getClubMembers,
+    registerClub,
 }
 export const clubReducer = clubSlice.reducer

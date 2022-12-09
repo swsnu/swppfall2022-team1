@@ -1,10 +1,10 @@
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
 import { UdongButton } from '../../components/UdongButton'
+import { UdongCloseButton } from '../../components/UdongCloseButton'
 import { UdongModal } from '../../components/UdongModal'
 import { UdongText } from '../../components/UdongText'
 import { UdongColors } from '../../theme/ColorPalette'
-import { CloseModalButton } from '../home/mydong/CloseModalButton'
 
 interface DeleteModalProps {
     deleteObjectText: string
@@ -24,7 +24,7 @@ export const DeleteModal = (props: DeleteModalProps) => {
             width={'100%'}
             alignItems={'start'}
         >
-            <CloseModalButton setIsOpen={setIsOpen}/>
+            <UdongCloseButton setIsOpen={setIsOpen}/>
             <Spacer height={7}/>
 
             <VStack
