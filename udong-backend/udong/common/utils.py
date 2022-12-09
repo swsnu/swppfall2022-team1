@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from user.models import User
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import json
 
 
@@ -82,3 +82,29 @@ class MyTestCase(TestCase):
         )
         self.client = Client()
         self.client.force_login(self.dummy_user)
+
+
+def myIntListComparison(
+    old_list: list[int], new_list: list[int]
+) -> Tuple[list[int], list[int]]:
+    old_pos: int = 0
+    new_pos: int = 0
+    delete_list = []
+    add_list = []
+    while old_pos < len(old_list) and new_pos < len(new_list):
+        if old_list[old_pos] < new_list[new_pos]:
+            delete_list.append(old_list[old_pos])
+            old_pos += 1
+        elif old_list[old_pos] > new_list[new_pos]:
+            add_list.append(new_list[new_pos])
+            new_pos += 1
+        else:
+            old_pos += 1
+            new_pos += 1
+    while old_pos < len(old_list):
+        delete_list.append(old_list[old_pos])
+        old_pos += 1
+    while new_pos < len(new_list):
+        add_list.append(new_list[new_pos])
+        new_pos += 1
+    return (delete_list, add_list)
