@@ -43,11 +43,9 @@ class ClubEventSerializer(serializers.ModelSerializer[Event]):
 
     def update(self, instance: Event, validated_data: Dict[str, Any]) -> Event:
         if "name" in validated_data:
-            print("name")
             instance.name = validated_data["name"]
             instance.save()
         if "new_time" in validated_data:
-            print("time")
             new_times = validated_data["new_time"]
             if not isinstance(new_times, list):
                 raise Exception()
@@ -57,6 +55,5 @@ class ClubEventSerializer(serializers.ModelSerializer[Event]):
                 old_time.delete()
 
             for new_time in new_times:
-                print(new_time)
                 Time.objects.create(**new_time, event=instance)
         return instance
