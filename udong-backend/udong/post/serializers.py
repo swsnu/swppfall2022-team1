@@ -2,7 +2,8 @@ from django.db.models import Q
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
 from club.models import Club
-from post.models import Post, Enrollment, Participation, Scheduling
+from tag.models import Tag
+from post.models import Post, Enrollment, Participation, Scheduling, PostTag
 from tag.serializers import TagPostSerializer
 from user.serializers import UserSerializer
 from event.serializers import EventNameSerializer
@@ -28,7 +29,9 @@ class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):
         )
 
     def create(self, validated_data: Dict[str, Any]) -> Enrollment:
-        enrollment = Enrollment.objects.create(**validated_data)
+        enrollment = Enrollment.objects.create(
+            **validated_data, post=self.context["post"]
+        )
         return enrollment
 
 
@@ -90,7 +93,9 @@ class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
         return AvailableTimeSerializer(scheduling.available_time_set, many=True).data
 
     def create(self, validated_data: Dict[str, Any]) -> Scheduling:
-        scheduling = Scheduling.objects.create(**validated_data)
+        scheduling = Scheduling.objects.create(
+            **validated_data, post=self.context["post"]
+        )
         return scheduling
 
 
@@ -103,10 +108,10 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     closed = serializers.SerializerMethodField()
     include_tag = serializers.SerializerMethodField()
     exclude_tag = serializers.SerializerMethodField()
+    tag_list = serializers.ListField(child=serializers.IntegerField(), write_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
     scheduling = SchedulingSerializer(allow_null=True, required=False, write_only=True)
-    enrollment = EnrollmentSerializer(allow_null=True, required=False, write_only=True)
 
     class Meta:
         model = Post
@@ -119,8 +124,8 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             "content",
             "type",
             "scheduling",
-            "enrollment",
             "closed",
+            "tag_list",
             "include_tag",
             "exclude_tag",
             "created_at",
@@ -172,8 +177,11 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         return TagPostSerializer(tags, many=True).data
 
     def create(self, validated_data: Dict[str, Any]) -> Post:
-        scheduling = validated_data.pop("scheduling", None)
-        enrollment = validated_data.pop("enrollment", None)
+        tag_list = validated_data.pop("tag_list", None)
+        scheduling = validated_data.pop("scheduling", {})
+
+        if not isinstance(tag_list, list):
+            raise Exception()
 
         post = Post.objects.create(
             **validated_data,
@@ -182,9 +190,22 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             event=self.context["event"]
         )
 
-        if scheduling:
-            Scheduling.objects.create(**scheduling, post=post)
-        if enrollment:
-            Enrollment.objects.create(**enrollment, post=post)
+        type = validated_data.get("type", None)
+
+        if type == "S":
+            scheduling["post_id"] = post.id
+            scheduleSerializer = SchedulingSerializer(
+                data=scheduling, context={"post": post}
+            )
+            scheduleSerializer.is_valid(raise_exception=True)
+            scheduleSerializer.save()
+        elif type == "E":
+            enrollmentSerializer = EnrollmentSerializer(data={}, context={"post": post})
+            enrollmentSerializer.is_valid(raise_exception=True)
+            enrollmentSerializer.save()
+
+        tags = Tag.objects.filter(id__in=tag_list)
+        for tag in tags:
+            PostTag.objects.create(post=post, tag=tag)
 
         return post

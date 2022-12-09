@@ -7,7 +7,7 @@ from typing import Dict, Any
 
 
 class PureTimeSerializer(serializers.ModelSerializer[Time]):
-    type = serializers.CharField(source="get_type_display")
+    type = serializers.CharField()
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
