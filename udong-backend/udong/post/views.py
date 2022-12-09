@@ -228,7 +228,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
                 return Response(status=status.HTTP_204_NO_CONTENT)
             except Participation.DoesNotExist:
                 return Response(
-                    "Didn't registered yet", status=status.HTTP_400_BAD_REQUEST
+                    "Didn't register yet", status=status.HTTP_400_BAD_REQUEST
                 )
 
     @action(detail=True, methods=["GET"])
