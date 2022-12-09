@@ -29,12 +29,14 @@ class PureTimeSerializer(serializers.ModelSerializer[Time]):
 
 class AvailableTimeSerializer(serializers.ModelSerializer[AvailableTime]):
     user = serializers.SerializerMethodField()
+    time = serializers.CharField()
+    scheduling_id = serializers.IntegerField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = AvailableTime
-        fields = ("id", "user", "scheduling", "time", "created_at", "updated_at")
+        fields = ("id", "user", "scheduling_id", "time", "created_at", "updated_at")
 
     @swagger_serializer_method(serializer_or_field=UserSerializer())
     def get_user(self, availableTime: AvailableTime) -> ReturnDict:
@@ -42,6 +44,8 @@ class AvailableTimeSerializer(serializers.ModelSerializer[AvailableTime]):
 
     def create(self, validated_data: Dict[str, Any]) -> AvailableTime:
         availableTime = AvailableTime.objects.create(
-            user=self.context["user"], scheduling=self.context["scheduling"]
+            **validated_data,
+            user=self.context["user"],
+            scheduling=self.context["scheduling"]
         )
         return availableTime
