@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
@@ -11,6 +11,7 @@ import { UdongCloseButton } from '../../../../components/UdongCloseButton'
 import { UdongModal } from '../../../../components/UdongModal'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongTextField } from '../../../../components/UdongTextField'
+import { UdongColors } from '../../../../theme/ColorPalette'
 
 interface UdongModalProps {
   isOpen: boolean
@@ -27,13 +28,18 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
     const [createTag, setCreateTag] = useState<boolean>(false)
     const [saveTime, setSaveTime] = useState<boolean>(false)
     const inputRef = useRef<HTMLInputElement | undefined>(null)
+    const [tagName, setTagName] = useState<string>('')
     const dispatch = useDispatch<AppDispatch>()
 
+    const buttonDisable = useMemo(() => createTag && !tagName, [createTag, tagName])
+
     const handleClose = useCallback(() => {
-        if(createTag) { dispatch(clubActions.createClubTag()) }
-        if(saveTime) { dispatch(clubActions.editClub())}
-        router.push(`/club/${clubId}/post/${postId}`)
-    }, [router, clubId, postId, createTag, dispatch, saveTime])
+        if(!buttonDisable) {
+            if(createTag) { dispatch(clubActions.createClubTag()) }
+            if(saveTime) { dispatch(clubActions.editClub())}
+            router.push(`/club/${clubId}/post/${postId}`)
+        }
+    }, [router, clubId, postId, createTag, dispatch, saveTime, buttonDisable])
 
     return (
         <UdongModal
@@ -58,7 +64,8 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
                     <UdongTextField
                         placeholder={'생성할 태그의 이름을 입력하세요'}
                         inputRef={inputRef}
-                        onChange={() => {return}}
+                        defaultValue={tagName}
+                        onChange={(e) => setTagName(e.target.value)}
                     />
                 }
                 <UdongCheckbox
@@ -74,6 +81,8 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
                     ※ 기존 행사 시간은 삭제됩니다.
                 </UdongText>
                 <UdongButton
+                    color={buttonDisable ? UdongColors.GrayNormal : UdongColors.Primary}
+                    disabled={buttonDisable}
                     style={'line'}
                     alignSelf={'center'}
                     onClick={handleClose}
