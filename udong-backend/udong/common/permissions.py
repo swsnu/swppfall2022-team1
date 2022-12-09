@@ -1,10 +1,10 @@
-from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from rest_framework.permissions import BasePermission
 from rest_framework.request import Request
 from rest_framework.views import APIView
 from club.models import Club
 from user.models import UserClub
+from comment.models import Comment
 from typing import Any
 
 
@@ -21,3 +21,10 @@ class IsAdmin(BasePermission):
             return True
         except:
             return False
+
+
+class IsAuthor(BasePermission):
+    def has_object_permission(self, request: Request, view: APIView, obj: Any) -> bool:
+        if not isinstance(obj, Comment):
+            return True
+        return request.user.id == obj.user_id
