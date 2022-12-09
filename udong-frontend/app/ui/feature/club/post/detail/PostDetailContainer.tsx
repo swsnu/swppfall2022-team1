@@ -54,7 +54,9 @@ export const PostDetailContainer = () => {
 
     useEffect(() => {
         dispatch(userActions.getMyProfile())
-        dispatch(postActions.getPost(postId))
+        if (postId) {
+            dispatch(postActions.getPost(postId))
+        }
     }, [postId, dispatch])
 
     if (!post) {

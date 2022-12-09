@@ -4,10 +4,10 @@ import { useRef, useState } from 'react'
 import { VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongCheckbox } from '../../../../components/UdongCheckbox'
+import { UdongCloseButton } from '../../../../components/UdongCloseButton'
 import { UdongModal } from '../../../../components/UdongModal'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongTextField } from '../../../../components/UdongTextField'
-import { CloseModalButton } from '../../../home/mydong/CloseModalButton'
 
 interface UdongModalProps {
   isOpen: boolean
@@ -28,7 +28,7 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
             isOpen={isOpen}
             setIsOpen={setIsOpen}
         >
-            <CloseModalButton setIsOpen={setIsOpen}/>
+            <UdongCloseButton setIsOpen={setIsOpen}/>
             <VStack
                 alignItems={'start'}
                 width={'100%'}

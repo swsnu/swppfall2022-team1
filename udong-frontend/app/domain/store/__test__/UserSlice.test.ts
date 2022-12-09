@@ -3,14 +3,15 @@ import { AnyAction } from 'redux'
 import { ThunkMiddleware } from 'redux-thunk'
 
 import { axiosConfig } from '../../../infra/global'
+import { new2dArray } from '../../../utility/functions'
 import { getUser, userReducer, UserState } from '../user/UserSlice'
 
-export const fakeUserDto1 = { id: 1, email: 'user@gmail.com', image: 'userImage', time_table: 'userTable', name: 'user',
+export const fakeUserDto1 = { id: 1, email: 'user@gmail.com', image: 'userImage', time_table: '0'.repeat(48 * 7), name: 'user',
     created_at: '', updated_at: '' }
-export const fakeUserDto2 = { id: 2, email: 'user2@gmail.com', image: 'user2Image', time_table: 'user2Table', name: 'user2',
+export const fakeUserDto2 = { id: 2, email: 'user2@gmail.com', image: 'user2Image', time_table: '0'.repeat(48 * 7), name: 'user2',
     created_at: '', updated_at: '' }
-export const fakeUser1 = { id: 1, email: 'user@gmail.com', imageUrl: 'userImage', timeTable: 'userTable', name: 'user' }
-export const fakeUser2 = { id: 2, email: 'user2@gmail.com', imageUrl: 'user2Image', timeTable: 'user2Table', name: 'user2' }
+export const fakeUser1 = { id: 1, email: 'user@gmail.com', imageUrl: 'userImage', timeTable: new2dArray(7, 48, false), name: 'user' }
+export const fakeUser2 = { id: 2, email: 'user2@gmail.com', imageUrl: 'user2Image', timeTable: new2dArray(7, 48, false), name: 'user2' }
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
@@ -28,6 +29,7 @@ describe('user reducer', () => {
     })
     it('should handle initial state', () => {
         expect(userReducer(undefined, { type: 'unknown' })).toEqual({
+            isAdmin: false,
         })
     })
     it('should handle getUser', async () => {

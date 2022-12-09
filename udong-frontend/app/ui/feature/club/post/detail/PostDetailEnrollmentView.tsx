@@ -7,10 +7,10 @@ import { enrollmentActions } from '../../../../../domain/store/post/enrollment/E
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
+import { UdongCloseButton } from '../../../../components/UdongCloseButton'
 import { UdongModal } from '../../../../components/UdongModal'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
-import { CloseModalButton } from '../../../home/mydong/CloseModalButton'
 import { UserListModal } from '../../../shared/UserListModal'
 
 interface PostDetailEnrollmentViewProps {
@@ -104,7 +104,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
                 width={'100%'}
                 alignItems={'center'}
             >
-                <CloseModalButton setIsOpen={setIsClosedModalOpen}/>
+                <UdongCloseButton setIsOpen={setIsClosedModalOpen}/>
                 <Spacer height={50}/>
                 <UdongText style={'GeneralContent'}>이미 마감되었습니다.</UdongText>
                 <Spacer height={70}/>

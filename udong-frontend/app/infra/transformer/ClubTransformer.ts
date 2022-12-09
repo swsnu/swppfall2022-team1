@@ -5,6 +5,7 @@ const fromDto = (dto: ClubDto): Club => {
     return {
         id: dto.id,
         name: dto.name,
+        image: dto.image,
         code: dto.code,
     }
 }

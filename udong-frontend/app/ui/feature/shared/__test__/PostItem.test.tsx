@@ -16,7 +16,7 @@ const dummyPost: BoardPost = {
     title: '겨울 공연 중요 공지!',
     content: '',
     type: PostType.ANNOUNCEMENT,
-    includedTags: [{ id: 1, name: '2022년 겨울 공연 1팀' }],
+    includedTags: [{ id: 1, name: '2022년 겨울 공연 1팀', createdAt: '', updatedAt: '' }],
     createdAt: '',
 }
 

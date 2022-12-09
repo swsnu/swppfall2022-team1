@@ -1,48 +1,15 @@
-import { useCallback, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 
+import { ClubUser } from '../../../../../domain/model/ClubUser'
+import { DateSchedulingPost } from '../../../../../domain/model/DateSchedulingPost'
+import { RoleType } from '../../../../../domain/model/RoleType'
+import { SchedulingPost } from '../../../../../domain/model/SchedulingPost'
+import { WeekdaySchedulingPost } from '../../../../../domain/model/WeekdaySchedulingPost'
+import { clubSelector } from '../../../../../domain/store/club/ClubSelector'
+import { schedulingSelector } from '../../../../../domain/store/post/scheduling/SchedulingSelector'
+import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { new2dArray } from '../../../../../utility/functions'
 import { CellIdx } from '../../../shared/TimeTable'
-
-export type SchedulingDataType = {
-    startTime: number
-    endTime: number
-    dates: Date[]|null
-    weekdays: boolean[]|null
-    availableTime: { user: { id: number, name: string, auth: string }, time: boolean[][] }[]
-}
-
-const schedulingDummy: SchedulingDataType = {
-    startTime: 12,
-    endTime: 18,
-    dates: [
-        new Date(2022, 11, 6),
-        new Date(2022, 11, 9),
-        new Date(2022, 11, 10),
-        new Date(2022, 11, 11),
-    ],
-    //dates: null,
-    weekdays: [true, true, true, false, true, false, false],
-    availableTime: [
-        {
-            user: { id: 1, name: 'user1', auth: 'A' },
-            time: [
-                [true, true, true, true, true, true],
-                [true, true, false, false, true, false],
-                [true, true, false, false, true, false],
-                [false, false, false, false, false, false],
-            ],
-        },
-        {
-            user: { id: 2, name: 'user2', auth: 'M' },
-            time: [
-                [false, false, false, false, false, false],
-                [true, true, true, true, true, true],
-                [true, true, false, false, true, false],
-                [true, true, false, false, true, false],
-            ],
-        },
-    ],
-}
 
 export type BestType = {
     cnt: number
@@ -57,60 +24,82 @@ export type SchedulingListUserType = {
     isAdmin: boolean
 }
 
-const myId = 1
+export const getDayCnt = (scheduling: DateSchedulingPost | WeekdaySchedulingPost) => (
+    'dates' in scheduling ? scheduling.dates.length : scheduling.weekdays.filter(x => x).length
+)
 
-export const getDayCnt = (data: SchedulingDataType) => data.dates ? data.dates.length : (data.weekdays ?? []).filter(x => x).length
-
-export const parseUsers = (users: { id: number, name: string, auth: string }[]) => (
-    users.map(({ id, name, auth  }) =>  ({ id, name, isMe: id === myId, isAdmin: auth === 'A' }))
+export const parseUsers = (users: ClubUser[], myId: number): SchedulingListUserType[] => (
+    users.map(({ user, role }) =>  ({
+        id: user.id,
+        name: user.name,
+        isMe: user.id === myId,
+        isAdmin: role === RoleType.ADMIN,
+    }))
 )
 
 export const useData = () => {
-    const data = useMemo(() => schedulingDummy, [])
+    const schedulingStatus = useSelector(schedulingSelector.schedulingStatus)
+    const me = useSelector(userSelector.userMe)
+    const myId = me?.id
+    const myTimeTable = me?.timeTable
+    const clubUsers = useSelector(clubSelector.members)
 
-    const users = useMemo<SchedulingListUserType[]>(() => (
-        parseUsers(data.availableTime.map(({ user }) => user))
-    ), [data])
+    if(!schedulingStatus) {
+        return {}
+    }
 
-    const cnt = useMemo<number[][]>(() => data.availableTime.reduce(
+    const allUsers = clubUsers.map(({ user, role }) => ({
+        id: user.id,
+        name: user.name,
+        isMe: user.id === myId,
+        isAdmin: role === RoleType.ADMIN,
+    }))
+
+    const participatedUserIds = schedulingStatus.availableTime.map(({ user }) => user.id)
+
+    const cnt = schedulingStatus.availableTime.reduce(
         (v, { time }) => v.map((colData, colIdx) => colData.map((x, rowIdx) => x + (time[colIdx][rowIdx] ? 1 : 0))),
         new2dArray(
-            getDayCnt(data),
-            data.endTime - data.startTime,
+            getDayCnt(schedulingStatus),
+            schedulingStatus.endTime - schedulingStatus.startTime,
             0,
         ),
-    ), [data])
+    )
 
-    const calculateDay = useCallback((colIdx: number) => {
-        if(data.dates !== null) {
-            return `${data.dates[colIdx].getMonth()}/${data.dates[colIdx].getDate()}`
+    const calculateDay = (colIdx: number) => {
+        if('dates' in schedulingStatus) {
+            const d = new Date(schedulingStatus.dates[colIdx])
+            return `${d.getMonth() + 1}/${d.getDate()}`
         }
         else {
-            return ['월', '화', '수', '목', '금', '토', '일'].filter((_, idx) => data.weekdays?.[idx])[colIdx]
+            return ['월', '화', '수', '목', '금', '토', '일'].filter((_, idx) => schedulingStatus.weekdays?.[idx])[colIdx]
         }
-    }, [data])
+    }
 
-    const best = useMemo<BestType[]>(() => cnt.reduce(
+    const best = cnt.reduce(
         (v, colData, colIdx) => v.concat(
-            colData.map((x, rowIdx) => ({ cnt: x, day: calculateDay(colIdx), time: rowIdx + data.startTime })),
+            colData.map((x, rowIdx) => ({ cnt: x, day: calculateDay(colIdx), time: rowIdx + schedulingStatus.startTime })),
         ),
         [] as ({ cnt: number, day: string, time: number })[],
-    ).sort((a, b) => b.cnt - a.cnt).slice(0, 3), [cnt, calculateDay, data])
+    ).sort((a, b) => b.cnt - a.cnt).slice(0, 3)
 
-    return { data, users, cnt, best }
+    return { schedulingStatus, allUsers, participatedUserIds, cnt, best, myTimeTable }
 }
 
-export const getHeader = (data: SchedulingDataType) => (
-    data.dates ?
-        data.dates.map(date => `${date.getMonth()}/${date.getDate()}`)
-        : ['SUN', 'MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT'].filter((_, idx) => data.weekdays?.[idx])
+export const getHeader = (data: DateSchedulingPost | WeekdaySchedulingPost) => (
+    'dates' in data ?
+        data.dates.map(date => {
+            const d = new Date(date)
+            return `${d.getMonth() + 1}/${d.getDate()}`
+        })
+        : ['MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT', 'SUN'].filter((_, idx) => data.weekdays?.[idx])
 )
 
-export const getAva = (data: SchedulingDataType, hover: CellIdx|null) => (
+export const getAva = (data: SchedulingPost, hover: CellIdx|null) => (
     data.availableTime.filter(({ time }) => (hover && time[hover.col][hover.row])).map(({ user }) => user.id)
 )
 
-export const getInc = (data: { availableTime: { user: { id: number }, time: boolean[][] }[] }, selected: boolean[][]) => (
+export const getInc = (data: SchedulingPost, selected: boolean[][]) => (
     data.availableTime.filter(({ time }) => (
         selected !== null && time.map((timeRow, col) => timeRow.map((x, row) => x && selected[col][row]).some(x => x)).some(x => x)
     )).map(({ user }) => user.id)

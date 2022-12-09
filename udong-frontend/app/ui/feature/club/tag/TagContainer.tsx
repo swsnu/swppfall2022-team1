@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { Tag } from '../../../../domain/model/Tag'
 import { AppDispatch } from '../../../../domain/store'
 import { tagSelector } from '../../../../domain/store/tag/TagSelector'
 import { tagActions } from '../../../../domain/store/tag/TagSlice'
+import { userSelector } from '../../../../domain/store/user/UserSelector'
+import { userActions } from '../../../../domain/store/user/UserSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -14,52 +17,6 @@ import { UserListModal } from '../../shared/UserListModal'
 import { TagItem } from './TagItem'
 import { TagUpsertModal } from './TagUpsertModal'
 
-interface TagItemType {
-    name: string
-    isUserIncluded: boolean
-}
-
-const tags: Array<TagItemType> = [
-    {
-        name: '전체',
-        isUserIncluded: true,
-    },
-    {
-        name: '2022년 겨울 공연 1팀',
-        isUserIncluded: true,
-    },
-    {
-        name: '2022년 겨울 공연 2팀',
-        isUserIncluded: false,
-    },
-    {
-        name: '2022년 겨울 공연 3팀',
-        isUserIncluded: false,
-    },
-    {
-        name: '월요일 세션',
-        isUserIncluded: true,
-    },
-    {
-        name: '수요일 세션',
-        isUserIncluded: false,
-    },
-    {
-        name: '2022년 여름 공연 1팀',
-        isUserIncluded: false,
-    },
-    {
-        name: '2022년 여름 공연 2팀',
-        isUserIncluded: true,
-    },
-    {
-        name: '2022년 여름 공연 3팀',
-        isUserIncluded: false,
-    },
-]
-
-const dummy = tags
-
 interface TagContainerProps {
     clubId: number
 }
@@ -68,8 +25,11 @@ export const TagContainer = (props: TagContainerProps) => {
     const { clubId } = props
     const dispatch = useDispatch<AppDispatch>()
     const tags = useSelector(tagSelector.tags)
+    const selectedTag = useSelector(tagSelector.selectedTag)
+    const userMe = useSelector(userSelector.userMe)
 
     useEffect(() => {
+        dispatch(userActions.getMyProfile())
         dispatch(tagActions.getTags(clubId))
     }, [clubId, dispatch])
 
@@ -77,6 +37,29 @@ export const TagContainer = (props: TagContainerProps) => {
     const [showMembers, setShowMembers] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const searchRef = useRef<HTMLInputElement | undefined>(null)
+
+    const handleClickTag = useCallback(async (tagId: number) => {
+        const response = await dispatch(tagActions.getTag(tagId))
+        if (response.type === `${tagActions.getTag.typePrefix}/fulfilled`) {
+            setShowMembers(true)
+        }
+    }, [dispatch])
+
+    const handleClickTagDelete = useCallback((tag: Tag) => {
+        dispatch(tagActions.setSelectedTag(tag))
+        setShowDeleteModal(true)
+    }, [dispatch])
+
+    const handleConfirmTagDelete = useCallback(() => {
+        if (selectedTag) {
+            dispatch(tagActions.deleteTag(selectedTag.id))
+        }
+        setShowDeleteModal(false)
+    }, [dispatch, selectedTag])
+
+    if (!userMe) {
+        return null
+    }
 
     return <VStack>
         <HStack justifyContent={'end'}>
@@ -98,22 +81,27 @@ export const TagContainer = (props: TagContainerProps) => {
         {tags.map((tag, index) => {
             return <VStack
                 key={tag.name + index}
-                onClick={() => setShowMembers(true)}
+                onClick={() => handleClickTag(tag.id)}
             >
                 <TagItem
                     name={tag.name}
-                    isUserIncluded={true}
+                    createdAt={tag.createdAt}
+                    updatedAt={tag.updatedAt}
+                    isUserIncluded={tag.users.some(user => user.id === userMe.id)}
                     showEditModal={setShowUpsertModal}
-                    onClickDelete={setShowDeleteModal}
+                    onClickDelete={() => handleClickTagDelete(tag)}
                 />
             </VStack>
         })}
 
-        <UserListModal
-            isOpen={showMembers}
-            setIsOpen={setShowMembers}
-            title={'2022년 겨울 공연 2팀'}
-        />
+        {selectedTag &&
+            <UserListModal
+                users={selectedTag.users}
+                isOpen={showMembers}
+                setIsOpen={setShowMembers}
+                title={'2022년 겨울 공연 2팀'}
+            />
+        }
 
         <TagUpsertModal
             isOpen={showUpsertModal}
@@ -123,10 +111,10 @@ export const TagContainer = (props: TagContainerProps) => {
 
         <DeleteModal
             deleteObjectText={'태그'}
-            warningText={'경고 문구'}
+            warningText={'태그 삭제 후 복구가 불가능합니다.'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
-            onClickDelete={() => {return}}
+            onClickDelete={handleConfirmTagDelete}
         />
 
         <ScrollToTopButton/>

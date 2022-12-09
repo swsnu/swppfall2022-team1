@@ -5,6 +5,7 @@ import { UserListModal } from '../UserListModal'
 describe('<UserListModal/>', () => {
     it ('should render user list modal', () => {
         render(<UserListModal
+            users={[]}
             isOpen={true}
             setIsOpen={() => {return}}
             title={'USER'}

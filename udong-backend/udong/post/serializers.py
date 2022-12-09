@@ -1,15 +1,97 @@
 from django.db.models import Q
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
-from post.models import Post
-from post.models import Enrollment
-from post.models import Participation
+from club.models import Club
+from post.models import Post, Enrollment, Participation, Scheduling
 from tag.serializers import TagPostSerializer
 from user.serializers import UserSerializer
 from event.serializers import EventNameSerializer
 from club.serializers import ClubSerializer
+from timedata.serializers import AvailableTimeSerializer
 from drf_yasg.utils import swagger_serializer_method
 from typing import Optional
+from typing import Dict, Any
+
+
+class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):
+    closed = serializers.BooleanField(default=False)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Enrollment
+        fields = (
+            "post_id",
+            "closed",
+            "created_at",
+            "updated_at",
+        )
+
+    def create(self, validated_data: Dict[str, Any]) -> Enrollment:
+        enrollment = Enrollment.objects.create(**validated_data)
+        return enrollment
+
+
+class ParticipationSerializer(serializers.ModelSerializer[Participation]):
+    user = serializers.SerializerMethodField()
+    enrollment_id = serializers.IntegerField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Participation
+        fields = (
+            "id",
+            "user",
+            "enrollment_id",
+            "created_at",
+            "updated_at",
+        )
+
+    @swagger_serializer_method(serializer_or_field=UserSerializer())
+    def get_user(self, participation: Participation) -> ReturnDict:
+        return UserSerializer(participation.user).data
+
+    def create(self, validated_data: Dict[str, Any]) -> Participation:
+        participation = Participation.objects.create(
+            user=self.context["user"], enrollment=self.context["enrollment"]
+        )
+        return participation
+
+
+class SchedulingSerializer(serializers.ModelSerializer[Scheduling]):
+    closed = serializers.BooleanField(default=False)
+    available_times = serializers.SerializerMethodField()
+    confirmed_time = serializers.CharField(allow_null=True, default=None)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Scheduling
+        fields = (
+            "post_id",
+            "type",
+            "start_time",
+            "end_time",
+            "dates",
+            "weekdays",
+            "repeat_start",
+            "repeat_end",
+            "closed",
+            "confirmed_time",
+            "available_times",
+            "confirmed_time",
+            "created_at",
+            "updated_at",
+        )
+
+    @swagger_serializer_method(serializer_or_field=AvailableTimeSerializer())
+    def get_available_times(self, scheduling: Scheduling) -> ReturnDict:
+        return AvailableTimeSerializer(scheduling.available_time_set, many=True).data
+
+    def create(self, validated_data: Dict[str, Any]) -> Scheduling:
+        scheduling = Scheduling.objects.create(**validated_data)
+        return scheduling
 
 
 class PostBoardSerializer(serializers.ModelSerializer[Post]):
@@ -17,12 +99,14 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     club = serializers.SerializerMethodField()
     event = serializers.SerializerMethodField()
     title = serializers.CharField(max_length=255)
-    type = serializers.CharField(source="get_type_display")
+    type = serializers.ChoiceField(choices=["A", "E", "S"])
     closed = serializers.SerializerMethodField()
     include_tag = serializers.SerializerMethodField()
     exclude_tag = serializers.SerializerMethodField()
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
+    scheduling = SchedulingSerializer(allow_null=True, required=False, write_only=True)
+    enrollment = EnrollmentSerializer(allow_null=True, required=False, write_only=True)
 
     class Meta:
         model = Post
@@ -34,6 +118,8 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             "title",
             "content",
             "type",
+            "scheduling",
+            "enrollment",
             "closed",
             "include_tag",
             "exclude_tag",
@@ -61,11 +147,11 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             return EventNameSerializer(post.event).data
 
     def get_closed(self, post: Post) -> Optional[bool]:
-        if post.get_type_display() == "Announcement":
+        if post.type == "A":
             return None
-        if post.get_type_display() == "Enrollment":
+        if post.type == "E":
             return post.enrollment.closed
-        if post.get_type_display() == "Scheduling":
+        if post.type == "S":
             return post.scheduling.closed
         return None
 
@@ -85,39 +171,20 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         tags = list(map(lambda post_tag: post_tag.tag, post_tag_list))
         return TagPostSerializer(tags, many=True).data
 
+    def create(self, validated_data: Dict[str, Any]) -> Post:
+        scheduling = validated_data.pop("scheduling", None)
+        enrollment = validated_data.pop("enrollment", None)
 
-class EnrollmentSerializer(serializers.ModelSerializer[Enrollment]):
-    post_id = serializers.IntegerField(read_only=True)
-    closed = serializers.BooleanField(read_only=True)
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
-
-    class Meta:
-        model = Enrollment
-        fields = (
-            "post_id",
-            "closed",
-            "created_at",
-            "updated_at",
+        post = Post.objects.create(
+            **validated_data,
+            club=self.context["club_obj"],
+            author=self.context["user"],
+            event=self.context["event"]
         )
 
+        if scheduling:
+            Scheduling.objects.create(**scheduling, post=post)
+        if enrollment:
+            Enrollment.objects.create(**enrollment, post=post)
 
-class ParticipationSerializer(serializers.ModelSerializer[Participation]):
-    user = serializers.SerializerMethodField()
-    enrollment_id = serializers.IntegerField(read_only=True)
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
-
-    class Meta:
-        model = Participation
-        fields = (
-            "id",
-            "user",
-            "enrollment_id",
-            "created_at",
-            "updated_at",
-        )
-
-    @swagger_serializer_method(serializer_or_field=UserSerializer())
-    def get_user(self, participation: Participation) -> ReturnDict:
-        return UserSerializer(participation.user).data
+        return post

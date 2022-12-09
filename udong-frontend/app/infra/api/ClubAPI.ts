@@ -23,6 +23,11 @@ export const ClubAPI = (() => {
         return clubTransformer.fromDto(response.data)
     }
 
+    async function registerClub(code: string): Promise<Club> {
+        const response = await axiosConfig.post<ClubDto>(`/api/club/register/`, { code })
+        return clubTransformer.fromDto(response.data)
+    }
+
     function createClub() { return } // /club (POST)
     function editClub() { return }
     function deleteClub() { return }
@@ -30,6 +35,11 @@ export const ClubAPI = (() => {
     async function getClubMembers(clubId: number): Promise<Array<ClubUser>> {
         const response = await axiosConfig.get<Array<ClubUserDto>>(`/api/club/${clubId}/user/`)
         return response.data.map(clubUserTransformer.fromDto)
+    }
+
+    async function getMyClubProfile(clubId: number): Promise<ClubUser> {
+        const response = await axiosConfig.get<ClubUserDto>(`/api/club/${clubId}/user/me/`)
+        return clubUserTransformer.fromDto(response.data)
     }
 
     function removeClubMember() { return }
@@ -51,10 +61,12 @@ export const ClubAPI = (() => {
     return Object.freeze({
         getClubs,
         getClub,
+        registerClub,
         createClub,
         editClub,
         deleteClub,
         getClubMembers,
+        getMyClubProfile,
         removeClubMember,
         assignClubMemberRole,
         getClubEvents,

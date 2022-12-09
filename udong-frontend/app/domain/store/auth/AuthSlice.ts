@@ -30,7 +30,12 @@ export const logout = createAsyncThunk(
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        authExpired: (state) => {
+            state.isLoading = false
+            state.isLoggedIn = false
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(login.pending, (state) => {
             state.isLoading = true

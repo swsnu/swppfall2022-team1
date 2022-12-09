@@ -14,9 +14,6 @@ import { UdongText } from '../../components/UdongText'
 import close from '../../icons/IcClose.png'
 import { UserItem } from './UserItem'
 
-const dummyUserData = ['고동현', '박지연', '임유진', '이유빈']
-const dummy: Array<string> = [...dummyUserData].concat(dummyUserData).concat(dummyUserData).concat(dummyUserData)
-
 interface UserListModalProps {
     isOpen: boolean
     setIsOpen: (open: boolean) => void
@@ -72,24 +69,25 @@ export const UserListModal = (props: UserListModalProps) => {
             />
             <Spacer height={15}/>
 
-            <VStack
-                width={'100%'}
-                height={'50vh'}
-                alignItems={'start'}
-                style={{ overflow: 'scroll', paddingBottom: 15 }}
-            >
-                <UserItem
-                    name={'이유빈'}
-                    isMe={true}
-                />
-                {users.map((user, index) => {
-                    return <UserItem
-                        name={user.name}
-                        isMe={user.id === userMe?.id}
-                        key={`${user}/${index}`}
-                    />
-                })}
-            </VStack>
+            {users.length > 0 ?
+                <VStack
+                    width={'100%'}
+                    height={'50vh'}
+                    alignItems={'start'}
+                    style={{ overflow: 'scroll', paddingBottom: 15 }}
+                >
+                    {users.map((user, index) => {
+                        return <UserItem
+                            name={user.name}
+                            key={`${user}/${index}`}
+                        />
+                    })}
+                </VStack>
+                :
+                <VStack paddingVertical={100}>
+                    <UdongText style={'GeneralContent'}>유저가 없습니다.</UdongText>
+                </VStack>
+            }
         </VStack>
     </UdongModal>
 }

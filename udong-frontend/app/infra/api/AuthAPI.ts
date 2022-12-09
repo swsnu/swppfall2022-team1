@@ -8,7 +8,9 @@ export const AuthAPI = (() => {
         )
     }
     async function signOut(): Promise<void> {
-        return await axiosConfig.post(`/api/auth/signout/`)
+        return await axiosConfig.post(
+            `/api/auth/signout/`,
+        )
     }
 
     return Object.freeze({

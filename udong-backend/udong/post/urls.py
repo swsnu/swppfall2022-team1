@@ -1,12 +1,15 @@
 from rest_framework.routers import SimpleRouter
-from post.views import PostViewSet, PostClubViewSet
-from post.views import EnrollmentViewSet
+from post.views import (
+    PostViewSet,
+    EnrollmentViewSet,
+    SchedulingViewSet,
+)
 
 app_name = "post"
 
 router = SimpleRouter()
 router.register("post", PostViewSet)
-router.register("post/club", PostClubViewSet)
 router.register("enroll", EnrollmentViewSet)
+router.register("schedule", SchedulingViewSet)
 
 urlpatterns = router.urls

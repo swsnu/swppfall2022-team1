@@ -3,18 +3,33 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { tagReducer, TagState } from '../../../../../domain/store/tag/TagSlice'
+import { userReducer, UserState } from '../../../../../domain/store/user/UserSlice'
 import { TagContainer } from '../TagContainer'
 
 const stubInitialState: TagState = {
     tags: [{
         id: 1,
         name: 'TAG',
+        createdAt: '',
+        updatedAt: '',
+        users: [],
     }],
 }
 
+const stubUserInitialState: UserState = {
+    isAdmin: false,
+    me: {
+        id: 1,
+        email: '',
+        imageUrl: '',
+        name: '',
+        timeTable: [],
+    },
+}
+
 const mockStore = configureStore({
-    reducer: { tag: tagReducer },
-    preloadedState: { tag: stubInitialState },
+    reducer: { tag: tagReducer, user: userReducer },
+    preloadedState: { tag: stubInitialState, user: stubUserInitialState },
 })
 
 jest.mock('next/config', () => () => ({
