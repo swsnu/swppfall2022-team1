@@ -1,13 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { PostAPI } from '../../../infra/api/PostAPI'
 import { BoardPost } from '../../model/BoardPost'
 import { CreatePost } from '../../model/CreatePost'
 
+export type PostCreateAPIErrorType = 'missing_required_field' | 'is_not_admin' | 'error'
+
 export interface PostState {
     selectedPost?: BoardPost
     createdPostId?: number
+    createPostError?: PostCreateAPIErrorType
     feedPosts: Array<BoardPost>
     clubPosts: Array<BoardPost>
 }
@@ -38,12 +42,25 @@ export const getPost = createAsyncThunk(
     },
 )
 
-export const createPost = createAsyncThunk(
-    'post/createPost',
-    async ({ clubId, post }: { clubId: number, post: CreatePost }) => {
-        return ClubAPI.createClubPost(clubId, post)
-    },
-)
+export const createPost =
+    createAsyncThunk<BoardPost | undefined, { clubId: number, post: CreatePost }, { rejectValue: PostCreateAPIErrorType }>(
+        'post/createPost',
+        async ({ clubId, post }: { clubId: number, post: CreatePost }, { rejectWithValue }) => {
+            try {
+                return await ClubAPI.createClubPost(clubId, post)
+            } catch (e) {
+                if (axios.isAxiosError(e)) {
+                    if (e.response?.status === 400) {
+                        return rejectWithValue('missing_required_field')
+                    } else if (e.response?.status === 403) {
+                        return rejectWithValue('is_not_admin')
+                    } else {
+                        return rejectWithValue('error')
+                    }
+                }
+            }
+        },
+    )
 
 export const editPost = createAsyncThunk(
     'post/editPost',
@@ -59,8 +76,8 @@ const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        resetSelectedPost: (state) => {
-            state.selectedPost = undefined
+        resetCreatePostError: (state) => {
+            state.createPostError = undefined
         },
     },
     extraReducers: (builder) => {
@@ -75,8 +92,13 @@ const postSlice = createSlice({
             state.createdPostId = undefined
         })
         builder.addCase(createPost.fulfilled, (state, action) => {
-            state.createdPostId = action.payload.id
+            state.createdPostId = action.payload?.id
             state.selectedPost = action.payload
+        })
+        builder.addCase(createPost.rejected, (state, action) => {
+            state.selectedPost = undefined
+            state.createdPostId = undefined
+            state.createPostError = action.payload
         })
     },
 })

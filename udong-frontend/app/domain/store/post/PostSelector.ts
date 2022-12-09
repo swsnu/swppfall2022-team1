@@ -24,9 +24,15 @@ const createdPostId = createSelector(
     state => state.createdPostId,
 )
 
+const createPostError = createSelector(
+    postState,
+    state => state.createPostError,
+)
+
 export const postSelector = {
     selectedPost,
     feedPosts,
     clubPosts,
     createdPostId,
+    createPostError,
 }

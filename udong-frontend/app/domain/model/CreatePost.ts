@@ -12,9 +12,9 @@ export type CreatePost = {
 
 export interface CreateScheduling {
     type: SchedulingPostType
-    weekdays?: Array<boolean>
-    repeatStart?: Date
-    repeatEnd?: Date
+    weekdays?: string
+    repeatStart?: string
+    repeatEnd?: string
     startTime: number
     endTime: number
     dates?: Array<string>

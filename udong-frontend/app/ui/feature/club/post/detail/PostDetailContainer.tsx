@@ -48,10 +48,6 @@ export const PostDetailContainer = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     useEffect(() => {
-        dispatch(postActions.resetSelectedPost())
-    }, [])
-
-    useEffect(() => {
         if (post) {
             setPostType(post.type)
         }
