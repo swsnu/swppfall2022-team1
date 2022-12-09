@@ -7,7 +7,7 @@ from typing import Dict, Any
 
 
 class PureTimeSerializer(serializers.ModelSerializer[Time]):
-    type = serializers.ChoiceField(choices=[("D", "Date"), ("W", "Weekday")])
+    type = serializers.ChoiceField(choices=["D", "W"])
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
