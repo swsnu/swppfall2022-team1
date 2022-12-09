@@ -15,6 +15,7 @@ import { clubEventTransformer } from '../transformer/ClubEventTransformer'
 import { clubTagTransformer } from '../transformer/ClubTagTransformer'
 import { clubTransformer } from '../transformer/ClubTransformer'
 import { clubUserTransformer } from '../transformer/ClubUserTransformer'
+import { createPostTransformer } from '../transformer/CreatePostTransformer'
 
 export const ClubAPI = (() => {
     async function getClubs(): Promise<Array<Club>> {
@@ -52,7 +53,7 @@ export const ClubAPI = (() => {
     async function createClubPost(clubId: number, post: CreatePost): Promise<BoardPost> {
         const response = await axiosConfig.post<BoardPostDto>(
             `/api/club/${clubId}/post/`,
-            { post },
+            createPostTransformer.toDto(post),
         )
         return boardPostTransformer.fromDto(response.data, PostDisplayType.CLUB)
     }
