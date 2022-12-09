@@ -17,6 +17,7 @@ from post.serializers import (
     SchedulingSerializer,
 )
 from club.models import Club
+from user.serializers import UserSerializer
 from timedata.serializers import AvailableTimeSerializer
 from timedata.models import AvailableTime
 from user.models import UserClub
@@ -171,19 +172,74 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
     serializer_class = EnrollmentSerializer
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
-        if self.action == "status":
+        if self.action in ("participate", "status"):
             return ParticipationSerializer
         elif self.action == "close":
             return EnrollmentSerializer
         return self.serializer_class
 
+    def _check_enrollment_validity(self, id: Any) -> Response | Enrollment:
+        try:
+            enrollment = Enrollment.objects.get(post=id)
+            if enrollment.closed:
+                return Response(
+                    "Enrollment is closed", status=status.HTTP_400_BAD_REQUEST
+                )
+        except Enrollment.DoesNotExist:
+            return Response(
+                "Enrollment does not exist", status=status.HTTP_404_NOT_FOUND
+            )
+        return enrollment
+
+    @action(detail=True, methods=["POST"])
+    def participate(self, request: Request, pk: Any) -> Response:
+        result = self._check_enrollment_validity(pk)
+        if isinstance(result, Response):
+            return result
+        else:
+            enrollment = result
+            try:
+                Participation.objects.get(
+                    Q(user_id=request.user.id) & Q(enrollment_id=pk)
+                )
+                return Response(
+                    "Already registered", status=status.HTTP_400_BAD_REQUEST
+                )
+            except Participation.DoesNotExist:
+                serializer = self.get_serializer(
+                    data=request.data,
+                    context={"user": request.user, "enrollment": enrollment},
+                )
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=["POST"])
+    def unparticipate(self, request: Request, pk: Any) -> Response:
+        result = self._check_enrollment_validity(pk)
+        if isinstance(result, Response):
+            return result
+        else:
+            try:
+                participation = Participation.objects.get(
+                    Q(user_id=request.user.id) & Q(enrollment_id=pk)
+                )
+                participation.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            except Participation.DoesNotExist:
+                return Response(
+                    "Didn't register yet", status=status.HTTP_400_BAD_REQUEST
+                )
+
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
-        participation_list = self.get_serializer(
-            Participation.objects.select_related("user").filter(enrollment_id=pk),
-            many=True,
-        ).data
-        return Response(participation_list)
+        participation_list = (
+            Participation.objects.all().select_related("user").filter(enrollment_id=pk)
+        )
+        user_list = list(
+            map(lambda participation: participation.user, participation_list)
+        )
+        return Response(UserSerializer(user_list, many=True).data)
 
     @action(detail=True, methods=["PUT"])
     def close(self, request: Request, pk: Any = None) -> Response:
