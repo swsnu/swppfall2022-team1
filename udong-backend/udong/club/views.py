@@ -185,7 +185,7 @@ class ClubViewSet(_GenericClubViewSet):
 
     @swagger_auto_schema(responses={201: ClubTagSerializer(many=True)})
     def _create_tag(self, request: Request, pk: Any) -> Response:
-        club = Club.objects.get(id=pk)
+        club = self.get_object()
 
         obj_permission = IsAdmin()
         if not obj_permission.has_object_permission(request, self, club):
