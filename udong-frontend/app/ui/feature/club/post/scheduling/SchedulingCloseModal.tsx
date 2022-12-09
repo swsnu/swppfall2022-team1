@@ -118,18 +118,20 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
                         onChange={(e) => setTagName(e.target.value)}
                     />
                 }
-                <UdongCheckbox
-                    text={'선택한 시간을 행사 시간으로 설정하기'}
-                    checked={saveTime}
-                    onChange={setSaveTime}
-                />
-                <UdongText
-                    style={'ListContentXS'}
-                    marginLeft={30}
-                    marginTop={-10}
-                >
-                    ※ 기존 행사 시간은 삭제됩니다.
-                </UdongText>
+                {post?.eventId && <>
+                    <UdongCheckbox
+                        text={'선택한 시간을 행사 시간으로 설정하기'}
+                        checked={saveTime}
+                        onChange={setSaveTime}
+                    />
+                    <UdongText
+                        style={'ListContentXS'}
+                        marginLeft={30}
+                        marginTop={-10}
+                    >
+                        ※ 기존 행사 시간은 삭제됩니다.
+                    </UdongText>
+                </>}
                 <UdongButton
                     color={buttonDisable ? UdongColors.GrayNormal : UdongColors.Primary}
                     disabled={buttonDisable}
