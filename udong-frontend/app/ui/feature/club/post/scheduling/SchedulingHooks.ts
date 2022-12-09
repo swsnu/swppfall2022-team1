@@ -92,7 +92,7 @@ export const getHeader = (data: DateSchedulingPost | WeekdaySchedulingPost) => (
             const d = new Date(date)
             return `${d.getMonth() + 1}/${d.getDate()}`
         })
-        : ['SUN', 'MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT'].filter((_, idx) => data.weekdays?.[idx])
+        : ['MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT', 'SUN'].filter((_, idx) => data.weekdays?.[idx])
 )
 
 export const getAva = (data: SchedulingPost, hover: CellIdx|null) => (
