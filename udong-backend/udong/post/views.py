@@ -209,6 +209,11 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
     def participate(self, request: Request, pk: Any) -> Response:
         try:
             scheduling = Scheduling.objects.get(post=pk)
+            if scheduling.closed:
+                return Response(
+                    "Scheduling is closed", status=status.HTTP_404_NOT_FOUND
+                )
+
         except Scheduling.DoesNotExist:
             return Response(
                 "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
@@ -243,8 +248,17 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
     @action(detail=True, methods=["PUT"])
     def close(self, request: Request, pk: Any = None) -> Response:
         scheduling = self.get_object()
+        if scheduling.closed:
+            return Response(
+                    "Scheduling is already closed", status=status.HTTP_400_BAD_REQUEST
+                )
         scheduling.closed = True
-        scheduling.confirmed_time = request.data["time"]
+        try:
+            scheduling.confirmed_time = request.data["confirmed_time"]
+        except KeyError:
+            return Response(
+                "Confirmed time is not given", status=status.HTTP_400_BAD_REQUEST
+            )
         scheduling.save()
         serializer = self.get_serializer(scheduling)
         return Response(serializer.data)
