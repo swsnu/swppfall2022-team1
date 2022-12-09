@@ -3,6 +3,7 @@ from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
 from club.models import Club
 from tag.models import Tag
+from event.models import Event
 from post.models import Post, Enrollment, Participation, Scheduling, PostTag
 from tag.serializers import TagPostSerializer
 from user.serializers import UserSerializer
@@ -103,6 +104,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     author = serializers.SerializerMethodField()
     club = serializers.SerializerMethodField()
     event = serializers.SerializerMethodField()
+    event_id = serializers.IntegerField(write_only=True)
     title = serializers.CharField(max_length=255)
     type = serializers.ChoiceField(choices=["A", "E", "S"])
     closed = serializers.SerializerMethodField()
@@ -120,6 +122,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             "author",
             "club",
             "event",
+            "event_id",
             "title",
             "content",
             "type",
@@ -179,6 +182,8 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     def create(self, validated_data: Dict[str, Any]) -> Post:
         tag_list = validated_data.pop("tag_list", None)
         scheduling = validated_data.pop("scheduling", {})
+        event_id = validated_data.pop("event_id", None)
+        event = Event.objects.get(id=event_id)
 
         if not isinstance(tag_list, list):
             raise Exception()
@@ -187,7 +192,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             **validated_data,
             club=self.context["club_obj"],
             author=self.context["user"],
-            event=self.context["event"]
+            event=event
         )
 
         type = validated_data.get("type", None)

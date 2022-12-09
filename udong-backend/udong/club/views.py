@@ -244,11 +244,6 @@ class ClubViewSet(_GenericClubViewSet):
         club = self.get_object()
         self.check_object_permissions(request, club)
 
-        try:
-            event = Event.objects.get(id=request.data.get("event_id", -1))
-        except Event.DoesNotExist:
-            event = None
-
         serializer = self.get_serializer(
             data=request.data,
             context={
@@ -256,7 +251,6 @@ class ClubViewSet(_GenericClubViewSet):
                 "user": request.user,
                 "id": request.user.id,
                 "club": False,
-                "event": event,
             },
         )
         serializer.is_valid(raise_exception=True)
