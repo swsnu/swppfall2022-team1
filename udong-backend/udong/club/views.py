@@ -237,10 +237,7 @@ class ClubViewSet(_GenericClubViewSet):
             },
         )
         serializer.is_valid(raise_exception=True)
-        post = serializer.save()
-
-        if post.type == "E":  # type: ignore
-            Enrollment.objects.create(post=post, closed=False)  # type: ignore
+        serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
