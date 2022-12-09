@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
+import { EventAPI } from '../../../infra/api/EventAPI'
 import { ClubEvent } from '../../model/ClubEvent'
 
 export interface EventState {
@@ -31,7 +32,9 @@ export const createEvent = createAsyncThunk(
 
 export const editEvent = createAsyncThunk(
     'event/editEvent',
-    async () => { return },
+    async ({ eventId, content }: { eventId: number, content: Partial<ClubEvent> }) => {
+        return EventAPI.editEvent(eventId, content)
+    },
 )
 
 export const deleteEvent = createAsyncThunk(
