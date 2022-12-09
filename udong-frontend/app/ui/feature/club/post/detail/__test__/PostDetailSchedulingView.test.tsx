@@ -6,6 +6,7 @@ import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 
 import { SchedulingPostType } from '../../../../../../domain/model/SchedulingPostType'
+import { dummyUserMe } from '../../../../../../domain/model/User'
 import { clubReducer, ClubState } from '../../../../../../domain/store/club/ClubSlice'
 import { schedulingReducer, SchedulingState } from '../../../../../../domain/store/post/scheduling/SchedulingSlice'
 import { userReducer } from '../../../../../../domain/store/user/UserSlice'
@@ -55,6 +56,7 @@ const mockStore = configureStore({
     preloadedState: {
         scheduling: schedulingInitialState,
         club: clubInitialState,
+        user: { me: dummyUserMe },
     },
 })
 
