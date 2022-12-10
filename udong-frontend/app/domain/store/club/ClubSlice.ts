@@ -4,14 +4,17 @@ import axios from 'axios'
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { Club } from '../../model/Club'
 import { ClubUser } from '../../model/ClubUser'
+import { UserIsNotAdminErrorType } from '../index'
 
 export type ClubRegisterAPIErrorType = 'already_registered' | 'invalid_code' | 'error'
+export type ClubEditAPIErrorType = UserIsNotAdminErrorType | 'error'
 
 export interface ClubState {
     selectedClub?: Club
     myClubs: Array<Club>
     members: Array<ClubUser>
     clubRegisterError?: ClubRegisterAPIErrorType
+    clubEditError?: ClubEditAPIErrorType
 }
 
 const initialState: ClubState = {
@@ -57,10 +60,23 @@ export const createClub = createAsyncThunk(
     async () => { return },
 )
 
-export const editClub = createAsyncThunk(
-    'club/editClub',
-    async () => { return },
-)
+export const editClub =
+    createAsyncThunk<Club | undefined, { clubId: number, club: Club }, { rejectValue: ClubEditAPIErrorType }>(
+        'club/editClub',
+        async ({ clubId, club }, { rejectWithValue }) => {
+            try {
+                return await ClubAPI.editClub(clubId, club)
+            } catch (e) {
+                if (axios.isAxiosError(e)) {
+                    if (e.response?.status === 403) {
+                        return rejectWithValue('is_not_admin')
+                    } else {
+                        return rejectWithValue('error')
+                    }
+                }
+            }
+        },
+    )
 
 export const leaveClub = createAsyncThunk(
     'club/leaveClub',
@@ -123,6 +139,13 @@ const clubSlice = createSlice({
         builder.addCase(registerClub.rejected, (state, action) => {
             state.clubRegisterError = action.payload
             state.selectedClub = undefined
+        })
+        builder.addCase(editClub.fulfilled, (state, action) => {
+            state.selectedClub = action.payload
+        })
+        builder.addCase(editClub.rejected, (state, action) => {
+            state.selectedClub = undefined
+            state.clubEditError = action.payload
         })
     },
 })

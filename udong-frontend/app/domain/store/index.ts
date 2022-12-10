@@ -10,6 +10,8 @@ import { schedulingReducer } from './post/scheduling/SchedulingSlice'
 import { tagReducer } from './tag/TagSlice'
 import { userReducer } from './user/UserSlice'
 
+export type UserIsNotAdminErrorType = 'is_not_admin'
+
 export const store = configureStore({
     reducer: {
         auth: authReducer,

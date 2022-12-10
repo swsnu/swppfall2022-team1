@@ -29,7 +29,13 @@ export const ClubAPI = (() => {
     }
 
     function createClub() { return } // /club (POST)
-    function editClub() { return }
+    async function editClub(clubId: number, club: Club): Promise<Club> {
+        const response = await axiosConfig.put<ClubDto>(
+            `/api/club/${clubId}/`,
+            clubTransformer.toEditDto(club),
+        )
+        return clubTransformer.fromDto(response.data)
+    }
     function deleteClub() { return }
 
     async function getClubMembers(clubId: number): Promise<Array<ClubUser>> {

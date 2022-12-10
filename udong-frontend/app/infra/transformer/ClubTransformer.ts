@@ -1,5 +1,5 @@
 import { Club } from '../../domain/model/Club'
-import { ClubDto } from '../dto/ClubDto'
+import { ClubDto, ClubEditDto } from '../dto/ClubDto'
 
 const fromDto = (dto: ClubDto): Club => {
     return {
@@ -10,6 +10,14 @@ const fromDto = (dto: ClubDto): Club => {
     }
 }
 
+const toEditDto = (club: Club): ClubEditDto => {
+    return {
+        name: club.name,
+        image: club.image,
+    }
+}
+
 export const clubTransformer = {
     fromDto,
+    toEditDto,
 }

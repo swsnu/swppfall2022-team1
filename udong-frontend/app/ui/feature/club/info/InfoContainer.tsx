@@ -17,6 +17,10 @@ export const InfoContainer = (props: InfoContainerProps) => {
     const club = useSelector(clubSelector.selectedClub)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
+    if (!club) {
+        return null
+    }
+
     return <VStack justifyContent={'center'}>
         <Spacer height={50}/>
 

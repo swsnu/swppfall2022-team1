@@ -24,9 +24,15 @@ const clubRegisterError = createSelector(
     state => state.clubRegisterError,
 )
 
+const clubEditError = createSelector(
+    clubState,
+    state => state.clubEditError,
+)
+
 export const clubSelector = {
     selectedClub,
     myClubs,
     members,
     clubRegisterError,
+    clubEditError,
 }
