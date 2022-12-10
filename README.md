@@ -11,4 +11,4 @@
 
 ## Warning
 
-- The coverall badge may not be up to date due to caches. Please click the badge to see the most recent coverage status.
+- The coverall badge may not be up to date due to caches. Please click on the badge to view the most recent coverage status.
