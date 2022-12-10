@@ -8,7 +8,7 @@ class GetResponseCallable(Protocol):
         ...
 
 
-class DisableCSRFMiddleware(object):
+class CSRFMiddleware(object):
     def __init__(self, get_response: GetResponseCallable) -> None:
         self.get_response = get_response
 
