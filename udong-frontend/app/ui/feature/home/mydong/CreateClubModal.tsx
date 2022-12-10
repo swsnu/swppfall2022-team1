@@ -61,7 +61,7 @@ export const CreateClubModal = (props: CreateClubModalProps) => {
                     color={name ? UdongColors.Primary : UdongColors.GrayNormal}
                     onClick={handleCreateClub}
                     padding={'10px 25px'}
-                    disabled={name.length > 0}
+                    disabled={name === ''}
                 >
                     생성하기
                 </UdongButton>
