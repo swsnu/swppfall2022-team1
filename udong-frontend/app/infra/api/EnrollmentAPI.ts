@@ -1,15 +1,15 @@
 import { Enrollment } from '../../domain/model/Enrollment'
-import { EnrollmentStatus } from '../../domain/model/EnrollmentStatus'
+import { User } from '../../domain/model/User'
 import { EnrollmentDto } from '../dto/EnrollmentDto'
-import { ParticipationDto } from '../dto/ParticipationDto'
+import { UserDto } from '../dto/UserDto'
 import { axiosConfig } from '../global'
 import { enrollmentTransformer } from '../transformer/EnrollmentTransformer'
-import { participationTransformer } from '../transformer/ParticipationTransformer'
+import { userTransformer } from '../transformer/UserTransformer'
 
 export const EnrollmentAPI = (() => {
-    async function getEnrollmentStatus(postId: string): Promise<Array<EnrollmentStatus>> {
-        const response = await axiosConfig.get<Array<ParticipationDto>>(`/api/enroll/${postId}/status/`)
-        return response.data.map(participationTransformer.fromDto)
+    async function getEnrollmentStatus(postId: string): Promise<Array<User>> {
+        const response = await axiosConfig.get<Array<UserDto>>(`/api/enroll/${postId}/status/`)
+        return response.data.map(userTransformer.fromDto)
     }
 
     async function closeEnrollment(postId: number): Promise<Enrollment> {

@@ -4,11 +4,11 @@ import { RootState } from '../../index'
 
 const enrollmentState = (state: RootState) => state.enrollment
 
-const selectedEnrollmentStatus = createSelector(
+const selectedEnrollmentUsers = createSelector(
     enrollmentState,
-    state => state.selectedEnrollmentStatus,
+    state => state.selectedEnrollmentUsers,
 )
 
 export const enrollmentSelector = {
-    selectedEnrollmentStatus,
+    selectedEnrollmentUsers,
 }

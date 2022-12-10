@@ -27,9 +27,11 @@ export const UserListModal = (props: UserListModalProps) => {
     const userMe = useSelector(userSelector.userMe)
     const searchRef = useRef<HTMLInputElement | undefined>(null)
 
+    console.log(users)
+
     useEffect(() => {
         dispatch(userActions.getMyProfile)
-    }, [])
+    }, [dispatch])
 
     const handleOnClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         setIsOpen(false)
@@ -86,6 +88,7 @@ export const UserListModal = (props: UserListModalProps) => {
                 :
                 <VStack paddingVertical={100}>
                     <UdongText style={'GeneralContent'}>유저가 없습니다.</UdongText>
+                    <Spacer height={50}/>
                 </VStack>
             }
         </VStack>

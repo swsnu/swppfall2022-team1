@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { EnrollmentAPI } from '../../../../infra/api/EnrollmentAPI'
-import { EnrollmentStatus } from '../../../model/EnrollmentStatus'
+import { User } from '../../../model/User'
 
 export interface EnrollmentState {
-    selectedEnrollmentStatus?: Array<EnrollmentStatus>
+    selectedEnrollmentUsers?: Array<User>
 }
 
 const initialState: EnrollmentState = {}
@@ -39,7 +39,7 @@ const enrollmentSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getEnrollmentStatus.fulfilled, (state, action) => {
-            state.selectedEnrollmentStatus = action.payload
+            state.selectedEnrollmentUsers = action.payload
         })
     },
 })

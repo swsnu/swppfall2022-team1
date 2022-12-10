@@ -22,7 +22,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
     const { postId, isOpen } = props
     const dispatch = useDispatch<AppDispatch>()
 
-    const enrollmentStatus = useSelector(enrollmentSelector.selectedEnrollmentStatus)
+    const users = useSelector(enrollmentSelector.selectedEnrollmentUsers)
     const [showEnrolled, setShowEnrolled] = useState(false)
     const [isClosedModalOpen, setIsClosedModalOpen] = useState(false)
 
@@ -87,12 +87,12 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
             </HStack>
         </HStack>
 
-        {enrollmentStatus && enrollmentStatus.length > 0 &&
+        {users &&
             <UserListModal
                 isOpen={showEnrolled}
                 setIsOpen={setShowEnrolled}
-                users={enrollmentStatus[0].users}
-                title={'2022년 겨울 공연 2팀'}
+                users={users}
+                title={'모집 현황'}
             />
         }
 

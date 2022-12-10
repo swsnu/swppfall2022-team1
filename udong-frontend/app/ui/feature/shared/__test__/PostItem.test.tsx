@@ -28,14 +28,20 @@ describe('<PostItem/>', () => {
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
 
-        render(<PostItem post={dummyPost}/>)
+        render(<PostItem
+            clubId={1}
+            post={dummyPost}
+        />)
         const component = screen.getByText('겨울 공연 중요 공지!')
         fireEvent.click(component)
         expect(mockPush).toHaveBeenCalledWith('/club/1/post/1/?type=announcement')
     })
 
     it ('should handle on click tag', () => {
-        render(<PostItem post={dummyPost}/>)
+        render(<PostItem
+            clubId={1}
+            post={dummyPost}
+        />)
         const component = screen.getByText('2022년 겨울 공연 1팀')
         fireEvent.click(component)
         expect(component).toBeDefined()

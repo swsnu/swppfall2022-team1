@@ -14,16 +14,17 @@ import { UserListModal } from './UserListModal'
 
 interface PostItemProps {
     post: BoardPost
+    clubId: number
 }
 
 export const PostItem = (props: PostItemProps) => {
-    const { post } = props
+    const { post, clubId } = props
     const router = useRouter()
     const [isMemberListOpen, setIsMemberListOpen] = useState(false)
     const [currentTag, setCurrentTag] = useState('')
 
     const handleOnClickPost = useCallback(() => {
-        router.push(`/club/1/post/1/?type=${getPostTypeQueryParam(post.type)}`)
+        router.push(`/club/${clubId}/post/${post.id}/?type=${getPostTypeQueryParam(post.type)}`)
     }, [router])
 
     return <VStack onClick={handleOnClickPost}>
