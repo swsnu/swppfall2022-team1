@@ -1,12 +1,12 @@
-from django.test import Client
 from common.utils import MyTestCase
-from user.models import UserClub
+from user.models import UserClub, User
 from club.models import Club
 from post.models import Post, Enrollment, Participation, Scheduling, PostTag
 from event.models import Event
 from timedata.models import Time
 from tag.models import Tag, UserTag
 from datetime import date
+import json
 
 # Create your tests here.
 
@@ -16,6 +16,7 @@ class ClubTestCase(MyTestCase):
         super().setUp()
         club1 = Club.objects.create(name="Udong", image="image", code="swppfall")
         club2 = Club.objects.create(name="Ramen", image="image", code="random")
+        club3 = Club.objects.create(name="Gukbab", image="image", code="Gukbabjoa")
         UserClub.objects.create(user=self.dummy_user, club=club1, auth="A")
         UserClub.objects.create(user=self.dummy_user, club=club2, auth="M")
         event1 = Event.objects.create(club=club1, name="Turing award")
@@ -108,6 +109,8 @@ class ClubTestCase(MyTestCase):
         PostTag.objects.create(post=post3, tag=tag4)
         PostTag.objects.create(post=post3, tag=tag5)
         PostTag.objects.create(post=post3, tag=tag6)
+
+        tag7 = Tag.objects.create(club=club3, name="chung", is_default=True)
 
     # GET /api/club/:id
     def test_club_id(self) -> None:
@@ -214,6 +217,10 @@ class ClubTestCase(MyTestCase):
 
     # GET /api/club/:id/post/
     def test_club_post(self) -> None:
+        # Not found
+        response = self.client.get("/api/club/5/post/")
+        self.assertEqual(response.status_code, 404)
+
         # Check admin
         response = self.client.get("/api/club/1/post/")
         self.assertEqual(response.status_code, 200)
@@ -275,4 +282,310 @@ class ClubTestCase(MyTestCase):
                     ],
                 }
             ],
+        )
+
+    # POST /api/club/
+    def test_club_create(self) -> None:
+        response = self.client.post(
+            "/api/club/",
+            json.dumps({"name": "Testclub"}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 4,
+                "name": "Testclub",
+            },
+            ["image", "code"],
+        )
+
+    # POST /api/club/register/
+    def test_club_register(self) -> None:
+        # Invalid Code
+        response = self.client.post(
+            "/api/club/register/",
+            json.dumps({"code": "blob"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 404)
+
+        # Normal case
+        response = self.client.post(
+            "/api/club/register/",
+            json.dumps({"code": "Gukbabjoa"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 3,
+                "name": "Gukbab",
+            },
+            ["image", "code"],
+        )
+
+        # User is already in the club
+        response = self.client.post(
+            "/api/club/register/",
+            json.dumps({"code": "swppfall"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+
+    # PUT /api/club/:id/
+    def test_club_update(self) -> None:
+        response = self.client.put(
+            "/api/club/1/",
+            json.dumps({"name": "Udong2"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 1,
+                "name": "Udong2",
+            },
+            ["image", "code"],
+        )
+
+    # DELETE /api/club/:id/
+    def test_club_delete(self) -> None:
+        response = self.client.delete("/api/club/1/")
+        self.assertEqual(response.status_code, 204)
+
+    # DELETE /api/club/:id/user/
+    def test_club_delete_me(self) -> None:
+        # Only one admin
+        response = self.client.delete("/api/club/1/user/")
+        self.assertEqual(response.status_code, 403)
+
+        # Normal case
+        user2 = User.objects.create_user(name="test", email="codd@snu.ac.kr")
+        UserClub.objects.create(user=user2, club_id=1, auth="A")
+        response = self.client.delete("/api/club/1/user/")
+        self.assertEqual(response.status_code, 204)
+
+    # POST /api/club/:id/event/
+    def test_club_create_event(self) -> None:
+        # Not admin
+        response = self.client.post(
+            "/api/club/2/event/",
+            json.dumps(
+                {
+                    "name": "string",
+                    "new_time": [
+                        {
+                            "type": "D",
+                            "start_date": "2022-12-10",
+                            "end_date": "2022-12-10",
+                            "repeat_start": "2022-12-10",
+                            "repeat_end": "2022-12-10",
+                            "weekday": 0,
+                            "start_time": 0,
+                            "end_time": 0,
+                        }
+                    ],
+                }
+            ),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 403)
+
+        # Normal Case
+        response = self.client.post(
+            "/api/club/1/event/",
+            json.dumps(
+                {
+                    "name": "string",
+                    "new_time": [
+                        {
+                            "type": "D",
+                            "start_date": "2022-12-10",
+                            "end_date": "2022-12-10",
+                            "repeat_start": "2022-12-10",
+                            "repeat_end": "2022-12-10",
+                            "weekday": 0,
+                            "start_time": 0,
+                            "end_time": 0,
+                        }
+                    ],
+                }
+            ),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 3,
+                "name": "string",
+                "time": [
+                    {
+                        "type": "D",
+                        "start_date": "2022-12-10",
+                        "end_date": "2022-12-10",
+                        "repeat_start": "2022-12-10",
+                        "repeat_end": "2022-12-10",
+                        "weekday": 0,
+                        "start_time": 0,
+                        "end_time": 0,
+                    }
+                ],
+            },
+        )
+
+    # POST /api/club/:id/tag/
+    def test_club_create_tag(self) -> None:
+        # Not admin
+        response = self.client.post(
+            "/api/club/2/tag/",
+            json.dumps({"name": "testtag"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 403)
+
+        # Normal Case
+        response = self.client.post(
+            "/api/club/1/tag/",
+            json.dumps({"name": "testtag"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 8,
+                "name": "testtag",
+                "is_default": False,
+            },
+        )
+
+    # POST /api/club/:id/post/
+    def test_club_create_post(self) -> None:
+        response = self.client.post(
+            "/api/club/1/post/",
+            json.dumps(
+                {
+                    "event_id": 1,
+                    "title": "string",
+                    "content": "string",
+                    "type": "S",
+                    "scheduling": {
+                        "type": "D",
+                        "start_time": 0,
+                        "end_time": 0,
+                        "dates": {},
+                        "weekdays": "0000000",
+                        "repeat_start": "2022-12-10",
+                        "repeat_end": "2022-12-10",
+                        "closed": False,
+                        "confirmed_time": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                        "available_times": {
+                            "time": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                        },
+                    },
+                    "tag_list": [1, 2, 3],
+                }
+            ),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 5,
+                "author": "Alan Turing",
+                "club": None,
+                "event": {"id": 1, "name": "Turing award"},
+                "title": "string",
+                "content": "string",
+                "type": "S",
+                "closed": False,
+                "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
+                "exclude_tag": [
+                    {"id": 2, "name": "winner", "is_default": False},
+                    {"id": 3, "name": "loser", "is_default": False},
+                ],
+            },
+        )
+
+    # GET /club/:id/user/me/
+    def test_club_get_user_me(self) -> None:
+        response = self.client.get("/api/club/1/user/me/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "user": {
+                    "id": 1,
+                    "email": "alan@snu.ac.kr",
+                    "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                    "name": "Alan Turing",
+                },
+                "auth": "Admin",
+            },
+            ["image"],
+        )
+
+    # DELETE /club/:id/user/:id/
+    def test_club_delete_user(self) -> None:
+        # Can't delete admin
+        user2 = User.objects.create_user(name="test", email="codd@snu.ac.kr")
+        UserClub.objects.create(user=user2, club_id=1, auth="A")
+        response = self.client.delete("/api/club/1/user/2/")
+        self.assertEqual(response.status_code, 400)
+
+        # Normal Case
+        user3 = User.objects.create_user(name="testtest", email="boyce@snu.ac.kr")
+        UserClub.objects.create(user=user3, club_id=1, auth="M")
+        response = self.client.delete("/api/club/1/user/3/")
+        self.assertEqual(response.status_code, 204)
+
+    # PUT /club/:id/user/:id/role/
+    def test_club_change_user_role(self) -> None:
+        # Only one admin
+        response = self.client.put("/api/club/1/user/1/role/")
+        self.assertEqual(response.status_code, 400)
+
+        # Normal case
+        user2 = User.objects.create_user(name="test", email="codd@snu.ac.kr")
+        UserClub.objects.create(user=user2, club_id=1, auth="A")
+        user3 = User.objects.create_user(name="testtest", email="boyce@snu.ac.kr")
+        UserClub.objects.create(user=user3, club_id=1, auth="M")
+
+        response = self.client.put("/api/club/1/user/2/role/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "user": {
+                    "id": 2,
+                    "email": "codd@snu.ac.kr",
+                    "time_table": "",
+                    "name": "test",
+                },
+                "auth": "Member",
+            },
+            ["image"],
+        )
+
+        response = self.client.put("/api/club/1/user/3/role/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "user": {
+                    "id": 3,
+                    "email": "boyce@snu.ac.kr",
+                    "time_table": "",
+                    "name": "testtest",
+                },
+                "auth": "Admin",
+            },
+            ["image"],
         )
