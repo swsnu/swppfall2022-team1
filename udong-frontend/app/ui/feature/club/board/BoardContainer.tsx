@@ -14,7 +14,12 @@ import { PostItem } from '../../shared/PostItem'
 import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 import { PostCreateModal } from './PostCreateModal'
 
-export const BoardContainer = () => {
+interface BoardContainerProps {
+    clubId: number
+}
+
+export const BoardContainer = (props: BoardContainerProps) => {
+    const { clubId } = props
     const dispatch = useDispatch<AppDispatch>()
     const boardPosts = useSelector(postSelector.clubPosts)
 
@@ -23,9 +28,9 @@ export const BoardContainer = () => {
     const searchRef = useRef<HTMLInputElement | undefined>(null)
 
     useEffect(() => {
-        dispatch(postActions.getClubPosts(1))
+        dispatch(postActions.getClubPosts(clubId))
         setTimeout(() => setLoading(false), 600)
-    }, [])
+    }, [dispatch])
 
     return <VStack>
         <HStack justifyContent={'end'}>
@@ -61,6 +66,7 @@ export const BoardContainer = () => {
                 }
 
                 <PostCreateModal
+                    clubId={clubId}
                     isOpen={showPostCreateModal}
                     setIsOpen={setShowPostCreateModal}
                 />

@@ -67,9 +67,9 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
     useEffect(() => {
         if (newPostId) {
             dispatch(postActions.resetCreatePostError())
-            router.push(`/club/1/post/${newPostId}/?from=create`)
+            router.push(`/club/${clubId}/post/${newPostId}/?from=create`)
         }
-    }, [newPostId, dispatch, router])
+    }, [newPostId, dispatch, router, clubId])
 
     const handleCreatePost = useCallback(() => {
         if (clubId) {
