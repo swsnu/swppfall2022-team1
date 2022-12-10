@@ -1,10 +1,13 @@
+from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework import serializers
 from club.models import Club
 from tag.models import Tag
+from event.models import Event
 from post.models import Post, Enrollment, Participation, Scheduling, PostTag
 from tag.serializers import TagPostSerializer
+from common.utils import myIntListComparison
 from user.serializers import UserSerializer
 from event.serializers import EventNameSerializer
 from club.serializers import ClubSerializer
@@ -103,6 +106,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     author = serializers.SerializerMethodField()
     club = serializers.SerializerMethodField()
     event = serializers.SerializerMethodField()
+    event_id = serializers.IntegerField(write_only=True)
     title = serializers.CharField(max_length=255)
     type = serializers.ChoiceField(choices=["A", "E", "S"])
     closed = serializers.SerializerMethodField()
@@ -120,6 +124,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             "author",
             "club",
             "event",
+            "event_id",
             "title",
             "content",
             "type",
@@ -179,6 +184,8 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     def create(self, validated_data: Dict[str, Any]) -> Post:
         tag_list = validated_data.pop("tag_list", None)
         scheduling = validated_data.pop("scheduling", {})
+        event_id = validated_data.pop("event_id", None)
+        event = get_object_or_404(Event, id=event_id)
 
         if not isinstance(tag_list, list):
             raise Exception()
@@ -187,7 +194,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             **validated_data,
             club=self.context["club_obj"],
             author=self.context["user"],
-            event=self.context["event"]
+            event=event
         )
 
         type = validated_data.get("type", None)
@@ -209,3 +216,26 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             PostTag.objects.create(post=post, tag=tag)
 
         return post
+
+    def update(self, instance: Post, validated_data: Dict[str, Any]) -> Post:
+        old_tags = [
+            post_tag.id for post_tag in PostTag.objects.filter(post_id=instance.id)
+        ]
+        new_tags = validated_data.pop("tag_list", None)
+        if new_tags is not None:
+            delete_list, add_list = myIntListComparison(old_tags, new_tags)
+            PostTag.objects.filter(id__in=delete_list).delete()
+            for id in add_list:
+                PostTag.objects.create(post=instance, tag_id=id)
+
+        event_id = validated_data.pop("event_id", None)
+        if event_id is not None and instance.event_id != event_id:
+            instance.event = get_object_or_404(Event, id=event_id)
+
+        if "title" in validated_data:
+            instance.title = validated_data["title"]
+        if "content" in validated_data:
+            instance.content = validated_data["content"]
+
+        instance.save()
+        return instance
