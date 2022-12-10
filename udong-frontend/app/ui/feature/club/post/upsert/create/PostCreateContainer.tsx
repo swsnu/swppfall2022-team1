@@ -96,7 +96,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
                 }))
             }
         }
-    }, [clubId, contents, dispatch, postType, title])
+    }, [clubId, contents, dispatch, postType, title, scheduling])
 
     const handleCloseErrorModal = useCallback(() => {
         setIsErrorModalOpen(false)

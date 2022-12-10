@@ -57,7 +57,6 @@ export const ClubAPI = (() => {
 
     async function createClubPost(clubId: number, post: CreatePost): Promise<BoardPost> {
         const postDto = await createPostTransformer.toDto(post)
-        console.log(postDto)
         const response = await axiosConfig.post<BoardPostDto>(
             `/api/club/${clubId}/post/`,
             postDto,
