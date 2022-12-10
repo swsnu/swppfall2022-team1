@@ -192,7 +192,7 @@ class ClubViewSet(_GenericClubViewSet):
         serializer = self.get_serializer(data=request.data, context={"club": club})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=["GET", "POST"])
     def tag(self, request: Request, pk: Any) -> Response:
@@ -221,7 +221,7 @@ class ClubViewSet(_GenericClubViewSet):
         serializer = self.get_serializer(data=request.data, context={"club": club})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=["GET", "POST"])
     def post(self, request: Request, pk: Any) -> Response:
