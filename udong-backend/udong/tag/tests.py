@@ -80,3 +80,15 @@ class TagTestCase(MyTestCase):
             },
             ["image"],
         )
+
+    # DELETE /api/tag/:id/
+    def test_destroy_tag(self) -> None:
+        response = self.client.delete("/api/tag/99/")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.delete("/api/tag/1/")
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.delete("/api/tag/2/")
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(len(Tag.objects.all()), 2)
