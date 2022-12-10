@@ -12,7 +12,7 @@ import { userReducer } from './user/UserSlice'
 
 export type DefaultErrorType = 'error' // 그 외
 export type UserIsNotAdminErrorType = 'is_not_admin' // 403
-export type IncorrectFields = 'incorrect_fields'// 400
+export type IncorrectFieldsErrorType = 'incorrect_fields'// 400
 
 export const store = configureStore({
     reducer: {
