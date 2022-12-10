@@ -48,9 +48,9 @@ class PostTestCase(MyTestCase):
             type="S",
         )
 
-        enrollment1 = Enrollment.objects.create(post=post2, closed=False)
+        self.enrollment1 = Enrollment.objects.create(post=post2, closed=False)
 
-        Participation.objects.create(user=self.dummy_user, enrollment=enrollment1)
+        Participation.objects.create(user=self.dummy_user, enrollment=self.enrollment1)
 
         Scheduling.objects.create(
             post=post3,
@@ -285,3 +285,38 @@ class PostTestCase(MyTestCase):
         response = self.client.delete("/api/post/1/")
         self.assertEqual(response.status_code, 204)
         self.assertEqual(len(Post.objects.all()), 2)
+
+    # POST /api/enroll/:id/participate/
+    def test_enrollment_participate(self) -> None:
+        response = self.client.post("/api/enroll/99/participate/")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.post("/api/enroll/1/participate/")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.post("/api/enroll/2/participate/")
+        self.assertEqual(response.status_code, 400)
+
+        Participation.objects.all().delete()
+        response = self.client.post("/api/enroll/2/participate/")
+        self.assertEqual(response.status_code, 201)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 2,
+                "user": {
+                    "id": 1,
+                    "email": "alan@snu.ac.kr",
+                    "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                    "name": "Alan Turing",
+                },
+                "enrollment_id": 2,
+            },
+            ["image"],
+        )
+
+        Participation.objects.all().delete()
+        self.enrollment1.closed = True
+        self.enrollment1.save()
+        response = self.client.post("/api/enroll/2/participate/")
+        self.assertEqual(response.status_code, 400)
