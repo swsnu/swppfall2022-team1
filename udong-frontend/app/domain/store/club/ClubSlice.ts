@@ -121,6 +121,9 @@ const clubSlice = createSlice({
         resetClubRegisterErrror: (state) => {
             state.clubRegisterError = undefined
         },
+        resetClubEditError: (state) => {
+            state.clubEditError = undefined
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getMyClubs.fulfilled, (state, action) => {

@@ -48,6 +48,11 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
         }
     }, [club, id, dispatch])
 
+    const handleCloseErrorModal = useCallback(() => {
+        setIsErrorModalOpen(false)
+        dispatch(clubActions.resetClubEditError())
+    }, [dispatch])
+
     const renderLeaveClubButton = useCallback(() => {
         return <HStack onClick={() => {return}}>
             <UdongText
@@ -96,7 +101,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             <UdongErrorModal
                 message={getErrorMessage(error)}
                 isOpen={isErrorModalOpen}
-                setIsOpen={setIsErrorModalOpen}
+                setIsOpen={handleCloseErrorModal}
             />
         }
     </UdongFloatingContainer>
