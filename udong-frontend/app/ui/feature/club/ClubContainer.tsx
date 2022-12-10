@@ -29,12 +29,12 @@ export const ClubContainer = (props: ClubContainerProps) => {
     }, [clubId, dispatch])
 
     const handleCurrentTab = useCallback((selectedTab: ClubTabType) => {
-        router.replace(`/club/1/?tab=${selectedTab}`)
-    }, [router])
+        router.replace(`/club/${clubId}/?tab=${selectedTab}`)
+    }, [router, clubId])
 
     const getCurrentContainer = () => {
         if (tab === CLUB_TAB.BOARD) {
-            return <BoardContainer/>
+            return <BoardContainer clubId={clubId}/>
         } else if (tab === CLUB_TAB.EVENT) {
             return <EventContainer clubId={clubId}/>
         } else if (tab === CLUB_TAB.TAG) {

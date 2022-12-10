@@ -1,5 +1,5 @@
 export enum PostType {
-    ANNOUNCEMENT = 'A',
-    ENROLLMENT = 'E',
-    SCHEDULING = 'S',
+    ANNOUNCEMENT = 'announcement',
+    ENROLLMENT = 'enrollment',
+    SCHEDULING = 'scheduling',
 }
