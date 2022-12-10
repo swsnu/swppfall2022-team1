@@ -229,3 +229,26 @@ class PostTestCase(MyTestCase):
             ],
             ["image"],
         )
+
+    # GET /api/post/1/
+    def test_get_post_id(self) -> None:
+        response = self.client.get("/api/post/1/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 1,
+                "author": "Alan Turing",
+                "club": None,
+                "event": {"id": 1, "name": "Turing award"},
+                "title": "Turing award is coming!",
+                "content": "Turing award Turing award Turing award",
+                "type": "A",
+                "closed": None,
+                "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
+                "exclude_tag": [
+                    {"id": 2, "name": "winner", "is_default": False},
+                    {"id": 3, "name": "loser", "is_default": False},
+                ],
+            },
+        )
