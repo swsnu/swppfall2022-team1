@@ -30,7 +30,7 @@ export const BoardContainer = (props: BoardContainerProps) => {
     useEffect(() => {
         dispatch(postActions.getClubPosts(clubId))
         setTimeout(() => setLoading(false), 600)
-    }, [dispatch])
+    }, [dispatch, clubId])
 
     return <VStack>
         <HStack justifyContent={'end'}>
