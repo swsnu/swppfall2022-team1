@@ -7,6 +7,7 @@ import { PostCreateModal } from '../PostCreateModal'
 describe('<PostCreateModal/>', () => {
     it ('render post create modal', () => {
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
@@ -22,6 +23,7 @@ describe('<PostCreateModal/>', () => {
         } as unknown as NextRouter))
 
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
@@ -32,6 +34,7 @@ describe('<PostCreateModal/>', () => {
 
     it ('should handle on click close', () => {
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
@@ -42,6 +45,7 @@ describe('<PostCreateModal/>', () => {
 
     it ('should handle on click announcement', () => {
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
@@ -52,6 +56,7 @@ describe('<PostCreateModal/>', () => {
 
     it ('should handle on click enrollment', () => {
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
@@ -62,6 +67,7 @@ describe('<PostCreateModal/>', () => {
 
     it ('should handle on click scheduling', () => {
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
