@@ -42,13 +42,13 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
     }, [errors])
 
     const handleEditClub = useCallback((newName: string) => {
-        if (newName) {
+        if (newName && newName !== name) {
             dispatch(clubActions.editClub({
                 clubId: id,
                 club: { ...club, name: newName },
             }))
         }
-    }, [club, id, dispatch])
+    }, [club, id, name, dispatch])
 
     const handleCloseErrorModal = useCallback(() => {
         setIsErrorModalOpen(false)

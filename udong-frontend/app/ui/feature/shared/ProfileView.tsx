@@ -36,7 +36,7 @@ export const ProfileView = (props: ProfileViewProps) => {
         bottomItem,
     } = props
     const [isNameInputVisible, setIsNameInputVisible] = useState(false)
-    const [changedName, setChangedName] = useState('')
+    const [changedName, setChangedName] = useState(name)
 
     const nameRef = useRef<HTMLInputElement | undefined>(null)
 
