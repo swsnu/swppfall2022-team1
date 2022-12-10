@@ -105,9 +105,9 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
                 alignItems={'center'}
             >
                 <UdongCloseButton setIsOpen={setIsClosedModalOpen}/>
-                <Spacer height={50}/>
-                <UdongText style={'GeneralContent'}>이미 마감되었습니다.</UdongText>
-                <Spacer height={70}/>
+                <Spacer height={100}/>
+                <UdongText style={'GeneralTitle'}>이미 마감되었습니다.</UdongText>
+                <Spacer height={150}/>
             </VStack>
         </UdongModal>
     </VStack>
