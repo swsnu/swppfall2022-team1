@@ -12,7 +12,6 @@ import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { CellIdx } from '../../../shared/TimeTable'
 import { BestTimeView } from './BestTimeView'
-import { SchedulingCloseModal } from './SchedulingCloseModal'
 import { getAva, useData } from './SchedulingHooks'
 import { SchedulingStatusTableView } from './SchedulingStatusTableView'
 import { SchedulingUserListView } from './SchedulingUserListView'
@@ -25,7 +24,6 @@ export const SchedulingStatusContainer = () => {
 
     const [selected, setSelected] = useState<CellIdx|null>(null)
     const [hover, setHover] = useState<CellIdx|null>(null)
-    const [modalOpen, setModalOpen] = useState(false)
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
@@ -98,11 +96,6 @@ export const SchedulingStatusContainer = () => {
                     }
                 </VStack>
             </HStack>
-
-            <SchedulingCloseModal
-                isOpen={modalOpen}
-                setIsOpen={setModalOpen}
-            />
         </VStack>
     )
 }

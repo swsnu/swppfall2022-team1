@@ -7,3 +7,8 @@ export interface ClubEventDto {
     created_at: string
     updated_at: string
 }
+
+export interface ClubEventEditDto {
+    name?: string
+    new_time?: Array<Partial<TimeDto>>
+}

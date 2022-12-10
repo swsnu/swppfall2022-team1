@@ -160,9 +160,15 @@ class ClubViewSet(_GenericClubViewSet):
                 request.method if request.method else "unknown method"
             )
 
-    @swagger_auto_schema(responses={200: ClubEventSerializer(many=True)})
-    @action(detail=True, methods=["GET"])
+    @action(detail=True, methods=["GET", "POST"])
     def event(self, request: Request, pk: Any) -> Response:
+        if request.method == "GET":
+            return self._get_events(request, pk)
+        else:
+            return self._create_event(request, pk)
+
+    @swagger_auto_schema(responses={200: ClubEventSerializer(many=True)})
+    def _get_events(self, reqeust: Request, pk: Any) -> Response:
         club_event = (
             self.get_queryset()
             .prefetch_related("event_set__time_set")
@@ -171,11 +177,51 @@ class ClubViewSet(_GenericClubViewSet):
         )
         return Response(self.get_serializer(club_event, many=True).data)
 
-    @swagger_auto_schema(responses={200: ClubTagSerializer(many=True)})
-    @action(detail=True, methods=["GET"])
+    @swagger_auto_schema(responses={201: ClubEventSerializer()})
+    def _create_event(self, request: Request, pk: Any) -> Response:
+        club = self.get_object()
+
+        obj_permission = IsAdmin()
+        if not obj_permission.has_object_permission(request, self, club):
+            self.permission_denied(
+                request,
+                message=getattr(obj_permission, "message", None),
+                code=getattr(obj_permission, "code", None),
+            )
+
+        serializer = self.get_serializer(data=request.data, context={"club": club})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["GET", "POST"])
     def tag(self, request: Request, pk: Any) -> Response:
+        if request.method == "GET":
+            return self._get_tags(request, pk)
+        else:
+            return self._create_tag(request, pk)
+
+    @swagger_auto_schema(responses={200: ClubTagSerializer(many=True)})
+    def _get_tags(self, request: Request, pk: Any) -> Response:
         club_tag = self.get_object().tag_set
         return Response(self.get_serializer(club_tag, many=True).data)
+
+    @swagger_auto_schema(responses={201: ClubTagSerializer()})
+    def _create_tag(self, request: Request, pk: Any) -> Response:
+        club = self.get_object()
+
+        obj_permission = IsAdmin()
+        if not obj_permission.has_object_permission(request, self, club):
+            self.permission_denied(
+                request,
+                message=getattr(obj_permission, "message", None),
+                code=getattr(obj_permission, "code", None),
+            )
+
+        serializer = self.get_serializer(data=request.data, context={"club": club})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     @action(detail=True, methods=["GET", "POST"])
     def post(self, request: Request, pk: Any) -> Response:
@@ -221,11 +267,6 @@ class ClubViewSet(_GenericClubViewSet):
         club = self.get_object()
         self.check_object_permissions(request, club)
 
-        try:
-            event = Event.objects.get(id=request.data.get("event_id", -1))
-        except Event.DoesNotExist:
-            event = None
-
         serializer = self.get_serializer(
             data=request.data,
             context={
@@ -233,18 +274,10 @@ class ClubViewSet(_GenericClubViewSet):
                 "user": request.user,
                 "id": request.user.id,
                 "club": False,
-                "event": event,
             },
         )
         serializer.is_valid(raise_exception=True)
-        post = serializer.save()
-
-        if post.type == "E":  # type: ignore
-            Enrollment.objects.create(post=post, closed=False)  # type: ignore
-
-        tag_list = Tag.objects.filter(id__in=request.data.get("tag_list", []))
-        for tag in tag_list:
-            PostTag.objects.create(post=post, tag=tag)  # type: ignore
+        serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

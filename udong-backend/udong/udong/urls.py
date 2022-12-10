@@ -42,7 +42,9 @@ urlpatterns: List[Union[URLPattern, URLResolver]] = [
     path("api/", include("club.urls")),
     path("api/", include("post.urls")),
     path("api/", include("comment.urls")),
+    path("api/", include("event.urls")),
     path("api/", include("tag.urls")),
+    path("api/", include("image.urls")),
     path("ping/", ping),
 ]
 

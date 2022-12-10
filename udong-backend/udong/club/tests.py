@@ -141,13 +141,13 @@ class ClubTestCase(MyTestCase):
                     "user": {
                         "id": 1,
                         "email": "alan@snu.ac.kr",
-                        "image": "image",
                         "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
                         "name": "Alan Turing",
                     },
                     "auth": "Admin",
                 }
             ],
+            ["image"],
         )
 
     # GET /api/club/:id/event/
@@ -162,7 +162,7 @@ class ClubTestCase(MyTestCase):
                     "name": "Turing award",
                     "time": [
                         {
-                            "type": "Date",
+                            "type": "D",
                             "start_date": "2022-11-06",
                             "end_date": "2022-11-07",
                             "repeat_start": None,
@@ -172,7 +172,7 @@ class ClubTestCase(MyTestCase):
                             "end_time": 30,
                         },
                         {
-                            "type": "Weekday",
+                            "type": "W",
                             "start_date": None,
                             "end_date": None,
                             "repeat_start": "2022-11-06",

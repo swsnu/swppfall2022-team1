@@ -11,12 +11,14 @@ import { getClubPosts, postReducer, PostState } from '../post/PostSlice'
 const fakeListItemPost1: ListItemPost = { displayType: PostDisplayType.BOARD, id: 1, author: '',
     title: '', content: '', type: PostType.ANNOUNCEMENT }
 const fakeBoardPost1: BoardPost = { displayType: PostDisplayType.BOARD, id: 1, title: '', content: '', type: PostType.ANNOUNCEMENT,
-    eventName: { id: 1, name: '' }, closed: undefined, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '' }
+    eventName: { id: 1, name: '' }, closed: undefined, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '',
+    eventId: 1, author: '' }
 const fakeBoardPost2: BoardPost = { displayType: PostDisplayType.BOARD, id: 2, title: '', content: '', type: PostType.ENROLLMENT,
-    eventName: { id: 1, name: '' }, closed: true, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '' }
-const fakeBoardPostDto1 :BoardPostDto = { id: 1, title: '', content: '', type: PostType.ANNOUNCEMENT,
+    eventName: { id: 1, name: '' }, closed: true, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '',
+    eventId: 1, author: '' }
+const fakeBoardPostDto1 :BoardPostDto = { id: 1, title: '', author: '', content: '', type: PostType.ANNOUNCEMENT,
     event: { id: 1, name: '' }, created_at: '', updated_at: '' }
-const fakeBoardPostDto2 :BoardPostDto = { id: 2, title: '', content: '', type: PostType.ENROLLMENT, closed: true,
+const fakeBoardPostDto2 :BoardPostDto = { id: 2, title: '', author: '', content: '', type: PostType.ENROLLMENT, closed: true,
     event: { id: 1, name: '' }, created_at: '', updated_at: '' }
 const fakePostDto = {
     selectedPost: fakeBoardPostDto1,

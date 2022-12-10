@@ -5,9 +5,12 @@ import { NextRouter } from 'next/router'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 
+import { PostDisplayType } from '../../../../../../domain/model/ListItemPost'
+import { PostType } from '../../../../../../domain/model/PostType'
 import { SchedulingPostType } from '../../../../../../domain/model/SchedulingPostType'
 import { dummyUserMe } from '../../../../../../domain/model/User'
 import { clubReducer, ClubState } from '../../../../../../domain/store/club/ClubSlice'
+import { postReducer, PostState } from '../../../../../../domain/store/post/PostSlice'
 import { schedulingReducer, SchedulingState } from '../../../../../../domain/store/post/scheduling/SchedulingSlice'
 import { userReducer } from '../../../../../../domain/store/user/UserSlice'
 import { new2dArray } from '../../../../../../utility/functions'
@@ -44,12 +47,29 @@ const schedulingInitialState: SchedulingState = {
 
 const clubInitialState: ClubState = { myClubs: [], members: [] }
 
-const mockStore = configureStore({
-    reducer: { club: clubReducer, scheduling: schedulingReducer, user: userReducer },
+const postInitialState: PostState = {
+    selectedPost: {
+        displayType: PostDisplayType.BOARD,
+        id: 1,
+        title: 'title',
+        content: 'content',
+        type: PostType.ANNOUNCEMENT,
+        eventName: {
+            id: 1,
+            name: 'event',
+        },
+    },
+    feedPosts: [],
+    clubPosts: [],
+}
+
+export const mockStore = configureStore({
+    reducer: { club: clubReducer, scheduling: schedulingReducer, user: userReducer, post: postReducer },
     preloadedState: {
         scheduling: schedulingInitialState,
         club: clubInitialState,
-        user: { me: dummyUserMe },
+        user: { me: dummyUserMe, isAdmin: true },
+        post: postInitialState,
     },
 })
 
