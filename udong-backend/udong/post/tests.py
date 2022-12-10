@@ -320,3 +320,14 @@ class PostTestCase(MyTestCase):
         self.enrollment1.save()
         response = self.client.post("/api/enroll/2/participate/")
         self.assertEqual(response.status_code, 400)
+
+    # POST /api/enroll/:id/unparticipate/
+    def test_enrollment_unparticipate(self) -> None:
+        response = self.client.post("/api/enroll/1/unparticipate/")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.post("/api/enroll/2/unparticipate/")
+        self.assertEqual(response.status_code, 204)
+
+        response = self.client.post("/api/enroll/2/unparticipate/")
+        self.assertEqual(response.status_code, 400)
