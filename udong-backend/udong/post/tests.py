@@ -252,3 +252,30 @@ class PostTestCase(MyTestCase):
                 ],
             },
         )
+
+    # PUT /post/:id/
+    def test_put_post_id(self) -> None:
+        response = self.client.put(
+            "/api/post/1/",
+            json.dumps({"title": "NEW TITLE"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 1,
+                "author": "Alan Turing",
+                "club": None,
+                "event": {"id": 1, "name": "Turing award"},
+                "title": "NEW TITLE",
+                "content": "Turing award Turing award Turing award",
+                "type": "A",
+                "closed": None,
+                "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
+                "exclude_tag": [
+                    {"id": 2, "name": "winner", "is_default": False},
+                    {"id": 3, "name": "loser", "is_default": False},
+                ],
+            },
+        )
