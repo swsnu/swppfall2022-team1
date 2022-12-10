@@ -5,7 +5,7 @@ import { NextRouter } from 'next/router'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 
-import { PostDisplayType } from '../../../../../../domain/model/ListItemPost'
+import { PostDisplayType } from '../../../../../../domain/model/BoardPost'
 import { PostType } from '../../../../../../domain/model/PostType'
 import { SchedulingPostType } from '../../../../../../domain/model/SchedulingPostType'
 import { dummyUserMe } from '../../../../../../domain/model/User'
@@ -49,7 +49,7 @@ const clubInitialState: ClubState = { myClubs: [], members: [] }
 
 const postInitialState: PostState = {
     selectedPost: {
-        displayType: PostDisplayType.BOARD,
+        displayType: PostDisplayType.CLUB,
         id: 1,
         title: 'title',
         content: 'content',

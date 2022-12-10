@@ -3,13 +3,15 @@ import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 import React from 'react'
 
+import { Club } from '../../../../../domain/model/Club'
 import img from '../../../../icons/IcDong.png'
 import { ClubItem } from '../ClubItem'
 
-const dummyClub = {
+const dummyClub: Club = {
     id: 1,
     name: '단풍',
     code: '',
+    image: '',
 }
 
 describe('<ClubItem/>', () => {

@@ -14,7 +14,7 @@ export const EnrollmentAPI = (() => {
 
     async function closeEnrollment(postId: number): Promise<Enrollment> {
         const response = await axiosConfig.put<EnrollmentDto>(`/api/enroll/${postId}/close/`)
-        return enrollmentTransformer.toDto(response.data)
+        return enrollmentTransformer.fromDto(response.data)
     }
 
     return Object.freeze({

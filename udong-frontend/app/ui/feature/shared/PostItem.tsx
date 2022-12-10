@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 
-import { BoardPost, ListItemPost } from '../../../domain/model/ListItemPost'
+import { BoardPost } from '../../../domain/model/BoardPost'
 import { PostType } from '../../../domain/model/PostType'
 import { getPostTypeQueryParam } from '../../../utility/handleQueryParams'
 import { formatPostItemInfo } from '../../../utility/postItemFormatter'
@@ -13,7 +13,7 @@ import { ClickableTag } from './ClickableTag'
 import { UserListModal } from './UserListModal'
 
 interface PostItemProps {
-    post: ListItemPost | BoardPost
+    post: BoardPost
 }
 
 export const PostItem = (props: PostItemProps) => {

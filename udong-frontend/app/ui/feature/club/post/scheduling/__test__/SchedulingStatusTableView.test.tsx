@@ -25,8 +25,8 @@ describe('<SchedulingStatusTableView/>', () => {
                 confirmedTime: null,
                 availableTime: [],
                 weekdays: [false, false, true, true, false, false, false],
-                repeatStart: new Date('2022-12-9'),
-                repeatEnd: new Date('2022-12-25'),
+                repeatStart: new Date('2022-12-9').toLocaleDateString(),
+                repeatEnd: new Date('2022-12-25').toLocaleDateString(),
             }}
             selected={{ col: 0, row: 0 }}
             setSelected={mockSetSelected}

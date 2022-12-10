@@ -7,6 +7,7 @@ import { PostCreateModal } from '../PostCreateModal'
 describe('<PostCreateModal/>', () => {
     it ('render post create modal', () => {
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
@@ -22,16 +23,18 @@ describe('<PostCreateModal/>', () => {
         } as unknown as NextRouter))
 
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
         const text = screen.getByText('선택하기')
         fireEvent.click(text)
-        expect(mockPush).toHaveBeenCalledWith(`/club/1/post/create/?type=A`)
+        expect(mockPush).toHaveBeenCalledWith(`/club/1/post/create/?type=announcement`)
     })
 
     it ('should handle on click close', () => {
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
@@ -42,6 +45,7 @@ describe('<PostCreateModal/>', () => {
 
     it ('should handle on click announcement', () => {
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
@@ -52,6 +56,7 @@ describe('<PostCreateModal/>', () => {
 
     it ('should handle on click enrollment', () => {
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)
@@ -62,6 +67,7 @@ describe('<PostCreateModal/>', () => {
 
     it ('should handle on click scheduling', () => {
         render(<PostCreateModal
+            clubId={1}
             isOpen={true}
             setIsOpen={() => {return}}
         />)

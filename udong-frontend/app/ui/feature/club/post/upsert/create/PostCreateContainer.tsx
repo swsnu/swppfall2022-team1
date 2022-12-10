@@ -1,9 +1,16 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { CreateScheduling } from '../../../../../../domain/model/CreatePost'
 import { PostType } from '../../../../../../domain/model/PostType'
+import { AppDispatch } from '../../../../../../domain/store'
+import { postSelector } from '../../../../../../domain/store/post/PostSelector'
+import { postActions, PostCreateAPIErrorType } from '../../../../../../domain/store/post/PostSlice'
+import { convertQueryParamToString } from '../../../../../../utility/handleQueryParams'
 import { VStack } from '../../../../../components/Stack'
 import { UdongButton } from '../../../../../components/UdongButton'
+import { UdongErrorModal } from '../../../../../components/UdongErrorModal'
 import { UdongHeader } from '../../../../../components/UdongHeader'
 import { UdongColors } from '../../../../../theme/ColorPalette'
 import { PostAdditionalFieldsView } from '../PostAdditionalFieldsView'
@@ -26,11 +33,75 @@ const getSubtitle = (postType: PostType) => {
     }
 }
 
+const getErrorMessage = (error: PostCreateAPIErrorType): string => {
+    if (error === 'missing_required_field') {
+        return '모든 필드를 다 채워주세요.'
+    } else if (error === 'is_not_admin') {
+        return '관리자 권한이 필요한 동작입니다.'
+    } else {
+        return '오류가 발생했습니다.'
+    }
+}
+
 export const PostCreateContainer = (props: PostCreateContainerProps) => {
     const { postType } = props
+    const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
+    const { clubId: rawClubId } = router.query
+    const clubId = convertQueryParamToString(rawClubId)
+
+    const newPostId = useSelector(postSelector.createdPostId)
+    const error = useSelector(postSelector.createPostError)
+
     const [title, setTitle] = useState<string>('')
     const [contents, setContents] = useState<string>('')
+    const [scheduling, setScheduling] = useState<CreateScheduling | undefined>(undefined)
+    const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
+
+    useEffect(() => {
+        if (error) {
+            setIsErrorModalOpen(true)
+        }
+    }, [error])
+
+    useEffect(() => {
+        if (newPostId) {
+            dispatch(postActions.resetCreatePostError())
+            router.push(`/club/${clubId}/post/${newPostId}/?from=create`)
+        }
+    }, [newPostId, dispatch, router, clubId])
+
+    const handleCreatePost = useCallback(() => {
+        if (clubId) {
+            if (postType === PostType.SCHEDULING) {
+                dispatch(postActions.createPost({
+                    clubId: parseInt(clubId),
+                    post: {
+                        tagIdList: [],
+                        title,
+                        content: contents,
+                        type: postType,
+                        scheduling,
+                    },
+                }))
+            } else {
+                dispatch(postActions.createPost({
+                    clubId: parseInt(clubId),
+                    post: {
+                        tagIdList: [],
+                        title,
+                        content: contents,
+                        type: postType,
+                    },
+                }))
+            }
+        }
+    }, [clubId, contents, dispatch, postType, title, scheduling])
+
+    const handleCloseErrorModal = useCallback(() => {
+        setIsErrorModalOpen(false)
+        dispatch(postActions.resetCreatePostError())
+    }, [dispatch])
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
@@ -42,7 +113,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
                     style={'line'}
                     color={UdongColors.Primary}
                     height={40}
-                    onClick={() => {router.push('/club/1/post/1?type=scheduling')}}
+                    onClick={handleCreatePost}
                 >
                     저장하기
                 </UdongButton>
@@ -56,8 +127,17 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
             setContents={setContents}
         />
         <PostAdditionalFieldsView
+            setScheduling={setScheduling}
             showDateTimePicker={postType === PostType.SCHEDULING}
             isEdit={false}
         />
+
+        {error &&
+            <UdongErrorModal
+                message={getErrorMessage(error)}
+                isOpen={isErrorModalOpen}
+                setIsOpen={handleCloseErrorModal}
+            />
+        }
     </VStack>
 }

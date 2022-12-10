@@ -46,5 +46,6 @@ export const PostEditContainer = (props: PostEditContainerProps) => {
         <PostAdditionalFieldsView
             showDateTimePicker={postType === PostType.SCHEDULING}
             isEdit={true}
+            setScheduling={() => {return}}
         />
     </VStack>}

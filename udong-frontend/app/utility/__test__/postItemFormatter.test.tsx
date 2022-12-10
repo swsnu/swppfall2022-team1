@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react'
 
-import { PostDisplayType } from '../../domain/model/ListItemPost'
+import { PostDisplayType } from '../../domain/model/BoardPost'
 import { PostType } from '../../domain/model/PostType'
 import { formatPostItemInfo } from '../postItemFormatter'
 
 describe('postItemFormatter', () => {
     it ('should test postItemFormatter render', () => {
         const element = formatPostItemInfo({
-            displayType: PostDisplayType.BOARD,
+            displayType: PostDisplayType.CLUB,
             id: 1,
             author: '',
             title: '',
