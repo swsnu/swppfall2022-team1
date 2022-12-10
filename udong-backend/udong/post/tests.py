@@ -161,3 +161,71 @@ class PostTestCase(MyTestCase):
         response = self.client.put("/api/enroll/2/close/")
         self.assertEqual(response.status_code, 200)
         self.jsonEqual(response.content, {"post_id": 2, "closed": True})
+
+    # GET /api/post
+    def test_get_post(self) -> None:
+        response = self.client.get("/api/post/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            [
+                {
+                    "id": 1,
+                    "author": "Alan Turing",
+                    "club": {
+                        "id": 1,
+                        "name": "Udong",
+                        "code": "swppfall",
+                    },
+                    "event": {"id": 1, "name": "Turing award"},
+                    "title": "Turing award is coming!",
+                    "content": "Turing award Turing award Turing award",
+                    "type": "A",
+                    "closed": None,
+                    "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
+                    "exclude_tag": [
+                        {"id": 2, "name": "winner", "is_default": False},
+                        {"id": 3, "name": "loser", "is_default": False},
+                    ],
+                },
+                {
+                    "id": 2,
+                    "author": "Alan Turing",
+                    "club": {
+                        "id": 1,
+                        "name": "Udong",
+                        "code": "swppfall",
+                    },
+                    "event": {"id": 2, "name": "Nobel Prize"},
+                    "title": "Nobel prize is coming!",
+                    "content": "Nobel Prize Nobel Prize Nobel Prize",
+                    "type": "E",
+                    "closed": False,
+                    "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
+                    "exclude_tag": [
+                        {"id": 2, "name": "winner", "is_default": False},
+                        {"id": 3, "name": "loser", "is_default": False},
+                    ],
+                },
+                {
+                    "id": 3,
+                    "author": "Alan Turing",
+                    "club": {
+                        "id": 2,
+                        "name": "Ramen",
+                        "code": "random",
+                    },
+                    "event": None,
+                    "title": "When to Meet?",
+                    "content": "Really Boring",
+                    "type": "S",
+                    "closed": True,
+                    "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
+                    "exclude_tag": [
+                        {"id": 2, "name": "winner", "is_default": False},
+                        {"id": 3, "name": "loser", "is_default": False},
+                    ],
+                },
+            ],
+            ["image"],
+        )
