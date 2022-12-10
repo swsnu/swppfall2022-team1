@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -12,6 +13,7 @@ import { UdongErrorModal } from '../../../components/UdongErrorModal'
 import { UdongFloatingContainer } from '../../../components/UdongFloatingContainer'
 import { UdongText } from '../../../components/UdongText'
 import { UdongColors } from '../../../theme/ColorPalette'
+import { DeleteModal } from '../../shared/DeleteModal'
 import { ProfileView } from '../../shared/ProfileView'
 
 const getErrorMessage = (errors: ClubErrorType): string => {
@@ -26,15 +28,17 @@ const getErrorMessage = (errors: ClubErrorType): string => {
 
 interface ClubProfileViewProps {
     club: Club
-    onClickDelete: (showDeleteModal: boolean) => void
 }
 
 export const ClubProfileView = (props: ClubProfileViewProps) => {
-    const { club, onClickDelete } = props
+    const { club } = props
     const { name, code, id } = club
     const dispatch = useDispatch<AppDispatch>()
+    const router = useRouter()
+
     const errors = useSelector(clubSelector.errors)
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
     useEffect(() => {
         if (!isAllObjectFieldsUndefined(errors)) {
@@ -50,6 +54,13 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             }))
         }
     }, [club, id, name, dispatch])
+
+    const handleDeleteClub = useCallback(async () => {
+        const response = await dispatch(clubActions.deleteClub(id))
+        if (response.type === `${clubActions.deleteClub.typePrefix}/fulfilled`) {
+            router.push(`/`)
+        }
+    }, [dispatch, router, id])
 
     const handleCloseErrorModal = useCallback(() => {
         setIsErrorModalOpen(false)
@@ -68,7 +79,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
     }, [])
 
     const renderDeleteClubButton = useCallback(() => {
-        return <HStack onClick={() => onClickDelete(true)}>
+        return <HStack onClick={() => setIsDeleteModalOpen(true)}>
             <UdongText
                 style={'ListContentS'}
                 color={UdongColors.Warning}
@@ -76,7 +87,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
                삭제하기
             </UdongText>
         </HStack>
-    }, [onClickDelete])
+    }, [])
 
     return <UdongFloatingContainer
         width={'calc(50% - 50px)'}
@@ -107,5 +118,13 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
                 setIsOpen={handleCloseErrorModal}
             />
         }
+
+        <DeleteModal
+            deleteObjectText={'동아리'}
+            warningText={'경고 문구'}
+            isOpen={isDeleteModalOpen}
+            setIsOpen={setIsDeleteModalOpen}
+            onClickDelete={handleDeleteClub}
+        />
     </UdongFloatingContainer>
 }
