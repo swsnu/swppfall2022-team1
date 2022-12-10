@@ -106,7 +106,7 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     author = serializers.SerializerMethodField()
     club = serializers.SerializerMethodField()
     event = serializers.SerializerMethodField()
-    event_id = serializers.IntegerField(write_only=True, required=False)
+    event_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
     title = serializers.CharField(max_length=255)
     type = serializers.ChoiceField(choices=["A", "E", "S"])
     closed = serializers.SerializerMethodField()
