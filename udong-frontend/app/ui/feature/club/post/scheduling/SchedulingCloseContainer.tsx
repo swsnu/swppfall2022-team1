@@ -1,9 +1,12 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
 import { clubActions } from '../../../../../domain/store/club/ClubSlice'
+import { postSelector } from '../../../../../domain/store/post/PostSelector'
+import { postActions } from '../../../../../domain/store/post/PostSlice'
 import { schedulingActions } from '../../../../../domain/store/post/scheduling/SchedulingSlice'
 import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { new2dArray } from '../../../../../utility/functions'
@@ -30,8 +33,13 @@ export const SchedulingCloseContainer = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const dispatch = useDispatch<AppDispatch>()
 
+    const post = useSelector(postSelector.selectedPost)
+
     useEffect(() => {
-        if(postId) { dispatch(schedulingActions.getSchedulingStatus(postId)) }
+        if(postId) {
+            dispatch(postActions.getPost(postId))
+            dispatch(schedulingActions.getSchedulingStatus(postId))
+        }
     }, [dispatch, postId])
 
     useEffect(() => {
@@ -44,13 +52,15 @@ export const SchedulingCloseContainer = () => {
 
     const { schedulingStatus, allUsers, participatedUserIds, cnt, best } = useData()
     useEffect(() => {
-        if(schedulingStatus)
-        {setSelected(new2dArray(getDayCnt(schedulingStatus), schedulingStatus.endTime - schedulingStatus.startTime, false))}
+        if(schedulingStatus) {
+            setSelected(new2dArray(getDayCnt(schedulingStatus), schedulingStatus.endTime - schedulingStatus.startTime, false))
+        }
     }, [schedulingStatus])
-    if(!schedulingStatus) {return null}
 
-    const ava = getAva(schedulingStatus, hover)
-    const inc = selected ? getInc(schedulingStatus, selected) : []
+    const ava = useMemo(() => getAva(schedulingStatus, hover), [schedulingStatus, hover])
+    const inc = useMemo(() => getInc(schedulingStatus, selected), [schedulingStatus, selected])
+
+    if(!schedulingStatus || !post) {return null}
 
     return (
         <VStack
@@ -58,13 +68,13 @@ export const SchedulingCloseContainer = () => {
             gap={50}
         >
             <UdongHeader
-                title={'MT 수요조사입니다'}
+                title={post.title}
                 onGoBack={() => router.back()}
                 rightButtons={<UdongButton
                     style={'line'}
                     onClick={() => setModalOpen(true)}
                 >마감하기</UdongButton>}
-                subtitle={'일정 수합 중'}
+                subtitle={'일정 수합글'}
             />
             <HStack
                 gap={50}
@@ -108,6 +118,8 @@ export const SchedulingCloseContainer = () => {
             <SchedulingCloseModal
                 isOpen={modalOpen}
                 setIsOpen={setModalOpen}
+                selected={selected ?? new2dArray(getDayCnt(schedulingStatus), schedulingStatus.endTime - schedulingStatus.startTime, false)}
+                inc={inc}
             />
         </VStack>
     )

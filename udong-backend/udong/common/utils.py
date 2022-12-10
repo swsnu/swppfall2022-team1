@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from user.models import User
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import json
 
 
@@ -13,17 +13,17 @@ class MyJson:
 
     # We don't have to check created_at & updated_at
     @staticmethod
-    def remove_auto_generated_field(json: JsonType) -> None:
+    def remove_field(json: JsonType, exclude_field: list[str] = []) -> None:
         if isinstance(json, dict):
-            for key in ("created_at", "updated_at"):
+            for key in exclude_field:
                 if key in json:
                     del json[key]
             for value in json.values():
-                MyJson.remove_auto_generated_field(value)
+                MyJson.remove_field(value, exclude_field)
 
         elif isinstance(json, list):
             for dictionary in json:
-                MyJson.remove_auto_generated_field(dictionary)
+                MyJson.remove_field(dictionary, exclude_field)
 
     @staticmethod
     def compare(json1: JsonType, json2: JsonType) -> bool:
@@ -65,20 +65,46 @@ class MyTestCase(TestCase):
     # example:
     # response = client.get(...)
     # jsonEqual(response.content, {"id": 1})
-    def jsonEqual(self, j1: bytes, j2: JsonType) -> None:
+    def jsonEqual(self, j1: bytes, j2: JsonType, exclude_field: list[str] = []) -> None:
         json_j1 = MyJson(json.loads(j1))
         json_j2 = MyJson(json.loads(json.dumps(j2)))
 
-        MyJson.remove_auto_generated_field(json_j1.json)
+        exclude_field.extend(["created_at", "updated_at"])
+        MyJson.remove_field(json_j1.json, exclude_field)
         self.assertEqual(json_j1, json_j2)
 
     # Add Dummy User
     def setUp(self) -> None:
         self.dummy_user = User.objects.create_user(
             name="Alan Turing",
-            image="image",
             email="alan@snu.ac.kr",
             time_table="001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
         )
         self.client = Client()
         self.client.force_login(self.dummy_user)
+
+
+def myIntListComparison(
+    old_list: list[int], new_list: list[int]
+) -> Tuple[list[int], list[int]]:
+    old_pos: int = 0
+    new_pos: int = 0
+    delete_list = []
+    add_list = []
+    while old_pos < len(old_list) and new_pos < len(new_list):
+        if old_list[old_pos] < new_list[new_pos]:
+            delete_list.append(old_list[old_pos])
+            old_pos += 1
+        elif old_list[old_pos] > new_list[new_pos]:
+            add_list.append(new_list[new_pos])
+            new_pos += 1
+        else:
+            old_pos += 1
+            new_pos += 1
+    while old_pos < len(old_list):
+        delete_list.append(old_list[old_pos])
+        old_pos += 1
+    while new_pos < len(new_list):
+        add_list.append(new_list[new_pos])
+        new_pos += 1
+    return (delete_list, add_list)

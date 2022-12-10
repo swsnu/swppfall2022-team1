@@ -25,8 +25,8 @@ const fromDto = (dto: SchedulingDto): DateSchedulingPost | WeekdaySchedulingPost
         return {
             ...common,
             weekdays: (dto.weekdays ?? '').split('').map(x => x === '1'),
-            repeatStart: dto.repeat_start ?? new Date(),
-            repeatEnd: dto.repeat_end ?? new Date(),
+            repeatStart: dto.repeat_start ?? '',
+            repeatEnd: dto.repeat_end ?? '',
         }
     }
 }

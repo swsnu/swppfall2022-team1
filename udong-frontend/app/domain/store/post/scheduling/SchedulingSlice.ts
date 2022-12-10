@@ -25,7 +25,9 @@ export const getSchedulingStatus = createAsyncThunk(
 
 export const closeScheduling = createAsyncThunk(
     'scheduling/closeScheduling',
-    async () => { return },
+    async ({ postId, confirmedTime }: { postId: string, confirmedTime: boolean[][] }) => {
+        return SchedulingAPI.closeScheduling(postId, confirmedTime)
+    },
 )
 
 const schedulingSlice = createSlice({

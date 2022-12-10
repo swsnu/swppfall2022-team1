@@ -7,8 +7,8 @@ export interface SchedulingDto {
     end_time: number
     dates: Array<string> | null
     weekdays: string | null
-    repeat_start: Date | null
-    repeat_end: Date | null
+    repeat_start: string | null
+    repeat_end: string | null
     closed: boolean
     confirmed_time: string | null
     available_times: Array<AvailableTimeDto>

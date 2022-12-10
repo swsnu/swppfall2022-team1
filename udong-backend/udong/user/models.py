@@ -3,7 +3,8 @@ from django.contrib.auth.hashers import get_hasher
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, BaseUserManager
 from club.models import Club
-from typing import Any, List, Dict
+from common.random import Random
+from typing import Any, List
 
 # Create your models here.
 
@@ -25,7 +26,12 @@ class UserManager(BaseUserManager["User"]):
 
         hasher = get_hasher("default")
         encoded_password = hasher.encode(password, salt=hasher.salt())
-        user = self.model(email=email, password=encoded_password, **extra_fields)
+        user = self.model(
+            email=email,
+            password=encoded_password,
+            image=Random.choice_image(),
+            **extra_fields
+        )
         user.save()
         return user
 
