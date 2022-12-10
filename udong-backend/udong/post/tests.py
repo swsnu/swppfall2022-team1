@@ -388,3 +388,27 @@ class PostTestCase(MyTestCase):
             },
             ["image"],
         )
+
+    #GET /api/schedule/:id/status
+    def test_scheduling_status(self) -> None:
+        response = self.client.get("/api/schedule/1/status/")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.get("/api/schedule/3/status/")
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "post_id": 3,
+                "type": "D",
+                "start_time": 25,
+                "end_time": 40,
+                "dates": ["2022-11-07"],
+                "weekdays": None,
+                "repeat_start": None,
+                "repeat_end": None,
+                "closed": True,
+                "confirmed_time": None,
+                "available_times": [],
+            },
+        )
