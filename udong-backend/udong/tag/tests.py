@@ -81,6 +81,30 @@ class TagTestCase(MyTestCase):
             ["image"],
         )
 
+        response = self.client.put(
+            "/api/tag/2/",
+            json.dumps({"name": "NEW NAME"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 2,
+                "name": "NEW NAME",
+                "is_default": False,
+                "users": [
+                    {
+                        "id": 1,
+                        "email": "alan@snu.ac.kr",
+                        "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                        "name": "Alan Turing",
+                    }
+                ],
+            },
+            ["image"],
+        )
+
     # DELETE /api/tag/:id/
     def test_destroy_tag(self) -> None:
         response = self.client.delete("/api/tag/99/")
