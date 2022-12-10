@@ -253,7 +253,7 @@ class PostTestCase(MyTestCase):
             },
         )
 
-    # PUT /post/:id/
+    # PUT /api/post/:id/
     def test_put_post_id(self) -> None:
         response = self.client.put(
             "/api/post/1/",
@@ -279,3 +279,9 @@ class PostTestCase(MyTestCase):
                 ],
             },
         )
+
+    # DELETE /api/post/:id/
+    def test_delete_post_id(self) -> None:
+        response = self.client.delete("/api/post/1/")
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(len(Post.objects.all()), 2)
