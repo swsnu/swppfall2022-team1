@@ -1,10 +1,10 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Club } from '../../../../domain/model/Club'
 import { AppDispatch } from '../../../../domain/store'
 import { clubSelector } from '../../../../domain/store/club/ClubSelector'
-import { clubActions } from '../../../../domain/store/club/ClubSlice'
+import { clubActions, ClubEditAPIErrorType } from '../../../../domain/store/club/ClubSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack } from '../../../components/Stack'
 import { UdongErrorModal } from '../../../components/UdongErrorModal'
@@ -12,6 +12,14 @@ import { UdongFloatingContainer } from '../../../components/UdongFloatingContain
 import { UdongText } from '../../../components/UdongText'
 import { UdongColors } from '../../../theme/ColorPalette'
 import { ProfileView } from '../../shared/ProfileView'
+
+const getErrorMessage = (error: ClubEditAPIErrorType): string => {
+    if (error === 'is_not_admin') {
+        return '관리자 권한이 필요합니다.'
+    } else {
+        return '오류가 발생했습니다.'
+    }
+}
 
 interface ClubProfileViewProps {
     club: Club
@@ -25,6 +33,12 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
     const error = useSelector(clubSelector.clubEditError)
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
 
+    useEffect(() => {
+        if (error) {
+            setIsErrorModalOpen(true)
+        }
+    }, [error])
+
     const handleEditClub = useCallback((newName: string) => {
         if (newName) {
             dispatch(clubActions.editClub({
@@ -33,10 +47,6 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             }))
         }
     }, [club, id, dispatch])
-
-    // const handleCloseErrorModal = useCallback(() => {
-    //     if
-    // } [])
 
     const renderLeaveClubButton = useCallback(() => {
         return <HStack onClick={() => {return}}>
@@ -84,7 +94,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
 
         {error &&
             <UdongErrorModal
-                message={'관리자 권한이 필요한 동작입니다.'}
+                message={getErrorMessage(error)}
                 isOpen={isErrorModalOpen}
                 setIsOpen={setIsErrorModalOpen}
             />
