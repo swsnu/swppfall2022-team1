@@ -12,16 +12,20 @@ import { getClubPosts, postReducer, PostState } from '../post/PostSlice'
 const fakeListItemPost1: BoardPost = { displayType: PostDisplayType.CLUB, id: 1, author: '',
     title: '', content: '', type: PostType.ANNOUNCEMENT }
 const fakeBoardPost1: BoardPost = { displayType: PostDisplayType.CLUB, id: 1, title: '', content: '', type: PostType.ANNOUNCEMENT,
-    eventName: { id: 1, name: '' }, closed: undefined, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '' }
+    eventName: { id: 1, name: '' }, closed: undefined, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '',
+    eventId: 1 }
 const fakeBoardPost2: BoardPost = { displayType: PostDisplayType.CLUB, id: 2, title: '', content: '', type: PostType.ENROLLMENT,
-    eventName: { id: 1, name: '' }, closed: true, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '' }
+    eventName: { id: 1, name: '' }, closed: true, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '',
+    eventId: 1 }
 const fakeBoardPostDto1 :BoardPostDto = { id: 1, title: '', content: '', type: PostTypeDto.ANNOUNCEMENT,
     event: { id: 1, name: '' }, created_at: '', updated_at: '' }
 const fakeBoardPostDto2 :BoardPostDto = { id: 2, title: '', content: '', type: PostTypeDto.ENROLLMENT, closed: true,
     event: { id: 1, name: '' }, created_at: '', updated_at: '' }
-const fakePostDto = {
+
+const fakePostState = {
     selectedPost: fakeBoardPostDto1,
-    boardPosts: [fakeBoardPostDto1, fakeBoardPostDto2],
+    feedPosts: [],
+    clubPosts: [fakeBoardPostDto1, fakeBoardPostDto2],
 }
 const fakePost: PostState = {
     selectedPost: fakeListItemPost1,
@@ -50,7 +54,7 @@ describe('post reducer', () => {
         })
     })
     it('should handle getClubPosts', async () => {
-        axiosConfig.get = jest.fn().mockResolvedValue({ data: fakePostDto.boardPosts } )
+        axiosConfig.get = jest.fn().mockResolvedValue({ data: fakePostState.clubPosts } )
         await store.dispatch(getClubPosts(1))
         expect(store.getState().post.clubPosts).toEqual(fakePost.clubPosts)
     })
