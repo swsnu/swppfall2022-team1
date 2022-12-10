@@ -389,7 +389,7 @@ class PostTestCase(MyTestCase):
             ["image"],
         )
 
-    #GET /api/schedule/:id/status
+    # GET /api/schedule/:id/status
     def test_scheduling_status(self) -> None:
         response = self.client.get("/api/schedule/1/status/")
         self.assertEqual(response.status_code, 404)
@@ -409,6 +409,42 @@ class PostTestCase(MyTestCase):
                 "repeat_end": None,
                 "closed": True,
                 "confirmed_time": None,
+                "available_times": [],
+            },
+        )
+
+    # PUT /api/schedule/:id/close/
+    def test_schedule_close(self) -> None:
+        response = self.client.put("/api/schedule/1/close/")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.put("/api/schedule/3/close/")
+        self.assertEqual(response.status_code, 400)
+
+        self.scheduling1.closed = False
+        self.scheduling1.save()
+        response = self.client.put("/api/schedule/3/close/")
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.put(
+            "/api/schedule/3/close/",
+            json.dumps({"confirmed_time": "110000000000000"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "post_id": 3,
+                "type": "D",
+                "start_time": 25,
+                "end_time": 40,
+                "dates": ["2022-11-07"],
+                "weekdays": None,
+                "repeat_start": None,
+                "repeat_end": None,
+                "closed": True,
+                "confirmed_time": "110000000000000",
                 "available_times": [],
             },
         )
