@@ -13,6 +13,7 @@ const fromDto = (dto: BoardPostDto, displayType: PostDisplayType): BoardPost => 
         author: dto.author,
         club: dto.club,
         eventName: eventNameTransformer.fromDto(dto.event),
+        eventId: dto.event?.id,
         title: dto.title,
         content: dto.content,
         type: postTypeTransformer.fromDto(dto.type),

@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
+import { EventAPI } from '../../../infra/api/EventAPI'
 import { ClubEvent } from '../../model/ClubEvent'
+import { Time } from '../../model/Time'
 
 export interface EventState {
     selectedEvent?: ClubEvent
@@ -31,7 +33,9 @@ export const createEvent = createAsyncThunk(
 
 export const editEvent = createAsyncThunk(
     'event/editEvent',
-    async () => { return },
+    async ({ eventId, name, time }: { eventId: number, name: string | null, time: Time[] | null }) => {
+        return EventAPI.editEvent(eventId, name, time)
+    },
 )
 
 export const deleteEvent = createAsyncThunk(
@@ -52,6 +56,7 @@ const eventSlice = createSlice({
 
 export const eventActions = {
     ...eventSlice.actions,
+    editEvent,
     getEvents,
 }
 export const eventReducer = eventSlice.reducer

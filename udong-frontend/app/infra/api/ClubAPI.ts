@@ -75,7 +75,10 @@ export const ClubAPI = (() => {
         const response = await axiosConfig.get<Array<ClubTagDto>>(`/api/club/${clubId}/tag/`)
         return response.data.map(clubTagTransformer.fromDto)
     }
-    function createClubTag() { return }
+
+    function createClubTag(clubId: number, tagName: string, userIds: number[]): Promise<void> {
+        return axiosConfig.post(`/api/club/${clubId}/tag/`, { name: tagName, users: userIds })
+    }
 
     return Object.freeze({
         getClubs,

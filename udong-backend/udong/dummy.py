@@ -5,6 +5,7 @@ from event.models import Event
 from timedata.models import Time
 from tag.models import Tag, UserTag
 from post.models import Post, PostTag, Enrollment, Scheduling
+from comment.models import Comment
 from datetime import date
 
 # Refresh DB
@@ -101,6 +102,18 @@ scheduling3 = Scheduling.objects.create(
     closed=True,
 )
 
+# Create dummy comment
+comment1 = Comment.objects.create(
+    user=user1,
+    post=post1,
+    content="Comment!",
+)
+
+comment2 = Comment.objects.create(
+    user=user2,
+    post=post1,
+    content="Comment!",
+)
 # Add tag to post
 PostTag.objects.create(post=post1, tag=tag1)
 PostTag.objects.create(post=post1, tag=tag2)

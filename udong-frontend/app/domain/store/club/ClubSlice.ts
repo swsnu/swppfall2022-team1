@@ -91,7 +91,9 @@ export const assignClubMemberRole = createAsyncThunk(
 
 export const createClubTag = createAsyncThunk(
     'club/createTag',
-    async () => { return },
+    async ({ clubId, tagName, userIds }: { clubId: number, tagName: string, userIds: number[] }) => {
+        return ClubAPI.createClubTag(clubId, tagName, userIds)
+    },
 )
 
 const clubSlice = createSlice({

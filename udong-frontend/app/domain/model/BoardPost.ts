@@ -12,6 +12,7 @@ export interface BoardPost {
     author?: string
     club?: Club
     eventName?: EventName
+    eventId?: number
     clubName?: string
     title: string
     content: string
