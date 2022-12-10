@@ -4,9 +4,18 @@ import { act } from 'react-dom/test-utils'
 import { PostDaySchedule } from '../PostDaySchedule'
 
 describe('<PostDaySchedule />', () => {
+    const postDaySchedule: JSX.Element = <PostDaySchedule
+        isEdit={false}
+        time={{ start: '', end: '' }}
+        setTime={() => {return}}
+        days={[]}
+        setDays={() => {return}}
+        date={{ start: '', end: '' }}
+        setDate={() =>{return}}
+    />
     it('should render', async () => {
         await act(async () => {
-            render(<PostDaySchedule isEdit={true} />)
+            render(postDaySchedule)
         })
         await waitFor(async () => {
             expect(screen.getByText('요일')).toBeInTheDocument()
@@ -15,7 +24,7 @@ describe('<PostDaySchedule />', () => {
 
     it('should clicked', async () => {
         await act(async () => {
-            render(<PostDaySchedule isEdit={false} />)
+            render(postDaySchedule)
         })
         await waitFor(async () => {
             const button = screen.getByText('일')

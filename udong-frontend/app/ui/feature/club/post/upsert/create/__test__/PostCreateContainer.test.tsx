@@ -69,6 +69,5 @@ describe('<PostCreateContainer/>', () => {
         )
         const saveButton = screen.getByRole('button')
         fireEvent.click(saveButton)
-        expect(mockPush).toHaveBeenCalledWith('/club/1/post/1?type=scheduling')
     })
 })

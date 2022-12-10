@@ -5,7 +5,10 @@ import { PostAdditionalFieldsView } from '../PostAdditionalFieldsView'
 
 describe('<PostAdditionalFieldsView />', () => {
     it('should render', () => {
-        render(<PostAdditionalFieldsView isEdit={true} />)
+        render(<PostAdditionalFieldsView
+            isEdit={true}
+            setScheduling={() => { return }}
+        />)
         expect(screen.getByText('태그')).toBeInTheDocument()
     })
 
@@ -14,6 +17,7 @@ describe('<PostAdditionalFieldsView />', () => {
             render(<PostAdditionalFieldsView
                 isEdit={false}
                 showDateTimePicker={true}
+                setScheduling={() => { return }}
             />)
         })
         await waitFor(async () => {
