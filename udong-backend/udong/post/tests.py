@@ -52,7 +52,7 @@ class PostTestCase(MyTestCase):
 
         Participation.objects.create(user=self.dummy_user, enrollment=self.enrollment1)
 
-        Scheduling.objects.create(
+        self.scheduling1 = Scheduling.objects.create(
             post=post3,
             type="D",
             dates=["2022-11-07"],
@@ -331,3 +331,60 @@ class PostTestCase(MyTestCase):
 
         response = self.client.post("/api/enroll/2/unparticipate/")
         self.assertEqual(response.status_code, 400)
+
+    # POST /api/schedule/:id/participate/
+    def test_scheduling_participate(self) -> None:
+        response = self.client.post("/api/schedule/99/participate/")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.post("/api/schedule/1/participate/")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.post("/api/schedule/3/participate/")
+        self.assertEqual(response.status_code, 400)
+
+        self.scheduling1.closed = False
+        self.scheduling1.save()
+        response = self.client.post(
+            "/api/schedule/3/participate/",
+            json.dumps({"time": "000000001001000"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 1,
+                "user": {
+                    "id": 1,
+                    "email": "alan@snu.ac.kr",
+                    "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                    "name": "Alan Turing",
+                },
+                "scheduling_id": 3,
+                "time": "000000001001000",
+            },
+            ["image"],
+        )
+
+        response = self.client.post(
+            "/api/schedule/3/participate/",
+            json.dumps({"time": "000000000000011"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 1,
+                "user": {
+                    "id": 1,
+                    "email": "alan@snu.ac.kr",
+                    "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                    "name": "Alan Turing",
+                },
+                "scheduling_id": 3,
+                "time": "000000000000011",
+            },
+            ["image"],
+        )
