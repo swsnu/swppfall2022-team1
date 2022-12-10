@@ -1,3 +1,4 @@
+import json
 from common.utils import MyTestCase
 from club.models import Club
 from user.models import UserClub
@@ -32,6 +33,42 @@ class TagTestCase(MyTestCase):
                 "id": 1,
                 "name": "genius",
                 "is_default": True,
+                "users": [
+                    {
+                        "id": 1,
+                        "email": "alan@snu.ac.kr",
+                        "time_table": "001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011001101100110110011011",
+                        "name": "Alan Turing",
+                    }
+                ],
+            },
+            ["image"],
+        )
+
+    # PUT /api/tag/:id/
+    def test_update_tag(self) -> None:
+        response = self.client.put("/api/tag/99/")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.put(
+            "/api/tag/1/",
+            json.dumps({"new_users": [1]}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.put(
+            "/api/tag/2/",
+            json.dumps({"new_users": [1]}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.jsonEqual(
+            response.content,
+            {
+                "id": 2,
+                "name": "winner",
+                "is_default": False,
                 "users": [
                     {
                         "id": 1,
