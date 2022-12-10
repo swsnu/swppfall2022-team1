@@ -23,18 +23,21 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
     const dispatch = useDispatch<AppDispatch>()
 
     const users = useSelector(enrollmentSelector.selectedEnrollmentUsers)
+    const hasSuccessfullyClosed = useSelector(enrollmentSelector.hasSuccessfullyClosed)
+
     const [showEnrolled, setShowEnrolled] = useState(false)
     const [isClosedModalOpen, setIsClosedModalOpen] = useState(false)
 
     useEffect(() => {
-        dispatch(enrollmentActions.getEnrollmentStatus(postId))
+        dispatch(enrollmentActions.resetSelectedEnrollment())
+        dispatch(enrollmentActions.getEnrollmentUsers(postId))
     }, [dispatch, postId])
 
     const handleEnroll = useCallback(() => {
-        if (!isOpen) {
+        if (!isOpen || hasSuccessfullyClosed) {
             setIsClosedModalOpen(true)
         }
-    }, [isOpen])
+    }, [isOpen, hasSuccessfullyClosed])
 
     const handleCloseEnrollment = useCallback(() => {
         dispatch(enrollmentActions.closeEnrollment(postId))
@@ -64,7 +67,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
 
                 <UdongButton
                     style={'fill'}
-                    color={isOpen ? UdongColors.Primary : UdongColors.GrayNormal}
+                    color={isOpen && !hasSuccessfullyClosed ? UdongColors.Primary : UdongColors.GrayNormal}
                     onClick={handleEnroll}
                 >
                     지원하기
@@ -76,7 +79,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
                 style={{ marginRight: 'auto' }}
                 justifyContent={'end'}
             >
-                {isOpen &&
+                {isOpen && !hasSuccessfullyClosed &&
                     <UdongButton
                         style={'line'}
                         onClick={handleCloseEnrollment}

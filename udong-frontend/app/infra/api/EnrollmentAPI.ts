@@ -7,7 +7,7 @@ import { enrollmentTransformer } from '../transformer/EnrollmentTransformer'
 import { userTransformer } from '../transformer/UserTransformer'
 
 export const EnrollmentAPI = (() => {
-    async function getEnrollmentStatus(postId: string): Promise<Array<User>> {
+    async function getEnrollmentUsers(postId: string): Promise<Array<User>> {
         const response = await axiosConfig.get<Array<UserDto>>(`/api/enroll/${postId}/status/`)
         return response.data.map(userTransformer.fromDto)
     }
@@ -18,7 +18,7 @@ export const EnrollmentAPI = (() => {
     }
 
     return Object.freeze({
-        getEnrollmentStatus,
+        getEnrollmentUsers,
         closeEnrollment,
     })
 })()

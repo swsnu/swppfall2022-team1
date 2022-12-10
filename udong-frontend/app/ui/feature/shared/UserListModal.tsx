@@ -27,8 +27,6 @@ export const UserListModal = (props: UserListModalProps) => {
     const userMe = useSelector(userSelector.userMe)
     const searchRef = useRef<HTMLInputElement | undefined>(null)
 
-    console.log(users)
-
     useEffect(() => {
         dispatch(userActions.getMyProfile)
     }, [dispatch])
