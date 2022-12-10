@@ -7,6 +7,7 @@ import { postActions } from '../../../../domain/store/post/PostSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
+import { UdongEmtpyContainer } from '../../../components/UdongEmtpyContainer'
 import { UdongLoader } from '../../../components/UdongLoader'
 import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { PostItem } from '../../shared/PostItem'
@@ -46,12 +47,18 @@ export const BoardContainer = () => {
 
         {loading ? <UdongLoader height={400}/> :
             <VStack>
-                {boardPosts.map((post, index) => {
-                    return <PostItem
-                        post={post}
-                        key={post.id + ' ' + index}
-                    />
-                })}
+                {boardPosts.length === 0 ?
+                    <UdongEmtpyContainer emptyObject={'게시글'}/>
+                    :
+                    <>
+                        {boardPosts.map((post, index) => {
+                            return <PostItem
+                                post={post}
+                                key={post.id + ' ' + index}
+                            />
+                        })}
+                    </>
+                }
 
                 <PostCreateModal
                     isOpen={showPostCreateModal}
