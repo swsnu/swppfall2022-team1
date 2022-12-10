@@ -471,6 +471,7 @@ class ClubTestCase(MyTestCase):
             "/api/club/1/post/",
             json.dumps(
                 {
+                    "event_id": 1,
                     "title": "string",
                     "content": "string",
                     "type": "S",
@@ -500,7 +501,7 @@ class ClubTestCase(MyTestCase):
                 "id": 5,
                 "author": "Alan Turing",
                 "club": None,
-                "event": None,
+                "event": {"id": 1, "name": "Turing award"},
                 "title": "string",
                 "content": "string",
                 "type": "S",
