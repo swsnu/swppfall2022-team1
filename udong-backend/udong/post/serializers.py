@@ -222,15 +222,14 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             post_tag.id for post_tag in PostTag.objects.filter(post_id=instance.id)
         ]
         new_tags = validated_data.pop("tag_list", None)
-        if not isinstance(new_tags, list):
-            raise Exception()
-        delete_list, add_list = myIntListComparison(old_tags, new_tags)
-        PostTag.objects.filter(id__in=delete_list).delete()
-        for id in add_list:
-            PostTag.objects.create(post=instance, tag_id=id)
+        if new_tags is not None:
+            delete_list, add_list = myIntListComparison(old_tags, new_tags)
+            PostTag.objects.filter(id__in=delete_list).delete()
+            for id in add_list:
+                PostTag.objects.create(post=instance, tag_id=id)
 
         event_id = validated_data.pop("event_id", None)
-        if instance.event_id != event_id:
+        if event_id is not None and instance.event_id != event_id:
             instance.event = get_object_or_404(Event, id=event_id)
 
         if "title" in validated_data:

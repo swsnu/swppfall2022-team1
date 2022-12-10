@@ -57,7 +57,9 @@ export const registerClub = createAsyncThunk<Club | undefined, string, { rejectV
 
 export const createClub = createAsyncThunk(
     'club/createClub',
-    async () => { return },
+    async (name: string) => {
+        return await ClubAPI.createClub(name)
+    },
 )
 
 export const editClub =
@@ -147,6 +149,10 @@ const clubSlice = createSlice({
             state.selectedClub = undefined
             state.clubEditError = action.payload
         })
+        builder.addCase(createClub.fulfilled, (state, action) => {
+            state.selectedClub = action.payload
+            state.myClubs = state.myClubs.concat(action.payload)
+        })
     },
 })
 
@@ -156,6 +162,7 @@ export const clubActions = {
     getClub,
     getClubMembers,
     registerClub,
+    createClub,
     createClubTag,
     editClub,
 }
