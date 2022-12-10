@@ -9,7 +9,7 @@ import { DefaultErrorType, IncorrectFieldsErrorType, UserIsNotAdminErrorType } f
 export type ClubRegisterAPIErrorType = 'already_registered' | 'invalid_code' | DefaultErrorType
 export type ClubEditAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType | IncorrectFieldsErrorType
 export type ClubDeleteAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType
-interface ClubErrorType {
+export interface ClubErrorType {
     registerError?: ClubRegisterAPIErrorType
     editError?: ClubEditAPIErrorType
     deleteError?: ClubDeleteAPIErrorType

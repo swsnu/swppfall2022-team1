@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Club } from '../../../../domain/model/Club'
 import { AppDispatch } from '../../../../domain/store'
 import { clubSelector } from '../../../../domain/store/club/ClubSelector'
-import { clubActions, ClubEditAPIErrorType } from '../../../../domain/store/club/ClubSlice'
+import { clubActions, ClubErrorType } from '../../../../domain/store/club/ClubSlice'
+import { isAllObjectFieldsUndefined } from '../../../../utility/helperTypes'
 import { Spacer } from '../../../components/Spacer'
 import { HStack } from '../../../components/Stack'
 import { UdongErrorModal } from '../../../components/UdongErrorModal'
@@ -13,10 +14,10 @@ import { UdongText } from '../../../components/UdongText'
 import { UdongColors } from '../../../theme/ColorPalette'
 import { ProfileView } from '../../shared/ProfileView'
 
-const getErrorMessage = (error: ClubEditAPIErrorType): string => {
-    if (error === 'is_not_admin') {
+const getErrorMessage = (errors: ClubErrorType): string => {
+    if (errors?.deleteError === 'is_not_admin' || errors?.editError === 'is_not_admin') {
         return '관리자 권한이 필요합니다.'
-    } else if (error === 'incorrect_fields') {
+    } else if (errors?.editError === 'incorrect_fields') {
         return '모든 필드를 알맞게 입력해주세요.'
     } else {
         return '오류가 발생했습니다.'
@@ -36,7 +37,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
 
     useEffect(() => {
-        if (errors && errors.editError) {
+        if (!isAllObjectFieldsUndefined(errors)) {
             setIsErrorModalOpen(true)
         }
     }, [errors])
@@ -99,9 +100,9 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             }
         />
 
-        {errors && errors.editError &&
+        {!isAllObjectFieldsUndefined(errors) &&
             <UdongErrorModal
-                message={getErrorMessage(errors.editError)}
+                message={getErrorMessage(errors)}
                 isOpen={isErrorModalOpen}
                 setIsOpen={handleCloseErrorModal}
             />
