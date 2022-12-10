@@ -16,6 +16,8 @@ import { ProfileView } from '../../shared/ProfileView'
 const getErrorMessage = (error: ClubEditAPIErrorType): string => {
     if (error === 'is_not_admin') {
         return '관리자 권한이 필요합니다.'
+    } else if (error === 'incorrect_fields') {
+        return '모든 필드를 알맞게 입력해주세요.'
     } else {
         return '오류가 발생했습니다.'
     }
@@ -30,14 +32,14 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
     const { club, onClickDelete } = props
     const { name, code, id } = club
     const dispatch = useDispatch<AppDispatch>()
-    const error = useSelector(clubSelector.clubEditError)
+    const errors = useSelector(clubSelector.errors)
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
 
     useEffect(() => {
-        if (error) {
+        if (errors && errors.editError) {
             setIsErrorModalOpen(true)
         }
-    }, [error])
+    }, [errors])
 
     const handleEditClub = useCallback((newName: string) => {
         if (newName) {
@@ -50,7 +52,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
 
     const handleCloseErrorModal = useCallback(() => {
         setIsErrorModalOpen(false)
-        dispatch(clubActions.resetClubEditError())
+        dispatch(clubActions.resetErrors())
     }, [dispatch])
 
     const renderLeaveClubButton = useCallback(() => {
@@ -97,9 +99,9 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             }
         />
 
-        {error &&
+        {errors && errors.editError &&
             <UdongErrorModal
-                message={getErrorMessage(error)}
+                message={getErrorMessage(errors.editError)}
                 isOpen={isErrorModalOpen}
                 setIsOpen={handleCloseErrorModal}
             />

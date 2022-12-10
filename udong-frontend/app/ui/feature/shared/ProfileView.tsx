@@ -47,7 +47,9 @@ export const ProfileView = (props: ProfileViewProps) => {
             if (onClickEditNameButton) {
                 onClickEditNameButton(changedName)
             }
-            setIsNameInputVisible(false)
+            if (changedName) {
+                setIsNameInputVisible(false)
+            }
         }
     }, [isNameInputVisible, changedName, onClickEditNameButton])
 

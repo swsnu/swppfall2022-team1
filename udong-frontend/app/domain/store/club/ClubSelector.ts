@@ -24,9 +24,9 @@ const clubRegisterError = createSelector(
     state => state.clubRegisterError,
 )
 
-const clubEditError = createSelector(
+const errors = createSelector(
     clubState,
-    state => state.clubEditError,
+    state => state.errors,
 )
 
 export const clubSelector = {
@@ -34,5 +34,5 @@ export const clubSelector = {
     myClubs,
     members,
     clubRegisterError,
-    clubEditError,
+    errors,
 }

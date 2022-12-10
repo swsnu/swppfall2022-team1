@@ -4,10 +4,14 @@ import axios from 'axios'
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { Club } from '../../model/Club'
 import { ClubUser } from '../../model/ClubUser'
-import { UserIsNotAdminErrorType } from '../index'
+import { DefaultErrorType, IncorrectFields, UserIsNotAdminErrorType } from '../index'
 
-export type ClubRegisterAPIErrorType = 'already_registered' | 'invalid_code' | 'error'
-export type ClubEditAPIErrorType = UserIsNotAdminErrorType | 'error'
+export type ClubRegisterAPIErrorType = 'already_registered' | 'invalid_code' | DefaultErrorType
+export type ClubEditAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType | IncorrectFields
+interface ClubErrorType {
+    registerError?: ClubRegisterAPIErrorType
+    editError?: ClubEditAPIErrorType
+}
 
 export interface ClubState {
     selectedClub?: Club
@@ -15,11 +19,13 @@ export interface ClubState {
     members: Array<ClubUser>
     clubRegisterError?: ClubRegisterAPIErrorType
     clubEditError?: ClubEditAPIErrorType
+    errors: ClubErrorType
 }
 
 const initialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
 }
 
 export const getMyClubs = createAsyncThunk(
@@ -72,6 +78,8 @@ export const editClub =
                 if (axios.isAxiosError(e)) {
                     if (e.response?.status === 403) {
                         return rejectWithValue('is_not_admin')
+                    } else if (e.response?.status === 400) {
+                        return rejectWithValue('incorrect_fields')
                     } else {
                         return rejectWithValue('error')
                     }
@@ -121,8 +129,8 @@ const clubSlice = createSlice({
         resetClubRegisterErrror: (state) => {
             state.clubRegisterError = undefined
         },
-        resetClubEditError: (state) => {
-            state.clubEditError = undefined
+        resetErrors: (state) => {
+            state.errors = {}
         },
     },
     extraReducers: (builder) => {
@@ -141,16 +149,16 @@ const clubSlice = createSlice({
         builder.addCase(registerClub.fulfilled, (state, action) => {
             state.selectedClub = action.payload
         })
+        builder.addCase(createClub.fulfilled, (state, action) => {
+            state.selectedClub = action.payload
+            state.myClubs = state.myClubs.concat(action.payload)
+        })
         builder.addCase(registerClub.rejected, (state, action) => {
             state.clubRegisterError = action.payload
             state.selectedClub = undefined
         })
         builder.addCase(editClub.rejected, (state, action) => {
-            state.clubEditError = action.payload
-        })
-        builder.addCase(createClub.fulfilled, (state, action) => {
-            state.selectedClub = action.payload
-            state.myClubs = state.myClubs.concat(action.payload)
+            state.errors.editError = action.payload
         })
     },
 })

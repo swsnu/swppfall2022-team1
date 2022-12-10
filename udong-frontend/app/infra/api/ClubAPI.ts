@@ -28,18 +28,18 @@ export const ClubAPI = (() => {
         return clubTransformer.fromDto(response.data)
     }
 
-    async function editClub(clubId: number, club: Club): Promise<Club> {
-        const response = await axiosConfig.put<ClubDto>(
-            `/api/club/${clubId}/`,
-            clubTransformer.toEditDto(club),
-        )
-        return clubTransformer.fromDto(response.data)
-    }
-
     async function createClub(name: string): Promise<Club> {
         const response = await axiosConfig.post<ClubDto>(
             `/api/club/`,
             { name },
+        )
+        return clubTransformer.fromDto(response.data)
+    }
+
+    async function editClub(clubId: number, club: Club): Promise<Club> {
+        const response = await axiosConfig.put<ClubDto>(
+            `/api/club/${clubId}/`,
+            clubTransformer.toEditDto(club),
         )
         return clubTransformer.fromDto(response.data)
     }
