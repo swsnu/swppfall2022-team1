@@ -4,10 +4,10 @@ import axios from 'axios'
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { Club } from '../../model/Club'
 import { ClubUser } from '../../model/ClubUser'
-import { DefaultErrorType, IncorrectFields, UserIsNotAdminErrorType } from '../index'
+import { DefaultErrorType, IncorrectFieldsErrorType, UserIsNotAdminErrorType } from '../index'
 
 export type ClubRegisterAPIErrorType = 'already_registered' | 'invalid_code' | DefaultErrorType
-export type ClubEditAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType | IncorrectFields
+export type ClubEditAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType | IncorrectFieldsErrorType
 interface ClubErrorType {
     registerError?: ClubRegisterAPIErrorType
     editError?: ClubEditAPIErrorType
