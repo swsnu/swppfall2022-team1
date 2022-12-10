@@ -44,7 +44,9 @@ export const ClubAPI = (() => {
         return clubTransformer.fromDto(response.data)
     }
 
-    function deleteClub() { return }
+    async function deleteClub(clubId: number): Promise<void> {
+        return axiosConfig.delete(`/api/club/${clubId}/`)
+    }
 
     async function getClubMembers(clubId: number): Promise<Array<ClubUser>> {
         const response = await axiosConfig.get<Array<ClubUserDto>>(`/api/club/${clubId}/user/`)

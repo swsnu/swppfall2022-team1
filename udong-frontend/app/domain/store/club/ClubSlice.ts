@@ -8,9 +8,11 @@ import { DefaultErrorType, IncorrectFields, UserIsNotAdminErrorType } from '../i
 
 export type ClubRegisterAPIErrorType = 'already_registered' | 'invalid_code' | DefaultErrorType
 export type ClubEditAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType | IncorrectFields
+export type ClubDeleteAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType
 interface ClubErrorType {
     registerError?: ClubRegisterAPIErrorType
     editError?: ClubEditAPIErrorType
+    deleteError?: ClubDeleteAPIErrorType
 }
 
 export interface ClubState {
@@ -93,9 +95,21 @@ export const leaveClub = createAsyncThunk(
     async () => { return },
 )
 
-export const deleteClub = createAsyncThunk(
+export const deleteClub = createAsyncThunk<void, number, { rejectValue: ClubDeleteAPIErrorType }>(
     'club/deleteClub',
-    async () => { return },
+    async (clubId: number, { rejectWithValue }) => {
+        try {
+            return await ClubAPI.deleteClub(clubId)
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                if (e.response?.status === 403) {
+                    return rejectWithValue('is_not_admin')
+                } else {
+                    return rejectWithValue('error')
+                }
+            }
+        }
+    },
 )
 
 export const getClubMembers = createAsyncThunk(
@@ -160,6 +174,9 @@ const clubSlice = createSlice({
         builder.addCase(editClub.rejected, (state, action) => {
             state.errors.editError = action.payload
         })
+        builder.addCase(deleteClub.rejected, (state, action) => {
+            state.errors.deleteError = action.payload
+        })
     },
 })
 
@@ -172,5 +189,6 @@ export const clubActions = {
     createClub,
     createClubTag,
     editClub,
+    deleteClub,
 }
 export const clubReducer = clubSlice.reducer
