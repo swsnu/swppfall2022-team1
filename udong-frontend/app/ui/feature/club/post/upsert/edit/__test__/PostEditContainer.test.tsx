@@ -8,14 +8,14 @@ jest.mock('../../PostInputView', () => ({
 }))
 
 jest.mock('../../PostAdditionalInputsView', () => ({
-    PostAdditionalFieldsView: () => <div data-testid={'post-additional-fields-view'}/>,
+    PostAdditionalInputsView: () => <div data-testid={'post-additional-inputs-view'}/>,
 }))
 
 describe('<PostEditContainer/>', () => {
     it('renders post edit container',  () => {
         render(<PostEditContainer postType={PostType.ANNOUNCEMENT}/>)
         const inputView = screen.getByTestId('post-input-view')
-        const additionalFieldsView = screen.getByTestId('post-additional-fields-view')
+        const additionalFieldsView = screen.getByTestId('post-additional-inputs-view')
         expect(inputView).toBeDefined()
         expect(additionalFieldsView).toBeDefined()
     })
