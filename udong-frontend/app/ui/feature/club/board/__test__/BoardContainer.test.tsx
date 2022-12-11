@@ -28,7 +28,7 @@ describe('<BoardContainer/>', () => {
                 <BoardContainer clubId={1}/>
             </Provider>,
         )
-        const component = screen.getByRole('img')
+        const component = screen.getByPlaceholderText('검색어를 입력해주세요')
         expect(component).toBeDefined()
     })
 
