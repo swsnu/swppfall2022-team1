@@ -32,11 +32,14 @@ export const RegisterClubModal = (props: RegisterClubModalProps) => {
         }
     }, [dispatch, isOpen])
 
-    const handleRegisterClub = useCallback(() => {
+    const handleRegisterClub = useCallback(async () => {
         if (code) {
-            dispatch(clubActions.registerClub(code))
+            const response = await dispatch(clubActions.registerClub(code))
+            if (response.type === `${clubActions.registerClub.typePrefix}/fulfilled`) {
+                setIsOpen(false)
+            }
         }
-    }, [dispatch, code])
+    }, [dispatch, code, setIsOpen])
 
     const getErrorMessage = useCallback((error: ClubRegisterAPIErrorType): string => {
         if (error === 'already_registered') {
