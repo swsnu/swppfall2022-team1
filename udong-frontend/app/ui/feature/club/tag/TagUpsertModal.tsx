@@ -1,5 +1,6 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
+import { useDebouncedSearch } from '../../../../utility/useDebouncedSearch'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -12,8 +13,8 @@ import edit from '../../../icons/IcPencil.png'
 import { UdongColors } from '../../../theme/ColorPalette'
 import { UserItem } from '../../shared/UserItem'
 
-const dummyUserData = ['고동현', '박지연', '임유진', '이유빈']
-const dummy: Array<string> = [...dummyUserData].concat(dummyUserData).concat(dummyUserData).concat(dummyUserData)
+const dummyUserData = [{ name: '고동현' }, { name: '박지연' }, { name: '임유진' }, { name: '이유빈' }]
+const dummy: Array<{ name: string }> = [...dummyUserData].concat(dummyUserData).concat(dummyUserData).concat(dummyUserData)
 
 interface TagUpsertModalProps {
     isOpen: boolean
@@ -24,6 +25,10 @@ interface TagUpsertModalProps {
 export const TagUpsertModal = (props: TagUpsertModalProps) => {
     const { isOpen, setIsOpen, title } = props
     const searchRef = useRef<HTMLInputElement | undefined>(null)
+    const [searchValue, setSearchValue] = useState('')
+    const [keyword, setKeyword] = useState('')
+
+    useDebouncedSearch(searchValue, setKeyword, 300)
 
     return <UdongModal
         width={'60vw'}
@@ -66,7 +71,9 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
                 <VStack flex={1}>
                     <UdongSearchBar
                         inputRef={searchRef}
-                        onChange={() => {return}}
+                        onChange={() => {
+                            setSearchValue(searchRef.current?.value ?? '')
+                        }}
                     />
                     <Spacer height={15}/>
 
@@ -76,9 +83,11 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
                         alignItems={'start'}
                         style={{ overflow: 'scroll', paddingBottom: 15 }}
                     >
-                        {dummy.map((user, index) => {
+                        {dummy.filter((user)=> {
+                            return user.name.includes(keyword)
+                        }).map((user, index) => {
                             return <UserItem
-                                name={user}
+                                name={user.name}
                                 key={`${user}/${index}`}
                             />
                         })}
