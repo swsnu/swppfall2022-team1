@@ -13,7 +13,6 @@ export interface BoardPost {
     club?: Club
     eventName?: EventName
     eventId?: number
-    clubName?: string
     title: string
     content: string
     type: PostType

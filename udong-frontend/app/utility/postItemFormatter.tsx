@@ -7,9 +7,9 @@ export const formatPostItemInfo = (
     post: BoardPost,
 ) => {
     if (post.displayType === PostDisplayType.FEED) {
-        const { clubName, eventName } = post
+        const { club, eventName } = post
         return <HStack>
-            <UdongText style={'ListContentUnderscore'}>{clubName}</UdongText>
+            <UdongText style={'ListContentUnderscore'}>{club?.name}</UdongText>
             {eventName &&
                 <HStack>
                     <UdongText
