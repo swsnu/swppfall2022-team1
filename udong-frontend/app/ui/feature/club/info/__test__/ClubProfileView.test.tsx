@@ -26,7 +26,6 @@ const mockStore = configureStore({
 
 describe('<ClubProfileView/>', () => {
     it('should test on click delete', () => {
-        const mockOnDelete = jest.fn()
         render(
             <Provider store={mockStore}>
                 <ClubProfileView
@@ -36,7 +35,9 @@ describe('<ClubProfileView/>', () => {
         )
         const text = screen.getByText('삭제하기')
         fireEvent.click(text)
-        expect(mockOnDelete).toHaveBeenCalledTimes(1)
+
+        const modalText = screen.getByText('동아리 삭제')
+        expect(modalText).toBeInTheDocument()
     })
 
     it('should test on click leave', () => {
