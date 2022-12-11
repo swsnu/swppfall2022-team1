@@ -90,7 +90,7 @@ export const TagContainer = (props: TagContainerProps) => {
                 result = true
             } else {
                 tag.users.forEach((user)=>{
-                    if (user.name.includes(keyword)){
+                    if (user.name.includes(keyword) || user.email.includes(keyword)){
                         result = true
                     }
                 })

@@ -13,8 +13,8 @@ import edit from '../../../icons/IcPencil.png'
 import { UdongColors } from '../../../theme/ColorPalette'
 import { UserItem } from '../../shared/UserItem'
 
-const dummyUserData = [{ name: '고동현' }, { name: '박지연' }, { name: '임유진' }, { name: '이유빈' }]
-const dummy: Array<{ name: string }> = [...dummyUserData].concat(dummyUserData).concat(dummyUserData).concat(dummyUserData)
+const dummyUserData = [{ name: '고동현', email: 'dhk' }, { name: '박지연', email: 'jyp' }, { name: '임유진', email: 'yji' }, { name: '이유빈', email: 'ybl' }]
+const dummy: Array<{ name: string, email: string }> = [...dummyUserData].concat(dummyUserData).concat(dummyUserData).concat(dummyUserData)
 
 interface TagUpsertModalProps {
     isOpen: boolean
@@ -84,7 +84,7 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
                         style={{ overflow: 'scroll', paddingBottom: 15 }}
                     >
                         {dummy.filter((user)=> {
-                            return user.name.includes(keyword)
+                            return user.name.includes(keyword) || user.email.includes(keyword)
                         }).map((user, index) => {
                             return <UserItem
                                 name={user.name}
