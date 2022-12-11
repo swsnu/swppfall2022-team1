@@ -15,7 +15,7 @@ import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { DeleteModal } from '../../shared/DeleteModal'
 import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 import { UserListModal } from '../../shared/UserListModal'
-import { TagItem } from './TagItem'
+import { DefaultTagItem, TagItem } from './TagItem'
 import { TagUpsertModal } from './TagUpsertModal'
 
 interface TagContainerProps {
@@ -101,14 +101,18 @@ export const TagContainer = (props: TagContainerProps) => {
                 key={tag.name + index}
                 onClick={() => handleClickTag(tag.id)}
             >
-                <TagItem
-                    name={tag.name}
-                    createdAt={tag.createdAt}
-                    updatedAt={tag.updatedAt}
-                    isUserIncluded={tag.users.some(user => user.id === userMe.id)}
-                    showEditModal={setShowUpsertModal}
-                    onClickDelete={() => handleClickTagDelete(tag)}
-                />
+                {tag.name === '전체' ?
+                    <DefaultTagItem/>
+                    :
+                    <TagItem
+                        name={tag.name}
+                        createdAt={tag.createdAt}
+                        updatedAt={tag.updatedAt}
+                        isUserIncluded={tag.users.some(user => user.id === userMe.id)}
+                        showEditModal={setShowUpsertModal}
+                        onClickDelete={() => handleClickTagDelete(tag)}
+                    />
+                }
             </VStack>
         })}
 
