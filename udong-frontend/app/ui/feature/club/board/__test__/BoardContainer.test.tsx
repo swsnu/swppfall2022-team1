@@ -25,7 +25,7 @@ describe('<BoardContainer/>', () => {
     it ('render board container', () => {
         render(
             <Provider store={mockStore}>
-                <BoardContainer/>
+                <BoardContainer clubId={1}/>
             </Provider>,
         )
         const component = screen.getByRole('img')
@@ -35,7 +35,7 @@ describe('<BoardContainer/>', () => {
     it ('click write', () => {
         render(
             <Provider store={mockStore}>
-                <BoardContainer/>
+                <BoardContainer clubId={1}/>
             </Provider>,
         )
         const component = screen.getByText('글쓰기')

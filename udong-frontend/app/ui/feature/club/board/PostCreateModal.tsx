@@ -12,17 +12,18 @@ import { UdongText } from '../../../components/UdongText'
 import close from '../../../icons/IcClose.png'
 
 interface PostCreateModalProps {
+    clubId: number
     isOpen: boolean
     setIsOpen: (open: boolean) => void
 }
 
 export const PostCreateModal = (props: PostCreateModalProps) => {
-    const { isOpen, setIsOpen } = props
+    const { clubId, isOpen, setIsOpen } = props
     const router = useRouter()
     const [postType, setPostType] = useState<PostType>(PostType.ANNOUNCEMENT)
 
     const handleOnClickCreate = useCallback(() => {
-        router.push(`/club/1/post/create/?type=${postType}`)
+        router.push(`/club/${clubId}/post/create/?type=${postType}`)
     }, [router, postType])
 
     return <UdongModal

@@ -3,12 +3,13 @@ import { AnyAction } from 'redux'
 import { ThunkMiddleware } from 'redux-thunk'
 
 import { axiosConfig } from '../../../infra/global'
+import { Club } from '../../model/Club'
 import { RoleType } from '../../model/RoleType'
 import { clubReducer, ClubState, getClub, getClubMembers, getMyClubs } from '../club/ClubSlice'
 import { fakeUser1, fakeUser2, fakeUserDto1, fakeUserDto2 } from './UserSlice.test'
 
-export const fakeClub1 = { id: 1, name: '단풍', code: '1234' }
-export const fakeClub2 = { id: 2, name: '은행', code: '4321' }
+export const fakeClub1: Club = { id: 1, name: '단풍', code: '1234', image: '' }
+export const fakeClub2: Club = { id: 2, name: '은행', code: '4321', image: '' }
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
@@ -27,6 +28,7 @@ const fakeClubDto = {
         user: fakeUserDto2,
         auth: RoleType.MEMBER,
     }],
+    errors: {},
 }
 
 const fakeClub: ClubState = {
@@ -40,6 +42,7 @@ const fakeClub: ClubState = {
         user: fakeUser2,
         role: RoleType.MEMBER,
     }],
+    errors: {},
 }
 
 describe('club reducer', () => {
@@ -54,6 +57,7 @@ describe('club reducer', () => {
         expect(clubReducer(undefined, { type: 'unknown' })).toEqual({
             myClubs: [],
             members: [],
+            errors: {},
         })
     })
     it('should handle getMyClubs', async () => {

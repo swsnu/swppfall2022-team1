@@ -106,7 +106,9 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
     author = serializers.SerializerMethodField()
     club = serializers.SerializerMethodField()
     event = serializers.SerializerMethodField()
-    event_id = serializers.IntegerField(write_only=True)
+    event_id = serializers.IntegerField(
+        write_only=True, required=False, allow_null=True
+    )
     title = serializers.CharField(max_length=255)
     type = serializers.ChoiceField(choices=["A", "E", "S"])
     closed = serializers.SerializerMethodField()
@@ -185,7 +187,10 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
         tag_list = validated_data.pop("tag_list", None)
         scheduling = validated_data.pop("scheduling", {})
         event_id = validated_data.pop("event_id", None)
-        event = get_object_or_404(Event, id=event_id)
+        if event_id:
+            event = get_object_or_404(Event, id=event_id)
+        else:
+            event = None
 
         if not isinstance(tag_list, list):
             raise Exception()

@@ -5,7 +5,7 @@ import { NextRouter } from 'next/router'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 
-import { BoardPost, PostDisplayType } from '../../../../../../domain/model/ListItemPost'
+import { BoardPost, PostDisplayType } from '../../../../../../domain/model/BoardPost'
 import { PostType } from '../../../../../../domain/model/PostType'
 import { dummyUserMe } from '../../../../../../domain/model/User'
 import { commentReducer, CommentState } from '../../../../../../domain/store/comment/CommentSlice'
@@ -14,7 +14,7 @@ import { userReducer, UserState } from '../../../../../../domain/store/user/User
 import { PostDetailContainer } from '../PostDetailContainer'
 
 const dummyPost: BoardPost = {
-    displayType: PostDisplayType.BOARD,
+    displayType: PostDisplayType.CLUB,
     id: 1,
     title: 'title',
     content: 'content',
@@ -61,7 +61,7 @@ describe('<PostDetailContainer/>', () => {
         const mockPush = jest.fn()
         const mockBack = jest.fn()
         jest.spyOn(router, 'useRouter').mockImplementation(() => ({
-            query: { type: '' },
+            query: { rawClubId: 1, rawPostId: 1 },
             push: (url: string) => mockPush(url),
             back: mockBack,
         } as unknown as NextRouter))

@@ -4,11 +4,17 @@ import { RootState } from '../../index'
 
 const enrollmentState = (state: RootState) => state.enrollment
 
-const isOpen = createSelector(
+const selectedEnrollmentUsers = createSelector(
     enrollmentState,
-    state => state.isOpen,
+    state => state.selectedEnrollmentUsers,
+)
+
+const hasSuccessfullyClosed = createSelector(
+    enrollmentState,
+    state => state.selectedEnrollment ? state.selectedEnrollment.closed : false,
 )
 
 export const enrollmentSelector = {
-    isOpen,
+    selectedEnrollmentUsers,
+    hasSuccessfullyClosed,
 }

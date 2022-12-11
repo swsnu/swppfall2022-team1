@@ -12,6 +12,7 @@ import { MyDongContainer } from '../MyDongContainer'
 const stubInitialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
 }
 
 const mockStore = configureStore({

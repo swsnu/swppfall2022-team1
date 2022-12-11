@@ -1,17 +1,24 @@
+import { Club } from './Club'
 import { EventName } from './ClubEvent'
+import { DateSchedulingPost } from './DateSchedulingPost'
+import { Enrollment } from './Enrollment'
 import { PostType } from './PostType'
 import { PostTag } from './Tag'
+import { WeekdaySchedulingPost } from './WeekdaySchedulingPost'
 
-export interface ListItemPost {
+export interface BoardPost {
     displayType: PostDisplayType
     id: number
     author?: string
+    club?: Club
     eventName?: EventName
     eventId?: number
     clubName?: string
     title: string
     content: string
     type: PostType
+    scheduling?: DateSchedulingPost | WeekdaySchedulingPost
+    enrollment?: Enrollment
     closed?: boolean
     includedTags?: Array<PostTag>
     excludedTags?: Array<PostTag>
@@ -21,9 +28,6 @@ export interface ListItemPost {
 
 export enum PostDisplayType {
     FEED = 'FEED',
-    BOARD = 'BOARD',
+    CLUB = 'CLUB',
     EVENT = 'EVENT',
 }
-
-// 나중에 feed post, event detail post 타입 추가
-export type BoardPost = Omit<ListItemPost, 'clubName'>

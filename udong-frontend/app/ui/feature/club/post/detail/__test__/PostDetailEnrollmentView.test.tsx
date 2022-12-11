@@ -7,7 +7,6 @@ import { enrollmentReducer, EnrollmentState } from '../../../../../../domain/sto
 import { PostDetailEnrollmentView } from '../PostDetailEnrollmentView'
 
 const stubEnrollmentInitialState: EnrollmentState = {
-    isOpen: false,
 }
 
 const mockStore = configureStore({
@@ -24,16 +23,17 @@ jest.mock('next/config', () => () => ({
 describe('<PostDetailEnrollmentView/>', () => {
     it('renders EnrollmentView', async () => {
         await act(async () => {
-            await act(async () => {
-                render(
-                    <Provider store={mockStore}>
-                        <PostDetailEnrollmentView postId={2}/>
-                    </Provider>,
-                )
-            })
+            render(
+                <Provider store={mockStore}>
+                    <PostDetailEnrollmentView
+                        postId={2}
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
         })
 
-        const status = screen.getByText(/현황/)
+        const status = screen.getByText(/현황 보기/)
         await waitFor(() => expect(status).toBeInTheDocument())
         fireEvent.click(status)
 
@@ -41,7 +41,7 @@ describe('<PostDetailEnrollmentView/>', () => {
         await waitFor(() => expect(enroll).toBeInTheDocument())
         fireEvent.click(enroll)
 
-        const close = screen.getByText(/마감/)
+        const close = screen.getByText(/마감하기/)
         await waitFor(() => expect(close).toBeInTheDocument())
         fireEvent.click(close)
     })

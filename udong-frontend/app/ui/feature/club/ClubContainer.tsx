@@ -34,7 +34,7 @@ export const ClubContainer = (props: ClubContainerProps) => {
 
     const getCurrentContainer = () => {
         if (tab === CLUB_TAB.BOARD) {
-            return <BoardContainer/>
+            return <BoardContainer clubId={clubId}/>
         } else if (tab === CLUB_TAB.EVENT) {
             return <EventContainer clubId={clubId}/>
         } else if (tab === CLUB_TAB.TAG) {

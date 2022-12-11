@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 
-import { BoardPost, ListItemPost } from '../../../domain/model/ListItemPost'
+import { BoardPost } from '../../../domain/model/BoardPost'
 import { PostType } from '../../../domain/model/PostType'
 import { getPostTypeQueryParam } from '../../../utility/handleQueryParams'
 import { formatPostItemInfo } from '../../../utility/postItemFormatter'
@@ -13,18 +13,19 @@ import { ClickableTag } from './ClickableTag'
 import { UserListModal } from './UserListModal'
 
 interface PostItemProps {
-    post: ListItemPost | BoardPost
+    post: BoardPost
+    clubId: number
 }
 
 export const PostItem = (props: PostItemProps) => {
-    const { post } = props
+    const { post, clubId } = props
     const router = useRouter()
     const [isMemberListOpen, setIsMemberListOpen] = useState(false)
     const [currentTag, setCurrentTag] = useState('')
 
     const handleOnClickPost = useCallback(() => {
-        router.push(`/club/1/post/1/?type=${getPostTypeQueryParam(post.type)}`)
-    }, [router])
+        router.push(`/club/${clubId}/post/${post.id}/?type=${getPostTypeQueryParam(post.type)}`)
+    }, [router, clubId, post])
 
     return <VStack onClick={handleOnClickPost}>
         <Spacer

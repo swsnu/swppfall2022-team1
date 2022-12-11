@@ -20,7 +20,7 @@ export const FeedContainer = () => {
     useEffect(() => {
         dispatch(postActions.getFeedPosts())
         setTimeout(() => setLoading(false), 600)
-    }, [])
+    }, [dispatch])
 
     return <VStack>
         <UdongSearchBar
@@ -37,6 +37,7 @@ export const FeedContainer = () => {
                     {posts.map((post) => {
                         return <PostItem
                             key={post.id}
+                            clubId={post.club?.id ?? -1}
                             post={post}
                         />
                     })}

@@ -18,6 +18,10 @@ export const InfoContainer = (props: InfoContainerProps) => {
         return null
     }
 
+    if (!club) {
+        return null
+    }
+
     return <VStack justifyContent={'center'}>
         <Spacer height={50}/>
 

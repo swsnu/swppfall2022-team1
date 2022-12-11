@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -13,16 +13,18 @@ import { TimeRangePicker, TimeRangeType } from '../../../shared/TimeRangePicker'
 
 interface PostDateScheduleProps {
     isEdit: boolean
+    time: TimeRangeType
+    setTime: (time: TimeRangeType) => void
+    dates: DateRangeTypeWithId[]
+    setDates: (dates: DateRangeTypeWithId[]) => void
 }
 
-interface DateRangeTypeWithId extends DateRangeType {
+export interface DateRangeTypeWithId extends DateRangeType {
     id: number
 }
 
-export const PostDateSchedule = ({ isEdit }: PostDateScheduleProps) => {
-    const [time, setTime] = useState<TimeRangeType>(isEdit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
-    const [dates, setDates] = useState<DateRangeTypeWithId[]>(isEdit ? [{ id: 0, start: '2022-11-04', end: '2022-11-05' },
-        { id: 1, start: '2022-11-06', end: '2022-11-08' }] : [{ id: 0, start: '', end: '' }])
+export const PostDateSchedule = (props: PostDateScheduleProps) => {
+    const { isEdit, time, setTime, dates, setDates } = props
 
     return <VStack
         paddingHorizontal={120}

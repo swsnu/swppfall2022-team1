@@ -1,13 +1,17 @@
+import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
+import { Provider } from 'react-redux'
 
-import { BoardPost, PostDisplayType } from '../../../../domain/model/ListItemPost'
+import { BoardPost, PostDisplayType } from '../../../../domain/model/BoardPost'
 import { PostType } from '../../../../domain/model/PostType'
+import { dummyUserMe } from '../../../../domain/model/User'
+import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { PostItem } from '../PostItem'
 
 const dummyPost: BoardPost = {
-    displayType: PostDisplayType.BOARD,
+    displayType: PostDisplayType.CLUB,
     id: 1,
     eventName: {
         id: 1,
@@ -20,6 +24,17 @@ const dummyPost: BoardPost = {
     createdAt: '',
 }
 
+const stubInitialState: UserState = {
+    isAdmin: false,
+    selectedUser: dummyUserMe,
+    me: { id: 1, name: '', timeTable: [], imageUrl: '', email: '' },
+}
+
+const mockStore = configureStore({
+    reducer: { user: userReducer },
+    preloadedState: { user: stubInitialState },
+})
+
 describe('<PostItem/>', () => {
     it ('should handle on click post', () => {
         const mockPush = jest.fn()
@@ -28,14 +43,28 @@ describe('<PostItem/>', () => {
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
 
-        render(<PostItem post={dummyPost}/>)
+        render(
+            <Provider store={mockStore}>
+                <PostItem
+                    clubId={1}
+                    post={dummyPost}
+                />
+            </Provider>,
+        )
         const component = screen.getByText('겨울 공연 중요 공지!')
         fireEvent.click(component)
         expect(mockPush).toHaveBeenCalledWith('/club/1/post/1/?type=announcement')
     })
 
     it ('should handle on click tag', () => {
-        render(<PostItem post={dummyPost}/>)
+        render(
+            <Provider store={mockStore}>
+                <PostItem
+                    clubId={1}
+                    post={dummyPost}
+                />
+            </Provider>,
+        )
         const component = screen.getByText('2022년 겨울 공연 1팀')
         fireEvent.click(component)
         expect(component).toBeDefined()

@@ -16,6 +16,7 @@ const testClub: Club = {
 const stubClubInitialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
 }
 
 const mockStore = configureStore({
@@ -29,7 +30,6 @@ describe('<ClubProfileView/>', () => {
         render(
             <Provider store={mockStore}>
                 <ClubProfileView
-                    onClickDelete={() => {mockOnDelete()}}
                     club={testClub}
                 />
             </Provider>,
@@ -43,7 +43,6 @@ describe('<ClubProfileView/>', () => {
         render(
             <Provider store={mockStore}>
                 <ClubProfileView
-                    onClickDelete={() => {return}}
                     club={testClub}
                 />
             </Provider>,

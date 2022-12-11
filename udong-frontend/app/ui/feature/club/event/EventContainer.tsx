@@ -109,7 +109,7 @@ export const EventContainer = (props: EventContainerProps) => {
     }, [clubId, dispatch])
 
     const handleCurrentView = useCallback((selectedTab: EventTabType) => {
-        router.replace(`/club/1/?tab=event&view=${selectedTab}`)
+        router.replace(`/club/${clubId}/?tab=event&view=${selectedTab}`)
     }, [router])
 
     const getCurrentTab = () => {
@@ -142,7 +142,7 @@ export const EventContainer = (props: EventContainerProps) => {
         <HStack justifyContent={'end'}>
             <UdongButton
                 style={'line'}
-                onClick={() => router.push('/club/1/event/create')}
+                onClick={() => router.push(`/club/${clubId}/event/create`)}
                 width={120}
             >
                 행사 만들기
