@@ -11,11 +11,11 @@ import { UdongColors } from '../../../theme/ColorPalette'
 
 interface TagItemProps {
     name: string
-    createdAt?: string
-    updatedAt?: string
+    createdAt: string
+    updatedAt: string
     isUserIncluded: boolean
-    showEditModal?: (showEditModal: boolean) => void
-    onClickDelete?: (showDeleteModal: boolean) => void
+    showEditModal: (showEditModal: boolean) => void
+    onClickDelete: (showDeleteModal: boolean) => void
 }
 
 export const TagItem = (props: TagItemProps) => {
@@ -23,16 +23,12 @@ export const TagItem = (props: TagItemProps) => {
 
     const handleOnClickEdit = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
-        if (showEditModal) {
-            showEditModal(true)
-        }
+        showEditModal(true)
     }, [showEditModal])
 
     const handleOnClickDelete = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
-        if (onClickDelete) {
-            onClickDelete(true)
-        }
+        onClickDelete(true)
     }, [onClickDelete])
 
     return <VStack width={'100%'}>
@@ -49,48 +45,40 @@ export const TagItem = (props: TagItemProps) => {
 
             <HStack>
                 <Spacer width={30}/>
-                {createdAt &&
-                    <UdongText
-                        style={'ListContentS'}
-                        whiteSpace={'nowrap'}
-                    >
-                        {`생성일: ${createdAt}`}
-                    </UdongText>
-                }
+                <UdongText
+                    style={'ListContentS'}
+                    whiteSpace={'nowrap'}
+                >
+                    {`생성일: ${createdAt}`}
+                </UdongText>
 
                 <Spacer width={30}/>
-                {updatedAt &&
-                    <UdongText
-                        style={'ListContentS'}
-                        whiteSpace={'nowrap'}
-                    >
-                        {`수정일: ${updatedAt}`}
-                    </UdongText>
-                }
+                <UdongText
+                    style={'ListContentS'}
+                    whiteSpace={'nowrap'}
+                >
+                    {`수정일: ${updatedAt}`}
+                </UdongText>
 
                 <Spacer width={30}/>
-                {onClickDelete &&
-                    <VStack onClick={handleOnClickEdit}>
-                        <UdongImage
-                            src={edit.src}
-                            height={20}
-                            width={20}
-                            clickable={true}
-                        />
-                    </VStack>
-                }
+                <VStack onClick={handleOnClickEdit}>
+                    <UdongImage
+                        src={edit.src}
+                        height={20}
+                        width={20}
+                        clickable={true}
+                    />
+                </VStack>
 
                 <Spacer width={10}/>
-                {showEditModal &&
-                    <VStack onClick={handleOnClickDelete}>
-                        <UdongImage
-                            src={trash.src}
-                            height={20}
-                            width={20}
-                            clickable={true}
-                        />
-                    </VStack>
-                }
+                <VStack onClick={handleOnClickDelete}>
+                    <UdongImage
+                        src={trash.src}
+                        height={20}
+                        width={20}
+                        clickable={true}
+                    />
+                </VStack>
             </HStack>
         </HStack>
 

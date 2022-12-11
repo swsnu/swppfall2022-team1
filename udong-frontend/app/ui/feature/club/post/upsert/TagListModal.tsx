@@ -1,18 +1,22 @@
-import { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Tag } from '../../../../../domain/model/Tag'
 import { AppDispatch } from '../../../../../domain/store'
+import { postSelector } from '../../../../../domain/store/post/PostSelector'
+import { postActions } from '../../../../../domain/store/post/PostSlice'
 import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { Spacer } from '../../../../components/Spacer'
-import { VStack } from '../../../../components/Stack'
+import { HStack, VStack } from '../../../../components/Stack'
+import { UdongButton } from '../../../../components/UdongButton'
+import { UdongChip } from '../../../../components/UdongChip'
 import { UdongImage } from '../../../../components/UdongImage'
 import { UdongModal } from '../../../../components/UdongModal'
 import { UdongText } from '../../../../components/UdongText'
+import check from '../../../../icons/IcCheck.png'
 import close from '../../../../icons/IcClose.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
-import { TagItem } from '../../tag/TagItem'
 
 interface TagListModalProps {
     isOpen: boolean
@@ -24,6 +28,7 @@ export const TagListModal = (props: TagListModalProps) => {
     const { isOpen, setIsOpen, tags } = props
     const dispatch = useDispatch<AppDispatch>()
     const userMe = useSelector(userSelector.userMe)
+    const selectedTags = useSelector(postSelector.createPostTags)
 
     useEffect(() => {
         dispatch(userActions.getMyProfile())
@@ -44,6 +49,7 @@ export const TagListModal = (props: TagListModalProps) => {
     >
         <VStack
             width={'100%'}
+            height={600}
             paddingHorizontal={40}
             alignItems={'center'}
             style={{ padding: '25px 40px 0 40px' }}
@@ -72,7 +78,7 @@ export const TagListModal = (props: TagListModalProps) => {
                 />
             </VStack>
 
-            {tags.length > 0 ?
+            {tags.length > 0 &&
                 <VStack
                     width={'100%'}
                     height={'50vh'}
@@ -80,19 +86,45 @@ export const TagListModal = (props: TagListModalProps) => {
                     style={{ overflow: 'scroll', paddingBottom: 15 }}
                 >
                     {tags.map((tag, index) => {
-                        return <TagItem
+                        return <VStack
                             key={`${tag.id} + ${index}`}
-                            name={tag.name}
-                            isUserIncluded={tag.users.some(user => user.id === userMe.id)}
-                        />
+                            width={'100%'}
+                        >
+                            <HStack
+                                justifyContent={'space-between'}
+                                paddingVertical={14}
+                                onClick={() => dispatch(postActions.toggleCreatePostTagSelection(tag))}
+                            >
+                                <UdongChip
+                                    color={tag.users.some(user => user.id === userMe.id) ? UdongColors.Primary : UdongColors.GrayNormal}
+                                    style={'fill'}
+                                    text={tag.name}
+                                />
+                                {selectedTags.some(item => item.id === tag.id) &&
+                                    <UdongImage
+                                        src={check.src}
+                                        height={20}
+                                        width={20}
+                                        clickable={true}
+                                    />
+                                }
+                            </HStack>
+                            <Spacer
+                                height={1}
+                                backgroundColor={UdongColors.GrayBright}
+                            />
+                        </VStack>
                     })}
                 </VStack>
-                :
-                <VStack paddingVertical={100}>
-                    <UdongText style={'GeneralContent'}>유저가 없습니다.</UdongText>
-                    <Spacer height={50}/>
-                </VStack>
             }
+
+            <UdongButton
+                style={'line'}
+                onClick={() => setIsOpen(false)}
+            >
+                완료
+            </UdongButton>
+            <Spacer height={50}/>
         </VStack>
     </UdongModal>
 }

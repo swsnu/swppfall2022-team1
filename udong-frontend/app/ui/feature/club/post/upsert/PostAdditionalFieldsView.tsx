@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CreateScheduling } from '../../../../../domain/model/CreatePost'
 import { SchedulingPostType } from '../../../../../domain/model/SchedulingPostType'
 import { AppDispatch } from '../../../../../domain/store'
+import { postSelector } from '../../../../../domain/store/post/PostSelector'
+import { postActions } from '../../../../../domain/store/post/PostSlice'
 import { tagSelector } from '../../../../../domain/store/tag/TagSelector'
 import { tagActions } from '../../../../../domain/store/tag/TagSlice'
 import { DateTimeFormatter } from '../../../../../utility/dateTimeFormatter'
@@ -34,6 +36,7 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
     const dispatch = useDispatch<AppDispatch>()
 
     const tags = useSelector(tagSelector.tags)
+    const selectedTags = useSelector(postSelector.createPostTags)
 
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingPostType>(SchedulingPostType.DAYS)
     const [timeRange, setTimeRange] = useState<TimeRangeType>(isEdit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
@@ -75,14 +78,21 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
                     return <AdditionalFieldItem
                         key={item + index}
                         item={<UdongText style={'ListContentUnderscore'}>교촌 허니콤보 먹고 싶다</UdongText>}
+                        onRemove={() => {return}}
                     />
                 })}
             </HStack>
-            <UdongImage
-                src={add.src}
-                height={15}
-                width={15}
-            />
+
+            <VStack
+                onClick={() => {return}}
+                style={{ padding: '7px 0 7px 10px' }}
+            >
+                <UdongImage
+                    src={add.src}
+                    height={15}
+                    width={15}
+                />
+            </VStack>
         </HStack>
         <Spacer
             height={1}
@@ -97,23 +107,30 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
             <HStack>
                 <UdongText style={'GeneralTitle'}>태그</UdongText>
                 <Spacer width={70}/>
-                {[].map((item, index) => {
+                {selectedTags.map((tag, index) => {
                     return <AdditionalFieldItem
-                        key={item + index}
-                        item={<UdongChip
-                            color={UdongColors.Primary}
-                            style={'fill'}
-                            text={'전체'}
-                        />}
+                        key={tag.id + index}
+                        item={
+                            <UdongChip
+                                color={UdongColors.Primary}
+                                style={'fill'}
+                                text={tag.name}
+                            />}
+                        onRemove={() => dispatch(postActions.toggleCreatePostTagSelection(tag))}
                     />
                 })}
             </HStack>
-            <UdongImage
+
+            <VStack
                 onClick={handleAddTag}
-                src={add.src}
-                height={15}
-                width={15}
-            />
+                style={{ padding: '7px 0 7px 10px' }}
+            >
+                <UdongImage
+                    src={add.src}
+                    height={15}
+                    width={15}
+                />
+            </VStack>
         </HStack>
         <Spacer
             height={1}
