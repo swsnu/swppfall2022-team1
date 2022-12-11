@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { User } from '../../../domain/model/User'
 import { AppDispatch } from '../../../domain/store'
 import { userSelector } from '../../../domain/store/user/UserSelector'
 import { userActions } from '../../../domain/store/user/UserSlice'
+import { useDebouncedSearch } from '../../../utility/useDebouncedSearch'
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
 import { UdongImage } from '../../components/UdongImage'
@@ -26,6 +27,9 @@ export const UserListModal = (props: UserListModalProps) => {
     const dispatch = useDispatch<AppDispatch>()
     const userMe = useSelector(userSelector.userMe) // eslint-disable-line
     const searchRef = useRef<HTMLInputElement | undefined>(null)
+    const [searchValue, setSearchValue] = useState('')
+    const [keyword, setKeyword] = useState('')
+    useDebouncedSearch(searchValue, setKeyword, 300)
 
     useEffect(() => {
         dispatch(userActions.getMyProfile)
@@ -65,7 +69,9 @@ export const UserListModal = (props: UserListModalProps) => {
 
             <UdongSearchBar
                 inputRef={searchRef}
-                onChange={() => {return}}
+                onChange={() => {
+                    setSearchValue(searchRef.current?.value ?? '')
+                }}
             />
             <Spacer height={15}/>
 
@@ -76,7 +82,7 @@ export const UserListModal = (props: UserListModalProps) => {
                     alignItems={'start'}
                     style={{ overflow: 'scroll', paddingBottom: 15 }}
                 >
-                    {users.map((user, index) => {
+                    {users.filter((user)=>{return user.name.includes(keyword) || user.email.includes(keyword)}).map((user, index) => {
                         return <UserItem
                             name={user.name}
                             key={`${user}/${index}`}

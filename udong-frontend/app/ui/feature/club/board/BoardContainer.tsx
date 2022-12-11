@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../../../domain/store'
 import { postSelector } from '../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../domain/store/post/PostSlice'
+import { useDebouncedSearch } from '../../../../utility/useDebouncedSearch'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -22,10 +23,13 @@ export const BoardContainer = (props: BoardContainerProps) => {
     const { clubId } = props
     const dispatch = useDispatch<AppDispatch>()
     const boardPosts = useSelector(postSelector.clubPosts)
-
     const [loading, setLoading] = useState(true)
+    const [searchValue, setSearchValue] = useState('')
+    const [keyword, setKeyword] = useState('')
     const [showPostCreateModal, setShowPostCreateModal] = useState(false)
     const searchRef = useRef<HTMLInputElement | undefined>(null)
+
+    useDebouncedSearch(searchValue, setKeyword, 300)
 
     useEffect(() => {
         dispatch(postActions.getClubPosts(clubId))
@@ -45,18 +49,21 @@ export const BoardContainer = (props: BoardContainerProps) => {
         <Spacer height={20}/>
 
         <UdongSearchBar
-            onChange={() => {return}}
             inputRef={searchRef}
+            onChange={() => {
+                setSearchValue(searchRef.current?.value ?? '')
+            }}
         />
         <Spacer height={8}/>
-
         {loading ? <UdongLoader height={400}/> :
             <VStack>
                 {boardPosts.length === 0 ?
                     <UdongEmtpyContainer emptyObject={'게시글'}/>
                     :
                     <>
-                        {boardPosts.map((post, index) => {
+                        {boardPosts.filter((post) => {
+                            return (post.title.includes(keyword) || post.content.includes(keyword))
+                        }).map((post, index) => {
                             return <PostItem
                                 post={post}
                                 key={post.id + ' ' + index}
@@ -65,13 +72,11 @@ export const BoardContainer = (props: BoardContainerProps) => {
                         })}
                     </>
                 }
-
                 <PostCreateModal
                     clubId={clubId}
                     isOpen={showPostCreateModal}
                     setIsOpen={setShowPostCreateModal}
                 />
-
                 <ScrollToTopButton/>
             </VStack>
         }

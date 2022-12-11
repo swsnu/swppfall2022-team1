@@ -24,7 +24,7 @@ export const ClubMembersView = (props: ClubMembersViewProps) => {
 
     return <UdongFloatingContainer
         width={'calc(50% - 50px)'}
-        height={'fit-content'}
+        height={'560px'}
         padding={'35px 50px'}
     >
         <UdongText style={'GeneralTitle'}>동아리 인원</UdongText>
