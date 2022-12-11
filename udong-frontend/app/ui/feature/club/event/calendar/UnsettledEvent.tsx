@@ -11,7 +11,8 @@ const UnsettledEvent = (props: UnsettledEventProps & CSSProperties) => {
     const { title, onClick } = props
     return <button
         style={{
-            width: '15vw',
+            width: '10vw',
+            minWidth: '150px',
             height: '24px',
             borderRadius: '2px',
             border: 'none',
