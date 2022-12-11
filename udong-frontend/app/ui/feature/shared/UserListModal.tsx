@@ -1,6 +1,7 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { User } from '../../../domain/model/User'
+import { useDebouncedSearch } from '../../../utility/useDebouncedSearch'
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
 import { UdongImage } from '../../components/UdongImage'
@@ -20,6 +21,9 @@ interface UserListModalProps {
 export const UserListModal = (props: UserListModalProps) => {
     const { isOpen, setIsOpen, title, users } = props
     const searchRef = useRef<HTMLInputElement | undefined>(null)
+    const [searchValue, setSearchValue] = useState('')
+    const [keyword, setKeyword] = useState('')
+    useDebouncedSearch(searchValue, setKeyword, 300)
 
     const handleOnClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         setIsOpen(false)
@@ -55,7 +59,9 @@ export const UserListModal = (props: UserListModalProps) => {
 
             <UdongSearchBar
                 inputRef={searchRef}
-                onChange={() => {return}}
+                onChange={() => {
+                    setSearchValue(searchRef.current?.value ?? '')
+                }}
             />
             <Spacer height={15}/>
 
@@ -66,7 +72,7 @@ export const UserListModal = (props: UserListModalProps) => {
                     alignItems={'start'}
                     style={{ overflow: 'scroll', paddingBottom: 15 }}
                 >
-                    {users.map((user, index) => {
+                    {users.filter((user)=>{return user.name.includes(keyword) || user.email.includes(keyword)}).map((user, index) => {
                         return <UserItem
                             name={user.name}
                             key={`${user}/${index}`}
