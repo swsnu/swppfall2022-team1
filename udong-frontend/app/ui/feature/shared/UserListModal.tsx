@@ -24,7 +24,7 @@ interface UserListModalProps {
 export const UserListModal = (props: UserListModalProps) => {
     const { isOpen, setIsOpen, title, users } = props
     const dispatch = useDispatch<AppDispatch>()
-    const userMe = useSelector(userSelector.userMe)
+    const userMe = useSelector(userSelector.userMe) // eslint-disable-line
     const searchRef = useRef<HTMLInputElement | undefined>(null)
 
     useEffect(() => {
