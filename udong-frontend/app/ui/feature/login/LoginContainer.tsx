@@ -1,6 +1,6 @@
-import { signIn, useSession } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../domain/store'
@@ -20,10 +20,17 @@ export const LoginContainer = () => {
     const { accessToken = '', user } = session ?? {}
     const isLoggedIn = useSelector(authSelector.isLoggedIn)
 
+    const handleLogin = useCallback(async (email: string, token: string, name: string ) => {
+        const response = await dispatch(authActions.login({ email, token, name }))
+        if (response.type === `${authActions.logout.typePrefix}/rejected`) {
+            signOut({ redirect: false })
+        }
+    }, [dispatch])
+
     useEffect(() => {
         if (status === 'authenticated') {
             if (user && accessToken && user.email && user.name) {
-                dispatch(authActions.login({ email: user.email, token: accessToken, name: user.name }))
+                handleLogin(user.email, accessToken, user.name)
             }
         }
     }, [status]) // eslint-disable-line
