@@ -3,7 +3,9 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { Club } from '../../../../../domain/model/Club'
+import { dummyUserMe } from '../../../../../domain/model/User'
 import { clubReducer, ClubState } from '../../../../../domain/store/club/ClubSlice'
+import { userReducer, UserState } from '../../../../../domain/store/user/UserSlice'
 import { ClubProfileView } from '../ClubProfileView'
 
 const testClub: Club = {
@@ -19,9 +21,14 @@ const stubClubInitialState: ClubState = {
     errors: {},
 }
 
+const stubUserInitialState: UserState = {
+    isAdmin: true,
+    selectedUser: dummyUserMe,
+}
+
 const mockStore = configureStore({
-    reducer: { club: clubReducer },
-    preloadedState: { club: stubClubInitialState },
+    reducer: { club: clubReducer, user: userReducer },
+    preloadedState: { club: stubClubInitialState, user: stubUserInitialState },
 })
 
 describe('<ClubProfileView/>', () => {
