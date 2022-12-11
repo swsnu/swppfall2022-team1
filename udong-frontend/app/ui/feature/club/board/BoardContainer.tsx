@@ -67,6 +67,7 @@ export const BoardContainer = (props: BoardContainerProps) => {
                             return <PostItem
                                 post={post}
                                 key={post.id + ' ' + index}
+                                clubId={clubId}
                             />
                         })}
                     </>

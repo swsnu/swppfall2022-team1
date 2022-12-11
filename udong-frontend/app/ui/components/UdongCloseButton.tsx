@@ -2,11 +2,11 @@ import close from '../icons/IcClose.png'
 import { VStack } from './Stack'
 import { UdongImage } from './UdongImage'
 
-interface CloseModalButtonProps {
+interface UdongCloseButtonProps {
     setIsOpen: (open: boolean) => void
 }
 
-export const UdongCloseButton = (props: CloseModalButtonProps) => {
+export const UdongCloseButton = (props: UdongCloseButtonProps) => {
     const { setIsOpen } = props
     return <VStack
         width={'100%'}

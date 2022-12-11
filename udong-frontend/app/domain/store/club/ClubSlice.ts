@@ -4,19 +4,30 @@ import axios from 'axios'
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { Club } from '../../model/Club'
 import { ClubUser } from '../../model/ClubUser'
+import { DefaultErrorType, IncorrectFieldsErrorType, UserIsNotAdminErrorType } from '../index'
 
-export type ClubRegisterAPIErrorType = 'already_registered' | 'invalid_code' | 'error'
+export type ClubRegisterAPIErrorType = 'already_registered' | 'invalid_code' | DefaultErrorType
+export type ClubEditAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType | IncorrectFieldsErrorType
+export type ClubDeleteAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType
+export interface ClubErrorType {
+    registerError?: ClubRegisterAPIErrorType
+    editError?: ClubEditAPIErrorType
+    deleteError?: ClubDeleteAPIErrorType
+}
 
 export interface ClubState {
     selectedClub?: Club
     myClubs: Array<Club>
     members: Array<ClubUser>
     clubRegisterError?: ClubRegisterAPIErrorType
+    clubEditError?: ClubEditAPIErrorType
+    errors: ClubErrorType
 }
 
 const initialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
 }
 
 export const getMyClubs = createAsyncThunk(
@@ -59,19 +70,46 @@ export const createClub = createAsyncThunk(
     },
 )
 
-export const editClub = createAsyncThunk(
-    'club/editClub',
-    async () => { return },
-)
+export const editClub =
+    createAsyncThunk<Club | undefined, { clubId: number, club: Club }, { rejectValue: ClubEditAPIErrorType }>(
+        'club/editClub',
+        async ({ clubId, club }, { rejectWithValue }) => {
+            try {
+                return await ClubAPI.editClub(clubId, club)
+            } catch (e) {
+                if (axios.isAxiosError(e)) {
+                    if (e.response?.status === 403) {
+                        return rejectWithValue('is_not_admin')
+                    } else if (e.response?.status === 400) {
+                        return rejectWithValue('incorrect_fields')
+                    } else {
+                        return rejectWithValue('error')
+                    }
+                }
+            }
+        },
+    )
 
 export const leaveClub = createAsyncThunk(
     'club/leaveClub',
     async () => { return },
 )
 
-export const deleteClub = createAsyncThunk(
+export const deleteClub = createAsyncThunk<void, number, { rejectValue: ClubDeleteAPIErrorType }>(
     'club/deleteClub',
-    async () => { return },
+    async (clubId: number, { rejectWithValue }) => {
+        try {
+            return await ClubAPI.deleteClub(clubId)
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                if (e.response?.status === 403) {
+                    return rejectWithValue('is_not_admin')
+                } else {
+                    return rejectWithValue('error')
+                }
+            }
+        }
+    },
 )
 
 export const getClubMembers = createAsyncThunk(
@@ -105,6 +143,9 @@ const clubSlice = createSlice({
         resetClubRegisterErrror: (state) => {
             state.clubRegisterError = undefined
         },
+        resetErrors: (state) => {
+            state.errors = {}
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getMyClubs.fulfilled, (state, action) => {
@@ -119,16 +160,26 @@ const clubSlice = createSlice({
         builder.addCase(getClubMembers.fulfilled, (state, action) => {
             state.members = action.payload
         })
-        builder.addCase(registerClub.fulfilled, (state, action) => {
+        builder.addCase(createClub.fulfilled, (state, action) => {
             state.selectedClub = action.payload
+            state.myClubs = state.myClubs.concat(action.payload)
+        })
+        builder.addCase(registerClub.fulfilled, (state, action) => {
+            const club = action.payload
+            state.selectedClub = action.payload
+            if (club) {
+                state.myClubs = state.myClubs.concat(club)
+            }
         })
         builder.addCase(registerClub.rejected, (state, action) => {
             state.clubRegisterError = action.payload
             state.selectedClub = undefined
         })
-        builder.addCase(createClub.fulfilled, (state, action) => {
-            state.selectedClub = action.payload
-            state.myClubs = state.myClubs.concat(action.payload)
+        builder.addCase(editClub.rejected, (state, action) => {
+            state.errors.editError = action.payload
+        })
+        builder.addCase(deleteClub.rejected, (state, action) => {
+            state.errors.deleteError = action.payload
         })
     },
 })
@@ -142,5 +193,6 @@ export const clubActions = {
     createClub,
     createClubTag,
     editClub,
+    deleteClub,
 }
 export const clubReducer = clubSlice.reducer

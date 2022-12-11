@@ -10,6 +10,7 @@ import { ClubMembersView } from '../ClubMembersView'
 const stubClubInitialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
 }
 
 const stubUserInitialState: UserState = {

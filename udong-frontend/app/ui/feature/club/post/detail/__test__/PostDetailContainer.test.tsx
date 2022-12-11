@@ -61,7 +61,7 @@ describe('<PostDetailContainer/>', () => {
         const mockPush = jest.fn()
         const mockBack = jest.fn()
         jest.spyOn(router, 'useRouter').mockImplementation(() => ({
-            query: { type: '' },
+            query: { rawClubId: 1, rawPostId: 1 },
             push: (url: string) => mockPush(url),
             back: mockBack,
         } as unknown as NextRouter))

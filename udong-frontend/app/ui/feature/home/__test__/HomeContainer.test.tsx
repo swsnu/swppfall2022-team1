@@ -11,6 +11,7 @@ import { HomeContainer } from '../HomeContainer'
 const stubInitialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
 }
 
 const stubPostInitialState: PostState = {

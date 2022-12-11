@@ -17,6 +17,13 @@ const stubUserInitialState: UserState = {
 const stubClubInitialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
+    selectedClub: {
+        id: 1,
+        name: '',
+        code: '',
+        image: '',
+    },
 }
 
 const mockStore = configureStore({
@@ -40,7 +47,7 @@ describe('<InfoContainer/>', () => {
             <InfoContainer clubId={1}/>
         </Provider>,
         )
-        const text = screen.getByText('탈퇴하기')
+        const text = screen.getByText('동아리 프로필')
         expect(text).toBeDefined()
     })
 })

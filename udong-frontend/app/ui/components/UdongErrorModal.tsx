@@ -1,3 +1,4 @@
+import { UdongColors } from '../theme/ColorPalette'
 import { Spacer } from './Spacer'
 import { UdongCloseButton } from './UdongCloseButton'
 import { UdongModal } from './UdongModal'
@@ -18,7 +19,12 @@ export const UdongErrorModal = (props: UdongErrorModalProps) => {
     >
         <UdongCloseButton setIsOpen={setIsOpen}/>
         <Spacer height={50}/>
-        <UdongText style={'GeneralTitle'}>{message}</UdongText>
+        <UdongText
+            style={'GeneralTitle'}
+            color={UdongColors.Warning}
+        >요청을 실패하였습니다.</UdongText>
+        <Spacer height={20}/>
+        <UdongText style={'GeneralContent'}>{message}</UdongText>
         <Spacer height={70}/>
     </UdongModal>
 }

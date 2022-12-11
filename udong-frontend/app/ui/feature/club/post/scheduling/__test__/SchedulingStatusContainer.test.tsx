@@ -7,8 +7,7 @@ import { Provider } from 'react-redux'
 
 import { SchedulingPostType } from '../../../../../../domain/model/SchedulingPostType'
 import { dummyUserMe } from '../../../../../../domain/model/User'
-import { clubReducer } from '../../../../../../domain/store/club/ClubSlice'
-import { ClubState } from '../../../../../../domain/store/club/ClubSlice'
+import { clubReducer, ClubState } from '../../../../../../domain/store/club/ClubSlice'
 import { schedulingReducer, SchedulingState } from '../../../../../../domain/store/post/scheduling/SchedulingSlice'
 import { userReducer } from '../../../../../../domain/store/user/UserSlice'
 import { new2dArray } from '../../../../../../utility/functions'
@@ -43,7 +42,7 @@ const schedulingInitialState: SchedulingState = {
     },
 }
 
-const clubInitialState: ClubState = { myClubs: [], members: [] }
+const clubInitialState: ClubState = { myClubs: [], members: [], errors: {} }
 
 const mockStore = configureStore({
     reducer: { club: clubReducer, scheduling: schedulingReducer, user: userReducer },

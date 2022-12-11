@@ -8,6 +8,7 @@ import { CreateClubModal } from '../CreateClubModal'
 const stubClubInitialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
 }
 
 const mockStore = configureStore({

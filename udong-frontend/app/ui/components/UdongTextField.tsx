@@ -60,7 +60,6 @@ export const UdongTextField = (props: UdongTextFieldProps) => {
                 color: UdongColors.GrayNormal,
                 padding: '8px 16px',
                 width: width ?? '100%',
-                minWidth: width ?? '100%',
             }}
         />
         {imageSrc &&

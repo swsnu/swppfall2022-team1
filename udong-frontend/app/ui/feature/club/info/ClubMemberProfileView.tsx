@@ -82,7 +82,11 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
     >
-        {!user ? <UdongLoader/> :
+        {!user ?
+            <VStack height={530}>
+                <UdongLoader/>
+            </VStack>
+            :
             <VStack width={'100%'}>
                 <HStack
                     justifyContent={'space-between'}
