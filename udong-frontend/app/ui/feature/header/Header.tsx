@@ -36,9 +36,11 @@ export const Header = ({ type, clubId }: HeaderProps) => {
 
     const clubName = '단풍'
 
-    const handleLogout = useCallback(() => {
-        dispatch(authActions.logout())
-        signOut({ redirect: false })
+    const handleLogout = useCallback(async () => {
+        const response = await dispatch(authActions.logout())
+        if (response.type === `${authActions.logout.typePrefix}/fulfilled`) {
+            signOut({ redirect: false })
+        }
     }, [dispatch])
 
     useEffect(() => {
