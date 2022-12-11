@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
 
-import { AdditionalFieldItem } from '../AdditionalFieldItem'
+import { AdditionalInputItem } from '../AdditionalInputItem'
 
-describe('<AdditionalFieldItem />', () => {
+describe('<AdditionalInputItem />', () => {
     it('should render', () => {
-        render(<AdditionalFieldItem
+        render(<AdditionalInputItem
             item={'test'}
             onRemove={() => {return}}
         />)

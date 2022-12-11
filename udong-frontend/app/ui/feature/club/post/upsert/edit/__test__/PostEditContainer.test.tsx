@@ -7,7 +7,7 @@ jest.mock('../../PostInputView', () => ({
     PostInputView: () => <div data-testid={'post-input-view'}/>,
 }))
 
-jest.mock('../../PostAdditionalFieldsView', () => ({
+jest.mock('../../PostAdditionalInputsView', () => ({
     PostAdditionalFieldsView: () => <div data-testid={'post-additional-fields-view'}/>,
 }))
 

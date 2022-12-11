@@ -19,7 +19,7 @@ import add from '../../../../icons/IcPlus.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { DateRangeType } from '../../../shared/DateRangePicker'
 import { TimeRangeType } from '../../../shared/TimeRangePicker'
-import { AdditionalFieldItem } from './AdditionalFieldItem'
+import { AdditionalInputItem } from './AdditionalInputItem'
 import { DateRangeTypeWithId, PostDateSchedule } from './PostDateSchedule'
 import { DAYS, PostDaySchedule } from './PostDaySchedule'
 import { TagListModal } from './TagListModal'
@@ -31,7 +31,7 @@ interface PostAdditionalFieldsViewProps {
     showDateTimePicker?: boolean
 }
 
-export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) => {
+export const PostAdditionalInputsView = (props: PostAdditionalFieldsViewProps) => {
     const { clubId, setScheduling, isEdit, showDateTimePicker } = props
     const dispatch = useDispatch<AppDispatch>()
 
@@ -75,7 +75,7 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
                 <UdongText style={'GeneralTitle'}>행사</UdongText>
                 <Spacer width={70}/>
                 {[].map((item, index) => {
-                    return <AdditionalFieldItem
+                    return <AdditionalInputItem
                         key={item + index}
                         item={<UdongText style={'ListContentUnderscore'}>교촌 허니콤보 먹고 싶다</UdongText>}
                         onRemove={() => {return}}
@@ -108,7 +108,7 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
                 <UdongText style={'GeneralTitle'}>태그</UdongText>
                 <Spacer width={70}/>
                 {selectedTags.map((tag, index) => {
-                    return <AdditionalFieldItem
+                    return <AdditionalInputItem
                         key={tag.id + index}
                         item={
                             <UdongChip
