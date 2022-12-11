@@ -2,6 +2,7 @@ import { Property } from 'csstype'
 import { CSSProperties, ReactNode } from 'react'
 
 import { UdongColors } from '../theme/ColorPalette'
+import { HStack } from './Stack'
 
 interface UdongTextProps {
     children: ReactNode
@@ -17,6 +18,7 @@ interface UdongTextProps {
         | 'TabUnselected'
         | 'Header'
     cursor?: Property.Cursor
+    onClick?: () => void
 }
 
 interface TextProps {
@@ -41,7 +43,7 @@ interface TextProps {
  *
  * */
 export const UdongText = (props: UdongTextProps & CSSProperties) => {
-    const { children, style, cursor } = props
+    const { children, style, cursor, onClick } = props
 
     const textProps = (): TextProps => {
         switch (style) {
@@ -114,21 +116,23 @@ export const UdongText = (props: UdongTextProps & CSSProperties) => {
     }
 
     return (
-        <p
-            style={{
-                fontFamily: 'SourceSansPro',
-                fontSize: textProps().fontSize,
-                fontWeight: textProps().fontWeight,
-                textDecoration: textProps().textDecoration,
-                color: textProps().color,
-                transition: textProps().transition,
-                transitionTimingFunction: textProps().transitionTimingFunction,
-                margin: 0,
-                cursor: cursor ?? undefined,
-                ...props,
-            }}
-        >
-            {children}
-        </p>
+        <HStack onClick={()=>{if (onClick) {onClick()}}}>
+            <p
+                style={{
+                    fontFamily: 'SourceSansPro',
+                    fontSize: textProps().fontSize,
+                    fontWeight: textProps().fontWeight,
+                    textDecoration: textProps().textDecoration,
+                    color: textProps().color,
+                    transition: textProps().transition,
+                    transitionTimingFunction: textProps().transitionTimingFunction,
+                    margin: 0,
+                    cursor: cursor ?? undefined,
+                    ...props,
+                }}
+            >
+                {children}
+            </p>
+        </HStack>
     )
 }

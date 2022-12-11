@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import { SessionProvider, signOut } from 'next-auth/react'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
+import { Toaster } from 'react-hot-toast'
 import { Provider } from 'react-redux'
 
 import { store } from '../app/domain/store'
@@ -46,6 +47,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <SessionProvider session={pageProps.session}>
             <Provider store={store}>
                 <VStack>
+                    <Toaster/>
                     <Header
                         type={findHeaderType(router.pathname)}
                         clubId={1}
