@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { CreateScheduling } from '../../../../../domain/model/CreatePost'
 import { SchedulingPostType } from '../../../../../domain/model/SchedulingPostType'
+import { AppDispatch } from '../../../../../domain/store'
+import { tagSelector } from '../../../../../domain/store/tag/TagSelector'
+import { tagActions } from '../../../../../domain/store/tag/TagSlice'
 import { DateTimeFormatter } from '../../../../../utility/dateTimeFormatter'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -16,25 +20,29 @@ import { TimeRangeType } from '../../../shared/TimeRangePicker'
 import { AdditionalFieldItem } from './AdditionalFieldItem'
 import { DateRangeTypeWithId, PostDateSchedule } from './PostDateSchedule'
 import { DAYS, PostDaySchedule } from './PostDaySchedule'
+import { TagListModal } from './TagListModal'
 
 interface PostAdditionalFieldsViewProps {
+    clubId: number
     setScheduling: (scheduling: CreateScheduling) => void
     isEdit: boolean
     showDateTimePicker?: boolean
 }
 
 export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) => {
-    const { setScheduling, isEdit, showDateTimePicker } = props
+    const { clubId, setScheduling, isEdit, showDateTimePicker } = props
+    const dispatch = useDispatch<AppDispatch>()
+
+    const tags = useSelector(tagSelector.tags)
 
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingPostType>(SchedulingPostType.DAYS)
-
     const [timeRange, setTimeRange] = useState<TimeRangeType>(isEdit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
-
     const [weekdays, setWeekdays] = useState<DAYS[]>(isEdit ? [DAYS.MONDAY, DAYS.THURSDAY] : [])
     const [dateRange, setDateRange] = useState<DateRangeType>(isEdit ? { start: '2022-11-01', end: '2022-11-10' } : { start: '', end: '' })
-
     const [dates, setDates] = useState<DateRangeTypeWithId[]>(isEdit ? [{ id: 0, start: '2022-11-04', end: '2022-11-05' },
         { id: 1, start: '2022-11-06', end: '2022-11-08' }] : [{ id: 0, start: '', end: '' }])
+
+    const [isTagListModalOpen, setIsTagListModalOpen] = useState(false)
 
     useEffect(() => {
         const scheduling: CreateScheduling = {
@@ -48,6 +56,11 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
         }
         setScheduling(scheduling)
     }, [schedulingTimeType, timeRange, dates, dateRange, weekdays]) // eslint-disable-line
+
+    const handleAddTag = useCallback(() => {
+        setIsTagListModalOpen(true)
+        dispatch(tagActions.getTags(clubId))
+    }, [dispatch, clubId])
 
     return <VStack>
         <HStack
@@ -96,6 +109,7 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
                 })}
             </HStack>
             <UdongImage
+                onClick={handleAddTag}
                 src={add.src}
                 height={15}
                 width={15}
@@ -105,6 +119,7 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
             height={1}
             backgroundColor={UdongColors.GrayBright}
         />
+
         {showDateTimePicker &&
             <VStack>
                 <HStack
@@ -158,5 +173,11 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
                 <Spacer height={20}/>
             </VStack>
         }
+
+        <TagListModal
+            isOpen={isTagListModalOpen}
+            setIsOpen={setIsTagListModalOpen}
+            tags={tags}
+        />
     </VStack>
 }

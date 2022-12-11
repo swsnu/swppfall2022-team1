@@ -11,11 +11,11 @@ import { UdongColors } from '../../../theme/ColorPalette'
 
 interface TagItemProps {
     name: string
-    createdAt: string
-    updatedAt: string
+    createdAt?: string
+    updatedAt?: string
     isUserIncluded: boolean
-    showEditModal: (showEditModal: boolean) => void
-    onClickDelete: (showDeleteModal: boolean) => void
+    showEditModal?: (showEditModal: boolean) => void
+    onClickDelete?: (showDeleteModal: boolean) => void
 }
 
 export const TagItem = (props: TagItemProps) => {
@@ -23,20 +23,19 @@ export const TagItem = (props: TagItemProps) => {
 
     const handleOnClickEdit = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
-        showEditModal(true)
+        if (showEditModal) {
+            showEditModal(true)
+        }
     }, [showEditModal])
 
     const handleOnClickDelete = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
-        onClickDelete(true)
+        if (onClickDelete) {
+            onClickDelete(true)
+        }
     }, [onClickDelete])
 
-    return <VStack>
-        <Spacer
-            height={1}
-            backgroundColor={UdongColors.GrayBright}
-        />
-
+    return <VStack width={'100%'}>
         <HStack
             paddingVertical={14}
             justifyContent={'space-between'}
@@ -50,40 +49,54 @@ export const TagItem = (props: TagItemProps) => {
 
             <HStack>
                 <Spacer width={30}/>
-                <UdongText
-                    style={'ListContentS'}
-                    whiteSpace={'nowrap'}
-                >
-                    {`생성일: ${createdAt}`}
-                </UdongText>
-                <Spacer width={30}/>
-                <UdongText
-                    style={'ListContentS'}
-                    whiteSpace={'nowrap'}
-                >
-                    {`수정일: ${updatedAt}`}
-                </UdongText>
+                {createdAt &&
+                    <UdongText
+                        style={'ListContentS'}
+                        whiteSpace={'nowrap'}
+                    >
+                        {`생성일: ${createdAt}`}
+                    </UdongText>
+                }
 
                 <Spacer width={30}/>
-                <VStack onClick={handleOnClickEdit}>
-                    <UdongImage
-                        src={edit.src}
-                        height={20}
-                        width={20}
-                        clickable={true}
-                    />
-                </VStack>
+                {updatedAt &&
+                    <UdongText
+                        style={'ListContentS'}
+                        whiteSpace={'nowrap'}
+                    >
+                        {`수정일: ${updatedAt}`}
+                    </UdongText>
+                }
+
+                <Spacer width={30}/>
+                {onClickDelete &&
+                    <VStack onClick={handleOnClickEdit}>
+                        <UdongImage
+                            src={edit.src}
+                            height={20}
+                            width={20}
+                            clickable={true}
+                        />
+                    </VStack>
+                }
 
                 <Spacer width={10}/>
-                <VStack onClick={handleOnClickDelete}>
-                    <UdongImage
-                        src={trash.src}
-                        height={20}
-                        width={20}
-                        clickable={true}
-                    />
-                </VStack>
+                {showEditModal &&
+                    <VStack onClick={handleOnClickDelete}>
+                        <UdongImage
+                            src={trash.src}
+                            height={20}
+                            width={20}
+                            clickable={true}
+                        />
+                    </VStack>
+                }
             </HStack>
         </HStack>
+
+        <Spacer
+            height={1}
+            backgroundColor={UdongColors.GrayBright}
+        />
     </VStack>
 }

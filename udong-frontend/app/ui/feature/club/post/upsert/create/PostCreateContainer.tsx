@@ -73,28 +73,16 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
 
     const handleCreatePost = useCallback(() => {
         if (clubId) {
-            if (postType === PostType.SCHEDULING) {
-                dispatch(postActions.createPost({
-                    clubId: parseInt(clubId),
-                    post: {
-                        tagIdList: [],
-                        title,
-                        content: contents,
-                        type: postType,
-                        scheduling,
-                    },
-                }))
-            } else {
-                dispatch(postActions.createPost({
-                    clubId: parseInt(clubId),
-                    post: {
-                        tagIdList: [],
-                        title,
-                        content: contents,
-                        type: postType,
-                    },
-                }))
-            }
+            dispatch(postActions.createPost({
+                clubId: parseInt(clubId),
+                post: {
+                    tagIdList: [],
+                    title,
+                    content: contents,
+                    type: postType,
+                    scheduling: postType === PostType.SCHEDULING ? scheduling : undefined,
+                },
+            }))
         }
     }, [clubId, contents, dispatch, postType, title, scheduling])
 
@@ -127,6 +115,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
             setContents={setContents}
         />
         <PostAdditionalFieldsView
+            clubId={parseInt(clubId)}
             setScheduling={setScheduling}
             showDateTimePicker={postType === PostType.SCHEDULING}
             isEdit={false}
