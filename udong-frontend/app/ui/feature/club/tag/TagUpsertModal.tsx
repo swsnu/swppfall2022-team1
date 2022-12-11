@@ -118,7 +118,7 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
                     >
                         {dummy.map((user, index) => {
                             return <UserItem
-                                name={user}
+                                name={user.name}
                                 key={`${user}/${index}`}
                                 hasRemoveButton={true}
                             />
