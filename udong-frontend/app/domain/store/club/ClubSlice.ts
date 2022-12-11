@@ -164,6 +164,9 @@ const clubSlice = createSlice({
             state.selectedClub = action.payload
             state.myClubs = state.myClubs.concat(action.payload)
         })
+        builder.addCase(createClub.rejected, (state) => {
+            state.selectedClub = undefined
+        })
         builder.addCase(registerClub.fulfilled, (state, action) => {
             const club = action.payload
             state.selectedClub = action.payload
