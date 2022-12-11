@@ -1,4 +1,8 @@
-import { enrollmentReducer } from '../post/enrollment/EnrollmentSlice'
+import { configureStore, EnhancedStore } from '@reduxjs/toolkit'
+import { AnyAction } from 'redux'
+import { ThunkMiddleware } from 'redux-thunk'
+
+import { enrollmentReducer, EnrollmentState } from '../post/enrollment/EnrollmentSlice'
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
@@ -7,22 +11,14 @@ jest.mock('next/config', () => () => ({
 }))
 
 describe('enrollment reducer', () => {
-    // let store: EnhancedStore<{ enrollment: EnrollmentState },
-    //     AnyAction,
-    //     [ThunkMiddleware<{ enrollment: EnrollmentState }, AnyAction, undefined>]>
-    // const fakeEnrollmentDto = {
-    //     isOpen: true,
-    // }
-    // const fakeEnrollment: EnrollmentState = {
-    //     isOpen: true,
-    // }
-
+    // eslint-disable-next-line
+    let store: EnhancedStore<{ enrollment: EnrollmentState },
+        AnyAction,
+        [ThunkMiddleware<{ enrollment: EnrollmentState }, AnyAction, undefined>]>
     beforeAll(() => {
-        // store = configureStore({ reducer: { club: clubReducer } })
+        store = configureStore({ reducer: { enrollment: enrollmentReducer } })
     })
     it('should handle initial state', () => {
-        expect(enrollmentReducer(undefined, { type: 'unknown' })).toEqual({
-            isOpen: true,
-        })
+        expect(enrollmentReducer(undefined, { type: 'unknown' })).toEqual({})
     })
 })
