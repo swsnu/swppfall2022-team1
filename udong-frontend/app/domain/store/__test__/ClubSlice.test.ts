@@ -27,6 +27,7 @@ const fakeClubDto = {
         user: fakeUserDto2,
         auth: RoleType.MEMBER,
     }],
+    errors: {},
 }
 
 const fakeClub: ClubState = {
@@ -40,6 +41,7 @@ const fakeClub: ClubState = {
         user: fakeUser2,
         role: RoleType.MEMBER,
     }],
+    errors: {},
 }
 
 describe('club reducer', () => {
@@ -54,6 +56,7 @@ describe('club reducer', () => {
         expect(clubReducer(undefined, { type: 'unknown' })).toEqual({
             myClubs: [],
             members: [],
+            errors: {},
         })
     })
     it('should handle getMyClubs', async () => {
