@@ -8,7 +8,7 @@ entity User {
   --
   *email: varchar
   *image: varchar
-  *Timetable: varchar
+  *time_table: varchar
   *name: varchar
   *created_at: dateTime
   *updated_at: dateTime
@@ -18,6 +18,7 @@ entity Club {
   *id: int <<generated>>
   --
   *name: varchar
+  *image: varchar
   *code: char
   *created_at: dateTime
   *updated_at: dateTime
@@ -65,6 +66,7 @@ entity Tag {
   --
   *club_id: int <<FK>>
   *name: varchar
+  *is_default: boolean
   *created_at: dateTime
   *updated_at: dateTime
 }
@@ -86,7 +88,6 @@ entity Post {
   *club_id: int <<FK>>
   *title: varchar
   *content: longtext
-  *images: varchar[]
   *type: "Announcement" | "Enrollment" | "Scheduling"
   *created_at: dateTime
   *updated_at: dateTime
