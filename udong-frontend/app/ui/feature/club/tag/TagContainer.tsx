@@ -7,6 +7,7 @@ import { tagSelector } from '../../../../domain/store/tag/TagSelector'
 import { tagActions } from '../../../../domain/store/tag/TagSlice'
 import { userSelector } from '../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../domain/store/user/UserSlice'
+import { useDebouncedSearch } from '../../../../utility/useDebouncedSearch'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -27,6 +28,9 @@ export const TagContainer = (props: TagContainerProps) => {
     const tags = useSelector(tagSelector.tags)
     const selectedTag = useSelector(tagSelector.selectedTag)
     const userMe = useSelector(userSelector.userMe)
+    const [searchValue, setSearchValue] = useState('')
+    const [keyword, setKeyword] = useState('')
+    useDebouncedSearch(searchValue, setKeyword, 300)
 
     useEffect(() => {
         dispatch(userActions.getMyProfile())
@@ -74,11 +78,25 @@ export const TagContainer = (props: TagContainerProps) => {
 
         <UdongSearchBar
             inputRef={searchRef}
-            onChange={() => {return}}
+            onChange={() => {
+                setSearchValue(searchRef.current?.value ?? '')
+            }}
         />
         <Spacer height={8}/>
 
-        {tags.map((tag, index) => {
+        {tags.filter((tag)=> {
+            let result = false
+            if (tag.name.includes(keyword)) {
+                result = true
+            } else {
+                tag.users.forEach((user)=>{
+                    if (user.name.includes(keyword)){
+                        result = true
+                    }
+                })
+            }
+            return result
+        }).map((tag, index) => {
             return <VStack
                 key={tag.name + index}
                 onClick={() => handleClickTag(tag.id)}
