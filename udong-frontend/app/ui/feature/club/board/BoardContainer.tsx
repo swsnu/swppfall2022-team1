@@ -50,7 +50,9 @@ export const BoardContainer = (props: BoardContainerProps) => {
 
         <UdongSearchBar
             inputRef={searchRef}
-            onChange={()=>{setSearchValue(searchRef.current?.value ?? '')}}
+            onChange={() => {
+                setSearchValue(searchRef.current?.value ?? '')
+            }}
         />
         <Spacer height={8}/>
         {loading ? <UdongLoader height={400}/> :
@@ -59,7 +61,7 @@ export const BoardContainer = (props: BoardContainerProps) => {
                     <UdongEmtpyContainer emptyObject={'게시글'}/>
                     :
                     <>
-                        {boardPosts.filter((post)=>{
+                        {boardPosts.filter((post) => {
                             return (post.title.includes(keyword) || post.content.includes(keyword))
                         }).map((post, index) => {
                             return <PostItem
