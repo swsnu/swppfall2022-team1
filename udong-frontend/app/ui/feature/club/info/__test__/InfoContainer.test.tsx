@@ -17,6 +17,7 @@ const stubUserInitialState: UserState = {
 const stubClubInitialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
     selectedClub: {
         id: 1,
         name: '',

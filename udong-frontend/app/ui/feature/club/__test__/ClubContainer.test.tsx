@@ -26,6 +26,7 @@ const stubPostInitialState: PostState = {
 const stubClubInitialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
 }
 
 const stubEventInitialState: EventState = {

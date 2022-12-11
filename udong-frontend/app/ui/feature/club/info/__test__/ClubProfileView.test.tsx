@@ -16,6 +16,7 @@ const testClub: Club = {
 const stubClubInitialState: ClubState = {
     myClubs: [],
     members: [],
+    errors: {},
 }
 
 const mockStore = configureStore({
@@ -25,25 +26,24 @@ const mockStore = configureStore({
 
 describe('<ClubProfileView/>', () => {
     it('should test on click delete', () => {
-        const mockOnDelete = jest.fn()
         render(
             <Provider store={mockStore}>
                 <ClubProfileView
-                    onClickDelete={() => {mockOnDelete()}}
                     club={testClub}
                 />
             </Provider>,
         )
         const text = screen.getByText('삭제하기')
         fireEvent.click(text)
-        expect(mockOnDelete).toHaveBeenCalledTimes(1)
+
+        const modalText = screen.getByText('동아리 삭제')
+        expect(modalText).toBeInTheDocument()
     })
 
     it('should test on click leave', () => {
         render(
             <Provider store={mockStore}>
                 <ClubProfileView
-                    onClickDelete={() => {return}}
                     club={testClub}
                 />
             </Provider>,
