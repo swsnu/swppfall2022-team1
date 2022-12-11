@@ -6,6 +6,8 @@ import { Club } from '../../../../domain/model/Club'
 import { AppDispatch } from '../../../../domain/store'
 import { clubSelector } from '../../../../domain/store/club/ClubSelector'
 import { clubActions, ClubErrorType } from '../../../../domain/store/club/ClubSlice'
+import { userSelector } from '../../../../domain/store/user/UserSelector'
+import { userActions } from '../../../../domain/store/user/UserSlice'
 import { isAllObjectFieldsUndefined } from '../../../../utility/helperTypes'
 import { Spacer } from '../../../components/Spacer'
 import { HStack } from '../../../components/Stack'
@@ -37,8 +39,14 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
     const router = useRouter()
 
     const errors = useSelector(clubSelector.errors)
+    const isAdmin = useSelector(userSelector.isAdmin)
+
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
+    useEffect(() => {
+        dispatch(userActions.getMyClubProfile(id))
+    }, [dispatch, id])
 
     useEffect(() => {
         if (!isAllObjectFieldsUndefined(errors)) {
@@ -56,6 +64,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
     }, [club, id, name, dispatch])
 
     const handleDeleteClub = useCallback(async () => {
+        setIsDeleteModalOpen(false)
         const response = await dispatch(clubActions.deleteClub(id))
         if (response.type === `${clubActions.deleteClub.typePrefix}/fulfilled`) {
             router.push(`/`)
@@ -79,7 +88,11 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
     }, [])
 
     const renderDeleteClubButton = useCallback(() => {
+        if (!isAdmin) {
+            return null
+        }
         return <HStack onClick={() => setIsDeleteModalOpen(true)}>
+            <Spacer width={60}/>
             <UdongText
                 style={'ListContentS'}
                 color={UdongColors.Warning}
@@ -87,7 +100,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
                삭제하기
             </UdongText>
         </HStack>
-    }, [])
+    }, [isAdmin])
 
     return <UdongFloatingContainer
         width={'calc(50% - 50px)'}
@@ -105,7 +118,6 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             bottomItem={
                 <HStack>
                     {renderLeaveClubButton()}
-                    <Spacer width={60}/>
                     {renderDeleteClubButton()}
                 </HStack>
             }
