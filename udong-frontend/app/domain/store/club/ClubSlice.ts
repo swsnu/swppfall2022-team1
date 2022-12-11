@@ -160,12 +160,16 @@ const clubSlice = createSlice({
         builder.addCase(getClubMembers.fulfilled, (state, action) => {
             state.members = action.payload
         })
-        builder.addCase(registerClub.fulfilled, (state, action) => {
-            state.selectedClub = action.payload
-        })
         builder.addCase(createClub.fulfilled, (state, action) => {
             state.selectedClub = action.payload
             state.myClubs = state.myClubs.concat(action.payload)
+        })
+        builder.addCase(registerClub.fulfilled, (state, action) => {
+            const club = action.payload
+            state.selectedClub = action.payload
+            if (club) {
+                state.myClubs = state.myClubs.concat(club)
+            }
         })
         builder.addCase(registerClub.rejected, (state, action) => {
             state.clubRegisterError = action.payload
