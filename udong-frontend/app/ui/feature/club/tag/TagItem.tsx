@@ -31,12 +31,7 @@ export const TagItem = (props: TagItemProps) => {
         onClickDelete(true)
     }, [onClickDelete])
 
-    return <VStack>
-        <Spacer
-            height={1}
-            backgroundColor={UdongColors.GrayBright}
-        />
-
+    return <VStack width={'100%'}>
         <HStack
             paddingVertical={14}
             justifyContent={'space-between'}
@@ -56,6 +51,7 @@ export const TagItem = (props: TagItemProps) => {
                 >
                     {`생성일: ${createdAt}`}
                 </UdongText>
+
                 <Spacer width={30}/>
                 <UdongText
                     style={'ListContentS'}
@@ -85,5 +81,10 @@ export const TagItem = (props: TagItemProps) => {
                 </VStack>
             </HStack>
         </HStack>
+
+        <Spacer
+            height={1}
+            backgroundColor={UdongColors.GrayBright}
+        />
     </VStack>
 }

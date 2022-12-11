@@ -29,10 +29,16 @@ const createPostError = createSelector(
     state => state.createPostError,
 )
 
+const createPostTags = createSelector(
+    postState,
+    state => state.createPostTags,
+)
+
 export const postSelector = {
     selectedPost,
     feedPosts,
     clubPosts,
     createdPostId,
     createPostError,
+    createPostTags,
 }

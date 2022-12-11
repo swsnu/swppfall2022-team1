@@ -52,11 +52,16 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
 
     const newPostId = useSelector(postSelector.createdPostId)
     const error = useSelector(postSelector.createPostError)
+    const selectedTagIds = useSelector(postSelector.createPostTags).map(tag => tag.id)
 
     const [title, setTitle] = useState<string>('')
     const [contents, setContents] = useState<string>('')
     const [scheduling, setScheduling] = useState<CreateScheduling | undefined>(undefined)
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
+
+    useEffect(() => {
+        dispatch(postActions.resetCreatePostTags())
+    }, [dispatch])
 
     useEffect(() => {
         if (error) {
@@ -73,30 +78,18 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
 
     const handleCreatePost = useCallback(() => {
         if (clubId) {
-            if (postType === PostType.SCHEDULING) {
-                dispatch(postActions.createPost({
-                    clubId: parseInt(clubId),
-                    post: {
-                        tagIdList: [],
-                        title,
-                        content: contents,
-                        type: postType,
-                        scheduling,
-                    },
-                }))
-            } else {
-                dispatch(postActions.createPost({
-                    clubId: parseInt(clubId),
-                    post: {
-                        tagIdList: [],
-                        title,
-                        content: contents,
-                        type: postType,
-                    },
-                }))
-            }
+            dispatch(postActions.createPost({
+                clubId: parseInt(clubId),
+                post: {
+                    tagIdList: selectedTagIds,
+                    title,
+                    content: contents,
+                    type: postType,
+                    scheduling: postType === PostType.SCHEDULING ? scheduling : undefined,
+                },
+            }))
         }
-    }, [clubId, contents, dispatch, postType, title, scheduling])
+    }, [clubId, contents, dispatch, postType, title, scheduling, selectedTagIds])
 
     const handleCloseErrorModal = useCallback(() => {
         setIsErrorModalOpen(false)
@@ -127,6 +120,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
             setContents={setContents}
         />
         <PostAdditionalFieldsView
+            clubId={parseInt(clubId)}
             setScheduling={setScheduling}
             showDateTimePicker={postType === PostType.SCHEDULING}
             isEdit={false}

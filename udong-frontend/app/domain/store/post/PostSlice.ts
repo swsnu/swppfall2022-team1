@@ -1,10 +1,11 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { PostAPI } from '../../../infra/api/PostAPI'
 import { BoardPost } from '../../model/BoardPost'
 import { CreatePost } from '../../model/CreatePost'
+import { Tag } from '../../model/Tag'
 
 export type PostCreateAPIErrorType = 'missing_required_field' | 'is_not_admin' | 'error'
 
@@ -14,11 +15,13 @@ export interface PostState {
     createPostError?: PostCreateAPIErrorType
     feedPosts: Array<BoardPost>
     clubPosts: Array<BoardPost>
+    createPostTags: Array<Tag>
 }
 
 const initialState: PostState = {
     feedPosts: [],
     clubPosts: [],
+    createPostTags: [],
 }
 
 export const getFeedPosts = createAsyncThunk(
@@ -78,6 +81,19 @@ const postSlice = createSlice({
     reducers: {
         resetCreatePostError: (state) => {
             state.createPostError = undefined
+        },
+        resetCreatePostTags: (state) => {
+            state.createPostTags = []
+        },
+        toggleCreatePostTagSelection: (state, action: PayloadAction<Tag>) => {
+            const tag = action.payload
+            const temp = state.createPostTags
+
+            if (temp.some(item => item.id === tag.id)) {
+                state.createPostTags = temp.filter(item => item.id !== tag.id)
+            } else {
+                state.createPostTags = temp.concat(tag)
+            }
         },
     },
     extraReducers: (builder) => {

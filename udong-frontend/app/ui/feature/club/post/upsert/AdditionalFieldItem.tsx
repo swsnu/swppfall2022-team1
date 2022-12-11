@@ -7,10 +7,11 @@ import remove from '../../../../icons/IcClose.png'
 
 interface AdditionalFieldItemProps {
     item: ReactNode
+    onRemove: () => void
 }
 
 export const AdditionalFieldItem = (props: AdditionalFieldItemProps) => {
-    const { item } = props
+    const { item, onRemove } = props
     return <HStack
         alignItems={'center'}
         style={{ paddingRight: 20 }}
@@ -21,6 +22,7 @@ export const AdditionalFieldItem = (props: AdditionalFieldItemProps) => {
             src={remove.src}
             height={10}
             width={10}
+            onClick={onRemove}
         />
     </HStack>
 }

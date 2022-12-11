@@ -21,6 +21,7 @@ const stubUserInitialState: UserState = {
 const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
+    createPostTags: [],
 }
 
 const stubClubInitialState: ClubState = {

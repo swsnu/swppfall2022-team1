@@ -17,6 +17,7 @@ const stubInitialState: ClubState = {
 const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
+    createPostTags: [],
 }
 
 const mockStore = configureStore({
