@@ -7,6 +7,7 @@ import { NextRouter } from 'next/router'
 import { Provider } from 'react-redux'
 
 import { authReducer, AuthState } from '../../../../domain/store/auth/AuthSlice'
+import { clubReducer, ClubState } from '../../../../domain/store/club/ClubSlice'
 import { Header, HEADER_PAGE } from '../Header'
 
 jest.mock('next/config', () => () => ({
@@ -20,9 +21,16 @@ const stubAuthInitialState: AuthState = {
     isLoggedIn: true,
 }
 
+const stubClubInitialState: ClubState = {
+    myClubs: [],
+    members: [],
+    errors: {},
+    selectedClub: { id: 1, name: '단풍', image: '', code: '' },
+}
+
 const mockStore = configureStore({
-    reducer: { auth: authReducer },
-    preloadedState: { auth: stubAuthInitialState },
+    reducer: { auth: authReducer, club: clubReducer },
+    preloadedState: { auth: stubAuthInitialState, club: stubClubInitialState },
 })
 
 const mockSession: Session = {

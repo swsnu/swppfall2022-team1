@@ -117,7 +117,7 @@ export const TagContainer = (props: TagContainerProps) => {
                 users={selectedTag.users}
                 isOpen={showMembers}
                 setIsOpen={setShowMembers}
-                title={'2022년 겨울 공연 2팀'}
+                title={selectedTag.name}
             />
         }
 

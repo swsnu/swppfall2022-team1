@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../../domain/store'
 import { authSelector } from '../../../domain/store/auth/AuthSelector'
 import { authActions } from '../../../domain/store/auth/AuthSlice'
+import { clubSelector } from '../../../domain/store/club/ClubSelector'
 import { HStack } from '../../components/Stack'
 import { UdongImage } from '../../components/UdongImage'
 import { UdongText } from '../../components/UdongText'
@@ -31,10 +32,10 @@ export const Header = ({ type, clubId }: HeaderProps) => {
     const router = useRouter()
     const dispatch = useDispatch<AppDispatch>()
     const { status } = useSession()
+
     const isLoggedIn = useSelector(authSelector.isLoggedIn)
     const isLoading = useSelector(authSelector.isLoading)
-
-    const clubName = '단풍'
+    const club = useSelector(clubSelector.selectedClub)
 
     const handleLogout = useCallback(() => {
         dispatch(authActions.logout())
@@ -80,15 +81,14 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                         }}
                         clickable={true}
                     />
-                    {type === HEADER_PAGE.CLUB ?
+                    {type === HEADER_PAGE.CLUB && club &&
                         <HStack onClick={() => router.push(`/club/${clubId}`)}>
                             <UdongText
                                 style={'Header'}
                                 color={UdongColors.Primary}
                                 cursor={'pointer'}
-                            >{clubName}</UdongText>
+                            >{club.name}</UdongText>
                         </HStack>
-                        : null
                     }
                 </HStack>
                 <HStack
