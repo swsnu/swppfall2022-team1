@@ -25,7 +25,7 @@ export const PostItem = (props: PostItemProps) => {
 
     const handleOnClickPost = useCallback(() => {
         router.push(`/club/${clubId}/post/${post.id}/?type=${getPostTypeQueryParam(post.type)}`)
-    }, [router])
+    }, [router, clubId, post])
 
     return <VStack onClick={handleOnClickPost}>
         <Spacer
