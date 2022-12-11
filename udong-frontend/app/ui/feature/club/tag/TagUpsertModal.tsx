@@ -13,7 +13,11 @@ import edit from '../../../icons/IcPencil.png'
 import { UdongColors } from '../../../theme/ColorPalette'
 import { UserItem } from '../../shared/UserItem'
 
-const dummyUserData = [{ name: '고동현', email: 'dhk' }, { name: '박지연', email: 'jyp' }, { name: '임유진', email: 'yji' }, { name: '이유빈', email: 'ybl' }]
+const dummyUserData = [
+    { name: '고동현', email: 'dhk' },
+    { name: '박지연', email: 'jyp' },
+    { name: '임유진', email: 'yji' },
+    { name: '이유빈', email: 'ybl' }]
 const dummy: Array<{ name: string, email: string }> = [...dummyUserData].concat(dummyUserData).concat(dummyUserData).concat(dummyUserData)
 
 interface TagUpsertModalProps {

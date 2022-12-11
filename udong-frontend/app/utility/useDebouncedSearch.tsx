@@ -15,6 +15,6 @@ export function useDebouncedSearch(value: string, setKeyword: Dispatch<SetStateA
                 clearTimeout(handler)
             }
         },
-        [value, delay], // Only re-call effect if value or delay changes
+        [value, delay, setKeyword], // Only re-call effect if value or delay changes
     )
 }
