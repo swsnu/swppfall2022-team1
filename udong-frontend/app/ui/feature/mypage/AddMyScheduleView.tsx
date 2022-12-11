@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 
 import { User } from '../../../domain/model/User'
@@ -21,7 +22,12 @@ export const AddMyScheduleView = (props: AddMyScheduleViewProps) => {
     const [timeTable, setTimeTable] = useState(me.timeTable)
     const dispatch = useDispatch<AppDispatch>()
 
-    const handleEditTimetable = () => dispatch(userActions.editMyProfile({ ...me, timeTable }))
+    const handleEditTimetable = async () => {
+        const response = await dispatch(userActions.editMyProfile({ ...me, timeTable }))
+        if (response.type === `${userActions.editMyProfile.typePrefix}/fulfilled`) {
+            toast.success('저장되었습니다')
+        }
+    }
 
     return <UdongFloatingContainer
         padding={'35px 50px'}

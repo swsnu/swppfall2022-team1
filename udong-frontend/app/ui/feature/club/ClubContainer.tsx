@@ -6,7 +6,7 @@ import { AppDispatch } from '../../../domain/store'
 import { clubActions } from '../../../domain/store/club/ClubSlice'
 import { convertQueryParamToString } from '../../../utility/handleQueryParams'
 import { Spacer } from '../../components/Spacer'
-import { VStack } from '../../components/Stack'
+import { HStack, VStack } from '../../components/Stack'
 import { BoardContainer } from './board/BoardContainer'
 import { CLUB_TAB, ClubTabType, ClubTabView } from './ClubTabView'
 import { EventContainer } from './event/EventContainer'
@@ -46,10 +46,9 @@ export const ClubContainer = (props: ClubContainerProps) => {
         }
     }
 
-    return <VStack>
+    return <HStack justifyContent='center'>
         <VStack
-            paddingHorizontal={50}
-            width='100vw'
+            width='1000px'
         >
             <ClubTabView
                 selectedTab={tab}
@@ -58,6 +57,6 @@ export const ClubContainer = (props: ClubContainerProps) => {
             <Spacer height={20}/>
             {getCurrentContainer()}
         </VStack>
-    </VStack>
+    </HStack>
 
 }

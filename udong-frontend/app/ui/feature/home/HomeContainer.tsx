@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 
 import { Spacer } from '../../components/Spacer'
-import { VStack } from '../../components/Stack'
+import { HStack, VStack } from '../../components/Stack'
 import { FeedContainer } from './feed/FeedContainer'
 import { HomeTabType, HomeTabView } from './HomeTabView'
 import { MyDongContainer } from './mydong/MyDongContainer'
@@ -20,16 +20,14 @@ export const HomeContainer = (props: HomeContainerProps) => {
     }, [router])
 
     return (
-        <VStack>
+        <HStack justifyContent={'center'}>
             <VStack
-                paddingHorizontal={50}
-                width='100vw'
+                width='1000px'
             >
                 <HomeTabView
                     selectedTab={tab}
                     setSelectedTab={handleCurrentTab}
                 />
-
                 <Spacer height={45}/>
                 {tab === 'feed' ?
                     <FeedContainer/>
@@ -37,6 +35,6 @@ export const HomeContainer = (props: HomeContainerProps) => {
                     <MyDongContainer/>
                 }
             </VStack>
-        </VStack>
+        </HStack>
     )
 }
