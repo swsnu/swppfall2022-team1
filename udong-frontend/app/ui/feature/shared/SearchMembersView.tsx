@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 
 import { ClubUser } from '../../../domain/model/ClubUser'
 import { RoleType } from '../../../domain/model/RoleType'
+import { useDebouncedSearch } from '../../../utility/useDebouncedSearch'
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
 import { UdongSearchBar } from '../../components/UdongSearchBar'
@@ -18,6 +19,9 @@ export const SearchMembersView = (props: SearchMembersViewProps) => {
     const [showMemberProfile, setShowMemberProfile] = useState(false)
     const [selectedMember, setSelectedMember] = useState<ClubUser | undefined>(undefined)
     const searchRef = useRef<HTMLInputElement | undefined>(null)
+    const [searchValue, setSearchValue] = useState('')
+    const [keyword, setKeyword] = useState('')
+    useDebouncedSearch(searchValue, setKeyword, 300)
 
     const handleMemberClick = useCallback((user: ClubUser) => {
         setSelectedMember(user)
@@ -27,7 +31,9 @@ export const SearchMembersView = (props: SearchMembersViewProps) => {
     return <VStack>
         <UdongSearchBar
             inputRef={searchRef}
-            onChange={() => {return}}
+            onChange={() => {
+                setSearchValue(searchRef.current?.value ?? '')
+            }}
         />
         <Spacer height={15}/>
 
@@ -37,7 +43,9 @@ export const SearchMembersView = (props: SearchMembersViewProps) => {
                 maxHeight: 480,
             }}
         >
-            {members.map((member, index) => {
+            {members.filter((member)=>{
+                return member.user.name.includes(keyword) || member.user.email.includes(keyword)
+            }).map((member, index) => {
                 return <VStack
                     key={member.user.name + index}
                     onClick={() => handleMemberClick(member)}

@@ -41,7 +41,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
 
     return <UdongFloatingContainer
         width={'calc(50% - 50px)'}
-        height={'fit-content'}
+        height={'560px'}
         padding={'35px 50px'}
     >
         <UdongText style={'GeneralTitle'}>동아리 프로필</UdongText>
