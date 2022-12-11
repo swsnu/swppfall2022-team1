@@ -44,6 +44,7 @@ export const PostEditContainer = (props: PostEditContainerProps) => {
             setContents={setContents}
         />
         <PostAdditionalFieldsView
+            clubId={1}
             showDateTimePicker={postType === PostType.SCHEDULING}
             isEdit={true}
             setScheduling={() => {return}}

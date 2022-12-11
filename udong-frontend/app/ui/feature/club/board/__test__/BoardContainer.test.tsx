@@ -8,6 +8,7 @@ import { BoardContainer } from '../BoardContainer'
 const stubInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
+    createPostTags: [],
 }
 
 const mockStore = configureStore({
