@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../../../domain/store'
 import { postSelector } from '../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../domain/store/post/PostSlice'
+import { useDebouncedSearch } from '../../../../utility/useDebouncedSearch'
 import { Spacer } from '../../../components/Spacer'
 import { VStack } from '../../../components/Stack'
 import { UdongLoader } from '../../../components/UdongLoader'
@@ -16,6 +17,9 @@ export const FeedContainer = () => {
     const posts = useSelector(postSelector.feedPosts)
     const [loading, setLoading] = useState(true)
     const searchRef = useRef<HTMLInputElement | undefined>(null)
+    const [searchValue, setSearchValue] = useState('')
+    const [keyword, setKeyword] = useState('')
+    useDebouncedSearch(searchValue, setKeyword, 300)
 
     useEffect(() => {
         dispatch(postActions.getFeedPosts())
@@ -25,7 +29,9 @@ export const FeedContainer = () => {
     return <VStack>
         <UdongSearchBar
             inputRef={searchRef}
-            onChange={() => {return}}
+            onChange={() => {
+                setSearchValue(searchRef.current?.value ?? '')
+            }}
         />
         <Spacer height={8}/>
 
@@ -34,7 +40,7 @@ export const FeedContainer = () => {
         {loading ? <UdongLoader height={500}/> :
             <VStack>
                 <>
-                    {posts.map((post) => {
+                    {posts.filter((post)=>{return post.title.includes(keyword) || post.content.includes(keyword)}).map((post) => {
                         return <PostItem
                             key={post.id}
                             post={post}
