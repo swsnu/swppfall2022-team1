@@ -12,6 +12,18 @@ import { UdongColors } from '../../theme/ColorPalette'
 import { ClickableTag } from './ClickableTag'
 import { UserListModal } from './UserListModal'
 
+const getPostItemTypeText = (type: PostType, closed?: boolean): string => {
+    switch (type) {
+        case PostType.ENROLLMENT:
+            return !closed ? '인원 모집 중' : '인원 모집 완료'
+        case PostType.SCHEDULING:
+            return !closed ? '일정 수합 중' : '일정 수합 완료'
+        case PostType.ANNOUNCEMENT:
+        default:
+            return ''
+    }
+}
+
 interface PostItemProps {
     post: BoardPost
     clubId: number
@@ -77,9 +89,9 @@ export const PostItem = (props: PostItemProps) => {
                         <UdongText
                             style={'ListContentXS'}
                             fontWeight={'bold'}
-                            color={UdongColors.Primary}
+                            color={!post.closed ? UdongColors.Primary : UdongColors.GrayNormal}
                         >
-                            {post.type === PostType.ENROLLMENT ? '인원 모집 중' : '일정 수합 중'}
+                            {getPostItemTypeText(post.type, post.closed)}
                         </UdongText>
                         <Spacer width={30}/>
                     </HStack>
