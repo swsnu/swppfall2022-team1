@@ -52,11 +52,16 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
 
     const newPostId = useSelector(postSelector.createdPostId)
     const error = useSelector(postSelector.createPostError)
+    const selectedTagIds = useSelector(postSelector.createPostTags).map(tag => tag.id)
 
     const [title, setTitle] = useState<string>('')
     const [contents, setContents] = useState<string>('')
     const [scheduling, setScheduling] = useState<CreateScheduling | undefined>(undefined)
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
+
+    useEffect(() => {
+        dispatch(postActions.resetCreatePostTags())
+    }, [dispatch])
 
     useEffect(() => {
         if (error) {
@@ -76,7 +81,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
             dispatch(postActions.createPost({
                 clubId: parseInt(clubId),
                 post: {
-                    tagIdList: [],
+                    tagIdList: selectedTagIds,
                     title,
                     content: contents,
                     type: postType,
@@ -84,7 +89,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
                 },
             }))
         }
-    }, [clubId, contents, dispatch, postType, title, scheduling])
+    }, [clubId, contents, dispatch, postType, title, scheduling, selectedTagIds])
 
     const handleCloseErrorModal = useCallback(() => {
         setIsErrorModalOpen(false)

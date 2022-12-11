@@ -82,6 +82,9 @@ const postSlice = createSlice({
         resetCreatePostError: (state) => {
             state.createPostError = undefined
         },
+        resetCreatePostTags: (state) => {
+            state.createPostTags = []
+        },
         toggleCreatePostTagSelection: (state, action: PayloadAction<Tag>) => {
             const tag = action.payload
             const temp = state.createPostTags
