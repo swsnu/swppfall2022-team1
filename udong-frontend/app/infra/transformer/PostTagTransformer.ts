@@ -5,6 +5,7 @@ const fromDto = (dto: PostTagDto): PostTag => {
     return {
         id: dto.id,
         name: dto.name,
+        isDefault: dto.is_default,
         createdAt: dto.created_at,
         updatedAt: dto.updated_at,
     }

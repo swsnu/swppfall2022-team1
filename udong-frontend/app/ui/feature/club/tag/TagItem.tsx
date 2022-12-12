@@ -88,3 +88,34 @@ export const TagItem = (props: TagItemProps) => {
         />
     </VStack>
 }
+
+export const DefaultTagItem = () => {
+    return <VStack width={'100%'}>
+        <HStack
+            paddingVertical={14}
+            justifyContent={'space-between'}
+        >
+            <UdongChip
+                color={UdongColors.Primary}
+                style={'fill'}
+                onClick={() => {return}}
+                text={'전체'}
+            />
+
+            <HStack>
+                <Spacer width={30}/>
+                <UdongText style={'ListContentS'}>{`기본 생성`}</UdongText>
+
+                <Spacer width={200}/>
+                <UdongText style={'ListContentS'}>{`수정 불가`}</UdongText>
+
+                <Spacer width={150}/>
+            </HStack>
+        </HStack>
+
+        <Spacer
+            height={1}
+            backgroundColor={UdongColors.GrayBright}
+        />
+    </VStack>
+}
