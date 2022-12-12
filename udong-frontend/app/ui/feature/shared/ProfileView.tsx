@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { ReactNode, useCallback, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
@@ -89,8 +90,8 @@ export const ProfileView = (props: ProfileViewProps) => {
             {onClickEditNameButton &&
                 <UdongImage
                     src={isNameInputVisible ? check.src : edit.src}
-                    height={20}
-                    width={20}
+                    height={17}
+                    width={17}
                     style={{ marginLeft: 8 }}
                     onClick={handleEditNickname}
                 />
@@ -99,15 +100,26 @@ export const ProfileView = (props: ProfileViewProps) => {
 
         <Spacer height={15}/>
         {code &&
-            <HStack>
-                <UdongText style={'ListContentUnderscore'}>고유코드</UdongText>
-                <Spacer width={5}/>
-                <UdongText style={'ListContentS'}>{code}</UdongText>
-                <Spacer width={5}/>
+            <HStack alignItems={'center'}>
+                <UdongText style={'ListContentS'}>고유코드</UdongText>
+                <Spacer width={10}/>
+                <UdongText
+                    style={'ListContentUnderscore'}
+                    cursor={'pointer'}
+                    onClick={async ()=>{
+                        try {
+                            await navigator.clipboard.writeText(code)
+                            toast.success('복사되었습니다')
+                        } catch (e) {
+                            toast.error('다시 시도해주세요')
+                        }
+                    }}
+                >{code}</UdongText>
+                <Spacer width={10}/>
                 <UdongImage
                     src={refresh.src}
-                    height={20}
-                    width={20}
+                    height={18}
+                    width={18}
                 />
             </HStack>
         }

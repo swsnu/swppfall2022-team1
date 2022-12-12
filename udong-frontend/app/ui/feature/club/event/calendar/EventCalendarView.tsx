@@ -26,10 +26,9 @@ export const EventCalendarView = ({ events }: EventCalendarViewProps) => {
             backgroundColor={UdongColors.GrayBright}
         />
         <HStack
-            width={'100%'}
+            height={'600px'}
             style={{
-                maxHeight: 'calc(100vh - 130px)',
-                minWidth: '810px',
+                minWidth: '600px',
             }}
             justifyContent={'space-between'}
             gap={50}
