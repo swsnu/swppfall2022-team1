@@ -15,7 +15,7 @@ import { UdongButton } from '../../../../../components/UdongButton'
 import { UdongErrorModal } from '../../../../../components/UdongErrorModal'
 import { UdongHeader } from '../../../../../components/UdongHeader'
 import { UdongColors } from '../../../../../theme/ColorPalette'
-import { PostAdditionalFieldsView } from '../PostAdditionalFieldsView'
+import { PostAdditionalInputsView } from '../PostAdditionalInputsView'
 import { PostInputView } from '../PostInputView'
 
 interface PostCreateContainerProps {
@@ -121,7 +121,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
             contents={contents}
             setContents={setContents}
         />
-        <PostAdditionalFieldsView
+        <PostAdditionalInputsView
             clubId={parseInt(clubId)}
             setScheduling={setScheduling}
             showDateTimePicker={postType === PostType.SCHEDULING}

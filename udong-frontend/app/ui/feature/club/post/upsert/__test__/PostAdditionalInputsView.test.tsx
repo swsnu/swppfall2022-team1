@@ -7,7 +7,7 @@ import { dummyUserMe } from '../../../../../../domain/model/User'
 import { postReducer, PostState } from '../../../../../../domain/store/post/PostSlice'
 import { tagReducer, TagState } from '../../../../../../domain/store/tag/TagSlice'
 import { userReducer, UserState } from '../../../../../../domain/store/user/UserSlice'
-import { PostAdditionalFieldsView } from '../PostAdditionalFieldsView'
+import { PostAdditionalInputsView } from '../PostAdditionalInputsView'
 
 const stubPostInitialState: PostState = {
     feedPosts: [],
@@ -30,11 +30,11 @@ const mockStore = configureStore({
     preloadedState: { post: stubPostInitialState, tag: stubTagInitialState, user: stubUserInitialState },
 })
 
-describe('<PostAdditionalFieldsView />', () => {
+describe('<PostAdditionalInputsView />', () => {
     it('should render', () => {
         render(
             <Provider store={mockStore}>
-                <PostAdditionalFieldsView
+                <PostAdditionalInputsView
                     clubId={1}
                     isEdit={true}
                     setScheduling={() => { return }}
@@ -48,7 +48,7 @@ describe('<PostAdditionalFieldsView />', () => {
         await act(async () => {
             render(
                 <Provider store={mockStore}>
-                    <PostAdditionalFieldsView
+                    <PostAdditionalInputsView
                         clubId={1}
                         isEdit={false}
                         showDateTimePicker={true}

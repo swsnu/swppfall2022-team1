@@ -6,7 +6,7 @@ import { VStack } from '../../../../../components/Stack'
 import { UdongButton } from '../../../../../components/UdongButton'
 import { UdongHeader } from '../../../../../components/UdongHeader'
 import { UdongColors } from '../../../../../theme/ColorPalette'
-import { PostAdditionalFieldsView } from '../PostAdditionalFieldsView'
+import { PostAdditionalInputsView } from '../PostAdditionalInputsView'
 import { PostInputView } from '../PostInputView'
 
 interface PostEditContainerProps {
@@ -43,7 +43,7 @@ export const PostEditContainer = (props: PostEditContainerProps) => {
             contents={contents}
             setContents={setContents}
         />
-        <PostAdditionalFieldsView
+        <PostAdditionalInputsView
             clubId={1}
             showDateTimePicker={postType === PostType.SCHEDULING}
             isEdit={true}

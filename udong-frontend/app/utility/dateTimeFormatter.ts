@@ -44,21 +44,26 @@ export const DateTimeFormatter = (() => {
             const end = new Date(`${date.end}`)
             const diff = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
 
-            if (!result.includes(`${start.toLocaleDateString('en-CA')}`)) {
-                result.push(`${start.toLocaleDateString('en-CA')}`)
+            const startString = start.toLocaleDateString('en-CA')
+            const endString = end.toLocaleDateString('en-CA')
+
+            if (!result.includes(`${startString}`)) {
+                result.push(`${startString}`)
             }
             for (let i = 1; i < diff; i++) {
-                const nextDate = new Date(start.getTime() + ((1000 * 60 * 60 * 24) * i)).toLocaleDateString('en-ZA')
-                if (!result.includes(`${nextDate}`)) {
-                    result.push(`${nextDate}`)
+                const nextDateString = new Date(start.getTime() + ((1000 * 60 * 60 * 24) * i)).toLocaleDateString('en-CA')
+                if (!result.includes(`${nextDateString}`)) {
+                    result.push(`${nextDateString}`)
                 }
             }
             if (diff > 0) {
-                if (!result.includes(`${end.toLocaleDateString('en-CA')}`)) {
-                    result.push(`${end.toLocaleDateString('en-CA')}`)
+                if (!result.includes(`${endString}`)) {
+                    result.push(`${endString}`)
                 }
             }
         }
+
+        result.sort()
         return result
     }
 
