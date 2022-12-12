@@ -10,7 +10,7 @@ interface AdditionalFieldItemProps {
     onRemove: () => void
 }
 
-export const AdditionalFieldItem = (props: AdditionalFieldItemProps) => {
+export const AdditionalInputItem = (props: AdditionalFieldItemProps) => {
     const { item, onRemove } = props
     return <HStack
         alignItems={'center'}

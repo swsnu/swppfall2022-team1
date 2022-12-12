@@ -12,8 +12,8 @@ jest.mock('../../PostInputView', () => ({
     PostInputView: () => <div data-testid={'post-input-view'}/>,
 }))
 
-jest.mock('../../PostAdditionalFieldsView', () => ({
-    PostAdditionalFieldsView: () => <div data-testid={'post-additional-fields-view'}/>,
+jest.mock('../../PostAdditionalInputsView', () => ({
+    PostAdditionalInputsView: () => <div data-testid={'post-additional-inputs-view'}/>,
 }))
 
 const stubPostInitialState: PostState = {
@@ -38,7 +38,7 @@ describe('<PostCreateContainer/>', () => {
             </Provider>,
         )
         const inputView = screen.getByTestId('post-input-view')
-        const additionalFieldsView = screen.getByTestId('post-additional-fields-view')
+        const additionalFieldsView = screen.getByTestId('post-additional-inputs-view')
         expect(inputView).toBeDefined()
         expect(additionalFieldsView).toBeDefined()
     })
@@ -52,7 +52,7 @@ describe('<PostCreateContainer/>', () => {
             </Provider>,
         )
         const inputView = screen.getByTestId('post-input-view')
-        const additionalFieldsView = screen.getByTestId('post-additional-fields-view')
+        const additionalFieldsView = screen.getByTestId('post-additional-inputs-view')
         expect(inputView).toBeDefined()
         expect(additionalFieldsView).toBeDefined()
     })
