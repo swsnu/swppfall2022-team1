@@ -39,6 +39,7 @@ describe('tag reducer', () => {
     it('should handle initial state', () => {
         expect(tagReducer(undefined, { type: 'unknown' })).toEqual({
             tags: [],
+            createPostTags: [],
         })
     })
     it('should handle getTags', async () => {
