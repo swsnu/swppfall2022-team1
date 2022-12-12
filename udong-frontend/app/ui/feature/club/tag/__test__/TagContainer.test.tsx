@@ -13,6 +13,7 @@ const stubInitialState: TagState = {
         createdAt: '',
         updatedAt: '',
         users: [],
+        isDefault: false,
     }],
     createPostTags: [],
 }

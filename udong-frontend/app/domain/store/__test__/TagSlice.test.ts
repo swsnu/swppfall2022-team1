@@ -7,9 +7,9 @@ import { Tag } from '../../model/Tag'
 import { getTags, tagReducer, TagState } from '../tag/TagSlice'
 import { fakeUser1, fakeUser2 } from './UserSlice.test'
 
-export const fakeTag1: Tag = { id: 1, name: 'tag1', users: [fakeUser1, fakeUser2], createdAt: '', updatedAt: '' }
-export const fakeClubTag1: Tag = { id: 1, name: 'tag1', createdAt: '', updatedAt: '', users: [fakeUser1, fakeUser2] }
-export const fakeClubTag2: Tag = { id: 2, name: 'tag2', createdAt: '', updatedAt: '', users: [fakeUser1, fakeUser2] }
+export const fakeTag1: Tag = { id: 1, name: 'tag1', users: [fakeUser1, fakeUser2], createdAt: '', updatedAt: '', isDefault: false }
+export const fakeClubTag1: Tag = { id: 1, name: 'tag1', createdAt: '', updatedAt: '', users: [fakeUser1, fakeUser2], isDefault: false }
+export const fakeClubTag2: Tag = { id: 2, name: 'tag2', createdAt: '', updatedAt: '', users: [fakeUser1, fakeUser2], isDefault: false }
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
