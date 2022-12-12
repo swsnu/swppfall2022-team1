@@ -19,7 +19,6 @@ jest.mock('../../PostAdditionalFieldsView', () => ({
 const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
-    createPostTags: [],
 }
 
 const mockStore = configureStore({

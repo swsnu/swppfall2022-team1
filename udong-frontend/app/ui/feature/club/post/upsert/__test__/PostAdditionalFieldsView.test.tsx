@@ -12,11 +12,11 @@ import { PostAdditionalFieldsView } from '../PostAdditionalFieldsView'
 const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
-    createPostTags: [],
 }
 
 const stubTagInitialState: TagState = {
     tags: [],
+    createPostTags: [],
 }
 
 const stubUserInitialState: UserState = {

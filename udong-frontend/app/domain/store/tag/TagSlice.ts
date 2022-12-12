@@ -11,10 +11,12 @@ export interface TagState {
     selectedTag?: Tag
     tags: Array<Tag>
     error?: TagAPIErrorType
+    createPostTags: Array<Tag>
 }
 
 const initialState: TagState = {
     tags: [],
+    createPostTags: [],
 }
 
 export const getTags = createAsyncThunk(
@@ -69,6 +71,19 @@ const tagSlice = createSlice({
     reducers: {
         setSelectedTag: (state, action: PayloadAction<Tag>) => {
             state.selectedTag = action.payload
+        },
+        resetCreatePostTags: (state) => {
+            state.createPostTags = []
+        },
+        toggleCreatePostTagSelection: (state, action: PayloadAction<Tag>) => {
+            const tag = action.payload
+            const temp = state.createPostTags
+
+            if (temp.some(item => item.id === tag.id)) {
+                state.createPostTags = temp.filter(item => item.id !== tag.id)
+            } else {
+                state.createPostTags = temp.concat(tag)
+            }
         },
     },
     extraReducers: (builder) => {

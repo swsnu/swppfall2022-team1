@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CreateScheduling } from '../../../../../domain/model/CreatePost'
 import { SchedulingPostType } from '../../../../../domain/model/SchedulingPostType'
 import { AppDispatch } from '../../../../../domain/store'
-import { postSelector } from '../../../../../domain/store/post/PostSelector'
-import { postActions } from '../../../../../domain/store/post/PostSlice'
 import { tagSelector } from '../../../../../domain/store/tag/TagSelector'
 import { tagActions } from '../../../../../domain/store/tag/TagSlice'
 import { DateTimeFormatter } from '../../../../../utility/dateTimeFormatter'
@@ -36,7 +34,7 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
     const dispatch = useDispatch<AppDispatch>()
 
     const tags = useSelector(tagSelector.tags)
-    const selectedTags = useSelector(postSelector.createPostTags)
+    const selectedTags = useSelector(tagSelector.createPostTags)
 
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingPostType>(SchedulingPostType.DAYS)
     const [timeRange, setTimeRange] = useState<TimeRangeType>(isEdit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
@@ -116,7 +114,7 @@ export const PostAdditionalFieldsView = (props: PostAdditionalFieldsViewProps) =
                                 style={'fill'}
                                 text={tag.name}
                             />}
-                        onRemove={() => dispatch(postActions.toggleCreatePostTagSelection(tag))}
+                        onRemove={() => dispatch(tagActions.toggleCreatePostTagSelection(tag))}
                     />
                 })}
             </HStack>

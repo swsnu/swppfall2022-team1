@@ -14,6 +14,7 @@ const stubInitialState: TagState = {
         updatedAt: '',
         users: [],
     }],
+    createPostTags: [],
 }
 
 const stubUserInitialState: UserState = {
