@@ -101,7 +101,7 @@ export const TagContainer = (props: TagContainerProps) => {
                 key={tag.name + index}
                 onClick={() => handleClickTag(tag.id)}
             >
-                {tag.name === '전체' ?
+                {tag.isDefault ?
                     <DefaultTagItem/>
                     :
                     <TagItem
