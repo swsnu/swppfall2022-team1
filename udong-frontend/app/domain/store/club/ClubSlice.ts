@@ -4,23 +4,18 @@ import axios from 'axios'
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { Club } from '../../model/Club'
 import { ClubUser } from '../../model/ClubUser'
-import { DefaultErrorType, IncorrectFieldsErrorType, UserIsNotAdminErrorType } from '../index'
+import { APIError, APIErrorType } from '../ErrorHandler'
 
-export type ClubRegisterAPIErrorType = 'already_registered' | 'invalid_code' | DefaultErrorType
-export type ClubEditAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType | IncorrectFieldsErrorType
-export type ClubDeleteAPIErrorType = UserIsNotAdminErrorType | DefaultErrorType
 export interface ClubErrorType {
-    registerError?: ClubRegisterAPIErrorType
-    editError?: ClubEditAPIErrorType
-    deleteError?: ClubDeleteAPIErrorType
+    registerError?: APIErrorType
+    editError?: APIErrorType
+    deleteError?: APIErrorType
 }
 
 export interface ClubState {
     selectedClub?: Club
     myClubs: Array<Club>
     members: Array<ClubUser>
-    clubRegisterError?: ClubRegisterAPIErrorType
-    clubEditError?: ClubEditAPIErrorType
     errors: ClubErrorType
 }
 
@@ -44,20 +39,20 @@ export const getClub = createAsyncThunk(
     },
 )
 
-export const registerClub = createAsyncThunk<Club | undefined, string, { rejectValue: ClubRegisterAPIErrorType }>(
+export const registerClub = createAsyncThunk<Club | undefined, string, { rejectValue: APIErrorType }>(
     'club/registerClub',
     async (code: string, { rejectWithValue }) => {
         try {
             return await ClubAPI.registerClub(code)
         } catch (e) {
             if (axios.isAxiosError(e)) {
-                if (e.response?.status === 400) {
-                    return rejectWithValue('already_registered')
-                } else if (e.response?.status === 404) {
-                    return rejectWithValue('invalid_code')
-                } else {
-                    return rejectWithValue('error')
+                const errorType = APIError.getErrorType(e.response?.status)
+                if (errorType.errorCode === 400) {
+                    errorType.message = '이미 가입된 동아리입니다.'
+                } else if (errorType.errorCode === 404) {
+                    errorType.message = '유효하지 않은 코드입니다.'
                 }
+                return rejectWithValue(errorType)
             }
         }
     },
@@ -71,20 +66,18 @@ export const createClub = createAsyncThunk(
 )
 
 export const editClub =
-    createAsyncThunk<Club | undefined, { clubId: number, club: Club }, { rejectValue: ClubEditAPIErrorType }>(
+    createAsyncThunk<Club | undefined, { clubId: number, club: Club }, { rejectValue: APIErrorType }>(
         'club/editClub',
         async ({ clubId, club }, { rejectWithValue }) => {
             try {
                 return await ClubAPI.editClub(clubId, club)
             } catch (e) {
                 if (axios.isAxiosError(e)) {
-                    if (e.response?.status === 403) {
-                        return rejectWithValue('is_not_admin')
-                    } else if (e.response?.status === 400) {
-                        return rejectWithValue('incorrect_fields')
-                    } else {
-                        return rejectWithValue('error')
+                    const errorType = APIError.getErrorType(e.response?.status)
+                    if (errorType.errorCode === 400) {
+                        errorType.message = '모든 필드를 알맞게 입력해주세요.'
                     }
+                    return rejectWithValue(errorType)
                 }
             }
         },
@@ -95,18 +88,15 @@ export const leaveClub = createAsyncThunk(
     async () => { return },
 )
 
-export const deleteClub = createAsyncThunk<void, number, { rejectValue: ClubDeleteAPIErrorType }>(
+export const deleteClub = createAsyncThunk<void, number, { rejectValue: APIErrorType }>(
     'club/deleteClub',
     async (clubId: number, { rejectWithValue }) => {
         try {
             return await ClubAPI.deleteClub(clubId)
         } catch (e) {
             if (axios.isAxiosError(e)) {
-                if (e.response?.status === 403) {
-                    return rejectWithValue('is_not_admin')
-                } else {
-                    return rejectWithValue('error')
-                }
+                const errorType = APIError.getErrorType(e.response?.status)
+                return rejectWithValue(errorType)
             }
         }
     },
@@ -140,9 +130,6 @@ const clubSlice = createSlice({
     name: 'club',
     initialState,
     reducers: {
-        resetClubRegisterErrror: (state) => {
-            state.clubRegisterError = undefined
-        },
         resetErrors: (state) => {
             state.errors = {}
         },
@@ -175,7 +162,7 @@ const clubSlice = createSlice({
             }
         })
         builder.addCase(registerClub.rejected, (state, action) => {
-            state.clubRegisterError = action.payload
+            state.errors.registerError = action.payload
             state.selectedClub = undefined
         })
         builder.addCase(editClub.rejected, (state, action) => {
