@@ -68,6 +68,7 @@ export const PostInputView = (props: IProps) => {
                     fontSize: 14,
                     flexGrow: 1,
                     padding: 10,
+                    backgroundColor: UdongColors.White,
                 }}
             />
         </HStack>
