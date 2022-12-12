@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../../domain/store'
 import { clubSelector } from '../../../../domain/store/club/ClubSelector'
-import { clubActions, ClubRegisterAPIErrorType } from '../../../../domain/store/club/ClubSlice'
+import { clubActions } from '../../../../domain/store/club/ClubSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -21,14 +21,14 @@ interface RegisterClubModalProps {
 export const RegisterClubModal = (props: RegisterClubModalProps) => {
     const { isOpen, setIsOpen } = props
     const dispatch = useDispatch<AppDispatch>()
-    const error = useSelector(clubSelector.clubRegisterError)
+    const error = useSelector(clubSelector.errors).registerError
 
     const inputRef = useRef<HTMLInputElement | undefined>(null)
     const [code, setCode] = useState('')
 
     useEffect(() => {
         if (!isOpen) {
-            dispatch(clubActions.resetClubRegisterErrror())
+            dispatch(clubActions.resetErrors())
         }
     }, [dispatch, isOpen])
 
@@ -41,19 +41,9 @@ export const RegisterClubModal = (props: RegisterClubModalProps) => {
         }
     }, [dispatch, code, setIsOpen])
 
-    const getErrorMessage = useCallback((error: ClubRegisterAPIErrorType): string => {
-        if (error === 'already_registered') {
-            return '이미 가입된 동아리입니다.'
-        } else if (error === 'invalid_code') {
-            return '코드가 유효하지 않습니다.'
-        } else {
-            return '오류가 발생했습니다.'
-        }
-    }, [])
-
     if (error) {
         return <UdongErrorModal
-            message={getErrorMessage(error)}
+            message={error.message}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
         />

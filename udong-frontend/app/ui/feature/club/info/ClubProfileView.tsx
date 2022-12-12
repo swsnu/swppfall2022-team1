@@ -19,12 +19,12 @@ import { DeleteModal } from '../../shared/DeleteModal'
 import { ProfileView } from '../../shared/ProfileView'
 
 const getErrorMessage = (errors: ClubErrorType): string => {
-    if (errors?.deleteError === 'is_not_admin' || errors?.editError === 'is_not_admin') {
-        return '관리자 권한이 필요합니다.'
-    } else if (errors?.editError === 'incorrect_fields') {
-        return '모든 필드를 알맞게 입력해주세요.'
+    if (errors.deleteError) {
+        return errors.deleteError.message
+    } else if (errors.editError) {
+        return errors.editError.message
     } else {
-        return '오류가 발생했습니다.'
+        return ''
     }
 }
 
