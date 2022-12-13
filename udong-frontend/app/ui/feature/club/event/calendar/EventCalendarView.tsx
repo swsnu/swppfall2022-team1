@@ -16,7 +16,7 @@ export const EventCalendarView = ({ events }: EventCalendarViewProps) => {
     const router = useRouter()
     const { clubId } = router.query
 
-    const onClickEvent = (eventId: number) => {
+    const onClickEvent = (eventId: string) => {
         router.push(`/club/${clubId}/event/${eventId}`)
     }
 

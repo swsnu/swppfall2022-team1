@@ -5,7 +5,7 @@ import UnsettledEvent from './UnsettledEvent'
 
 interface UnsettledEventListProps {
     events: Array<ClubEvent>
-    onClickEvent: (eventId: number) => void
+    onClickEvent: (eventId: string) => void
 }
 
 export const UnsettledEventList = ({ events, onClickEvent }: UnsettledEventListProps) => {
@@ -24,7 +24,7 @@ export const UnsettledEventList = ({ events, onClickEvent }: UnsettledEventListP
             {events.map((event) => <UnsettledEvent
                 key={event.id}
                 title={event.name}
-                onClick={()=>onClickEvent(event.id)}
+                onClick={()=>onClickEvent(`${event.id}`)}
             />)}
         </VStack>
     </VStack>
