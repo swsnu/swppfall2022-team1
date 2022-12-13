@@ -14,6 +14,7 @@ const stubTagInitialState: TagState = {
     createPostTags: [],
     errors: {},
     selectedUserIds: [],
+    selectedTag: dummyTag,
 }
 
 const stubClubInitialState: ClubState = {
@@ -35,7 +36,6 @@ describe('<TagUpsertModal/>', () => {
                     isOpen={true}
                     setIsOpen={() => {return}}
                     clubId={1}
-                    tag={dummyTag}
                     confirmEditTag={() => {return}}
                 />
             </Provider>,
@@ -51,7 +51,6 @@ describe('<TagUpsertModal/>', () => {
                     isOpen={true}
                     setIsOpen={() => {return}}
                     clubId={1}
-                    tag={dummyTag}
                     confirmEditTag={() => {return}}
                 />
             </Provider>,
@@ -68,7 +67,6 @@ describe('<TagUpsertModal/>', () => {
                     isOpen={true}
                     setIsOpen={() => {return}}
                     clubId={1}
-                    tag={dummyTag}
                     confirmEditTag={() => {return}}
                 />
             </Provider>,
