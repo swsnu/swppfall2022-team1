@@ -6,7 +6,7 @@ import { CreateScheduling } from '../../../../../../domain/model/CreatePost'
 import { PostType } from '../../../../../../domain/model/PostType'
 import { AppDispatch } from '../../../../../../domain/store'
 import { postSelector } from '../../../../../../domain/store/post/PostSelector'
-import { postActions, PostCreateAPIErrorType } from '../../../../../../domain/store/post/PostSlice'
+import { postActions } from '../../../../../../domain/store/post/PostSlice'
 import { tagSelector } from '../../../../../../domain/store/tag/TagSelector'
 import { tagActions } from '../../../../../../domain/store/tag/TagSlice'
 import { convertQueryParamToString } from '../../../../../../utility/handleQueryParams'
@@ -35,16 +35,6 @@ const getSubtitle = (postType: PostType) => {
     }
 }
 
-const getErrorMessage = (error: PostCreateAPIErrorType): string => {
-    if (error === 'missing_required_field') {
-        return '모든 필드를 다 채워주세요.'
-    } else if (error === 'is_not_admin') {
-        return '관리자 권한이 필요한 동작입니다.'
-    } else {
-        return '오류가 발생했습니다.'
-    }
-}
-
 export const PostCreateContainer = (props: PostCreateContainerProps) => {
     const { postType } = props
     const dispatch = useDispatch<AppDispatch>()
@@ -53,7 +43,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
     const clubId = convertQueryParamToString(rawClubId)
 
     const newPostId = useSelector(postSelector.createdPostId)
-    const error = useSelector(postSelector.createPostError)
+    const error = useSelector(postSelector.errors).createPostError
     const selectedTagIds = useSelector(tagSelector.createPostTags).map(tag => tag.id)
 
     const [title, setTitle] = useState<string>('')
@@ -73,7 +63,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
 
     useEffect(() => {
         if (newPostId) {
-            dispatch(postActions.resetCreatePostError())
+            dispatch(postActions.resetErrors())
             router.push(`/club/${clubId}/post/${newPostId}/?from=create`)
         }
     }, [newPostId, dispatch, router, clubId])
@@ -95,7 +85,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
 
     const handleCloseErrorModal = useCallback(() => {
         setIsErrorModalOpen(false)
-        dispatch(postActions.resetCreatePostError())
+        dispatch(postActions.resetErrors())
     }, [dispatch])
 
     return <VStack paddingHorizontal={16}>
@@ -130,7 +120,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
 
         {error &&
             <UdongErrorModal
-                message={getErrorMessage(error)}
+                message={error.message}
                 isOpen={isErrorModalOpen}
                 setIsOpen={handleCloseErrorModal}
             />
