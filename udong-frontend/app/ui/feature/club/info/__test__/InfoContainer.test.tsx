@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 
 import { dummyUserMe } from '../../../../../domain/model/User'
@@ -43,9 +44,14 @@ describe('<InfoContainer/>', () => {
             query: { clubId: 1 },
         } as unknown as NextRouter))
 
-        render(<Provider store={mockStore}>
-            <InfoContainer clubId={1}/>
-        </Provider>,
+        const client = new QueryClient()
+
+        render(
+            <QueryClientProvider client={client}>
+                <Provider store={mockStore}>
+                    <InfoContainer clubId={1}/>
+                </Provider>,
+            </QueryClientProvider>,
         )
         const text = screen.getByText('동아리 프로필')
         expect(text).toBeDefined()
