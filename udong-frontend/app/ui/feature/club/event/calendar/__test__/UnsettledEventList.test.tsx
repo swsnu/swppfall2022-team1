@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { dummyEvents } from '../../EventContainer'
 import { UnsettledEventList } from '../UnsettledEventList'
+import { dummyEvents } from './EventCalendar.test'
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {

@@ -2,8 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 
-import { dummyEvents } from '../../EventContainer'
 import { EventCalendarView } from '../EventCalendarView'
+import { dummyEvents } from './EventCalendar.test'
 
 jest.mock('../EventCalendar', () => ({
     EventCalendar: ({ onClickEvent }: { onClickEvent: (id: string) => void }) => <div

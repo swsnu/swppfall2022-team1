@@ -2,6 +2,7 @@ import ToastUIReactCalendar from '@toast-ui/react-calendar'
 import dynamic from 'next/dynamic'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
+import { ClubEvent } from '../../../../../domain/model/ClubEvent'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
 import { UdongImage } from '../../../../components/UdongImage'
@@ -9,10 +10,9 @@ import { UdongLoader } from '../../../../components/UdongLoader'
 import { UdongText } from '../../../../components/UdongText'
 import arrow from '../../../../icons/IcShortArrow.png'
 import { UdongColors } from '../../../../theme/ColorPalette'
-import { EventType } from '../EventContainer'
 
 interface EventCalendarProps {
-    events: EventType[]
+    events: Array<ClubEvent>
     onClickEvent: (eventId: string) => void
 }
 
