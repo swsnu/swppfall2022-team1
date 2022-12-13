@@ -13,11 +13,14 @@ const stubPostInitialState: PostState = {
     feedPosts: [],
     errors: {},
     clubPosts: [],
+    eventPosts: [],
 }
 
 const stubTagInitialState: TagState = {
     tags: [],
     createPostTags: [],
+    errors: {},
+    selectedUserIds: [],
 }
 
 const stubUserInitialState: UserState = {

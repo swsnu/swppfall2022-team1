@@ -2,18 +2,26 @@ import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+import { dummyUserMe } from '../../../../../domain/model/User'
 import { postReducer, PostState } from '../../../../../domain/store/post/PostSlice'
+import { userReducer, UserState } from '../../../../../domain/store/user/UserSlice'
 import { BoardContainer } from '../BoardContainer'
 
 const stubInitialState: PostState = {
     errors: {},
     feedPosts: [],
     clubPosts: [],
+    eventPosts: [],
+}
+
+const stubUserInitialState: UserState = {
+    isAdmin: true,
+    selectedUser: dummyUserMe,
 }
 
 const mockStore = configureStore({
-    reducer: { post: postReducer },
-    preloadedState: { post: stubInitialState },
+    reducer: { post: postReducer, user: userReducer },
+    preloadedState: { post: stubInitialState, user: stubUserInitialState },
 })
 
 jest.mock('next/config', () => () => ({

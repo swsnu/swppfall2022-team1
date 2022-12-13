@@ -4,8 +4,29 @@ import { DAYS } from '../ui/feature/club/post/upsert/PostDaySchedule'
 export const DateTimeFormatter = (() => {
 
     // example: 2022-11-14T12:09:37.308826Z
-    const formatDateTime = (timeDate: string): string => {
-        return timeDate
+    const formatDateTime = (timeDate: string | undefined, verbose: boolean): string => {
+        if(timeDate === undefined) {
+            return ''
+        }
+
+        const date = new Date(timeDate)
+        if(verbose) {
+            let diff = new Date().getTime() - date.getTime()
+            diff = Math.floor(diff / 1000)
+            if(diff < 60) {
+                return `${diff}초 전`
+            }
+            diff = Math.floor(diff / 60)
+            if(diff < 60) {
+                return `${diff}분 전`
+            }
+            diff = Math.floor(diff / 60)
+            if(diff < 24) {
+                return `${diff}시간 전`
+            }
+        }
+
+        return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours()}시 ${date.getMinutes()}분`
     }
 
     const getBoolNum = (bool: boolean): string => {

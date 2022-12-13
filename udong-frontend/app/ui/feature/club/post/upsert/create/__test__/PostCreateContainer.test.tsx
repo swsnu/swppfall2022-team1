@@ -21,11 +21,14 @@ const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
     errors: {},
+    eventPosts: [],
 }
 
 const stubTagInitialState: TagState = {
     tags: [],
     createPostTags: [],
+    errors: {},
+    selectedUserIds: [],
 }
 
 const mockStore = configureStore({

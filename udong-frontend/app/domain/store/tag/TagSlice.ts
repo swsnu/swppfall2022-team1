@@ -3,20 +3,27 @@ import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { TagAPI } from '../../../infra/api/TagAPI'
-import { Tag } from '../../model/Tag'
+import { EditTag, Tag } from '../../model/Tag'
+import { APIError, APIErrorType } from '../ErrorHandler'
 
-type TagAPIErrorType = 'error' | 'forbidden'
+export interface TagErrorType {
+    deleteTagError?: APIErrorType
+    editTagError?: APIErrorType
+}
 
 export interface TagState {
     selectedTag?: Tag
     tags: Array<Tag>
-    error?: TagAPIErrorType
+    errors: TagErrorType
     createPostTags: Array<Tag>
+    selectedUserIds: Array<number>
 }
 
 const initialState: TagState = {
     tags: [],
     createPostTags: [],
+    selectedUserIds: [],
+    errors: {},
 }
 
 export const getTags = createAsyncThunk(
@@ -41,26 +48,46 @@ export const getTag = createAsyncThunk(
 
 export const createTag = createAsyncThunk(
     'tag/createTag',
-    async () => { return },
+    async ({ clubId, name, userIdList }: { clubId: number, name: string, userIdList: Array<number> }) => {
+        const basicTag = await ClubAPI.createClubTag(clubId, name, userIdList)
+        const tag = TagAPI.getTag(basicTag.id)
+        return tag
+    },
 )
 
-export const editTag = createAsyncThunk(
+export const editTag = createAsyncThunk<Tag | undefined, { tagId: number, tag: EditTag }, { rejectValue: APIErrorType }>(
     'tag/editTag',
-    async () => { return },
+    async ({ tagId, tag }: { tagId: number, tag: EditTag }, { rejectWithValue }) => {
+        try {
+            return await TagAPI.editTag(tagId, tag)
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                const errorType = APIError.getErrorType(e.response?.status)
+                let message: string = errorType.message
+
+                if (errorType.errorCode === 400) {
+                    message = '태그에 포함할 유저를 선택해주세요.'
+                }
+
+                return rejectWithValue({
+                    ...errorType,
+                    message,
+                })
+            }
+        }
+    },
 )
 
-export const deleteTag = createAsyncThunk<void, number, { rejectValue: TagAPIErrorType }>(
+export const deleteTag = createAsyncThunk<void, number, { rejectValue: APIErrorType }>(
     'tag/deleteTag',
     async (tagId: number, { rejectWithValue }) => {
         try {
             return await TagAPI.deleteTag(tagId)
         } catch (e) {
             if (axios.isAxiosError(e)) {
-                if (e.response?.status === 403) {
-                    return rejectWithValue('forbidden')
-                }
+                const errorType = APIError.getErrorType(e.response?.status)
+                return rejectWithValue(errorType)
             }
-            return rejectWithValue('error')
         }
     },
 )
@@ -69,7 +96,7 @@ const tagSlice = createSlice({
     name: 'tag',
     initialState,
     reducers: {
-        setSelectedTag: (state, action: PayloadAction<Tag>) => {
+        setSelectedTag: (state, action: PayloadAction<Tag | undefined>) => {
             state.selectedTag = action.payload
         },
         resetCreatePostTags: (state) => {
@@ -85,6 +112,15 @@ const tagSlice = createSlice({
                 state.createPostTags = temp.concat(tag)
             }
         },
+        resetSelectedUsers: (state) => {
+            state.selectedUserIds = []
+        },
+        selectUser: (state, action: PayloadAction<number>) => {
+            state.selectedUserIds = state.selectedUserIds.concat(action.payload)
+        },
+        deselectUser: (state, action) => {
+            state.selectedUserIds = state.selectedUserIds.filter(userId => userId !== action.payload)
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getTags.fulfilled, (state, action) => {
@@ -96,11 +132,31 @@ const tagSlice = createSlice({
         builder.addCase(deleteTag.fulfilled, (state) => {
             state.tags = state.tags.filter(tag => tag.id !== state.selectedTag?.id)
             state.selectedTag = undefined
-            state.error = undefined
+            state.errors = {}
         })
         builder.addCase(deleteTag.rejected, (state, action) => {
-            state.error = action.payload
+            state.errors.deleteTagError = action.payload
             state.selectedTag = undefined
+        })
+        builder.addCase(editTag.fulfilled, (state, action) => {
+            state.selectedTag = action.payload
+            state.tags = state.tags.map(tag => {
+                if (tag.id === action.payload?.id) {
+                    return {
+                        ...tag,
+                        name: action.payload ? action.payload.name : tag.name,
+                    }
+                }
+                return tag
+            })
+        })
+        builder.addCase(editTag.rejected, (state, action) => {
+            state.errors.editTagError = action.payload
+            state.selectedTag = undefined
+        })
+        builder.addCase(createTag.fulfilled, (state, action) => {
+            state.selectedTag = action.payload
+            state.tags = state.tags.concat(action.payload)
         })
     },
 })
@@ -110,5 +166,7 @@ export const tagActions = {
     getTags,
     getTag,
     deleteTag,
+    editTag,
+    createTag,
 }
 export const tagReducer = tagSlice.reducer

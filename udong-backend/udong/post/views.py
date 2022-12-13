@@ -16,13 +16,13 @@ from post.serializers import (
 )
 from club.models import Club
 from user.serializers import UserSerializer
-from timedata.serializers import AvailableTimeSerializer
+from timedata.serializers import AvailableTimeSerializer, AvailableTimeSimpleSerializer
 from timedata.models import AvailableTime
 from user.models import UserClub
 from comment.models import Comment
 from common.permissions import IsAdmin, CanReadPost
 from comment.serializers import CommentSerializer
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.utils import swagger_auto_schema, no_body
 from typing import Any, TYPE_CHECKING, TypeVar
 
 # Create your views here.
@@ -93,7 +93,9 @@ class PostViewSet(_PostGenericViewSet):
                 )
             else:
                 return Response()
-        return Response(response)
+        return Response(
+            sorted(response, key=lambda p: (p["created_at"], p["id"]), reverse=True)
+        )
 
     def retrieve(self, request: Request, pk: Any) -> Response:
         post = (
@@ -181,7 +183,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
             return super().get_permissions()
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
-        if self.action in ("participate", "status"):
+        if self.action in ("participate", "status", "me"):
             return ParticipationSerializer
         elif self.action == "close":
             return EnrollmentSerializer
@@ -200,6 +202,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
             )
         return enrollment
 
+    @swagger_auto_schema(request_body=no_body)
     @action(detail=True, methods=["POST"])
     def participate(self, request: Request, pk: Any) -> Response:
         result = self._check_enrollment_validity(pk)
@@ -224,6 +227,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @swagger_auto_schema(request_body=no_body)
     @action(detail=True, methods=["POST"])
     def unparticipate(self, request: Request, pk: Any) -> Response:
         result = self._check_enrollment_validity(pk)
@@ -241,6 +245,16 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
                 return Response(
                     "Didn't register yet", status=status.HTTP_400_BAD_REQUEST
                 )
+
+    @action(detail=True, methods=["GET"])
+    def me(self, request: Request, pk: Any) -> Response:
+        try:
+            participation = Participation.objects.get(
+                Q(user_id=request.user.id) & Q(enrollment_id=self.get_object())
+            )
+        except Participation.DoesNotExist:
+            return Response()
+        return Response(self.get_serializer(participation).data)
 
     @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
@@ -279,8 +293,11 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
             return AvailableTimeSerializer
         elif self.action in ("close", "status"):
             return SchedulingSerializer
+        elif self.action in ("me",):
+            return AvailableTimeSimpleSerializer
         return self.serializer_class
 
+    @swagger_auto_schema(request_body=no_body)
     @action(detail=True, methods=["POST"])
     def participate(self, request: Request, pk: Any) -> Response:
         try:
@@ -325,6 +342,17 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
                 "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
             )
         serializer = self.get_serializer(scheduling)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["GET"])
+    def me(self, request: Request, pk: Any) -> Response:
+        try:
+            availableTime = AvailableTime.objects.get(
+                Q(scheduling=self.get_object()) & Q(user_id=request.user.id)
+            )
+        except AvailableTime.DoesNotExist:
+            return Response(None)
+        serializer = self.get_serializer(availableTime)
         return Response(serializer.data)
 
     @action(detail=True, methods=["PUT"])

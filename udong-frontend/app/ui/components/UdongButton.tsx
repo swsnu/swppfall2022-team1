@@ -12,22 +12,6 @@ interface UdongButtonProps {
     disabled?: boolean
 }
 
-/**
- * <UdongButton
- *      onClick={() => console.log('hello world')}
- *      style={'fill'}
- *  >
- *      제출
- * </UdongButton>
- *
- * <UdongButton
- *      onClick={() => console.log('hello world')}
- *      style={'line'}
- *      color={UdongColors.Warning}
- *  >
- *      삭제
- * </UdongButton>
- * */
 export const UdongButton = (props: UdongButtonProps & CSSProperties) => {
     const { children, style, color, onClick, disabled } = props
 
@@ -61,5 +45,5 @@ const StyledButton = styled.button`
                 transition: 1.0s;
             },
         `
-    }}   
+    }}
 `

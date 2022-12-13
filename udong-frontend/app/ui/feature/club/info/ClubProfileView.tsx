@@ -126,7 +126,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             code={code}
             showCameraButton={isAdmin}
             onClickEditNameButton={isAdmin ? handleEditClub : undefined}
-            onRefresh={isAdmin ? () => {return} : undefined}
+            onRefresh={isAdmin ? async () => {dispatch(clubActions.refreshClubCode(id))} : undefined}
             bottomItem={
                 <HStack>
                     {renderLeaveClubButton()}

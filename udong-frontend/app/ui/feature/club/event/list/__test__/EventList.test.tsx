@@ -14,6 +14,7 @@ const dummyEvents: Array<ClubEvent> = [
     {
         id: 1,
         name: '',
+        times: [],
         createdAt: '',
         updatedAt: '',
     },

@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 
+import { DateTimeFormatter } from '../../../../utility/dateTimeFormatter'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongChip } from '../../../components/UdongChip'
@@ -16,10 +17,11 @@ interface TagItemProps {
     isUserIncluded: boolean
     showEditModal: (showEditModal: boolean) => void
     onClickDelete: (showDeleteModal: boolean) => void
+    isAdmin: boolean
 }
 
 export const TagItem = (props: TagItemProps) => {
-    const { name, createdAt, updatedAt, isUserIncluded, showEditModal, onClickDelete } = props
+    const { name, createdAt, updatedAt, isUserIncluded, showEditModal, onClickDelete, isAdmin } = props
 
     const handleOnClickEdit = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
@@ -49,7 +51,7 @@ export const TagItem = (props: TagItemProps) => {
                     style={'ListContentS'}
                     whiteSpace={'nowrap'}
                 >
-                    {`생성일: ${createdAt}`}
+                    {`생성일: ${DateTimeFormatter.formatDateTime(createdAt, false)}`}
                 </UdongText>
 
                 <Spacer width={30}/>
@@ -57,28 +59,34 @@ export const TagItem = (props: TagItemProps) => {
                     style={'ListContentS'}
                     whiteSpace={'nowrap'}
                 >
-                    {`수정일: ${updatedAt}`}
+                    {`수정일: ${DateTimeFormatter.formatDateTime(updatedAt, false)}`}
                 </UdongText>
 
-                <Spacer width={30}/>
-                <VStack onClick={handleOnClickEdit}>
-                    <UdongImage
-                        src={edit.src}
-                        height={20}
-                        width={20}
-                        clickable={true}
-                    />
-                </VStack>
+                {isAdmin ?
+                    <HStack>
+                        <Spacer width={30}/>
+                        <VStack onClick={handleOnClickEdit}>
+                            <UdongImage
+                                src={edit.src}
+                                height={20}
+                                width={20}
+                                clickable={true}
+                            />
+                        </VStack>
 
-                <Spacer width={10}/>
-                <VStack onClick={handleOnClickDelete}>
-                    <UdongImage
-                        src={trash.src}
-                        height={20}
-                        width={20}
-                        clickable={true}
-                    />
-                </VStack>
+                        <Spacer width={10}/>
+                        <VStack onClick={handleOnClickDelete}>
+                            <UdongImage
+                                src={trash.src}
+                                height={20}
+                                width={20}
+                                clickable={true}
+                            />
+                        </VStack>
+                    </HStack>
+                    :
+                    <Spacer width={80}/>
+                }
             </HStack>
         </HStack>
 

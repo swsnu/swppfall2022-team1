@@ -1,4 +1,5 @@
 import { ClubEvent } from '../../../../../domain/model/ClubEvent'
+import { DateTimeFormatter } from '../../../../../utility/dateTimeFormatter'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongText } from '../../../../components/UdongText'
@@ -34,13 +35,13 @@ export const EventItem = ({ event, onClickEvent }: EventItemProps) => {
                     <UdongText
                         style={'ListContentS'}
                     >
-                        생성일: {event.createdAt}
+                        생성일: {DateTimeFormatter.formatDateTime(event.createdAt, false)}
                     </UdongText>
                     <Spacer width={30}/>
                     <UdongText
                         style={'ListContentS'}
                     >
-                        수정일: {event.updatedAt}
+                        수정일: {DateTimeFormatter.formatDateTime(event.updatedAt, false)}
                     </UdongText>
                 </HStack>
             </HStack>

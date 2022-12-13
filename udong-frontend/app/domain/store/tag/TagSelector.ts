@@ -19,8 +19,20 @@ const createPostTags = createSelector(
     state => state.createPostTags,
 )
 
+const selectedUserIds = createSelector(
+    tagState,
+    state => state.selectedUserIds,
+)
+
+const errors = createSelector(
+    tagState,
+    state => state.errors,
+)
+
 export const tagSelector = {
     selectedTag,
     tags,
     createPostTags,
+    selectedUserIds,
+    errors,
 }

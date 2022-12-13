@@ -1,10 +1,13 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
 import { clubActions } from '../../../../../domain/store/club/ClubSlice'
 import { schedulingActions } from '../../../../../domain/store/post/scheduling/SchedulingSlice'
+import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { getDay, new2dArray } from '../../../../../utility/functions'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
@@ -14,6 +17,7 @@ import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { DraggableTimeTable } from '../../../shared/DraggableTimeTable'
 import { SlashedBox } from '../../../shared/SlashedBox'
+import { TimeTable } from '../../../shared/TimeTable'
 import { useData } from '../scheduling/SchedulingHooks'
 
 export const PostDetailSchedulingView = () => {
@@ -34,7 +38,10 @@ export const PostDetailSchedulingView = () => {
     }, [dispatch, postId])
 
     useEffect(() => {
-        if(clubId) { dispatch(clubActions.getClubMembers(+clubId))}
+        if(clubId) {
+            dispatch(clubActions.getClubMembers(+clubId))
+            dispatch(userActions.getMyClubProfile(+clubId))
+        }
     }, [dispatch, clubId])
 
     useEffect(() => {
@@ -42,17 +49,25 @@ export const PostDetailSchedulingView = () => {
     }, [dispatch])
 
     const data = useData()
-    const { schedulingStatus } = data
+    const { schedulingStatus, myId } = data
     const myTimeTable = data.myTimeTable ?? new2dArray(7, 48, false)
+    const isAdmin = useSelector(userSelector.isAdmin)
 
     useEffect(() => {
         if(schedulingStatus) {
             const dayCnt = 'dates' in schedulingStatus
                 ? schedulingStatus.dates.length
                 : schedulingStatus.weekdays.filter((v) => v).length
-            setSelected(new2dArray(dayCnt, schedulingStatus.endTime - schedulingStatus.startTime, false))
+            const mySchedulingInfo = schedulingStatus.availableTime.filter(time => time.user.id === myId )
+            if(mySchedulingInfo.length) {
+                setSelected(mySchedulingInfo[0].time)
+            }
+            else {
+                setSelected(new2dArray(dayCnt, schedulingStatus.endTime - schedulingStatus.startTime, false))
+            }
+
         }
-    }, [schedulingStatus])
+    }, [schedulingStatus, myId])
     if (!schedulingStatus) {return null}
 
     if('dates' in schedulingStatus) {
@@ -92,14 +107,30 @@ export const PostDetailSchedulingView = () => {
             />
             <UdongText style={'GeneralContent'}>내 고정 시간표</UdongText>
         </HStack>
-        {selected !== null && <DraggableTimeTable
-            days={header}
-            startTime={schedulingStatus.startTime}
-            selected={selected}
-            gray={fixed}
-            setSelected={setSelected as (f: ((x: boolean[][]) => boolean[][])) => void}
-            selectColor={UdongColors.Primary50}
-        />}
+        {
+            schedulingStatus.closed
+                ? (
+                    <TimeTable
+                        days={header}
+                        startTime={schedulingStatus.startTime}
+                        selected={
+                            schedulingStatus.confirmedTime
+                            ?? new2dArray(header.length, schedulingStatus.endTime - schedulingStatus.startTime, false)
+                        }
+                        selectColor={UdongColors.Secondary}
+                    />
+                )
+                : (selected !== null && (
+                    <DraggableTimeTable
+                        days={header}
+                        startTime={schedulingStatus.startTime}
+                        selected={selected}
+                        gray={fixed}
+                        setSelected={setSelected as (f: ((x: boolean[][]) => boolean[][])) => void}
+                        selectColor={UdongColors.Primary50}
+                    />
+                ))
+        }
         <HStack
             justifyContent={'space-around'}
             width={'100%'}
@@ -111,22 +142,23 @@ export const PostDetailSchedulingView = () => {
                 현황 보기
             </UdongButton>
 
-            <UdongButton
+            {!schedulingStatus.closed && <UdongButton
                 style={'fill'}
                 onClick={() => {
                     if(selected) {
                         dispatch(schedulingActions.participateInScheduling({ postId, time: selected }))
+                        toast.success('제출되었습니다')
                     }
                 }}
             >
                 일정 제출하기
-            </UdongButton>
+            </UdongButton>}
         </HStack>
-        <UdongButton
+        {isAdmin && !schedulingStatus.closed && <UdongButton
             style={'line'}
             onClick={() => router.push(`/club/${clubId}/post/${postId}/close`)}
         >
             마감하기
-        </UdongButton>
+        </UdongButton>}
     </VStack>
 }

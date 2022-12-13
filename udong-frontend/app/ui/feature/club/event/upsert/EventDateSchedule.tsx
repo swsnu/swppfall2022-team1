@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -11,24 +11,67 @@ import IcPlus from '/app/ui/icons/IcPlus.png'
 import { SpecificDatePicker } from '../../../shared/SpecificDatePicker'
 import { SpecificTimePicker } from '../../../shared/SpecificTimePicker'
 
-interface DateTimesType {
+export interface DayTimeWithIdType {
     id: number
     start: {
-        date: string
-        time: string
+        date: string //YYYY-MM-DD
+        time: string //HH:mm
     }
     end: {
-        date: string
-        time: string
+        date: string //YYYY-MM-DD
+        time: string //HH:mm
     }
 }
 
 interface EventDateScheduleProps {
-    isEdit: boolean
+    dayTimesWithId: Array<DayTimeWithIdType>
+    setDayTimesWithId: Dispatch<SetStateAction<Array<DayTimeWithIdType>>>
 }
 
-export const EventDateSchedule = ({ isEdit }: EventDateScheduleProps) => {
-    const [dateTimes, setDateTimes] = useState<DateTimesType[]>([{ id: 0, start: { date: '', time: '' }, end: { date: '', time: '' } }])
+export const EventDateSchedule = ({ dayTimesWithId, setDayTimesWithId }: EventDateScheduleProps) => {
+    const handleStartDateChange = (id: number, newDate: string) => {
+        const newDateTimes = dayTimesWithId.map((target) => {
+            if (target.id === id){
+                return { ...target, start: { date: newDate, time: target.start.time } }
+            } else {
+                return target
+            }
+        })
+        setDayTimesWithId(newDateTimes)
+    }
+
+    const handleStartTimeChange = (id: number, newTime: string) => {
+        const newDateTimes = dayTimesWithId.map((target) => {
+            if (target.id === id){
+                return { ...target, start: { date: target.start.date, time: newTime } }
+            } else {
+                return target
+            }
+        })
+        setDayTimesWithId(newDateTimes)
+    }
+
+    const handleEndDateChange = (id: number, newDate: string) => {
+        const newDateTimes = dayTimesWithId.map((target) => {
+            if (target.id === id) {
+                return { ...target, end: { date: newDate, time: target.end.time } }
+            } else {
+                return target
+            }
+        })
+        setDayTimesWithId(newDateTimes)
+    }
+
+    const handleEndTimeChange = (id: number, newTime: string) => {
+        const newDateTimes = dayTimesWithId.map((target) => {
+            if (target.id === id){
+                return { ...target, end: { date: target.end.date, time: newTime } }
+            } else {
+                return target
+            }
+        })
+        setDayTimesWithId(newDateTimes)
+    }
 
     return <VStack
         paddingHorizontal={120}
@@ -43,7 +86,7 @@ export const EventDateSchedule = ({ isEdit }: EventDateScheduleProps) => {
                 gap={15}
                 alignItems={'center'}
             >
-                {dateTimes.map((dateTime, i) => (
+                {dayTimesWithId.map((dateTime, i) => (
                     <HStack
                         key={dateTime.id}
                         gap={15}
@@ -52,60 +95,24 @@ export const EventDateSchedule = ({ isEdit }: EventDateScheduleProps) => {
                         <Spacer width={15}/>
                         <SpecificDatePicker
                             date={dateTime.start.date}
-                            setDate={(newDate) => {
-                                const newDateTimes = dateTimes.map((target) => {
-                                    if (target.id === dateTime.id){
-                                        return { ...target, start: { date: newDate, time: target.start.time } }
-                                    } else {
-                                        return target
-                                    }
-                                })
-                                setDateTimes(newDateTimes)
-                            }
-                            }
+                            setDate={(newDate)=>{
+                                handleStartDateChange(dateTime.id, newDate)
+                            }}
                         />
                         <SpecificTimePicker
                             time={dateTime.start.time}
                             setTime={(newTime) => {
-                                const newDateTimes = dateTimes.map((target) => {
-                                    if (target.id === dateTime.id){
-                                        return { ...target, start: { date: target.start.date, time: newTime } }
-                                    } else {
-                                        return target
-                                    }
-                                })
-                                setDateTimes(newDateTimes)
-                            }
-                            }
+                                handleStartTimeChange(dateTime.id, newTime)
+                            }}
                         />
                         <UdongText style={'GeneralContent'}>~</UdongText>
                         <SpecificDatePicker
                             date={dateTime.end.date}
-                            setDate={(newDate) => {
-                                const newDateTimes = dateTimes.map((target) => {
-                                    if (target.id === dateTime.id){
-                                        return { ...target, end: { date: newDate, time: target.start.time } }
-                                    } else {
-                                        return target
-                                    }
-                                })
-                                setDateTimes(newDateTimes)
-                            }
-                            }
+                            setDate={(newDate) => {handleEndDateChange(dateTime.id, newDate)}}
                         />
                         <SpecificTimePicker
                             time={dateTime.end.time}
-                            setTime={(newTime) => {
-                                const newDateTimes = dateTimes.map((target) => {
-                                    if (target.id === dateTime.id){
-                                        return { ...target, end: { date: target.start.date, time: newTime } }
-                                    } else {
-                                        return target
-                                    }
-                                })
-                                setDateTimes(newDateTimes)
-                            }
-                            }
+                            setTime={(newTime) => {handleEndTimeChange(dateTime.id, newTime)}}
                         />
                         {i == 0 ?
                             <Spacer width={15}/> :
@@ -114,8 +121,8 @@ export const EventDateSchedule = ({ isEdit }: EventDateScheduleProps) => {
                                 height={15}
                                 width={15}
                                 onClick={() => {
-                                    const newDateTimes = dateTimes.filter((target) => (target.id !== dateTime.id))
-                                    setDateTimes(newDateTimes)}
+                                    const newDateTimes = dayTimesWithId.filter((target) => (target.id !== dateTime.id))
+                                    setDayTimesWithId(newDateTimes)}
                                 }
                             />}
                     </HStack>
@@ -126,14 +133,11 @@ export const EventDateSchedule = ({ isEdit }: EventDateScheduleProps) => {
                         height={15}
                         width={15}
                         onClick={() => {
-                            setDateTimes([...dateTimes, { id: dateTimes[dateTimes.length - 1].id + 1,
+                            setDayTimesWithId([...dayTimesWithId, { id: dayTimesWithId[dayTimesWithId.length - 1].id + 1,
                                 start: { date: '', time: '' }, end: { date: '', time: '' } }])
                         }}
                     />}
             </VStack>
         </HStack>
-        <p style={{ color: 'white' }}>{isEdit}</p>
-        {/*<SpecificTimePicker setTime={()=>{}}/>*/}
-        {/*<SpecificDatePicker setDate={()=>{}}/>*/}
     </VStack>
 }
