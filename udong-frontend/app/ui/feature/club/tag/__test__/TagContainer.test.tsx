@@ -2,9 +2,16 @@ import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+import { clubReducer, ClubState } from '../../../../../domain/store/club/ClubSlice'
 import { tagReducer, TagState } from '../../../../../domain/store/tag/TagSlice'
 import { userReducer, UserState } from '../../../../../domain/store/user/UserSlice'
 import { TagContainer } from '../TagContainer'
+
+const stubClubInitialState: ClubState = {
+    myClubs: [],
+    members: [],
+    errors: {},
+}
 
 const stubInitialState: TagState = {
     tags: [{
@@ -21,7 +28,7 @@ const stubInitialState: TagState = {
 }
 
 const stubUserInitialState: UserState = {
-    isAdmin: false,
+    isAdmin: true,
     me: {
         id: 1,
         email: '',
@@ -32,8 +39,8 @@ const stubUserInitialState: UserState = {
 }
 
 const mockStore = configureStore({
-    reducer: { tag: tagReducer, user: userReducer },
-    preloadedState: { tag: stubInitialState, user: stubUserInitialState },
+    reducer: { tag: tagReducer, user: userReducer, club: clubReducer },
+    preloadedState: { tag: stubInitialState, user: stubUserInitialState, club: stubClubInitialState },
 })
 
 jest.mock('next/config', () => () => ({

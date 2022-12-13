@@ -17,6 +17,9 @@ const fakeBoardPost1: BoardPost = { displayType: PostDisplayType.CLUB, id: 1, ti
 const fakeBoardPost2: BoardPost = { displayType: PostDisplayType.CLUB, id: 2, title: '', content: '', type: PostType.ENROLLMENT,
     eventName: { id: 1, name: '' }, closed: true, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '',
     eventId: 1 }
+const fakeEventPost: BoardPost = { displayType: PostDisplayType.CLUB, id: 2, title: '', content: '', type: PostType.ENROLLMENT,
+    eventName: { id: 1, name: '' }, closed: true, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '',
+    eventId: 1 }
 const fakeBoardPostDto1 :BoardPostDto = { id: 1, title: '', content: '', type: PostTypeDto.ANNOUNCEMENT,
     event: { id: 1, name: '' }, created_at: '', updated_at: '' }
 const fakeBoardPostDto2 :BoardPostDto = { id: 2, title: '', content: '', type: PostTypeDto.ENROLLMENT, closed: true,
@@ -32,6 +35,7 @@ const fakePost: PostState = {
     errors: {},
     feedPosts: [],
     clubPosts: [fakeBoardPost1, fakeBoardPost2],
+    eventPosts: [fakeEventPost],
 }
 
 jest.mock('next/config', () => () => ({
@@ -52,6 +56,7 @@ describe('post reducer', () => {
         expect(postReducer(undefined, { type: 'unknown' })).toEqual({
             feedPosts: [],
             clubPosts: [],
+            eventPosts: [],
             errors: {},
         })
     })

@@ -5,10 +5,10 @@ import { ThunkMiddleware } from 'redux-thunk'
 import { axiosConfig } from '../../../infra/global'
 import { eventReducer, EventState, getEvents } from '../event/EventSlice'
 
-export const fakeEventDto1 = { id: 1, name: '단풍', created_at: '', updated_at: '' }
-export const fakeEventDto2 = { id: 2, name: '은행', created_at: '', updated_at: '' }
-export const fakeEvent1 = { id: 1, name: '단풍', createdAt: '', updatedAt: '' }
-export const fakeEvent2 = { id: 2, name: '은행', createdAt: '', updatedAt: '' }
+export const fakeEventDto1 = { id: 1, name: '단풍', created_at: '', updated_at: '', times: [] }
+export const fakeEventDto2 = { id: 2, name: '은행', created_at: '', updated_at: '', times: [] }
+export const fakeEvent1 = { id: 1, name: '단풍', createdAt: '', updatedAt: '', times: [] }
+export const fakeEvent2 = { id: 2, name: '은행', createdAt: '', updatedAt: '', times: [] }
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
@@ -27,6 +27,7 @@ describe('event reducer', () => {
     const fakeEvent : EventState = {
         selectedEvent: fakeEvent1,
         events: [fakeEvent1, fakeEvent2],
+        errors: {},
     }
 
     beforeAll(() => {
@@ -35,6 +36,7 @@ describe('event reducer', () => {
     it('should handle initial state', () => {
         expect(eventReducer(undefined, { type: 'unknown' })).toEqual({
             events: [],
+            errors: {},
         })
     })
     it('should handle getEvents', async () => {

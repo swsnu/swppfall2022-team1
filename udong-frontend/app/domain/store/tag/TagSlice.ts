@@ -48,7 +48,11 @@ export const getTag = createAsyncThunk(
 
 export const createTag = createAsyncThunk(
     'tag/createTag',
-    async () => { return },
+    async ({ clubId, name, userIdList }: { clubId: number, name: string, userIdList: Array<number> }) => {
+        const basicTag = await ClubAPI.createClubTag(clubId, name, userIdList)
+        const tag = TagAPI.getTag(basicTag.id)
+        return tag
+    },
 )
 
 export const editTag = createAsyncThunk<Tag | undefined, { tagId: number, tag: EditTag }, { rejectValue: APIErrorType }>(
@@ -92,7 +96,7 @@ const tagSlice = createSlice({
     name: 'tag',
     initialState,
     reducers: {
-        setSelectedTag: (state, action: PayloadAction<Tag>) => {
+        setSelectedTag: (state, action: PayloadAction<Tag | undefined>) => {
             state.selectedTag = action.payload
         },
         resetCreatePostTags: (state) => {
@@ -137,15 +141,22 @@ const tagSlice = createSlice({
         builder.addCase(editTag.fulfilled, (state, action) => {
             state.selectedTag = action.payload
             state.tags = state.tags.map(tag => {
-                return {
-                    ...tag,
-                    name: action.payload ? action.payload.name : tag.name,
+                if (tag.id === action.payload?.id) {
+                    return {
+                        ...tag,
+                        name: action.payload ? action.payload.name : tag.name,
+                    }
                 }
+                return tag
             })
         })
         builder.addCase(editTag.rejected, (state, action) => {
             state.errors.editTagError = action.payload
             state.selectedTag = undefined
+        })
+        builder.addCase(createTag.fulfilled, (state, action) => {
+            state.selectedTag = action.payload
+            state.tags = state.tags.concat(action.payload)
         })
     },
 })
@@ -156,5 +167,6 @@ export const tagActions = {
     getTag,
     deleteTag,
     editTag,
+    createTag,
 }
 export const tagReducer = tagSlice.reducer

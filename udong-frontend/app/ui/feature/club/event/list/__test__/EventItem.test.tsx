@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { ClubEvent } from '../../../../../../domain/model/ClubEvent'
 import { EventItem } from '../EventItem'
 
-const dummyEvent: ClubEvent =  {
+export const dummyEvent: ClubEvent =  {
     id: 1,
     name: 'title',
     createdAt: '',
