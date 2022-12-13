@@ -32,6 +32,9 @@ export const getDatesOfDay = (time: WeekdayTime) : Array<DayTime> => {
 
 const isMomentOverlapped = (momentList: Array<{ start: Moment, end: Moment }>) => {
     for (let i = 0; i < momentList.length; i++){
+        if (momentList[i].start.diff(momentList[i].end, 'minute') > 0){
+            return true
+        }
         for (let j = i + 1; j < momentList.length; j++){
             if (((momentList[i].start.diff(momentList[j].end, 'minute') <= 0) &&
                 (momentList[i].end.diff(momentList[j].end, 'minute') >= 0)) ||

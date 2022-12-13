@@ -12,7 +12,7 @@ export const EventInputView = ({ title, setTitle } : EventInputViewProps) => {
 
     return <VStack paddingVertical={45}>
         <HStack alignItems={'center'}>
-            <UdongText style={'GeneralTitle'}>행사 제목</UdongText>
+            <UdongText style={'GeneralTitle'}>행사 이름</UdongText>
             <Spacer width={30}/>
             <input
                 type={'text'}

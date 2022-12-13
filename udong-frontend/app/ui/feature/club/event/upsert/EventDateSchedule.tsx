@@ -54,7 +54,7 @@ export const EventDateSchedule = ({ dayTimesWithId, setDayTimesWithId }: EventDa
     const handleEndDateChange = (id: number, newDate: string) => {
         const newDateTimes = dayTimesWithId.map((target) => {
             if (target.id === id) {
-                return { ...target, end: { date: newDate, time: target.start.time } }
+                return { ...target, end: { date: newDate, time: target.end.time } }
             } else {
                 return target
             }
@@ -65,7 +65,7 @@ export const EventDateSchedule = ({ dayTimesWithId, setDayTimesWithId }: EventDa
     const handleEndTimeChange = (id: number, newTime: string) => {
         const newDateTimes = dayTimesWithId.map((target) => {
             if (target.id === id){
-                return { ...target, end: { date: target.start.date, time: newTime } }
+                return { ...target, end: { date: target.end.date, time: newTime } }
             } else {
                 return target
             }

@@ -43,6 +43,10 @@ export const EventCreateContainer = () => {
 
     const handleCreateEvent = useCallback(() => {
         const eventObject = { clubId: parseInt(clubId), name: title }
+        if (title.length === 0){
+            toast.error('행사 이름을 입력해주세요')
+            return
+        }
         if (eventTimeType === 'notAssigned'){
             dispatch(eventActions.createEvent({ ...eventObject, time: [] }))
         } else if (eventTimeType === 'days'){
@@ -51,16 +55,16 @@ export const EventCreateContainer = () => {
                     ...eventObject,
                     time: weekdayTimesWithId.map((weekdayTimeWithId)=>toWeekdayTimeFormatter(weekdayTimeWithId, weekdayRange)) }))
             } else {
-                toast.error('시간이 겹치거나 연결됩니다.')
+                toast.error('시간을 올바르게 입력해주세요.')
             }
         } else {
             if (checkDayTimesValid(dayTimesWithId)){
                 dispatch(eventActions.createEvent({ ...eventObject, time: dayTimesWithId.map(toDayTimeFormatter) }))
             } else {
-                toast.error('기간이 겹치거나 연결됩니다.')
+                toast.error('기간을 올바르게 입력해주세요.')
             }
         }
-    }, [clubId, dispatch, title, weekdayTimesWithId, dayTimesWithId, eventTimeType])
+    }, [clubId, dispatch, title, weekdayTimesWithId, weekdayRange, dayTimesWithId, eventTimeType])
 
     return <VStack paddingHorizontal={16}>
         <UdongHeader
