@@ -9,6 +9,7 @@ const stubInitialState: PostState = {
     errors: {},
     feedPosts: [],
     clubPosts: [],
+    eventPosts: [],
 }
 
 const mockStore = configureStore({

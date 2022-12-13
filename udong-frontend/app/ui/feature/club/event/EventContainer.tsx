@@ -13,84 +13,6 @@ import { EventCalendarView } from './calendar/EventCalendarView'
 import { EVENT_TAB, EventTabType, EventTabView } from './EventTabView'
 import { EventListView } from './list/EventListView'
 
-export interface EventType {
-    id:string
-    title:string
-    created_at: Date
-    updated_at: Date
-    times: {
-        start: Date
-        end: Date
-    }[]
-}
-
-export const dummyEvents: EventType[] = [
-    {
-        id: '1',
-        title: 'event1',
-        created_at: new Date('2021-01-23T22:23:22'),
-        updated_at: new Date('2022-08-12T12:11:02'),
-        times: [{
-            start: new Date('2022-11-01T10:00:00'),
-            end: new Date('2022-11-03T11:00:00'),
-        }],
-    },
-    {
-        id: '2',
-        title: 'event2',
-        created_at: new Date('2021-03-22T22:23:22'),
-        updated_at: new Date('2022-09-15T12:11:02'),
-        times: [{
-            start: new Date('2022-11-01T10:00:00'),
-            end: new Date('2022-11-03T11:00:00'),
-        }],
-    },
-    {
-        id: '3',
-        title: 'event3',
-        created_at: new Date('2022-03-28T22:23:22'),
-        updated_at: new Date('2022-08-12T12:11:02'),
-        times: [],
-    },
-    {
-        id: '4',
-        title: 'event4',
-        created_at: new Date('2022-06-22T22:23:22'),
-        updated_at: new Date('2022-08-12T12:11:02'),
-        times: [],
-    },
-    {
-        id: '5',
-        title: 'event5',
-        created_at: new Date('2022-09-22T22:23:22'),
-        updated_at: new Date('2019-11-20T12:11:02'),
-        times: [{
-            start: new Date('2022-11-01T10:00:00'),
-            end: new Date('2022-11-03T11:00:00'),
-        }, {
-            start: new Date('2022-11-12T10:00:00'),
-            end: new Date('2022-11-20T23:00:00'),
-        }],
-    },
-    {
-        id: '6',
-        title: 'event6',
-        created_at: new Date('2022-10-22T22:23:22'),
-        updated_at: new Date('2019-11-20T12:11:02'),
-        times: [],
-    },
-    {
-        id: '7',
-        title: 'event7',
-        created_at: new Date('2022-11-02T22:23:22'),
-        updated_at: new Date('2019-11-20T12:11:02'),
-        times: [{
-            start: new Date('2022-11-01T10:00:00'),
-            end: new Date('2022-11-03T11:00:00'),
-        }],
-    },
-]
-
 interface EventContainerProps {
     clubId: number
 }
@@ -110,7 +32,7 @@ export const EventContainer = (props: EventContainerProps) => {
 
     const handleCurrentView = useCallback((selectedTab: EventTabType) => {
         router.replace(`/club/${clubId}/?tab=event&view=${selectedTab}`)
-    }, [router])
+    }, [clubId, router])
 
     const getCurrentTab = () => {
         if (view === EVENT_TAB.LIST){
@@ -130,7 +52,7 @@ export const EventContainer = (props: EventContainerProps) => {
         if (view === EVENT_TAB.LIST){
             return <EventListView events={events}/>
         } else {
-            return <EventCalendarView events={dummyEvents}/>
+            return <EventCalendarView events={events}/>
         }
     }
 

@@ -9,9 +9,10 @@ import { EventContainer } from '../EventContainer'
 
 const stubEventInitialState: EventState = {
     events: [],
+    errors: {},
 }
 
-const mockStore = configureStore({
+export const mockStore = configureStore({
     reducer: { event: eventReducer },
     preloadedState: { event: stubEventInitialState },
 })

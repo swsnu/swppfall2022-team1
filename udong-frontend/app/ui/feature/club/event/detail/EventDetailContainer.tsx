@@ -53,15 +53,6 @@ export const EventDetailContainer = () => {
         <Spacer height={30}/>
         <UdongText style={'GeneralTitle'}>관련 게시글</UdongText>
         <Spacer height={15}/>
-
-        {/*{dummyEventPosts.map((post, index) => {*/}
-        {/*    return <PostItem*/}
-        {/*        post={post}*/}
-        {/*        key={post.id + index}*/}
-        {/*        isEventDetail={true}*/}
-        {/*    />*/}
-        {/*})}*/}
-
         <ScrollToTopButton/>
 
         <DeleteModal

@@ -30,6 +30,7 @@ const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
     errors: {},
+    eventPosts: [],
 }
 
 const stubCommentInitialState: CommentState = {

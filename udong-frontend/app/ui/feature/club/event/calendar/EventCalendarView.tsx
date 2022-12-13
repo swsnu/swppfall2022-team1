@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 
+import { ClubEvent } from '../../../../../domain/model/ClubEvent'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongColors } from '../../../../theme/ColorPalette'
-import { EventType } from '../EventContainer'
 import { EventCalendar } from './EventCalendar'
 import { UnsettledEventList } from './UnsettledEventList'
 
 interface EventCalendarViewProps {
-    events: EventType[]
+    events: Array<ClubEvent>
 }
 
 export const EventCalendarView = ({ events }: EventCalendarViewProps) => {

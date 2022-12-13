@@ -4,6 +4,7 @@ import { ClubEvent } from '../../domain/model/ClubEvent'
 import { ClubUser } from '../../domain/model/ClubUser'
 import { CreatePost } from '../../domain/model/CreatePost'
 import { ClubTag } from '../../domain/model/Tag'
+import { Time } from '../../domain/model/Time'
 import { BoardPostDto } from '../dto/BoardPostDto'
 import { ClubDto } from '../dto/ClubDto'
 import { ClubEventDto } from '../dto/ClubEventDto'
@@ -95,7 +96,10 @@ export const ClubAPI = (() => {
         return response.data.map(clubEventTransformer.fromDto)
     }
 
-    function createClubEvent() { return }
+    async function createClubEvent(clubId: number, name: string, time: Array<Time>) {
+        const response = await axiosConfig.post<ClubEventDto>(`/api/club/${clubId}/event/`, clubEventTransformer.toEditDto(name, time))
+        return clubEventTransformer.fromDto(response.data)
+    }
 
     async function getClubTags(clubId: number): Promise<Array<ClubTag>> {
         const response = await axiosConfig.get<Array<ClubTagDto>>(`/api/club/${clubId}/tag/`)
