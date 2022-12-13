@@ -50,7 +50,7 @@ export const PostDetailSchedulingView = () => {
             const dayCnt = 'dates' in schedulingStatus
                 ? schedulingStatus.dates.length
                 : schedulingStatus.weekdays.filter((v) => v).length
-            setSelected(Array(dayCnt).fill(0).map(() => Array(schedulingStatus.endTime - schedulingStatus.startTime)))
+            setSelected(new2dArray(dayCnt, schedulingStatus.endTime - schedulingStatus.startTime, false))
         }
     }, [schedulingStatus])
     if (!schedulingStatus) {return null}
@@ -113,7 +113,11 @@ export const PostDetailSchedulingView = () => {
 
             <UdongButton
                 style={'fill'}
-                onClick={() => {return}}
+                onClick={() => {
+                    if(selected) {
+                        dispatch(schedulingActions.participateInScheduling({ postId, time: selected }))
+                    }
+                }}
             >
                 일정 제출하기
             </UdongButton>

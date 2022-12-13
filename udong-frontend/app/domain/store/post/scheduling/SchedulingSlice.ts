@@ -15,18 +15,20 @@ const initialState: SchedulingState = {
 
 export const participateInScheduling = createAsyncThunk(
     'scheduling/participateInScheduling',
-    async () => { return },
+    async ({ postId, time }:{ postId: string, time: boolean[][] }) => {
+        await SchedulingAPI.participateInScheduling(postId, time)
+    },
 )
 
 export const getSchedulingStatus = createAsyncThunk(
     'scheduling/getSchedulingStatus',
-    async (postId: string) => { return SchedulingAPI.getSchedulingStatus(postId) },
+    (postId: string) => { return SchedulingAPI.getSchedulingStatus(postId) },
 )
 
 export const closeScheduling = createAsyncThunk(
     'scheduling/closeScheduling',
     async ({ postId, confirmedTime }: { postId: string, confirmedTime: boolean[][] }) => {
-        return SchedulingAPI.closeScheduling(postId, confirmedTime)
+        await SchedulingAPI.closeScheduling(postId, confirmedTime)
     },
 )
 
@@ -41,5 +43,5 @@ const schedulingSlice = createSlice({
     },
 })
 
-export const schedulingActions = { ...schedulingSlice.actions, getSchedulingStatus }
+export const schedulingActions = { ...schedulingSlice.actions, getSchedulingStatus, participateInScheduling }
 export const schedulingReducer = schedulingSlice.reducer

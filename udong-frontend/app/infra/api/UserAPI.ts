@@ -25,7 +25,6 @@ export const UserAPI = (() => {
 
     function participateInEnrollment() { return }
     function unparticipateInEnrollment() { return }
-    function participateInScheduling() { return }
 
     function leaveClub() { return }
 
@@ -36,7 +35,6 @@ export const UserAPI = (() => {
         getUser,
         participateInEnrollment,
         unparticipateInEnrollment,
-        participateInScheduling,
         leaveClub,
     })
 })()
