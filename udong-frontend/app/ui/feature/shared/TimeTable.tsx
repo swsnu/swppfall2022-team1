@@ -190,14 +190,14 @@ export const TimeTable = (props: TimeTableProps) => {
         >
             <div
                 style={{
-                    top: CELL_HEIGHT - 0.5,
-                    bottom: -0.5,
-                    right: -0.5,
-                    left: -0.5,
-                    borderColor: UdongColors.GrayNormal,
-                    borderStyle: 'solid',
-                    borderWidth: 1,
-                    position: 'absolute',
+                    // top: CELL_HEIGHT - 0.5,
+                    // bottom: -0.5,
+                    // right: -0.5,
+                    // left: -0.5,
+                    // borderColor: UdongColors.GrayNormal,
+                    // borderStyle: 'solid',
+                    // borderWidth: 1,
+                    // position: 'absolute',
                 }}
             />
             {

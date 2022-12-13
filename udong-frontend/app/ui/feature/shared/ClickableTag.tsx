@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
-import { VStack } from '../../components/Stack'
+import { Spacer } from '../../components/Spacer'
+import { HStack } from '../../components/Stack'
 import { UdongChip } from '../../components/UdongChip'
 import { UdongColors } from '../../theme/ColorPalette'
 
@@ -19,9 +20,8 @@ export const ClickableTag = (props: TagItemProps) => {
         onClick()
     }, [onClick])
 
-    return <VStack
+    return <HStack
         onClick={handleOnClick}
-        paddingHorizontal={6}
     >
         <UdongChip
             color={isIncluded ? UdongColors.Primary : UdongColors.GrayNormal}
@@ -29,5 +29,6 @@ export const ClickableTag = (props: TagItemProps) => {
             text={text}
             clickable={true}
         />
-    </VStack>
+        <Spacer width={10}/>
+    </HStack>
 }
