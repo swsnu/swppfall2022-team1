@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
@@ -126,6 +127,7 @@ export const PostDetailSchedulingView = () => {
                 onClick={() => {
                     if(selected) {
                         dispatch(schedulingActions.participateInScheduling({ postId, time: selected }))
+                        toast.success('제출되었습니다')
                     }
                 }}
             >
