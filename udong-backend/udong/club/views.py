@@ -22,6 +22,7 @@ from user.serializers import UserClubSerializer
 from event.serializers import ClubEventSerializer
 from tag.serializers import ClubTagSerializer
 from common.permissions import IsAdmin
+from common.random import Random
 from drf_yasg.utils import swagger_auto_schema, no_body
 from typing import Any, Type, TYPE_CHECKING
 
@@ -50,7 +51,7 @@ class ClubViewSet(_GenericClubViewSet):
     serializer_class = ClubSerializer
 
     def get_permissions(self) -> _SupportsHasPermissionType:
-        if self.action in ("update", "destroy", "post"):
+        if self.action in ("update", "destroy", "post", "code"):
             return [IsAuthenticated(), IsAdmin()]
         return super().get_permissions()
 
@@ -280,6 +281,17 @@ class ClubViewSet(_GenericClubViewSet):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @swagger_auto_schema(
+        request_body=no_body,
+        responses={403: "User is not a admin", 200: ClubSerializer()},
+    )
+    @action(detail=True, methods=["PUT"])
+    def code(self, request: Request, pk: Any) -> Response:
+        club = self.get_object()
+        club.code = Random.generate_code()
+        club.save()
+        return Response(self.get_serializer(club).data)
 
 
 class ClubUserViewSet(_GenericClubUserViewSet):
