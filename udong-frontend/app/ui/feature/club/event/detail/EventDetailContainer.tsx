@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 import { SchedulingPostType } from '../../../../../domain/model/SchedulingPostType'
 import { AppDispatch } from '../../../../../domain/store'
 import { eventSelector } from '../../../../../domain/store/event/EventSelector'
-import { eventActions } from '../../../../../domain/store/event/EventSlice'
+import { deleteEvent, eventActions } from '../../../../../domain/store/event/EventSlice'
 import { postSelector } from '../../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../../domain/store/post/PostSlice'
 import { timeToStr } from '../../../../../utility/functions'
@@ -38,6 +39,12 @@ export const EventDetailContainer = () => {
             dispatch(postActions.getEventPosts(eventId))
         }
     }, [dispatch, eventId])
+
+    const handleDelete = async () => {
+        await dispatch(deleteEvent(eventId))
+        toast.success('행사가 삭제되었습니다')
+        router.push(`/club/${clubId}`)
+    }
 
     if(!event) {return null}
     return <VStack paddingHorizontal={16}>
@@ -103,7 +110,7 @@ export const EventDetailContainer = () => {
             warningText={`행사 ${event.name}이(가) 영구적으로 삭제됩니다.`}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
-            onClickDelete={() => {return}}
+            onClickDelete={handleDelete}
         />
     </VStack>
 }
