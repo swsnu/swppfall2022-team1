@@ -7,6 +7,7 @@ import { User } from '../../../model/User'
 export interface EnrollmentState {
     selectedEnrollment?: Enrollment
     selectedEnrollmentUsers?: Array<User>
+    myEnrollmentStatus?: boolean
 }
 
 const initialState: EnrollmentState = {}
@@ -19,6 +20,13 @@ export const participateInEnrollment = createAsyncThunk(
 export const unparticipateInEnrollment = createAsyncThunk(
     'enrollment/unparticipateInEnrollment',
     async () => { return },
+)
+
+export const getMyEnrollmentStatus = createAsyncThunk(
+    'enrollment/getMyEnrollmentStatus',
+    async (postId: number) => {
+        return await EnrollmentAPI.getMyEnrollmentStatus(postId)
+    },
 )
 
 export const getEnrollmentUsers = createAsyncThunk(
@@ -53,6 +61,14 @@ const enrollmentSlice = createSlice({
         builder.addCase(closeEnrollment.rejected, (state) => {
             state.selectedEnrollment = undefined
         })
+        builder.addCase(getMyEnrollmentStatus.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.myEnrollmentStatus = true
+            }
+        })
+        builder.addCase(getMyEnrollmentStatus.rejected, (state) => {
+            state.myEnrollmentStatus = false
+        })
     },
 })
 
@@ -60,5 +76,6 @@ export const enrollmentActions = {
     ...enrollmentSlice.actions,
     getEnrollmentUsers,
     closeEnrollment,
+    getMyEnrollmentStatus,
 }
 export const enrollmentReducer = enrollmentSlice.reducer
