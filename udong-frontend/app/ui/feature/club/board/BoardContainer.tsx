@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../../../domain/store'
 import { postSelector } from '../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../domain/store/post/PostSlice'
+import { userSelector } from '../../../../domain/store/user/UserSelector'
+import { userActions } from '../../../../domain/store/user/UserSlice'
 import { useDebouncedSearch } from '../../../../utility/useDebouncedSearch'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
@@ -22,8 +24,12 @@ interface BoardContainerProps {
 export const BoardContainer = (props: BoardContainerProps) => {
     const { clubId } = props
     const dispatch = useDispatch<AppDispatch>()
+
     const boardPosts = useSelector(postSelector.clubPosts)
+    const isAdmin = useSelector(userSelector.isAdmin)
+
     const [loading, setLoading] = useState(true)
+
     const [searchValue, setSearchValue] = useState('')
     const [keyword, setKeyword] = useState('')
     const [showPostCreateModal, setShowPostCreateModal] = useState(false)
@@ -33,19 +39,22 @@ export const BoardContainer = (props: BoardContainerProps) => {
 
     useEffect(() => {
         dispatch(postActions.getClubPosts(clubId))
+        dispatch(userActions.getMyClubProfile(clubId))
         setTimeout(() => setLoading(false), 600)
     }, [dispatch, clubId])
 
     return <VStack>
-        <HStack justifyContent={'end'}>
-            <UdongButton
-                style={'line'}
-                onClick={() => setShowPostCreateModal(true)}
-                width={120}
-            >
-                글쓰기
-            </UdongButton>
-        </HStack>
+        {isAdmin &&
+            <HStack justifyContent={'end'}>
+                <UdongButton
+                    style={'line'}
+                    onClick={() => setShowPostCreateModal(true)}
+                    width={120}
+                >
+                    글쓰기
+                </UdongButton>
+            </HStack>
+        }
         <Spacer height={20}/>
 
         <UdongSearchBar
