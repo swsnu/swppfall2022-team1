@@ -22,7 +22,7 @@ from user.models import UserClub
 from comment.models import Comment
 from common.permissions import IsAdmin, CanReadPost
 from comment.serializers import CommentSerializer
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.utils import swagger_auto_schema, no_body
 from typing import Any, TYPE_CHECKING, TypeVar
 
 # Create your views here.
@@ -183,7 +183,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
             return super().get_permissions()
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
-        if self.action in ("participate", "status"):
+        if self.action in ("participate", "status", "me"):
             return ParticipationSerializer
         elif self.action == "close":
             return EnrollmentSerializer
@@ -202,6 +202,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
             )
         return enrollment
 
+    @swagger_auto_schema(request_body=no_body)
     @action(detail=True, methods=["POST"])
     def participate(self, request: Request, pk: Any) -> Response:
         result = self._check_enrollment_validity(pk)
@@ -226,6 +227,7 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @swagger_auto_schema(request_body=no_body)
     @action(detail=True, methods=["POST"])
     def unparticipate(self, request: Request, pk: Any) -> Response:
         result = self._check_enrollment_validity(pk)
@@ -295,6 +297,7 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
             return AvailableTimeSimpleSerializer
         return self.serializer_class
 
+    @swagger_auto_schema(request_body=no_body)
     @action(detail=True, methods=["POST"])
     def participate(self, request: Request, pk: Any) -> Response:
         try:
