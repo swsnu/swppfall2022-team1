@@ -30,6 +30,9 @@ export const ClubMembersView = (props: ClubMembersViewProps) => {
         <UdongText style={'GeneralTitle'}>동아리 인원</UdongText>
         <Spacer height={30}/>
 
-        <SearchMembersView members={members}/>
+        <SearchMembersView
+            clubId={clubId}
+            members={members}
+        />
     </UdongFloatingContainer>
 }

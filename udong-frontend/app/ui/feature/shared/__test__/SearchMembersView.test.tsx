@@ -4,7 +4,8 @@ import { Provider } from 'react-redux'
 
 import { ClubUser } from '../../../../domain/model/ClubUser'
 import { RoleType } from '../../../../domain/model/RoleType'
-import { dummyUserMe } from '../../../../domain/model/User'
+import { dummyUserMe, dummyUserNotMe } from '../../../../domain/model/User'
+import { clubReducer, ClubState } from '../../../../domain/store/club/ClubSlice'
 import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { SearchMembersView } from '../SearchMembersView'
 
@@ -13,14 +14,24 @@ const dummyMembers: Array<ClubUser> = [{
     role: RoleType.ADMIN,
 }]
 
+const stubClubInitialState: ClubState = {
+    myClubs: [],
+    members: [],
+    errors: {},
+    selectedMember: {
+        role: RoleType.MEMBER,
+        user: dummyUserNotMe,
+    },
+}
+
 const stubInitialState: UserState = {
     isAdmin: false,
     selectedUser: dummyUserMe,
 }
 
 const mockStore = configureStore({
-    reducer: { user: userReducer },
-    preloadedState: { user: stubInitialState },
+    reducer: { user: userReducer, club: clubReducer },
+    preloadedState: { user: stubInitialState, club: stubClubInitialState },
 })
 
 jest.mock('next/config', () => () => ({
@@ -33,7 +44,10 @@ describe('<SearchMembersView/>', () => {
     it ('should render search members view and hanlde on click', () => {
         render(
             <Provider store={mockStore}>
-                <SearchMembersView members={dummyMembers}/>
+                <SearchMembersView
+                    clubId={1}
+                    members={dummyMembers}
+                />
             </Provider>,
         )
         const component = screen.getAllByText('이유빈')[0]

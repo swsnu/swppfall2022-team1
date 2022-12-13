@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+import { RoleType } from '../../../../../domain/model/RoleType'
 import { dummyUserNotMe } from '../../../../../domain/model/User'
 import { clubReducer, ClubState } from '../../../../../domain/store/club/ClubSlice'
 import { userReducer, UserState } from '../../../../../domain/store/user/UserSlice'
@@ -11,11 +12,15 @@ const stubClubInitialState: ClubState = {
     myClubs: [],
     members: [],
     errors: {},
+    selectedMember: {
+        role: RoleType.MEMBER,
+        user: dummyUserNotMe,
+    },
 }
 
 const stubUserInitialState: UserState = {
     selectedUser: dummyUserNotMe,
-    isAdmin: false,
+    isAdmin: true,
 }
 
 const mockStore = configureStore({
@@ -35,8 +40,7 @@ describe('<ClubMemberProfileView/>', () => {
             <ClubMemberProfileView
                 isOpen={true}
                 setIsOpen={() => {return}}
-                memberId={dummyUserNotMe.id}
-                isAdmin={false}
+                clubId={1}
             />)
         </Provider>
     )
@@ -46,8 +50,7 @@ describe('<ClubMemberProfileView/>', () => {
             <ClubMemberProfileView
                 isOpen={true}
                 setIsOpen={() => {return}}
-                memberId={dummyUserNotMe.id}
-                isAdmin={true}
+                clubId={1}
             />)
         </Provider>
     )
@@ -55,13 +58,6 @@ describe('<ClubMemberProfileView/>', () => {
     it('should render club member profile view', () => {
         render(adminMember)
         const text = screen.getByText(dummyUserNotMe.name)
-        expect(text).toBeDefined()
-    })
-
-    it('should test on click 일반 멤버', () => {
-        render(adminMember)
-        const text = screen.getByText('일반 멤버로 전환')
-        fireEvent.click(text)
         expect(text).toBeDefined()
     })
 
