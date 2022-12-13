@@ -23,6 +23,8 @@ const getErrorMessage = (errors: ClubErrorType): string => {
         return errors.deleteError.message
     } else if (errors.editError) {
         return errors.editError.message
+    } else if (errors.leaveClubError) {
+        return errors.leaveClubError.message
     } else {
         return ''
     }
@@ -71,21 +73,29 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
         }
     }, [dispatch, router, id])
 
+    const handleLeaveClub = useCallback(async () => {
+        const response = await dispatch(clubActions.leaveClub(id))
+        if (response.type === `${clubActions.leaveClub.typePrefix}/fulfilled`) {
+            router.push(`/`)
+        }
+    }, [dispatch, router, id])
+
     const handleCloseErrorModal = useCallback(() => {
         setIsErrorModalOpen(false)
         dispatch(clubActions.resetErrors())
     }, [dispatch])
 
     const renderLeaveClubButton = useCallback(() => {
-        return <HStack onClick={() => {return}}>
+        return <HStack onClick={handleLeaveClub}>
             <UdongText
                 style={'ListContentS'}
                 color={UdongColors.GrayNormal}
+                cursor={'pointer'}
             >
                 탈퇴하기
             </UdongText>
         </HStack>
-    }, [])
+    }, [handleLeaveClub])
 
     const renderDeleteClubButton = useCallback(() => {
         if (!isAdmin) {
@@ -96,6 +106,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             <UdongText
                 style={'ListContentS'}
                 color={UdongColors.Warning}
+                cursor={'pointer'}
             >
                삭제하기
             </UdongText>

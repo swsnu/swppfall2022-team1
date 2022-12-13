@@ -26,8 +26,6 @@ export const UserAPI = (() => {
     function participateInEnrollment() { return }
     function unparticipateInEnrollment() { return }
 
-    function leaveClub() { return }
-
     return Object.freeze({
         getMyProfile,
         editMyProfile,
@@ -35,6 +33,5 @@ export const UserAPI = (() => {
         getUser,
         participateInEnrollment,
         unparticipateInEnrollment,
-        leaveClub,
     })
 })()
