@@ -248,6 +248,7 @@ class ClubViewSet(_GenericClubViewSet):
             .select_related("author")
             .prefetch_related("post_tag_set__tag__tag_user_set")
             .filter(club_id=pk)
+            .order_by("-created_at", "id")
         )
         if auth == "A":
             return Response(
