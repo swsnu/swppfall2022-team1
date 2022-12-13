@@ -37,11 +37,15 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
     }, [dispatch, postId])
 
     const handleEnroll = useCallback(() => {
-        dispatch(enrollmentActions.participateInEnrollment(postId))
+        if (isEnrolled) {
+            dispatch(enrollmentActions.unparticipateInEnrollment(postId))
+        } else {
+            dispatch(enrollmentActions.participateInEnrollment(postId))
+        }
         if (!isOpen || hasSuccessfullyClosed) {
             setIsClosedModalOpen(true)
         }
-    }, [dispatch, postId, isOpen, hasSuccessfullyClosed])
+    }, [dispatch, postId, isOpen, hasSuccessfullyClosed, isEnrolled])
 
     const handleCloseEnrollment = useCallback(() => {
         dispatch(enrollmentActions.closeEnrollment(postId))
@@ -74,7 +78,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
                     color={showEnrollButton ? UdongColors.Primary : UdongColors.GrayNormal}
                     onClick={handleEnroll}
                 >
-                    지원하기
+                    {showEnrollButton ? `지원하기` : `지원 취소하기`}
                 </UdongButton>
             </HStack>
 

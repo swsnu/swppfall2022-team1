@@ -24,7 +24,10 @@ export const EnrollmentAPI = (() => {
         const response = await axiosConfig.post<ParticipationDto>(`/api/enroll/${postId}/participate/`)
         return participationTransformer.fromDto(response.data)
     }
-    function unparticipateInEnrollment() { return }
+
+    async function unparticipateInEnrollment(postId: number): Promise<void> {
+        return await axiosConfig.post(`/api/enroll/${postId}/unparticipate/`)
+    }
 
     async function getMyEnrollmentStatus(postId: number): Promise<Participation | void> {
         const response = await axiosConfig.get<ParticipationDto>(`/api/enroll/${postId}/me/`)
