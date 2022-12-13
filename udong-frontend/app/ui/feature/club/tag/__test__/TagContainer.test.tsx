@@ -16,6 +16,8 @@ const stubInitialState: TagState = {
         isDefault: false,
     }],
     createPostTags: [],
+    errors: {},
+    selectedUserIds: [],
 }
 
 const stubUserInitialState: UserState = {

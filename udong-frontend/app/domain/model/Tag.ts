@@ -9,6 +9,11 @@ export interface Tag {
     updatedAt: string
 }
 
+export interface EditTag {
+    name: string
+    newUsers: Array<number>
+}
+
 export interface BasicTag {
     id: number
     name: string

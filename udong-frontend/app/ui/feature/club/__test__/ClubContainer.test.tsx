@@ -37,6 +37,8 @@ const stubEventInitialState: EventState = {
 const stubTagInitialState: TagState = {
     tags: [],
     createPostTags: [],
+    errors: {},
+    selectedUserIds: [],
 }
 
 const mockStore = configureStore({

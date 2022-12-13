@@ -10,14 +10,15 @@ import { UdongColors } from '../../theme/ColorPalette'
 
 interface UserItemProps {
     name: string
+    id?: number
     isMe?: boolean
     isAdmin?: boolean
-    hasRemoveButton?: boolean
+    onRemoveUser?: (userId: number) => void
     small?: boolean
 }
 
 export const UserItem = (props: UserItemProps) => {
-    const { name, isMe = false, isAdmin = false, hasRemoveButton = false, small = false } = props
+    const { id, name, isMe = false, isAdmin = false, onRemoveUser, small = false } = props
     return <HStack
         alignItems={'center'}
         justifyContent={'space-between'}
@@ -59,8 +60,9 @@ export const UserItem = (props: UserItemProps) => {
             }
         </HStack>
 
-        {hasRemoveButton &&
+        {onRemoveUser && id &&
             <UdongImage
+                onClick={() => onRemoveUser(id)}
                 src={remove.src}
                 height={10}
                 width={10}
