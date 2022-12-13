@@ -88,9 +88,9 @@ export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps 
                     const newTimes = getDatesOfDay(time)
                     newTimes.forEach((newTime) => {
                         const startTime = new Date(newTime.startDate)
-                        startTime.setTime(startTime.getTime() + 1000 * 60 * 30 * newTime.startTime)
+                        startTime.setTime(startTime.getTime() + (1000 * 60 * 30 * newTime.startTime))
                         const endTime = new Date(newTime.endDate)
-                        endTime.setTime(endTime.getTime() + 1000 * 60 * 30 * newTime.endTime)
+                        endTime.setTime(endTime.getTime() + (1000 * 60 * 30 * newTime.endTime))
                         coloredEvents = [...coloredEvents,
                             {
                                 id: `${i}`, calendarId: '0', title: event.name, body: `${event.id}`,

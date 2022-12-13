@@ -20,7 +20,15 @@ interface EventAdditionalFieldsViewProps {
     setDayTimesWithId: Dispatch<SetStateAction<Array<DayTimeWithIdType>>>
 }
 
-export const EventAdditionalFieldsView = ({ eventTimeType, setEventTimeType, weekdayRange, setWeekdayRange, weekdayTimesWithId, setWeekdayTimesWithId, dayTimesWithId, setDayTimesWithId }: EventAdditionalFieldsViewProps) => {
+export const EventAdditionalFieldsView = ({
+    eventTimeType,
+    setEventTimeType,
+    weekdayRange,
+    setWeekdayRange,
+    weekdayTimesWithId,
+    setWeekdayTimesWithId,
+    dayTimesWithId,
+    setDayTimesWithId }: EventAdditionalFieldsViewProps) => {
     return <VStack>
         <HStack
             alignItems={'center'}

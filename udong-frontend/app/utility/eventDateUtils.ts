@@ -97,16 +97,26 @@ export const toDayTimeWithIdFormatter = (id: number, dayTime: DayTime) : DayTime
 export const toDayTimeFormatter = (dayTimeWithId: DayTimeWithIdType) : DayTime => {
     return {
         type: SchedulingPostType.DATES,
-        startTime: parseInt(dayTimeWithId.start.time.slice(0, 2)) * 2 + parseInt(dayTimeWithId.start.time.slice(3, 5)) / 30,
-        endTime: parseInt(dayTimeWithId.end.time.slice(0, 2)) * 2 + parseInt(dayTimeWithId.end.time.slice(3, 5)) / 30,
+        startTime: (parseInt(dayTimeWithId.start.time.slice(0, 2)) * 2) + (parseInt(dayTimeWithId.start.time.slice(3, 5)) / 30),
+        endTime: (parseInt(dayTimeWithId.end.time.slice(0, 2)) * 2) + (parseInt(dayTimeWithId.end.time.slice(3, 5)) / 30),
         startDate: dayTimeWithId.start.date,
         endDate: dayTimeWithId.end.date,
     }
 }
 
-export const toWeekdayTimeWithIdFormatter = () => {}
+export const toWeekdayTimeWithIdFormatter = (id: number, weekdayTime: WeekdayTime): WeekdayTimeWithIdType => {
+    return {
+        id: id,
+        day: numToDay(weekdayTime.weekday),
+        time: {
+            start: `${`${weekdayTime.startTime / 2}`.padStart(2, '0')}:${`${weekdayTime.startTime % 2 * 30}`.padStart(2, '0')}`,
+            end: `${`${weekdayTime.endTime / 2}`.padStart(2, '0')}:${`${weekdayTime.endTime % 2 * 30}`.padStart(2, '0')}`,
+        },
+    }
+}
+export const toWeekdayRangeFormatter = () => {return}
 
-export const dayToNum = (day: DAYS|'') => {
+const dayToNum = (day: DAYS|'') => {
     switch (day) {
         case DAYS.MONDAY:
             return 0
@@ -124,6 +134,27 @@ export const dayToNum = (day: DAYS|'') => {
             return 6
         default:
             return 0
+    }
+}
+
+const numToDay = (day: number) => {
+    switch (day) {
+        case 0:
+            return DAYS.MONDAY
+        case 1:
+            return DAYS.TUESDAY
+        case 2:
+            return DAYS.WEDNESDAY
+        case 3:
+            return DAYS.THURSDAY
+        case 4:
+            return DAYS.FRIDAY
+        case 5:
+            return DAYS.SATURDAY
+        case 6:
+            return DAYS.SUNDAY
+        default:
+            return DAYS.MONDAY
     }
 }
 
