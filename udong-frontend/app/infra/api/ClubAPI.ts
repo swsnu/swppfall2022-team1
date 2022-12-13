@@ -65,7 +65,7 @@ export const ClubAPI = (() => {
 
     function removeClubMember() { return }
     async function changeClubMemberRole(clubId: number, userId: number): Promise<ClubUser> {
-        const response = await axiosConfig.put<ClubUserDto>(`/api/club/$${clubId}/user/${userId}/role/`)
+        const response = await axiosConfig.put<ClubUserDto>(`/api/club/${clubId}/user/${userId}/role/`)
         return clubUserTransformer.fromDto(response.data)
     }
 
