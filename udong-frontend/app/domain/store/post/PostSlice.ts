@@ -105,6 +105,9 @@ const postSlice = createSlice({
         builder.addCase(getClubPosts.fulfilled, (state, action) => {
             state.clubPosts = action.payload
         })
+        builder.addCase(getEventPosts.fulfilled, (state, action) => {
+            state.eventPosts = action.payload
+        })
         builder.addCase(getPost.fulfilled, (state, action) => {
             state.selectedPost = action.payload
             state.createdPostId = undefined
@@ -125,6 +128,7 @@ export const postActions = {
     ...postSlice.actions,
     getFeedPosts,
     getClubPosts,
+    getEventPosts,
     getPost,
     createPost,
 }

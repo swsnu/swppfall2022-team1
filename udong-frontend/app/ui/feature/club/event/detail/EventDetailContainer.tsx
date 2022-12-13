@@ -1,6 +1,14 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
+import { AppDispatch } from '../../../../../domain/store'
+import { eventSelector } from '../../../../../domain/store/event/EventSelector'
+import { eventActions } from '../../../../../domain/store/event/EventSlice'
+import { postSelector } from '../../../../../domain/store/post/PostSelector'
+import { postActions } from '../../../../../domain/store/post/PostSlice'
+import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { Spacer } from '../../../../components/Spacer'
 import { VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
@@ -8,22 +16,38 @@ import { UdongHeader } from '../../../../components/UdongHeader'
 import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { DeleteModal } from '../../../shared/DeleteModal'
+import { PostItem } from '../../../shared/PostItem'
 import { ScrollToTopButton } from '../../../shared/ScrollToTopButton'
 
 export const EventDetailContainer = () => {
     const router = useRouter()
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const { clubId: rawClubId, eventId: rawEventId } = router.query
+    const eventId = parseInt(convertQueryParamToString(rawEventId))
+    const clubId = parseInt(convertQueryParamToString(rawClubId))
+    const dispatch = useDispatch<AppDispatch>()
 
+    const event = useSelector(eventSelector.selectedEvent)
+    const eventPosts = useSelector(postSelector.eventPosts)
+
+    useEffect(() => {
+        if(eventId) {
+            dispatch(eventActions.getEvent(eventId))
+            dispatch(postActions.getEventPosts(eventId))
+        }
+    }, [dispatch, eventId])
+
+    if(!event) {return null}
     return <VStack paddingHorizontal={16}>
         <UdongHeader
-            title={'2022년 겨울 공연'}
+            title={event.name}
             onGoBack={() => router.back()}
             rightButtons={<>
                 <UdongButton
                     style={'line'}
                     color={UdongColors.Primary}
                     height={40}
-                    onClick={() => {router.push('/club/1/event/1/edit')}}
+                    onClick={() => {router.push(`/club/${clubId}/event/${eventId}/edit`)}}
                 >
                     수정하기
                 </UdongButton>
@@ -54,13 +78,13 @@ export const EventDetailContainer = () => {
         <UdongText style={'GeneralTitle'}>관련 게시글</UdongText>
         <Spacer height={15}/>
 
-        {/*{dummyEventPosts.map((post, index) => {*/}
-        {/*    return <PostItem*/}
-        {/*        post={post}*/}
-        {/*        key={post.id + index}*/}
-        {/*        isEventDetail={true}*/}
-        {/*    />*/}
-        {/*})}*/}
+        {eventPosts.map((post, index) => {
+            return <PostItem
+                key={post.id + index}
+                post={post}
+                clubId={clubId}
+            />
+        })}
 
         <ScrollToTopButton/>
 
