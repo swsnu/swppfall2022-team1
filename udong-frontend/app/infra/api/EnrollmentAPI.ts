@@ -1,9 +1,12 @@
 import { Enrollment } from '../../domain/model/Enrollment'
+import { Participation } from '../../domain/model/Participation'
 import { User } from '../../domain/model/User'
 import { EnrollmentDto } from '../dto/EnrollmentDto'
+import { ParticipationDto } from '../dto/ParticipationDto'
 import { UserDto } from '../dto/UserDto'
 import { axiosConfig } from '../global'
 import { enrollmentTransformer } from '../transformer/EnrollmentTransformer'
+import { participationTransformer } from '../transformer/ParticipationTransformer'
 import { userTransformer } from '../transformer/UserTransformer'
 
 export const EnrollmentAPI = (() => {
@@ -17,8 +20,16 @@ export const EnrollmentAPI = (() => {
         return enrollmentTransformer.fromDto(response.data)
     }
 
+    async function participateInEnrollment(postId: number): Promise<Participation> {
+        const response = await axiosConfig.post<ParticipationDto>(`/api/enroll/${postId}/participate/`)
+        return participationTransformer.fromDto(response.data)
+    }
+    function unparticipateInEnrollment() { return }
+
     return Object.freeze({
         getEnrollmentUsers,
         closeEnrollment,
+        participateInEnrollment,
+        unparticipateInEnrollment,
     })
 })()

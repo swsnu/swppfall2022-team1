@@ -7,13 +7,16 @@ import { User } from '../../../model/User'
 export interface EnrollmentState {
     selectedEnrollment?: Enrollment
     selectedEnrollmentUsers?: Array<User>
+    isParticipating?: boolean
 }
 
 const initialState: EnrollmentState = {}
 
 export const participateInEnrollment = createAsyncThunk(
     'enrollment/participateInEnrollment',
-    async () => { return },
+    async (postId: number) => {
+        return EnrollmentAPI.participateInEnrollment(postId)
+    },
 )
 
 export const unparticipateInEnrollment = createAsyncThunk(
@@ -53,6 +56,12 @@ const enrollmentSlice = createSlice({
         builder.addCase(closeEnrollment.rejected, (state) => {
             state.selectedEnrollment = undefined
         })
+        builder.addCase(participateInEnrollment.fulfilled, (state) => {
+            state.isParticipating = true
+        })
+        builder.addCase(participateInEnrollment.rejected, (state) => {
+            state.isParticipating = false
+        })
     },
 })
 
@@ -60,5 +69,6 @@ export const enrollmentActions = {
     ...enrollmentSlice.actions,
     getEnrollmentUsers,
     closeEnrollment,
+    participateInEnrollment,
 }
 export const enrollmentReducer = enrollmentSlice.reducer

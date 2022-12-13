@@ -14,7 +14,13 @@ const hasSuccessfullyClosed = createSelector(
     state => state.selectedEnrollment ? state.selectedEnrollment.closed : false,
 )
 
+const isParticipating = createSelector(
+    enrollmentState,
+    state => state.isParticipating,
+)
+
 export const enrollmentSelector = {
     selectedEnrollmentUsers,
     hasSuccessfullyClosed,
+    isParticipating,
 }
