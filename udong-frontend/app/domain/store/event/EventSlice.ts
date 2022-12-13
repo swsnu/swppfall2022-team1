@@ -4,18 +4,23 @@ import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { EventAPI } from '../../../infra/api/EventAPI'
 import { ClubEvent } from '../../model/ClubEvent'
 import { Time } from '../../model/Time'
+import { APIErrorType } from '../ErrorHandler'
 import { createPost } from '../post/PostSlice'
 
-export type EventCreateAPIErrorType = 'missing_required_field' | 'is_not_admin' | 'error'
+export interface EventErrorType {
+    createEventError?: APIErrorType
+}
 
 export interface EventState {
     selectedEvent?: ClubEvent
-    createEventError?: EventCreateAPIErrorType
+    createEventError?: EventErrorType
     events: Array<ClubEvent>
+    errors: EventErrorType
 }
 
 const initialState: EventState = {
     events: [],
+    errors: {},
 }
 
 export const getEvents = createAsyncThunk(
@@ -69,7 +74,7 @@ const eventSlice = createSlice({
         })
         builder.addCase(createPost.rejected, (state, action) => {
             state.selectedEvent = undefined
-            state.createEventError = action.payload
+            state.errors.createEventError = action.payload
         })
     },
 })

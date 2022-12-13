@@ -22,6 +22,7 @@ interface ProfileViewProps {
     email?: string
     showCameraButton?: boolean
     onClickEditNameButton?: (name: string) => void
+    onRefresh?: () => void
     showAdminBadge?: boolean
     bottomItem: ReactNode
 }
@@ -33,6 +34,7 @@ export const ProfileView = (props: ProfileViewProps) => {
         email,
         showCameraButton = false,
         onClickEditNameButton,
+        onRefresh,
         showAdminBadge = false,
         bottomItem,
     } = props
@@ -116,11 +118,13 @@ export const ProfileView = (props: ProfileViewProps) => {
                     }}
                 >{code}</UdongText>
                 <Spacer width={10}/>
-                <UdongImage
-                    src={refresh.src}
-                    height={18}
-                    width={18}
-                />
+                {onRefresh &&
+                    <UdongImage
+                        src={refresh.src}
+                        height={18}
+                        width={18}
+                    />
+                }
             </HStack>
         }
 

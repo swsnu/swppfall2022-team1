@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
@@ -10,12 +10,14 @@ export interface ClubErrorType {
     registerError?: APIErrorType
     editError?: APIErrorType
     deleteError?: APIErrorType
+    changeMemberRoleError?: APIErrorType
 }
 
 export interface ClubState {
     selectedClub?: Club
     myClubs: Array<Club>
     members: Array<ClubUser>
+    selectedMember?: ClubUser
     errors: ClubErrorType
 }
 
@@ -74,10 +76,14 @@ export const editClub =
             } catch (e) {
                 if (axios.isAxiosError(e)) {
                     const errorType = APIError.getErrorType(e.response?.status)
+                    let message: string = errorType.message
                     if (errorType.errorCode === 400) {
-                        errorType.message = '모든 필드를 알맞게 입력해주세요.'
+                        message = '모든 필드를 알맞게 입력해주세요.'
                     }
-                    return rejectWithValue(errorType)
+                    return rejectWithValue({
+                        ...errorType,
+                        message,
+                    })
                 }
             }
         },
@@ -114,10 +120,29 @@ export const removeClubMember = createAsyncThunk(
     async () => { return },
 )
 
-export const assignClubMemberRole = createAsyncThunk(
-    'club/assignClubMemberRole',
-    async () => { return },
-)
+export const changeMemberRole =
+    createAsyncThunk<ClubUser | undefined, { clubId: number, userId: number }, { rejectValue: APIErrorType }>(
+        'club/changeClubMemberRole',
+        async ({ clubId, userId }: { clubId: number, userId: number }, { rejectWithValue }) => {
+            try {
+                return await ClubAPI.changeClubMemberRole(clubId, userId)
+            } catch (e) {
+                if (axios.isAxiosError(e)) {
+                    const errorType = APIError.getErrorType(e.response?.status)
+                    let message: string = errorType.message
+                    if (errorType.errorCode === 400) {
+                        message = '유일한 관리자는 일반 멤버로 전환할 수 없습니다.'
+                    } else if  (errorType.errorCode === 404) {
+                        message = '존재하지 않는 동아리입니다.'
+                    }
+                    return rejectWithValue({
+                        ...errorType,
+                        message,
+                    })
+                }
+            }
+        },
+    )
 
 export const createClubTag = createAsyncThunk(
     'club/createTag',
@@ -132,6 +157,9 @@ const clubSlice = createSlice({
     reducers: {
         resetErrors: (state) => {
             state.errors = {}
+        },
+        setSelectedMember: (state, action: PayloadAction<ClubUser>) => {
+            state.selectedMember = action.payload
         },
     },
     extraReducers: (builder) => {
@@ -171,6 +199,15 @@ const clubSlice = createSlice({
         builder.addCase(deleteClub.rejected, (state, action) => {
             state.errors.deleteError = action.payload
         })
+        builder.addCase(changeMemberRole.fulfilled, (state, action) => {
+            if (state.selectedMember && action.payload) {
+                state.selectedMember = { ...state.selectedMember, role: action.payload.role }
+            }
+        })
+        builder.addCase(changeMemberRole.rejected, (state, action) => {
+            state.selectedMember = undefined
+            state.errors.changeMemberRoleError = action.payload
+        })
     },
 })
 
@@ -184,5 +221,6 @@ export const clubActions = {
     createClubTag,
     editClub,
     deleteClub,
+    changeMemberRole,
 }
 export const clubReducer = clubSlice.reducer

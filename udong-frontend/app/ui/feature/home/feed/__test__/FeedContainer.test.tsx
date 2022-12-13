@@ -7,6 +7,7 @@ import { FeedContainer } from '../FeedContainer'
 
 const stubPostInitialState: PostState = {
     feedPosts: [],
+    errors: {},
     clubPosts: [],
 }
 

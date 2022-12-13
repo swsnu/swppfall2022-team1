@@ -24,8 +24,6 @@ const fakeBoardPostDto1 :BoardPostDto = { id: 1, title: '', content: '', type: P
     event: { id: 1, name: '' }, created_at: '', updated_at: '' }
 const fakeBoardPostDto2 :BoardPostDto = { id: 2, title: '', content: '', type: PostTypeDto.ENROLLMENT, closed: true,
     event: { id: 1, name: '' }, created_at: '', updated_at: '' }
-const fakeEventPostDto :BoardPostDto = { id: 2, title: '', content: '', type: PostTypeDto.ENROLLMENT, closed: true,
-    event: { id: 1, name: '' }, created_at: '', updated_at: '' }
 
 const fakePostState = {
     selectedPost: fakeBoardPostDto1,
@@ -34,6 +32,7 @@ const fakePostState = {
 }
 const fakePost: PostState = {
     selectedPost: fakeListItemPost1,
+    errors: {},
     feedPosts: [],
     clubPosts: [fakeBoardPost1, fakeBoardPost2],
     eventPosts: [fakeEventPost],
@@ -58,6 +57,7 @@ describe('post reducer', () => {
             feedPosts: [],
             clubPosts: [],
             eventPosts: [],
+            errors: {},
         })
     })
     it('should handle getClubPosts', async () => {
