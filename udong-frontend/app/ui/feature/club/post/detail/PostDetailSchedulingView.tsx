@@ -1,10 +1,13 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
 import { clubActions } from '../../../../../domain/store/club/ClubSlice'
 import { schedulingActions } from '../../../../../domain/store/post/scheduling/SchedulingSlice'
+import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { getDay, new2dArray } from '../../../../../utility/functions'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
@@ -34,7 +37,10 @@ export const PostDetailSchedulingView = () => {
     }, [dispatch, postId])
 
     useEffect(() => {
-        if(clubId) { dispatch(clubActions.getClubMembers(+clubId))}
+        if(clubId) {
+            dispatch(clubActions.getClubMembers(+clubId))
+            dispatch(userActions.getMyClubProfile(+clubId))
+        }
     }, [dispatch, clubId])
 
     useEffect(() => {
@@ -42,17 +48,25 @@ export const PostDetailSchedulingView = () => {
     }, [dispatch])
 
     const data = useData()
-    const { schedulingStatus } = data
+    const { schedulingStatus, myId } = data
     const myTimeTable = data.myTimeTable ?? new2dArray(7, 48, false)
+    const isAdmin = useSelector(userSelector.isAdmin)
 
     useEffect(() => {
         if(schedulingStatus) {
             const dayCnt = 'dates' in schedulingStatus
                 ? schedulingStatus.dates.length
                 : schedulingStatus.weekdays.filter((v) => v).length
-            setSelected(new2dArray(dayCnt, schedulingStatus.endTime - schedulingStatus.startTime, false))
+            const mySchedulingInfo = schedulingStatus.availableTime.filter(time => time.user.id === myId )
+            if(mySchedulingInfo.length) {
+                setSelected(mySchedulingInfo[0].time)
+            }
+            else {
+                setSelected(new2dArray(dayCnt, schedulingStatus.endTime - schedulingStatus.startTime, false))
+            }
+
         }
-    }, [schedulingStatus])
+    }, [schedulingStatus, myId])
     if (!schedulingStatus) {return null}
 
     if('dates' in schedulingStatus) {
@@ -116,17 +130,18 @@ export const PostDetailSchedulingView = () => {
                 onClick={() => {
                     if(selected) {
                         dispatch(schedulingActions.participateInScheduling({ postId, time: selected }))
+                        toast.success('제출되었습니다')
                     }
                 }}
             >
                 일정 제출하기
             </UdongButton>
         </HStack>
-        <UdongButton
+        {isAdmin && <UdongButton
             style={'line'}
             onClick={() => router.push(`/club/${clubId}/post/${postId}/close`)}
         >
             마감하기
-        </UdongButton>
+        </UdongButton>}
     </VStack>
 }
