@@ -5,6 +5,7 @@ import { RoleType } from '../../../../domain/model/RoleType'
 import { AppDispatch } from '../../../../domain/store'
 import { clubSelector } from '../../../../domain/store/club/ClubSelector'
 import { clubActions } from '../../../../domain/store/club/ClubSlice'
+import { userSelector } from '../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../domain/store/user/UserSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
@@ -27,6 +28,7 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
     const dispatch = useDispatch<AppDispatch>()
 
     const member = useSelector(clubSelector.selectedMember)
+    const isAdmin = useSelector(userSelector.isAdmin)
 
     useEffect(() => {
         if (member) {
@@ -77,6 +79,9 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
     }, [])
 
     const renderBottomButtons = useCallback(() => {
+        if (!isAdmin) {
+            return <Spacer height={90}/>
+        }
         if (member?.role === RoleType.ADMIN) {
             return renderAssignMemberButton()
         } else {
@@ -86,7 +91,7 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
                 {renderRemoveMemberButton()}
             </HStack>
         }
-    }, [member, renderAssignAdminButton, renderRemoveMemberButton, renderAssignMemberButton])
+    }, [isAdmin, member, renderAssignAdminButton, renderRemoveMemberButton, renderAssignMemberButton])
 
     return <UdongModal
         isOpen={isOpen}
