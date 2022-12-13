@@ -45,6 +45,7 @@ export const FeedContainer = () => {
                             key={post.id}
                             clubId={post.club?.id ?? -1}
                             post={post}
+                            imageKey={post.club?.image ?? ''}
                         />
                     })}
                 </>
