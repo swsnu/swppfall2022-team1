@@ -42,17 +42,17 @@ export const getClubPosts = createAsyncThunk(
     },
 )
 
+export const getEventPosts = createAsyncThunk(
+    'post/getEventPosts',
+    async (eventId: number) => {
+        return EventAPI.getEventPosts(eventId)
+    },
+)
+
 export const getPost = createAsyncThunk(
     'post/getPost',
     async (postId: string) => {
         return PostAPI.getPost(postId)
-    },
-)
-
-export const getEventPosts = createAsyncThunk(
-    `post/getEventPosts`,
-    async (eventId : number) => {
-        return EventAPI.getEventPosts(eventId)
     },
 )
 

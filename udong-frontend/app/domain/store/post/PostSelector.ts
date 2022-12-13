@@ -19,6 +19,11 @@ const clubPosts = createSelector(
     state => state.clubPosts,
 )
 
+const eventPosts = createSelector(
+    postState,
+    state => state.eventPosts,
+)
+
 const createdPostId = createSelector(
     postState,
     state => state.createdPostId,
@@ -33,6 +38,7 @@ export const postSelector = {
     selectedPost,
     feedPosts,
     clubPosts,
+    eventPosts,
     createdPostId,
     errors,
 }

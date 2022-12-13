@@ -31,8 +31,8 @@ export const getEvents = createAsyncThunk(
 
 export const getEvent = createAsyncThunk(
     'event/getEvent',
-    async (eventId: number) => {
-        return await EventAPI.getEvent(eventId)
+    (eventId: number) => {
+        return EventAPI.getEvent(eventId)
     },
 )
 
