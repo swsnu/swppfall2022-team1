@@ -104,7 +104,7 @@ class ClubViewSet(_GenericClubViewSet):
         except IntegrityError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        default_tag = Tag.objects.get(Q(club_id=club) & Q(is_default=True))
+        default_tag = Tag.objects.get(Q(club=club) & Q(is_default=True))
         # request.user is not anonymous
         UserTag.objects.create(user=request.user, tag=default_tag)  # type: ignore
         return Response(ClubSerializer(club).data)
@@ -155,6 +155,11 @@ class ClubViewSet(_GenericClubViewSet):
                 return Response(status=status.HTTP_403_FORBIDDEN)
             else:
                 user_club.delete()
+                default_tag = Tag.objects.get(Q(club_id=pk) & Q(is_default=True))
+                # request.user is not anonymous
+                UserTag.objects.filter(
+                    Q(user=request.user) & Q(tag=default_tag)
+                ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             raise MethodNotAllowed(
