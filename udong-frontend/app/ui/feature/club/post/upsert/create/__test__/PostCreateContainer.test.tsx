@@ -20,6 +20,7 @@ jest.mock('../../PostAdditionalInputsView', () => ({
 const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
+    errors: {},
 }
 
 const stubTagInitialState: TagState = {

@@ -76,10 +76,14 @@ export const editClub =
             } catch (e) {
                 if (axios.isAxiosError(e)) {
                     const errorType = APIError.getErrorType(e.response?.status)
+                    let message: string = errorType.message
                     if (errorType.errorCode === 400) {
-                        errorType.message = '모든 필드를 알맞게 입력해주세요.'
+                        message = '모든 필드를 알맞게 입력해주세요.'
                     }
-                    return rejectWithValue(errorType)
+                    return rejectWithValue({
+                        ...errorType,
+                        message,
+                    })
                 }
             }
         },

@@ -5,20 +5,24 @@ import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { PostAPI } from '../../../infra/api/PostAPI'
 import { BoardPost } from '../../model/BoardPost'
 import { CreatePost } from '../../model/CreatePost'
+import { APIError, APIErrorType } from '../ErrorHandler'
 
-export type PostCreateAPIErrorType = 'missing_required_field' | 'is_not_admin' | 'error'
+export interface PostErrorType {
+    createPostError?: APIErrorType
+}
 
 export interface PostState {
     selectedPost?: BoardPost
     createdPostId?: number
-    createPostError?: PostCreateAPIErrorType
     feedPosts: Array<BoardPost>
     clubPosts: Array<BoardPost>
+    errors: PostErrorType
 }
 
 const initialState: PostState = {
     feedPosts: [],
     clubPosts: [],
+    errors: {},
 }
 
 export const getFeedPosts = createAsyncThunk(
@@ -43,20 +47,24 @@ export const getPost = createAsyncThunk(
 )
 
 export const createPost =
-    createAsyncThunk<BoardPost | undefined, { clubId: number, post: CreatePost }, { rejectValue: PostCreateAPIErrorType }>(
+    createAsyncThunk<BoardPost | undefined, { clubId: number, post: CreatePost }, { rejectValue: APIErrorType }>(
         'post/createPost',
         async ({ clubId, post }: { clubId: number, post: CreatePost }, { rejectWithValue }) => {
             try {
                 return await ClubAPI.createClubPost(clubId, post)
             } catch (e) {
                 if (axios.isAxiosError(e)) {
-                    if (e.response?.status === 400) {
-                        return rejectWithValue('missing_required_field')
-                    } else if (e.response?.status === 403) {
-                        return rejectWithValue('is_not_admin')
-                    } else {
-                        return rejectWithValue('error')
+                    const errorType = APIError.getErrorType(e.response?.status)
+                    let message: string = errorType.message
+
+                    if (errorType.errorCode === 400) {
+                        message = '모든 필드를 알맞게 입력해주세요.'
                     }
+
+                    return rejectWithValue({
+                        ...errorType,
+                        message,
+                    })
                 }
             }
         },
@@ -76,8 +84,8 @@ const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        resetCreatePostError: (state) => {
-            state.createPostError = undefined
+        resetErrors: (state) => {
+            state.errors = {}
         },
     },
     extraReducers: (builder) => {
@@ -98,7 +106,7 @@ const postSlice = createSlice({
         builder.addCase(createPost.rejected, (state, action) => {
             state.selectedPost = undefined
             state.createdPostId = undefined
-            state.createPostError = action.payload
+            state.errors.createPostError = action.payload
         })
     },
 })

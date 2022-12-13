@@ -29,6 +29,7 @@ const fakePostState = {
 }
 const fakePost: PostState = {
     selectedPost: fakeListItemPost1,
+    errors: {},
     feedPosts: [],
     clubPosts: [fakeBoardPost1, fakeBoardPost2],
 }
@@ -51,6 +52,7 @@ describe('post reducer', () => {
         expect(postReducer(undefined, { type: 'unknown' })).toEqual({
             feedPosts: [],
             clubPosts: [],
+            errors: {},
         })
     })
     it('should handle getClubPosts', async () => {

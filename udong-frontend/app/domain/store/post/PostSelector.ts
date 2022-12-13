@@ -24,9 +24,9 @@ const createdPostId = createSelector(
     state => state.createdPostId,
 )
 
-const createPostError = createSelector(
+const errors = createSelector(
     postState,
-    state => state.createPostError,
+    state => state.errors,
 )
 
 export const postSelector = {
@@ -34,5 +34,5 @@ export const postSelector = {
     feedPosts,
     clubPosts,
     createdPostId,
-    createPostError,
+    errors,
 }
