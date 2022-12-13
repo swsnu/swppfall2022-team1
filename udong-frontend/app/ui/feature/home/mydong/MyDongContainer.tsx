@@ -7,7 +7,6 @@ import { clubSelector } from '../../../../domain/store/club/ClubSelector'
 import { clubActions } from '../../../../domain/store/club/ClubSlice'
 import { VStack } from '../../../components/Stack'
 import { UdongImage } from '../../../components/UdongImage'
-import dong from '../../../icons/IcDong.png'
 import plus from '../../../icons/IcPlus.png'
 import { UdongColors } from '../../../theme/ColorPalette'
 import { AddClubModal } from './AddClubModal'
@@ -67,7 +66,7 @@ export const MyDongContainer = () => {
             {myClubs.map((item, index) => {
                 return <ClubItem
                     key={`${item.name} / ${index}`}
-                    imageSrc={dong.src}
+                    imageKey={item.image ?? ''}
                     club={item}
                 />
             })}
