@@ -176,10 +176,12 @@ export const TimeTable = (props: TimeTableProps) => {
 
     return (
         <HStack
-            width={(CELL_WIDTH * days.length) + 1}
             onMouseLeave={onHover && (() => onHover(null))}
             style={{
+                maxWidth: '100%',
                 cursor: 'default',
+                overflowX: 'scroll',
+                overflowY: 'hidden',
                 borderColor: UdongColors.GrayNormal,
                 borderStyle: 'solid',
                 borderWidth: 0.5,
