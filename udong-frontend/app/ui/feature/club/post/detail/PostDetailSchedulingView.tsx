@@ -17,6 +17,7 @@ import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { DraggableTimeTable } from '../../../shared/DraggableTimeTable'
 import { SlashedBox } from '../../../shared/SlashedBox'
+import { TimeTable } from '../../../shared/TimeTable'
 import { useData } from '../scheduling/SchedulingHooks'
 
 export const PostDetailSchedulingView = () => {
@@ -106,14 +107,30 @@ export const PostDetailSchedulingView = () => {
             />
             <UdongText style={'GeneralContent'}>내 고정 시간표</UdongText>
         </HStack>
-        {selected !== null && <DraggableTimeTable
-            days={header}
-            startTime={schedulingStatus.startTime}
-            selected={selected}
-            gray={fixed}
-            setSelected={setSelected as (f: ((x: boolean[][]) => boolean[][])) => void}
-            selectColor={UdongColors.Primary50}
-        />}
+        {
+            schedulingStatus.closed
+                ? (
+                    <TimeTable
+                        days={header}
+                        startTime={schedulingStatus.startTime}
+                        selected={
+                            schedulingStatus.confirmedTime
+                            ?? new2dArray(header.length, schedulingStatus.endTime - schedulingStatus.startTime, false)
+                        }
+                        selectColor={UdongColors.Secondary}
+                    />
+                )
+                : (selected !== null && (
+                    <DraggableTimeTable
+                        days={header}
+                        startTime={schedulingStatus.startTime}
+                        selected={selected}
+                        gray={fixed}
+                        setSelected={setSelected as (f: ((x: boolean[][]) => boolean[][])) => void}
+                        selectColor={UdongColors.Primary50}
+                    />
+                ))
+        }
         <HStack
             justifyContent={'space-around'}
             width={'100%'}
