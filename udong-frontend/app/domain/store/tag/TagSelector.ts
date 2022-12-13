@@ -14,7 +14,13 @@ const tags = createSelector(
     state => state.tags,
 )
 
+const createPostTags = createSelector(
+    tagState,
+    state => state.createPostTags,
+)
+
 export const tagSelector = {
     selectedTag,
     tags,
+    createPostTags,
 }

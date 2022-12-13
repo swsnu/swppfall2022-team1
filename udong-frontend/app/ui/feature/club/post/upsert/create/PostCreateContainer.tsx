@@ -7,6 +7,8 @@ import { PostType } from '../../../../../../domain/model/PostType'
 import { AppDispatch } from '../../../../../../domain/store'
 import { postSelector } from '../../../../../../domain/store/post/PostSelector'
 import { postActions, PostCreateAPIErrorType } from '../../../../../../domain/store/post/PostSlice'
+import { tagSelector } from '../../../../../../domain/store/tag/TagSelector'
+import { tagActions } from '../../../../../../domain/store/tag/TagSlice'
 import { convertQueryParamToString } from '../../../../../../utility/handleQueryParams'
 import { VStack } from '../../../../../components/Stack'
 import { UdongButton } from '../../../../../components/UdongButton'
@@ -52,7 +54,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
 
     const newPostId = useSelector(postSelector.createdPostId)
     const error = useSelector(postSelector.createPostError)
-    const selectedTagIds = useSelector(postSelector.createPostTags).map(tag => tag.id)
+    const selectedTagIds = useSelector(tagSelector.createPostTags).map(tag => tag.id)
 
     const [title, setTitle] = useState<string>('')
     const [contents, setContents] = useState<string>('')
@@ -60,7 +62,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
 
     useEffect(() => {
-        dispatch(postActions.resetCreatePostTags())
+        dispatch(tagActions.resetCreatePostTags())
     }, [dispatch])
 
     useEffect(() => {

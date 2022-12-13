@@ -61,7 +61,6 @@ const postInitialState: PostState = {
     },
     feedPosts: [],
     clubPosts: [],
-    createPostTags: [],
 }
 
 export const mockStore = configureStore({

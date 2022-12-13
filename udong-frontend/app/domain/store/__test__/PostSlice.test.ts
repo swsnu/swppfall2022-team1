@@ -31,7 +31,6 @@ const fakePost: PostState = {
     selectedPost: fakeListItemPost1,
     feedPosts: [],
     clubPosts: [fakeBoardPost1, fakeBoardPost2],
-    createPostTags: [],
 }
 
 jest.mock('next/config', () => () => ({
@@ -52,7 +51,6 @@ describe('post reducer', () => {
         expect(postReducer(undefined, { type: 'unknown' })).toEqual({
             feedPosts: [],
             clubPosts: [],
-            createPostTags: [],
         })
     })
     it('should handle getClubPosts', async () => {
