@@ -51,7 +51,11 @@ export const SchedulingStatusTableView = (props: SchedulingStatusTableViewProps)
                     }
                     else {setSelected({ col, row })}
                 }}
-                style={{ marginTop: 10 }}
+                style={{ marginTop: 10,
+                    maxWidth: '100%',
+                    overflowX: 'scroll',
+                    overflowY: 'hidden',
+                }}
             />
         </VStack>
     )
