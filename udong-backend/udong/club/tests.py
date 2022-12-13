@@ -449,10 +449,17 @@ class ClubTestCase(MyTestCase):
         )
         self.assertEqual(response.status_code, 403)
 
+        response = self.client.post(
+            "/api/club/1/tag/",
+            json.dumps({"name": "testtag", "user_list": [99]}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+
         # Normal Case
         response = self.client.post(
             "/api/club/1/tag/",
-            json.dumps({"name": "testtag"}),
+            json.dumps({"name": "testtag", "user_list": [1]}),
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 201)
@@ -464,6 +471,7 @@ class ClubTestCase(MyTestCase):
                 "is_default": False,
             },
         )
+        self.assertEqual(len(UserTag.objects.all()), 3)
 
     # POST /api/club/:id/post/
     def test_club_create_post(self) -> None:
