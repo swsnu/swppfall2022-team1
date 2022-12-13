@@ -169,8 +169,10 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
 
     @swagger_serializer_method(serializer_or_field=TagPostSerializer(many=True))
     def get_include_tag(self, post: Post) -> ReturnDict:
-        post_tag_list = post.post_tag_set.select_related("tag").filter(
-            tag__tag_user_set__user__id__contains=self.context["id"]
+        post_tag_list = (
+            post.post_tag_set.select_related("tag")
+            .filter(tag__tag_user_set__user__id__contains=self.context["id"])
+            .distinct()
         )
         tags = list(map(lambda post_tag: post_tag.tag, post_tag_list))
         return TagPostSerializer(tags, many=True).data
