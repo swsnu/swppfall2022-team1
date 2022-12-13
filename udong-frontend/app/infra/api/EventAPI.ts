@@ -3,7 +3,10 @@ import { axiosConfig } from '../global'
 import { clubEventTransformer } from '../transformer/ClubEventTransformer'
 
 export const EventAPI = (() => {
-    function getEvent() { return }
+    async function getEvent(eventId: string) {
+        const response = await axiosConfig.get(`/api/event/${eventId}/`)
+        return clubEventTransformer.fromDto(response.data)
+    }
 
     function editEvent(eventId: number, name: string | null, time: Time[] | null): Promise<void> {
         return axiosConfig.put(`/api/event/${eventId}/`, clubEventTransformer.toEditDto(name, time))
