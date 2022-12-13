@@ -20,6 +20,7 @@ interface ProfileViewProps {
     name: string
     code?: string
     email?: string
+    image?: string
     showCameraButton?: boolean
     onClickEditNameButton?: (name: string) => void
     onRefresh?: () => void
@@ -32,6 +33,7 @@ export const ProfileView = (props: ProfileViewProps) => {
         name,
         code,
         email,
+        image,
         showCameraButton = false,
         onClickEditNameButton,
         onRefresh,
@@ -59,9 +61,11 @@ export const ProfileView = (props: ProfileViewProps) => {
     return <VStack alignItems={'center'}>
         <BackgroundCircle>
             <UdongImage
-                src={udong.src}
-                height={100}
-                width={100}
+                src={image ?? udong.src}
+                border={`${UdongColors.GrayBright} thick solid`}
+                borderRadius={100}
+                height={200}
+                width={200}
             />
             {showCameraButton &&
                 <UdongImage
@@ -160,8 +164,4 @@ const BackgroundCircle = styled.div({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-    backgroundColor: UdongColors.GrayBright,
-    borderRadius: 300,
-    height: 200,
-    width: 200,
 })
