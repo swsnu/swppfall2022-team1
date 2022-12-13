@@ -13,7 +13,6 @@ export interface EventErrorType {
 
 export interface EventState {
     selectedEvent?: ClubEvent
-    createEventError?: EventErrorType
     events: Array<ClubEvent>
     errors: EventErrorType
 }

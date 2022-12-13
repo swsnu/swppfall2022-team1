@@ -2,7 +2,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 
-import { dummyEvents } from '../../calendar/__test__/EventCalendar.test'
 import { EventListView } from '../EventListView'
 
 jest.mock('../EventList', () => ({
@@ -18,7 +17,7 @@ describe('<EventListView/>', () => {
         jest.spyOn(router, 'useRouter').mockImplementation(() => ({
             query: { clubId: 1 },
         } as unknown as NextRouter))
-        render(<EventListView events={dummyEvents}/>)
+        render(<EventListView events={[]}/>)
         const eventList = screen.getByTestId('event-list')
         expect(eventList).toBeDefined()
     })
@@ -28,7 +27,7 @@ describe('<EventListView/>', () => {
             query: { clubId: 1 },
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
-        render(<EventListView events={dummyEvents}/>)
+        render(<EventListView events={[]}/>)
         const eventList = screen.getByTestId('event-list')
         fireEvent.click(eventList)
         expect(mockPush).toHaveBeenCalledWith('/club/1/event/1')
