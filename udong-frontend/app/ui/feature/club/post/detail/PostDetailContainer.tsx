@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -138,7 +139,7 @@ export const PostDetailContainer = () => {
                 style={'GeneralContent'}
                 whiteSpace={'pre-line'}
             >
-                {<div dangerouslySetInnerHTML={{ __html: post.content }} />}
+                {<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />}
             </UdongText>
         </VStack>
 
