@@ -42,7 +42,7 @@ export const PostDetailSchedulingView = () => {
     }, [dispatch])
 
     const data = useData()
-    const { schedulingStatus } = data
+    const { schedulingStatus, myId } = data
     const myTimeTable = data.myTimeTable ?? new2dArray(7, 48, false)
 
     useEffect(() => {
@@ -50,9 +50,16 @@ export const PostDetailSchedulingView = () => {
             const dayCnt = 'dates' in schedulingStatus
                 ? schedulingStatus.dates.length
                 : schedulingStatus.weekdays.filter((v) => v).length
-            setSelected(new2dArray(dayCnt, schedulingStatus.endTime - schedulingStatus.startTime, false))
+            const mySchedulingInfo = schedulingStatus.availableTime.filter(time => time.user.id === myId )
+            if(mySchedulingInfo.length) {
+                setSelected(mySchedulingInfo[0].time)
+            }
+            else {
+                setSelected(new2dArray(dayCnt, schedulingStatus.endTime - schedulingStatus.startTime, false))
+            }
+
         }
-    }, [schedulingStatus])
+    }, [schedulingStatus, myId])
     if (!schedulingStatus) {return null}
 
     if('dates' in schedulingStatus) {

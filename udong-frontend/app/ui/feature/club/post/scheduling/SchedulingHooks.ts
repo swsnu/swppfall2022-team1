@@ -83,7 +83,7 @@ export const useData = () => {
         [] as ({ cnt: number, day: string, time: number })[],
     ).sort((a, b) => b.cnt - a.cnt).slice(0, 3)
 
-    return { schedulingStatus, allUsers, participatedUserIds, cnt, best, myTimeTable }
+    return { schedulingStatus, allUsers, participatedUserIds, cnt, best, myTimeTable, myId }
 }
 
 export const getHeader = (data: DateSchedulingPost | WeekdaySchedulingPost) => (
