@@ -279,7 +279,7 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
             return AvailableTimeSerializer
         elif self.action in ("close", "status"):
             return SchedulingSerializer
-        elif self.action in ("me"):
+        elif self.action in ("me",):
             return AvailableTimeSimpleSerializer
         return self.serializer_class
 
