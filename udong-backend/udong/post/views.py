@@ -245,6 +245,16 @@ class EnrollmentViewSet(_EnrollmentGenericViewSet):
                 )
 
     @action(detail=True, methods=["GET"])
+    def me(self, request: Request, pk: Any) -> Response:
+        try:
+            participation = Participation.objects.get(
+                Q(user_id=request.user.id) & Q(enrollment_id=self.get_object())
+            )
+        except Participation.DoesNotExist:
+            return Response()
+        return Response(self.get_serializer(participation).data)
+
+    @action(detail=True, methods=["GET"])
     def status(self, request: Request, pk: Any) -> Response:
         self.get_object()
         participation_list = (
