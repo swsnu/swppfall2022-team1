@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 
-import { EventEditContainer } from '../EventEditContainer'
+import { mockStore } from '../../../__test__/EventContainer.test'
+import { EventCreateContainer } from '../../create/EventCreateContainer'
 
 jest.mock('../../EventInputView', () => ({
     EventInputView: () => <div data-testid={'event-input-view'}/>,
@@ -11,8 +13,14 @@ jest.mock('../../EventAdditionalFieldsView', () => ({
 }))
 
 describe('<EventEditContainer/>', () => {
+    const eventEditContainer: JSX.Element = (
+        <Provider store={mockStore}>
+            <EventCreateContainer/>
+        </Provider>
+    )
+
     it('renders event edit container',  () => {
-        render(<EventEditContainer/>)
+        render(eventEditContainer)
         const inputView = screen.getByTestId('event-input-view')
         const additionalFieldsView = screen.getByTestId('event-additional-fields-view')
         expect(inputView).toBeDefined()
@@ -20,9 +28,8 @@ describe('<EventEditContainer/>', () => {
     })
 
     it('button click test', () => {
-        render(<EventEditContainer/>)
+        render(eventEditContainer)
         const saveButton = screen.getByRole('button')
         fireEvent.click(saveButton)
-        // further implementation required after save api connect
     })
 })
