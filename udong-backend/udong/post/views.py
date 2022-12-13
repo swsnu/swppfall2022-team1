@@ -93,7 +93,7 @@ class PostViewSet(_PostGenericViewSet):
                 )
             else:
                 return Response()
-        return Response(response)
+        return Response(sorted(response, key=lambda p: p["created_at"], reverse=True))
 
     def retrieve(self, request: Request, pk: Any) -> Response:
         post = (
