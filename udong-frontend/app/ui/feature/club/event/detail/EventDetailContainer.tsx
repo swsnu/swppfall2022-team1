@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
+import { SchedulingPostType } from '../../../../../domain/model/SchedulingPostType'
 import { AppDispatch } from '../../../../../domain/store'
 import { eventSelector } from '../../../../../domain/store/event/EventSelector'
 import { eventActions } from '../../../../../domain/store/event/EventSlice'
 import { postSelector } from '../../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../../domain/store/post/PostSlice'
+import { timeToStr } from '../../../../../utility/functions'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { Spacer } from '../../../../components/Spacer'
 import { VStack } from '../../../../components/Stack'
@@ -69,9 +71,18 @@ export const EventDetailContainer = () => {
         <UdongText style={'GeneralTitle'}>행사 시간</UdongText>
         <Spacer height={15}/>
         <VStack paddingHorizontal={16}>
-            <UdongText style={'GeneralContent'}>2022.10.7     10:00     ~     2022.10.7     04:00</UdongText>
-            <UdongText style={'GeneralContent'}>2022.10.8     10:00     ~     2022.10.8     04:00</UdongText>
-            <UdongText style={'GeneralContent'}>2022.10.9     10:00     ~     2022.10.9     04:00</UdongText>
+            {
+                event.times.map(time => (
+                    time.type === SchedulingPostType.DATES
+                        ? <UdongText style={'GeneralContent'}>
+                            {time.startDate} {timeToStr(time.startTime)} ~ {time.endDate} {timeToStr(time.endTime)}
+                        </UdongText>
+                        : <UdongText style={'GeneralContent'}>
+                            {['월', '화', '수', '목', '금', '토', '일'][time.weekday]} {timeToStr(time.startTime)} ~ {timeToStr(time.endTime)}
+                            {` (${time.repeatStart} ~ ${time.repeatEnd})`}
+                        </UdongText>
+                ))
+            }
         </VStack>
 
         <Spacer height={30}/>
