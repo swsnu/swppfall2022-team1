@@ -93,7 +93,7 @@ export const ClubAPI = (() => {
     }
 
     function createClubTag(clubId: number, tagName: string, userIds: number[]): Promise<void> {
-        return axiosConfig.post(`/api/club/${clubId}/tag/`, { name: tagName, users: userIds })
+        return axiosConfig.post(`/api/club/${clubId}/tag/`, { name: tagName, user_list: userIds })
     }
 
     return Object.freeze({
