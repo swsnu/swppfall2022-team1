@@ -100,7 +100,7 @@ export const EventDetailContainer = () => {
 
         <DeleteModal
             deleteObjectText={'행사'}
-            warningText={'경고 문구'}
+            warningText={`행사 ${event.name}이(가) 영구적으로 삭제됩니다.`}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
             onClickDelete={() => {return}}
