@@ -104,7 +104,7 @@ class ClubViewSet(_GenericClubViewSet):
         except IntegrityError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        default_tag = Tag.objects.get(Q(club_id=club) & Q(is_default=True))
+        default_tag = Tag.objects.get(Q(club=club) & Q(is_default=True))
         # request.user is not anonymous
         UserTag.objects.create(user=request.user, tag=default_tag)  # type: ignore
         return Response(ClubSerializer(club).data)
@@ -155,6 +155,9 @@ class ClubViewSet(_GenericClubViewSet):
                 return Response(status=status.HTTP_403_FORBIDDEN)
             else:
                 user_club.delete()
+                UserTag.objects.select_related("club").filter(
+                    Q(user_id=request.user.id) & Q(tag__club_id=pk)
+                ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             raise MethodNotAllowed(
@@ -327,6 +330,9 @@ class ClubUserViewSet(_GenericClubUserViewSet):
         if user_club.auth == "A":
             return Response(status=status.HTTP_400_BAD_REQUEST)
         user_club.delete()
+        UserTag.objects.select_related("club").filter(
+            Q(user_id=user_id) & Q(tag__club_id=club_id)
+        ).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @swagger_auto_schema(
