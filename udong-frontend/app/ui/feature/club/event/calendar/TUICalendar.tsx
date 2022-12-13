@@ -74,9 +74,9 @@ export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps 
                 const seed = ((new Date(event.createdAt)).getTime() / 17) % 100
                 if (time.type === SchedulingPostType.DATES){
                     const startTime = new Date(time.startDate)
-                    startTime.setTime(startTime.getTime() + 1000 * 60 * 30 * time.startTime)
+                    startTime.setTime(startTime.getTime() + (1000 * 60 * 30 * time.startTime))
                     const endTime = new Date(time.endDate)
-                    endTime.setTime(endTime.getTime() + 1000 * 60 * 30 * time.endTime)
+                    endTime.setTime(endTime.getTime() + (1000 * 60 * 30 * time.endTime))
                     coloredEvents = [...coloredEvents,
                         {
                             id: `${i}`, calendarId: '0', title: event.name, body: `${event.id}`,
