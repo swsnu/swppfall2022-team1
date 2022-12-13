@@ -228,21 +228,6 @@ class ClubTestCase(MyTestCase):
             response.content,
             [
                 {
-                    "id": 1,
-                    "author": "Alan Turing",
-                    "club": None,
-                    "event": {"id": 1, "name": "Turing award"},
-                    "title": "Turing award is coming!",
-                    "content": "Turing award Turing award Turing award",
-                    "type": "A",
-                    "closed": None,
-                    "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
-                    "exclude_tag": [
-                        {"id": 2, "name": "winner", "is_default": False},
-                        {"id": 3, "name": "loser", "is_default": False},
-                    ],
-                },
-                {
                     "id": 2,
                     "author": "Alan Turing",
                     "club": None,
@@ -251,6 +236,21 @@ class ClubTestCase(MyTestCase):
                     "content": "Nobel Prize Nobel Prize Nobel Prize",
                     "type": "E",
                     "closed": False,
+                    "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
+                    "exclude_tag": [
+                        {"id": 2, "name": "winner", "is_default": False},
+                        {"id": 3, "name": "loser", "is_default": False},
+                    ],
+                },
+                {
+                    "id": 1,
+                    "author": "Alan Turing",
+                    "club": None,
+                    "event": {"id": 1, "name": "Turing award"},
+                    "title": "Turing award is coming!",
+                    "content": "Turing award Turing award Turing award",
+                    "type": "A",
+                    "closed": None,
                     "include_tag": [{"id": 1, "name": "genius", "is_default": True}],
                     "exclude_tag": [
                         {"id": 2, "name": "winner", "is_default": False},
