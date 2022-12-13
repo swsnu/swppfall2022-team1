@@ -11,6 +11,7 @@ export interface ClubErrorType {
     editError?: APIErrorType
     deleteError?: APIErrorType
     changeMemberRoleError?: APIErrorType
+    removeMemberError?: APIErrorType
 }
 
 export interface ClubState {
@@ -115,9 +116,29 @@ export const getClubMembers = createAsyncThunk(
     },
 )
 
-export const removeClubMember = createAsyncThunk(
+export const removeClubMember = createAsyncThunk<void, { clubId: number, userId: number }, { rejectValue: APIErrorType }>(
     'club/removeClubMember',
-    async () => { return },
+    async ({ clubId, userId } : { clubId: number, userId: number }, { rejectWithValue }) => {
+        try {
+            return await ClubAPI.removeClubMember(clubId, userId)
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                const errorType = APIError.getErrorType(e.response?.status)
+                let message: string = errorType.message
+
+                if (errorType.errorCode === 400) {
+                    message = '관리자인 멤버는 내보낼 수 없습니다.'
+                } else if  (errorType.errorCode === 404) {
+                    message = '존재하지 않는 동아리입니다.'
+                }
+
+                return rejectWithValue({
+                    ...errorType,
+                    message,
+                })
+            }
+        }
+    },
 )
 
 export const changeMemberRole =
@@ -130,11 +151,13 @@ export const changeMemberRole =
                 if (axios.isAxiosError(e)) {
                     const errorType = APIError.getErrorType(e.response?.status)
                     let message: string = errorType.message
+
                     if (errorType.errorCode === 400) {
                         message = '유일한 관리자는 일반 멤버로 전환할 수 없습니다.'
                     } else if  (errorType.errorCode === 404) {
                         message = '존재하지 않는 동아리입니다.'
                     }
+
                     return rejectWithValue({
                         ...errorType,
                         message,
@@ -208,6 +231,14 @@ const clubSlice = createSlice({
             state.selectedMember = undefined
             state.errors.changeMemberRoleError = action.payload
         })
+        builder.addCase(removeClubMember.fulfilled, (state) => {
+            state.members = state.members.filter(member => member.user.id !== state.selectedMember?.user.id)
+            state.selectedMember = undefined
+        })
+        builder.addCase(removeClubMember.rejected, (state, action) => {
+            state.selectedMember = undefined
+            state.errors.removeMemberError = action.payload
+        })
     },
 })
 
@@ -222,5 +253,6 @@ export const clubActions = {
     editClub,
     deleteClub,
     changeMemberRole,
+    removeClubMember,
 }
 export const clubReducer = clubSlice.reducer

@@ -51,6 +51,12 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
         }
     }, [dispatch, clubId, member])
 
+    const handleRemoveMember = useCallback(() => {
+        if (member) {
+            dispatch(clubActions.removeClubMember({ clubId, userId: member.user.id }))
+        }
+    }, [dispatch, clubId, member])
+
     const handleCloseErrorModal = useCallback(() => {
         setIsErrorModalOpen(false)
         dispatch(clubActions.resetErrors())
@@ -82,7 +88,7 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
     }, [handleChangeMemberRole])
 
     const renderRemoveMemberButton = useCallback(() => {
-        return <HStack onClick={() => {return}}>
+        return <HStack onClick={handleRemoveMember}>
             <UdongText
                 style={'ListContentS'}
                 color={UdongColors.Warning}
@@ -90,7 +96,7 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
                 내보내기
             </UdongText>
         </HStack>
-    }, [])
+    }, [handleRemoveMember])
 
     const renderBottomButtons = useCallback(() => {
         if (!isAdmin) {
