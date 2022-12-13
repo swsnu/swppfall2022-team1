@@ -37,7 +37,10 @@ export const PostDetailSchedulingView = () => {
     }, [dispatch, postId])
 
     useEffect(() => {
-        if(clubId) { dispatch(clubActions.getClubMembers(+clubId))}
+        if(clubId) {
+            dispatch(clubActions.getClubMembers(+clubId))
+            dispatch(userActions.getMyClubProfile(+clubId))
+        }
     }, [dispatch, clubId])
 
     useEffect(() => {
