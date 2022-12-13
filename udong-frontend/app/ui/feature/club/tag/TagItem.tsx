@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 
+import { DateTimeFormatter } from '../../../../utility/dateTimeFormatter'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongChip } from '../../../components/UdongChip'
@@ -49,7 +50,7 @@ export const TagItem = (props: TagItemProps) => {
                     style={'ListContentS'}
                     whiteSpace={'nowrap'}
                 >
-                    {`생성일: ${createdAt}`}
+                    {`생성일: ${DateTimeFormatter.formatDateTime(createdAt, false)}`}
                 </UdongText>
 
                 <Spacer width={30}/>
@@ -57,7 +58,7 @@ export const TagItem = (props: TagItemProps) => {
                     style={'ListContentS'}
                     whiteSpace={'nowrap'}
                 >
-                    {`수정일: ${updatedAt}`}
+                    {`수정일: ${DateTimeFormatter.formatDateTime(updatedAt, false)}`}
                 </UdongText>
 
                 <Spacer width={30}/>

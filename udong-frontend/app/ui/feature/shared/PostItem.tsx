@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react'
 
 import { BoardPost } from '../../../domain/model/BoardPost'
 import { PostType } from '../../../domain/model/PostType'
+import { DateTimeFormatter } from '../../../utility/dateTimeFormatter'
 import { getPostTypeQueryParam } from '../../../utility/handleQueryParams'
 import { formatPostItemInfo } from '../../../utility/postItemFormatter'
 import { Spacer } from '../../components/Spacer'
@@ -97,7 +98,7 @@ export const PostItem = (props: PostItemProps) => {
                     </HStack>
                 }
 
-                <UdongText style={'ListContentXS'}>{post.createdAt}</UdongText>
+                <UdongText style={'ListContentXS'}>{DateTimeFormatter.formatDateTime(post.createdAt, true)}</UdongText>
             </HStack>
         </VStack>
 
