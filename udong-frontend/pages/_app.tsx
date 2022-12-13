@@ -2,7 +2,9 @@ import '../styles/globals.css'
 import { SessionProvider, signOut } from 'next-auth/react'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { Toaster } from 'react-hot-toast'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 
 import { store } from '../app/domain/store'
@@ -42,19 +44,22 @@ const findHeaderType = (url: string) => {
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter()
+    const client = useMemo(() => { return new QueryClient() }, [])
 
     return (
-        <SessionProvider session={pageProps.session}>
-            <Provider store={store}>
-                <VStack>
-                    <Toaster/>
-                    <Header
-                        type={findHeaderType(router.pathname)}
-                        clubId={1}
-                    />
-                    <Component {...pageProps} />
-                </VStack>
-            </Provider>
-        </SessionProvider>
+        <QueryClientProvider client={client}>
+            <SessionProvider session={pageProps.session}>
+                <Provider store={store}>
+                    <VStack>
+                        <Toaster/>
+                        <Header
+                            type={findHeaderType(router.pathname)}
+                            clubId={1}
+                        />
+                        <Component {...pageProps} />
+                    </VStack>
+                </Provider>
+            </SessionProvider>
+        </QueryClientProvider>
     )
 }
