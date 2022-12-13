@@ -4,8 +4,8 @@ import { axiosConfig } from '../infra/global'
 
 export const useImage = (imgKey: string) => {
     const { data } = useQuery<string>(imgKey, async () => {
-        const response = await axiosConfig.get(`/api/image/download?key=${imgKey}`)
+        const response = await axiosConfig.get(`/api/image/download/?key=${imgKey}`)
         return response.data
-    })
+    }, { staleTime: 200 * 1000 })
     return data
 }
