@@ -19,7 +19,9 @@ export const PostAPI = (() => {
         return boardPostTransformer.fromDto(response.data, PostDisplayType.CLUB)
     }
     function editPost() { return }
-    function deletePost() { return }
+    async function deletePost(postId: number): Promise<void> {
+        return await axiosConfig.delete(`/api/post/${postId}/`)
+    }
 
     async function getComments(postId: number): Promise<Array<Comment>> {
         const response = await axiosConfig.get<Array<CommentDto>>(`/api/post/${postId}/comment/`)

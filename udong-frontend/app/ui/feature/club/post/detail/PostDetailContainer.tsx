@@ -1,6 +1,6 @@
 import DOMPurify from 'dompurify'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { PostType } from '../../../../../domain/model/PostType'
@@ -62,6 +62,14 @@ export const PostDetailContainer = () => {
         }
     }, [postId, dispatch])
 
+    const handleDelete = useCallback(async () => {
+        setShowDeleteModal(false)
+        const response = await dispatch(postActions.deletePost(+postId))
+        if (response.type === `${postActions.deletePost.typePrefix}/fulfilled`) {
+            router.push(`/club/${clubId}`)
+        }
+    }, [dispatch, clubId, postId, router])
+
     if (!post) {
         return null
     }
@@ -91,7 +99,8 @@ export const PostDetailContainer = () => {
                 >
                     삭제하기
                 </UdongButton>
-            </>}
+            </>
+            }
         />
         <Spacer height={45}/>
 
@@ -172,7 +181,7 @@ export const PostDetailContainer = () => {
             warningText={'경고 문구'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
-            onClickDelete={() => {return}}
+            onClickDelete={handleDelete}
         />
     </VStack>
 }
