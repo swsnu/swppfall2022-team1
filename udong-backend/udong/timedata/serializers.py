@@ -52,3 +52,12 @@ class AvailableTimeSerializer(serializers.ModelSerializer[AvailableTime]):
             scheduling=self.context["scheduling"]
         )
         return availableTime
+
+
+class AvailableTimeSimpleSerializer(serializers.ModelSerializer[AvailableTime]):
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = AvailableTime
+        fields = ("id", "time", "created_at", "updated_at")
