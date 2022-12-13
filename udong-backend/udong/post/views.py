@@ -16,7 +16,7 @@ from post.serializers import (
 )
 from club.models import Club
 from user.serializers import UserSerializer
-from timedata.serializers import AvailableTimeSerializer
+from timedata.serializers import AvailableTimeSerializer, AvailableTimeSimpleSerializer
 from timedata.models import AvailableTime
 from user.models import UserClub
 from comment.models import Comment
@@ -279,6 +279,8 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
             return AvailableTimeSerializer
         elif self.action in ("close", "status"):
             return SchedulingSerializer
+        elif self.action in ("me"):
+            return AvailableTimeSimpleSerializer
         return self.serializer_class
 
     @action(detail=True, methods=["POST"])
@@ -325,6 +327,17 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
                 "Scheduling does not exist", status=status.HTTP_404_NOT_FOUND
             )
         serializer = self.get_serializer(scheduling)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["GET"])
+    def me(self, request: Request, pk: Any) -> Response:
+        try:
+            availableTime = AvailableTime.objects.get(
+                scheduling_id=pk, user_id=request.user.id
+            )
+        except AvailableTime.DoesNotExist:
+            return Response(None)
+        serializer = self.get_serializer(availableTime)
         return Response(serializer.data)
 
     @action(detail=True, methods=["PUT"])
