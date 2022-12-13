@@ -48,6 +48,7 @@ const schedulingInitialState: SchedulingState = {
 const clubInitialState: ClubState = { myClubs: [], members: [], errors: {} }
 
 const postInitialState: PostState = {
+    errors: {},
     selectedPost: {
         displayType: PostDisplayType.CLUB,
         id: 1,

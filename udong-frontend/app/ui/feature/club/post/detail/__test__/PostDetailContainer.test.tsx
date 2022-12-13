@@ -29,6 +29,7 @@ const stubPostInitialState: PostState = {
     selectedPost: dummyPost,
     feedPosts: [],
     clubPosts: [],
+    errors: {},
 }
 
 const stubCommentInitialState: CommentState = {

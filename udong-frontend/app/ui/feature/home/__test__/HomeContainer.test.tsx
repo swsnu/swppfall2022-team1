@@ -16,6 +16,7 @@ const stubInitialState: ClubState = {
 
 const stubPostInitialState: PostState = {
     feedPosts: [],
+    errors: {},
     clubPosts: [],
 }
 

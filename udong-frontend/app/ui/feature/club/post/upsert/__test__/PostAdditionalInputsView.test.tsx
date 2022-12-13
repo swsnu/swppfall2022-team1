@@ -11,6 +11,7 @@ import { PostAdditionalInputsView } from '../PostAdditionalInputsView'
 
 const stubPostInitialState: PostState = {
     feedPosts: [],
+    errors: {},
     clubPosts: [],
 }
 
