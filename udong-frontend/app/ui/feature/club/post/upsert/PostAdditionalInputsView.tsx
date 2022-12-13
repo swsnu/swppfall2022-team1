@@ -4,10 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CreateScheduling } from '../../../../../domain/model/CreatePost'
 import { SchedulingPostType } from '../../../../../domain/model/SchedulingPostType'
 import { AppDispatch } from '../../../../../domain/store'
-import { postSelector } from '../../../../../domain/store/post/PostSelector'
-import { postActions } from '../../../../../domain/store/post/PostSlice'
 import { tagSelector } from '../../../../../domain/store/tag/TagSelector'
 import { tagActions } from '../../../../../domain/store/tag/TagSlice'
+import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { DateTimeFormatter } from '../../../../../utility/dateTimeFormatter'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -35,8 +34,9 @@ export const PostAdditionalInputsView = (props: PostAdditionalFieldsViewProps) =
     const { clubId, setScheduling, isEdit, showDateTimePicker } = props
     const dispatch = useDispatch<AppDispatch>()
 
+    const userMe = useSelector(userSelector.userMe)
     const tags = useSelector(tagSelector.tags)
-    const selectedTags = useSelector(postSelector.createPostTags)
+    const selectedTags = useSelector(tagSelector.createPostTags)
 
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingPostType>(SchedulingPostType.DAYS)
     const [timeRange, setTimeRange] = useState<TimeRangeType>(isEdit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
@@ -112,11 +112,11 @@ export const PostAdditionalInputsView = (props: PostAdditionalFieldsViewProps) =
                         key={tag.id + index}
                         item={
                             <UdongChip
-                                color={UdongColors.Primary}
+                                color={tag.users.some(user => user.id === userMe?.id) ? UdongColors.Primary : UdongColors.GrayNormal}
                                 style={'fill'}
                                 text={tag.name}
                             />}
-                        onRemove={() => dispatch(postActions.toggleCreatePostTagSelection(tag))}
+                        onRemove={() => dispatch(tagActions.toggleCreatePostTagSelection(tag))}
                     />
                 })}
             </HStack>

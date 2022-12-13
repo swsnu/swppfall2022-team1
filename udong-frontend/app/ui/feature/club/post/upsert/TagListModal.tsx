@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { Tag } from '../../../../../domain/model/Tag'
 import { AppDispatch } from '../../../../../domain/store'
-import { postSelector } from '../../../../../domain/store/post/PostSelector'
-import { postActions } from '../../../../../domain/store/post/PostSlice'
+import { tagSelector } from '../../../../../domain/store/tag/TagSelector'
+import { tagActions } from '../../../../../domain/store/tag/TagSlice'
 import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { Spacer } from '../../../../components/Spacer'
@@ -28,7 +28,7 @@ export const TagListModal = (props: TagListModalProps) => {
     const { isOpen, setIsOpen, tags } = props
     const dispatch = useDispatch<AppDispatch>()
     const userMe = useSelector(userSelector.userMe)
-    const selectedTags = useSelector(postSelector.createPostTags)
+    const selectedTags = useSelector(tagSelector.createPostTags)
 
     useEffect(() => {
         dispatch(userActions.getMyProfile())
@@ -93,7 +93,7 @@ export const TagListModal = (props: TagListModalProps) => {
                             <HStack
                                 justifyContent={'space-between'}
                                 paddingVertical={14}
-                                onClick={() => dispatch(postActions.toggleCreatePostTagSelection(tag))}
+                                onClick={() => dispatch(tagActions.toggleCreatePostTagSelection(tag))}
                             >
                                 <UdongChip
                                     color={tag.users.some(user => user.id === userMe.id) ? UdongColors.Primary : UdongColors.GrayNormal}

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 
 import { PostType } from '../../../../../../../domain/model/PostType'
 import { postReducer, PostState } from '../../../../../../../domain/store/post/PostSlice'
+import { tagReducer, TagState } from '../../../../../../../domain/store/tag/TagSlice'
 import { PostCreateContainer } from '../PostCreateContainer'
 
 jest.mock('../../PostInputView', () => ({
@@ -19,12 +20,16 @@ jest.mock('../../PostAdditionalInputsView', () => ({
 const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
+}
+
+const stubTagInitialState: TagState = {
+    tags: [],
     createPostTags: [],
 }
 
 const mockStore = configureStore({
-    reducer: { post: postReducer },
-    preloadedState: { post: stubPostInitialState },
+    reducer: { post: postReducer, tag: tagReducer },
+    preloadedState: { post: stubPostInitialState, tag: stubTagInitialState },
 })
 
 describe('<PostCreateContainer/>', () => {
