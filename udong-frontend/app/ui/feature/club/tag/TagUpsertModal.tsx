@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { EditTag, Tag } from '../../../../domain/model/Tag'
+import { EditTag } from '../../../../domain/model/Tag'
 import { AppDispatch } from '../../../../domain/store'
 import { clubSelector } from '../../../../domain/store/club/ClubSelector'
 import { clubActions } from '../../../../domain/store/club/ClubSlice'
@@ -26,16 +26,17 @@ interface TagUpsertModalProps {
     clubId: number
     isOpen: boolean
     setIsOpen: (open: boolean) => void
-    tag: Tag
-    confirmEditTag: (tagId: number, newTag: EditTag) => void
+    confirmEditTag?: (tagId: number, newTag: EditTag) => void
+    createTag?: (name: string, userIds: Array<number>) => void
 }
 
 export const TagUpsertModal = (props: TagUpsertModalProps) => {
-    const { clubId, isOpen, setIsOpen, tag, confirmEditTag } = props
+    const { clubId, isOpen, setIsOpen, confirmEditTag, createTag } = props
     const dispatch = useDispatch<AppDispatch>()
 
     const clubMembers = useSelector(clubSelector.members)
     const selectedUserIds = useSelector(tagSelector.selectedUserIds)
+    const selectedTag = useSelector(tagSelector.selectedTag)
 
     const selectedMembers = clubMembers.filter(member => selectedUserIds.some(userId => userId === member.user.id))
     const deselectedMembers = clubMembers.filter(member => !selectedUserIds.some(userId => userId === member.user.id))
@@ -47,19 +48,25 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
 
     const nameRef = useRef<HTMLInputElement | undefined>(null)
     const [isNameInputVisible, setIsNameInputVisible] = useState(false)
-    const [nameInputValue, setNameInputValue] = useState(tag.name)
-    const [confirmedName, setConfirmedName] = useState(tag.name)
+    const [nameInputValue, setNameInputValue] = useState(selectedTag?.name ?? '태그 이름')
+    const [confirmedName, setConfirmedName] = useState(selectedTag?.name ?? '태그 이름')
+
+    useEffect(() => {
+        setNameInputValue(selectedTag?.name ?? '태그 이름')
+        setConfirmedName(selectedTag?.name ?? '태그 이름')
+    }, [selectedTag])
 
     useEffect(() => {
         dispatch(clubActions.getClubMembers(clubId))
-        tag.users.map(user => dispatch(tagActions.selectUser(user.id)))
+        selectedTag?.users.map(user => dispatch(tagActions.selectUser(user.id)))
 
         return () => {
             dispatch(tagActions.resetSelectedUsers())
-            setNameInputValue(tag.name)
+            setConfirmedName(selectedTag?.name ?? '태그 이름')
+            setNameInputValue(selectedTag?.name ?? '태그 이름')
             setIsNameInputVisible(false)
         }
-    }, [clubId, dispatch, tag])
+    }, [clubId, dispatch, selectedTag])
 
     const handleSelectUser = useCallback((userId: number) => {
         dispatch(tagActions.selectUser(userId))
@@ -78,10 +85,24 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
         }
     }, [isNameInputVisible, nameInputValue])
 
+    const handleSave = useCallback(() => {
+        if (confirmEditTag && selectedTag) {
+            confirmEditTag(selectedTag.id, { name: confirmedName, newUsers: selectedUserIds })
+        }
+        if (createTag) {
+            createTag(confirmedName, selectedUserIds)
+        }
+    }, [confirmEditTag, confirmedName, selectedUserIds, selectedTag, createTag])
+
+    const handleCloseModal = useCallback(() => {
+        setIsOpen(false)
+        dispatch(tagActions.setSelectedTag(undefined))
+    }, [dispatch, setIsOpen])
+
     return <UdongModal
         width={'60vw'}
         isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        setIsOpen={handleCloseModal}
     >
         <VStack
             width={'100%'}
@@ -97,7 +118,7 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
                     src={close.src}
                     height={15}
                     width={15}
-                    onClick={() => setIsOpen(false)}
+                    onClick={handleCloseModal}
                     clickable={true}
                 />
             </VStack>
@@ -111,7 +132,7 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
                         onChange={() => setNameInputValue(nameRef.current?.value ?? '')}
                     />
                     :
-                    <UdongText style={'GeneralTitle'}>{nameInputValue}</UdongText>
+                    <UdongText style={'GeneralTitle'}>{confirmedName ?? '태그 이름'}</UdongText>
                 }
                 <Spacer width={15}/>
                 <UdongImage
@@ -190,7 +211,7 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
             <Spacer height={66}/>
             <UdongButton
                 style={'line'}
-                onClick={() => confirmEditTag(tag.id, { name: confirmedName, newUsers: selectedUserIds })}
+                onClick={handleSave}
             >
                 저장하기
             </UdongButton>

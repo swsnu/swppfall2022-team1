@@ -43,12 +43,14 @@ export const TagContainer = (props: TagContainerProps) => {
     const selectedTag = useSelector(tagSelector.selectedTag)
     const userMe = useSelector(userSelector.userMe)
     const errors = useSelector(tagSelector.errors)
+    const isAdmin = useSelector(userSelector.isAdmin)
 
     const searchRef = useRef<HTMLInputElement | undefined>(null)
     const [searchValue, setSearchValue] = useState('')
     const [keyword, setKeyword] = useState('')
     useDebouncedSearch(searchValue, setKeyword, 300)
 
+    const [isEditMode, setIsEditMode] = useState(false)
     const [showUpsertModal, setShowUpsertModal] = useState(false)
     const [showMembers, setShowMembers] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -62,6 +64,7 @@ export const TagContainer = (props: TagContainerProps) => {
 
     useEffect(() => {
         dispatch(userActions.getMyProfile())
+        dispatch(userActions.getMyClubProfile(clubId))
         dispatch(tagActions.getTags(clubId))
     }, [clubId, dispatch])
 
@@ -72,8 +75,17 @@ export const TagContainer = (props: TagContainerProps) => {
         }
     }, [dispatch])
 
-    const handleClickTagEdit = useCallback( async (tagId: number) => {
-        const response = await dispatch(tagActions.getTag(tagId))
+    const handleCreateTag = useCallback( (name: string, userIdList: Array<number>) => {
+        dispatch(tagActions.createTag( { clubId, name, userIdList }))
+        setShowUpsertModal(false)
+    }, [dispatch, clubId])
+
+    const handleClickTagEdit = useCallback( async (tag: Tag) => {
+        setIsEditMode(true)
+
+        dispatch(tagActions.setSelectedTag(tag))
+
+        const response = await dispatch(tagActions.getTag(tag.id))
         if (response.type === `${tagActions.getTag.typePrefix}/fulfilled`) {
             setShowUpsertModal(true)
         }
@@ -106,14 +118,16 @@ export const TagContainer = (props: TagContainerProps) => {
     }
 
     return <VStack>
-        <HStack justifyContent={'end'}>
-            <UdongButton
-                style={'line'}
-                onClick={() => setShowUpsertModal(true)}
-            >
-                태그 추가하기
-            </UdongButton>
-        </HStack>
+        {isAdmin &&
+            <HStack justifyContent={'end'}>
+                <UdongButton
+                    style={'line'}
+                    onClick={() => {setShowUpsertModal(true); setIsEditMode(false)}}
+                >
+                    태그 추가하기
+                </UdongButton>
+            </HStack>
+        }
         <Spacer height={20}/>
 
         <UdongSearchBar
@@ -143,11 +157,12 @@ export const TagContainer = (props: TagContainerProps) => {
                     <DefaultTagItem/>
                     :
                     <TagItem
+                        isAdmin={isAdmin}
                         name={tag.name}
                         createdAt={tag.createdAt}
                         updatedAt={tag.updatedAt}
                         isUserIncluded={tag.users.some(user => user.id === userMe.id)}
-                        showEditModal={() => handleClickTagEdit(tag.id)}
+                        showEditModal={() => handleClickTagEdit(tag)}
                         onClickDelete={() => handleClickTagDelete(tag)}
                     />
                 }
@@ -163,15 +178,13 @@ export const TagContainer = (props: TagContainerProps) => {
             />
         }
 
-        {selectedTag &&
-            <TagUpsertModal
-                clubId={clubId}
-                isOpen={showUpsertModal}
-                setIsOpen={setShowUpsertModal}
-                tag={selectedTag}
-                confirmEditTag={handleConfirmTagEdit}
-            />
-        }
+        <TagUpsertModal
+            clubId={clubId}
+            isOpen={showUpsertModal}
+            setIsOpen={setShowUpsertModal}
+            confirmEditTag={isEditMode ? handleConfirmTagEdit : undefined}
+            createTag={isEditMode ? undefined : handleCreateTag}
+        />
 
         <DeleteModal
             deleteObjectText={'태그'}
