@@ -37,14 +37,24 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
     }, [dispatch, postId])
 
     const handleEnroll = useCallback(() => {
+        if (isEnrolled) {
+            dispatch(enrollmentActions.unparticipateInEnrollment(postId))
+        } else {
+            dispatch(enrollmentActions.participateInEnrollment(postId))
+        }
         if (!isOpen || hasSuccessfullyClosed) {
             setIsClosedModalOpen(true)
         }
-    }, [isOpen, hasSuccessfullyClosed])
+    }, [dispatch, postId, isOpen, hasSuccessfullyClosed, isEnrolled])
 
     const handleCloseEnrollment = useCallback(() => {
         dispatch(enrollmentActions.closeEnrollment(postId))
     }, [dispatch, postId])
+
+    const handleGetEnrolledUsers = useCallback(() => {
+        setShowEnrolledUsers(true)
+        dispatch(enrollmentActions.getEnrollmentUsers(postId))
+    }, [postId, dispatch])
 
     return <VStack>
         <Spacer height={30}/>
@@ -61,7 +71,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
             >
                 <UdongButton
                     style={'fill'}
-                    onClick={() => setShowEnrolledUsers(true)}
+                    onClick={handleGetEnrolledUsers}
                 >
                     현황 보기
                 </UdongButton>
@@ -73,7 +83,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
                     color={showEnrollButton ? UdongColors.Primary : UdongColors.GrayNormal}
                     onClick={handleEnroll}
                 >
-                    지원하기
+                    {showEnrollButton ? `지원하기` : `지원 취소하기`}
                 </UdongButton>
             </HStack>
 
@@ -82,7 +92,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
                 style={{ marginRight: 'auto' }}
                 justifyContent={'end'}
             >
-                {showEnrollButton &&
+                {isOpen && !hasSuccessfullyClosed &&
                     <UdongButton
                         style={'line'}
                         onClick={handleCloseEnrollment}

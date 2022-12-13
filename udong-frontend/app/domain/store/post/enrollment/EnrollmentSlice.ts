@@ -14,12 +14,16 @@ const initialState: EnrollmentState = {}
 
 export const participateInEnrollment = createAsyncThunk(
     'enrollment/participateInEnrollment',
-    async () => { return },
+    async (postId: number) => {
+        return EnrollmentAPI.participateInEnrollment(postId)
+    },
 )
 
 export const unparticipateInEnrollment = createAsyncThunk(
     'enrollment/unparticipateInEnrollment',
-    async () => { return },
+    async (postId: number) => {
+        return EnrollmentAPI.unparticipateInEnrollment(postId)
+    },
 )
 
 export const getMyEnrollmentStatus = createAsyncThunk(
@@ -61,6 +65,18 @@ const enrollmentSlice = createSlice({
         builder.addCase(closeEnrollment.rejected, (state) => {
             state.selectedEnrollment = undefined
         })
+        builder.addCase(participateInEnrollment.fulfilled, (state) => {
+            state.myEnrollmentStatus = true
+        })
+        builder.addCase(participateInEnrollment.rejected, (state) => {
+            state.myEnrollmentStatus = false
+        })
+        builder.addCase(unparticipateInEnrollment.fulfilled, (state) => {
+            state.myEnrollmentStatus = false
+        })
+        builder.addCase(unparticipateInEnrollment.rejected, (state) => {
+            state.myEnrollmentStatus = true
+        })
         builder.addCase(getMyEnrollmentStatus.fulfilled, (state, action) => {
             if (action.payload) {
                 state.myEnrollmentStatus = true
@@ -76,6 +92,8 @@ export const enrollmentActions = {
     ...enrollmentSlice.actions,
     getEnrollmentUsers,
     closeEnrollment,
+    participateInEnrollment,
+    unparticipateInEnrollment,
     getMyEnrollmentStatus,
 }
 export const enrollmentReducer = enrollmentSlice.reducer

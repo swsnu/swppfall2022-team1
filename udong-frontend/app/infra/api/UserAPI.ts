@@ -23,15 +23,10 @@ export const UserAPI = (() => {
         return userTransformer.fromDto(response.data)
     }
 
-    function participateInEnrollment() { return }
-    function unparticipateInEnrollment() { return }
-
     return Object.freeze({
         getMyProfile,
         editMyProfile,
         deleteAccount,
         getUser,
-        participateInEnrollment,
-        unparticipateInEnrollment,
     })
 })()

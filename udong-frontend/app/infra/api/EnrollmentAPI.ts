@@ -20,6 +20,15 @@ export const EnrollmentAPI = (() => {
         return enrollmentTransformer.fromDto(response.data)
     }
 
+    async function participateInEnrollment(postId: number): Promise<Participation> {
+        const response = await axiosConfig.post<ParticipationDto>(`/api/enroll/${postId}/participate/`)
+        return participationTransformer.fromDto(response.data)
+    }
+
+    async function unparticipateInEnrollment(postId: number): Promise<void> {
+        return await axiosConfig.post(`/api/enroll/${postId}/unparticipate/`)
+    }
+
     async function getMyEnrollmentStatus(postId: number): Promise<Participation | void> {
         const response = await axiosConfig.get<ParticipationDto>(`/api/enroll/${postId}/me/`)
         return participationTransformer.fromDto(response.data)
@@ -28,6 +37,8 @@ export const EnrollmentAPI = (() => {
     return Object.freeze({
         getEnrollmentUsers,
         closeEnrollment,
+        participateInEnrollment,
+        unparticipateInEnrollment,
         getMyEnrollmentStatus,
     })
 })()
