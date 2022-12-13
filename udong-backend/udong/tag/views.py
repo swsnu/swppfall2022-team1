@@ -39,7 +39,7 @@ class TagViewSet(_GenericViewSet):
 
     @swagger_auto_schema(
         responses={
-            204: "",
+            200: TagUserSerializer(many=True),
             400: "Cannot modify user in default tag",
             403: "User is not admin",
         }
