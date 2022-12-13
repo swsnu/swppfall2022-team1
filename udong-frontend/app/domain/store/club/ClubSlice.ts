@@ -125,12 +125,16 @@ export const changeMemberRole =
             } catch (e) {
                 if (axios.isAxiosError(e)) {
                     const errorType = APIError.getErrorType(e.response?.status)
+                    let message: string = errorType.message
                     if (errorType.errorCode === 400) {
-                        errorType.message = '사용자가 해당 동아리에 가입되지 않았습니다.'
+                        message = '유일한 관리자는 일반 멤버로 전환할 수 없습니다.'
                     } else if  (errorType.errorCode === 404) {
-                        errorType.message = '존재하지 않는 동아리입니다.'
+                        message = '존재하지 않는 동아리입니다.'
                     }
-                    return rejectWithValue(errorType)
+                    return rejectWithValue({
+                        ...errorType,
+                        message,
+                    })
                 }
             }
         },

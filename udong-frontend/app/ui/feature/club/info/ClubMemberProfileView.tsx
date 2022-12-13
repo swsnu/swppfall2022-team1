@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { RoleType } from '../../../../domain/model/RoleType'
@@ -9,8 +9,8 @@ import { userSelector } from '../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../domain/store/user/UserSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
+import { UdongErrorModal } from '../../../components/UdongErrorModal'
 import { UdongImage } from '../../../components/UdongImage'
-import { UdongLoader } from '../../../components/UdongLoader'
 import { UdongModal } from '../../../components/UdongModal'
 import { UdongText } from '../../../components/UdongText'
 import close from '../../../icons/IcClose.png'
@@ -29,6 +29,15 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
 
     const member = useSelector(clubSelector.selectedMember)
     const isAdmin = useSelector(userSelector.isAdmin)
+    const error = useSelector(clubSelector.errors).changeMemberRoleError
+
+    const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
+
+    useEffect(() => {
+        if (error) {
+            setIsErrorModalOpen(true)
+        }
+    }, [error])
 
     useEffect(() => {
         if (member) {
@@ -41,6 +50,11 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
             dispatch(clubActions.changeMemberRole({ clubId, userId: member.user.id }))
         }
     }, [dispatch, clubId, member])
+
+    const handleCloseErrorModal = useCallback(() => {
+        setIsErrorModalOpen(false)
+        dispatch(clubActions.resetErrors())
+    }, [dispatch])
 
     const renderAssignMemberButton = useCallback(() => {
         return <HStack
@@ -93,46 +107,53 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
         }
     }, [isAdmin, member, renderAssignAdminButton, renderRemoveMemberButton, renderAssignMemberButton])
 
+    if (error) {
+        return <UdongErrorModal
+            message={error.message}
+            isOpen={isErrorModalOpen}
+            setIsOpen={handleCloseErrorModal}
+        />
+    }
+
+    if (!member) {
+        return null
+    }
+
     return <UdongModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
     >
-        {!member ?
-            <VStack height={530}>
-                <UdongLoader/>
-            </VStack>
-            :
-            <VStack width={'100%'}>
+        <VStack width={'100%'}>
+            <HStack
+                justifyContent={'space-between'}
+                paddingHorizontal={25}
+                paddingVertical={25}
+            >
                 <HStack
-                    justifyContent={'space-between'}
+                    paddingVertical={10}
                     paddingHorizontal={25}
-                    paddingVertical={25}
                 >
-                    <HStack
-                        paddingVertical={10}
-                        paddingHorizontal={25}
-                    >
-                        <UdongText style={'GeneralTitle'}>유저 프로필</UdongText>
-                    </HStack>
-
-                    <HStack
-                        style={{ padding: '0 0 20px 20px' }}
-                        onClick={() => setIsOpen(false)}
-                    >
-                        <UdongImage
-                            src={close.src}
-                            height={15}
-                            width={15}
-                        />
-                    </HStack>
+                    <UdongText style={'GeneralTitle'}>유저 프로필</UdongText>
                 </HStack>
-                <Spacer height={90}/>
 
-                <ProfileView
-                    name={member.user.name}
-                    showAdminBadge={member.role === RoleType.ADMIN}
-                    bottomItem={renderBottomButtons()}
-                />
-            </VStack>}
+                <HStack
+                    style={{ padding: '0 0 20px 20px' }}
+                    onClick={() => setIsOpen(false)}
+                >
+                    <UdongImage
+                        src={close.src}
+                        height={15}
+                        width={15}
+                    />
+                </HStack>
+            </HStack>
+            <Spacer height={90}/>
+
+            <ProfileView
+                name={member.user.name}
+                showAdminBadge={member.role === RoleType.ADMIN}
+                bottomItem={renderBottomButtons()}
+            />
+        </VStack>
     </UdongModal>
 }
