@@ -8,6 +8,7 @@ import { AppDispatch } from '../../../../../domain/store'
 import { postSelector } from '../../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../../domain/store/post/PostSlice'
 import { userActions } from '../../../../../domain/store/user/UserSlice'
+import { DateTimeFormatter } from '../../../../../utility/dateTimeFormatter'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -151,7 +152,7 @@ export const PostDetailContainer = () => {
         {postType === PostType.SCHEDULING && <PostDetailSchedulingView/>}
 
         <HStack>
-            <UdongText style={'ListContentXS'}>{post.updatedAt}</UdongText>
+            <UdongText style={'ListContentXS'}>{DateTimeFormatter.formatDateTime(post.createdAt, false)}</UdongText>
             <Spacer width={10}/>
             <UdongText style={'ListContentXS'}>{post.author}</UdongText>
         </HStack>
