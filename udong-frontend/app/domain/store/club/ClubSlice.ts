@@ -51,12 +51,17 @@ export const registerClub = createAsyncThunk<Club | undefined, string, { rejectV
         } catch (e) {
             if (axios.isAxiosError(e)) {
                 const errorType = APIError.getErrorType(e.response?.status)
+                let message: string = errorType.message
+
                 if (errorType.errorCode === 400) {
-                    errorType.message = '이미 가입된 동아리입니다.'
+                    message = '이미 가입된 동아리입니다.'
                 } else if (errorType.errorCode === 404) {
-                    errorType.message = '유효하지 않은 코드입니다.'
+                    message = '유효하지 않은 코드입니다.'
                 }
-                return rejectWithValue(errorType)
+                return rejectWithValue({
+                    ...errorType,
+                    message,
+                })
             }
         }
     },
