@@ -3,7 +3,7 @@ import { axiosConfig } from '../global'
 import { clubEventTransformer } from '../transformer/ClubEventTransformer'
 
 export const EventAPI = (() => {
-    async function getEvent(eventId: string) {
+    async function getEvent(eventId: number) {
         const response = await axiosConfig.get(`/api/event/${eventId}/`)
         return clubEventTransformer.fromDto(response.data)
     }

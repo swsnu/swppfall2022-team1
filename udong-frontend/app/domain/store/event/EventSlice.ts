@@ -23,7 +23,9 @@ export const getEvents = createAsyncThunk(
 
 export const getEvent = createAsyncThunk(
     'event/getEvent',
-    async () => { return },
+    (eventId: number) => {
+        return EventAPI.getEvent(eventId)
+    },
 )
 
 export const createEvent = createAsyncThunk(
@@ -50,6 +52,9 @@ const eventSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(getEvents.fulfilled, (state, action) => {
             state.events = action.payload
+        })
+        builder.addCase(getEvent.fulfilled, (state, action) => {
+            state.selectedEvent = action.payload
         })
     },
 })
