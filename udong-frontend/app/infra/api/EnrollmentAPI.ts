@@ -26,10 +26,16 @@ export const EnrollmentAPI = (() => {
     }
     function unparticipateInEnrollment() { return }
 
+    async function getMyEnrollmentStatus(postId: number): Promise<Participation | void> {
+        const response = await axiosConfig.get<ParticipationDto>(`/api/enroll/${postId}/me/`)
+        return participationTransformer.fromDto(response.data)
+    }
+
     return Object.freeze({
         getEnrollmentUsers,
         closeEnrollment,
         participateInEnrollment,
         unparticipateInEnrollment,
+        getMyEnrollmentStatus,
     })
 })()

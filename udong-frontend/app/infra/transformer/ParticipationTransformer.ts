@@ -5,7 +5,7 @@ import { userTransformer } from './UserTransformer'
 const fromDto = (dto: ParticipationDto): Participation => {
     return {
         id: dto.id,
-        users: dto.user.map(userTransformer.fromDto),
+        user: userTransformer.fromDto(dto.user),
         enrollmentId: dto.enrollment_id,
         createdAt: dto.created_at,
         updatedAt: dto.updated_at,
