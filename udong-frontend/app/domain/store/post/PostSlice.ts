@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
+import { EventAPI } from '../../../infra/api/EventAPI'
 import { PostAPI } from '../../../infra/api/PostAPI'
 import { BoardPost } from '../../model/BoardPost'
 import { CreatePost } from '../../model/CreatePost'
@@ -16,12 +17,14 @@ export interface PostState {
     createdPostId?: number
     feedPosts: Array<BoardPost>
     clubPosts: Array<BoardPost>
+    eventPosts: Array<BoardPost>
     errors: PostErrorType
 }
 
 const initialState: PostState = {
     feedPosts: [],
     clubPosts: [],
+    eventPosts: [],
     errors: {},
 }
 
@@ -36,6 +39,13 @@ export const getClubPosts = createAsyncThunk(
     'post/getClubPosts',
     async (clubId: number) => {
         return ClubAPI.getClubPosts(clubId)
+    },
+)
+
+export const getEventPosts = createAsyncThunk(
+    'post/getEventPosts',
+    async (eventId: number) => {
+        return EventAPI.getEventPosts(eventId)
     },
 )
 
