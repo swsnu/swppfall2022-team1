@@ -125,7 +125,7 @@ export const PostDetailSchedulingView = () => {
                 현황 보기
             </UdongButton>
 
-            <UdongButton
+            {!schedulingStatus.closed && <UdongButton
                 style={'fill'}
                 onClick={() => {
                     if(selected) {
@@ -135,9 +135,9 @@ export const PostDetailSchedulingView = () => {
                 }}
             >
                 일정 제출하기
-            </UdongButton>
+            </UdongButton>}
         </HStack>
-        {isAdmin && <UdongButton
+        {isAdmin && !schedulingStatus.closed && <UdongButton
             style={'line'}
             onClick={() => router.push(`/club/${clubId}/post/${postId}/close`)}
         >
