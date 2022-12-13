@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 
 import { Club } from '../../../../../domain/model/Club'
@@ -33,12 +34,16 @@ const mockStore = configureStore({
 
 describe('<ClubProfileView/>', () => {
     it('should test on click delete', () => {
+        const client = new QueryClient()
+
         render(
-            <Provider store={mockStore}>
-                <ClubProfileView
-                    club={testClub}
-                />
-            </Provider>,
+            <QueryClientProvider client={client}>
+                <Provider store={mockStore}>
+                    <ClubProfileView
+                        club={testClub}
+                    />
+                </Provider>
+            </QueryClientProvider>,
         )
         const text = screen.getByText('삭제하기')
         fireEvent.click(text)
@@ -48,12 +53,16 @@ describe('<ClubProfileView/>', () => {
     })
 
     it('should test on click leave', () => {
+        const client = new QueryClient()
+
         render(
-            <Provider store={mockStore}>
-                <ClubProfileView
-                    club={testClub}
-                />
-            </Provider>,
+            <QueryClientProvider client={client}>
+                <Provider store={mockStore}>
+                    <ClubProfileView
+                        club={testClub}
+                    />
+                </Provider>
+            </QueryClientProvider>,
         )
         const text = screen.getByText('탈퇴하기')
         fireEvent.click(text)

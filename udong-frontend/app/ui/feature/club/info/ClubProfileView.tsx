@@ -8,6 +8,7 @@ import { clubSelector } from '../../../../domain/store/club/ClubSelector'
 import { clubActions, ClubErrorType } from '../../../../domain/store/club/ClubSlice'
 import { userSelector } from '../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../domain/store/user/UserSlice'
+import { useImage } from '../../../../hooks/useImage'
 import { isAllObjectFieldsUndefined } from '../../../../utility/helperTypes'
 import { Spacer } from '../../../components/Spacer'
 import { HStack } from '../../../components/Stack'
@@ -36,7 +37,7 @@ interface ClubProfileViewProps {
 
 export const ClubProfileView = (props: ClubProfileViewProps) => {
     const { club } = props
-    const { name, code, id } = club
+    const { name, code, image, id } = club
     const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
 
@@ -125,6 +126,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             name={name}
             code={code}
             showCameraButton={isAdmin}
+            image={useImage(image ?? '')}
             onClickEditNameButton={isAdmin ? handleEditClub : undefined}
             onRefresh={isAdmin ? async () => {dispatch(clubActions.refreshClubCode(id))} : undefined}
             bottomItem={
