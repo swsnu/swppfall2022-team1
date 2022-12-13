@@ -332,8 +332,8 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
     @action(detail=True, methods=["GET"])
     def me(self, request: Request, pk: Any) -> Response:
         try:
-            availableTime = AvailableTime.objects.get(  # type: ignore[misc]
-                scheduling_id=pk, user_id=request.user.id
+            availableTime = AvailableTime.objects.get(
+                Q(scheduling_id=pk) & Q(user_id=request.user.id)
             )
         except AvailableTime.DoesNotExist:
             return Response(None)
