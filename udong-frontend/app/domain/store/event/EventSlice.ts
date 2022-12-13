@@ -39,8 +39,8 @@ export const getEvent = createAsyncThunk(
 
 export const createEvent = createAsyncThunk(
     'event/createEvent',
-    async ({ clubId, name, times } : { clubId: number, name: string, times: Array<Time> }) => {
-        return await ClubAPI.createClubEvent(clubId, name, times)
+    async ({ clubId, name, time } : { clubId: number, name: string, time: Array<Time> }) => {
+        return await ClubAPI.createClubEvent(clubId, name, time)
     },
 )
 

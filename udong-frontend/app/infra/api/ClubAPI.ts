@@ -89,8 +89,8 @@ export const ClubAPI = (() => {
         return response.data.map(clubEventTransformer.fromDto)
     }
 
-    async function createClubEvent(clubId: number, name: string, times: Array<Time>) {
-        const response = await axiosConfig.post<ClubEventDto>(`/api/club/${clubId}/event/`, { name: name, new_time: times })
+    async function createClubEvent(clubId: number, name: string, time: Array<Time>) {
+        const response = await axiosConfig.post<ClubEventDto>(`/api/club/${clubId}/event/`, clubEventTransformer.toEditDto(name, time))
         return clubEventTransformer.fromDto(response.data)
     }
 

@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -11,24 +11,21 @@ import IcPlus from '/app/ui/icons/IcPlus.png'
 import IcClose from '/app/ui/icons/IcClose.png'
 
 import { TimeRangePicker, TimeRangeType } from '../../../shared/TimeRangePicker'
-import {DayTime, WeekdayTime} from '../../../../../domain/model/Time'
 
-interface DayTimeType {
+export interface WeekdayTimeWithIdType {
     id: number
     day: DAYS | ''
     time: TimeRangeType
 }
 
 interface EventDayScheduleProps {
-    dayTimes: Array<WeekdayTime>
-    setDayTimes: Dispatch<SetStateAction<Array<WeekdayTime>>>
+    weekdayRange: DateRangeType
+    setWeekdayRange: Dispatch<SetStateAction<DateRangeType>>
+    weekdayTimesWithId: Array<WeekdayTimeWithIdType>
+    setWeekdayTimesWithId: Dispatch<SetStateAction<Array<WeekdayTimeWithIdType>>>
 }
 
-export const EventDaySchedule = ({ dayTimes, setDayTimes }: EventDayScheduleProps) => {
-    const [date, setDate] = useState<DateRangeType>({ start: '2019-03-25', end: '2019-03-26' } : { start: '', end: '' })
-    const [dayTimes, setDayTimes] = useState<DayTimeType[]>(isEdit ?
-        [{ id: 0, day: '화' as DAYS, time: { start: '03:30', end: '06:00' } }]
-        : [{ id: 0, day: '', time: { start: '', end: '' } }])
+export const EventDaySchedule = ({ weekdayRange, setWeekdayRange, weekdayTimesWithId, setWeekdayTimesWithId }: EventDayScheduleProps) => {
 
     return <VStack
         paddingHorizontal={120}
@@ -40,8 +37,8 @@ export const EventDaySchedule = ({ dayTimes, setDayTimes }: EventDayScheduleProp
                 width={150}
             >반복 기간</UdongText>
             <DateRangePicker
-                date={date}
-                setDate={setDate}
+                date={weekdayRange}
+                setDate={setWeekdayRange}
             />
         </HStack>
         <HStack>
@@ -53,7 +50,7 @@ export const EventDaySchedule = ({ dayTimes, setDayTimes }: EventDayScheduleProp
                 alignItems={'center'}
                 gap={14}
             >
-                {dayTimes.map((dayTime, i) => (
+                {weekdayTimesWithId.map((dayTime, i) => (
                     <HStack
                         key={dayTime.id}
                         gap={15}
@@ -64,14 +61,14 @@ export const EventDaySchedule = ({ dayTimes, setDayTimes }: EventDayScheduleProp
                             selectedDay={dayTime.day}
                             setSelectedDay={
                                 (newDay) => {
-                                    const newDayTimes = dayTimes.map((target) => {
+                                    const newDayTimes = weekdayTimesWithId.map((target) => {
                                         if (target.id === dayTime.id){
                                             return { id: target.id, day: newDay, time: target.time }
                                         } else {
                                             return target
                                         }
                                     })
-                                    setDayTimes(newDayTimes)
+                                    setWeekdayTimesWithId(newDayTimes)
                                 }
                             }
                         />
@@ -79,14 +76,14 @@ export const EventDaySchedule = ({ dayTimes, setDayTimes }: EventDayScheduleProp
                             key={dayTime.id}
                             time={dayTime.time}
                             setTime={(newTime) => {
-                                const newTimes = dayTimes.map((target) => {
+                                const newTimes = weekdayTimesWithId.map((target) => {
                                     if (target.id === dayTime.id){
                                         return { id: target.id, day: target.day, time: newTime }
                                     } else {
                                         return target
                                     }
                                 })
-                                setDayTimes(newTimes)
+                                setWeekdayTimesWithId(newTimes)
                             }}
                         />
                         {i == 0 ?
@@ -96,8 +93,8 @@ export const EventDaySchedule = ({ dayTimes, setDayTimes }: EventDayScheduleProp
                                 height={15}
                                 width={15}
                                 onClick={() => {
-                                    const newDayTimes = dayTimes.filter((target) => (target.id !== dayTime.id))
-                                    setDayTimes(newDayTimes)}
+                                    const newDayTimes = weekdayTimesWithId.filter((target) => (target.id !== dayTime.id))
+                                    setWeekdayTimesWithId(newDayTimes)}
                                 }
                             />}
                     </HStack>
@@ -108,7 +105,11 @@ export const EventDaySchedule = ({ dayTimes, setDayTimes }: EventDayScheduleProp
                     height={15}
                     width={15}
                     onClick={() => {
-                        setDayTimes([...dayTimes, { id: dayTimes[dayTimes.length - 1].id + 1, day: '', time: { start: '', end: '' } }])
+                        setWeekdayTimesWithId([...weekdayTimesWithId, {
+                            id: weekdayTimesWithId[weekdayTimesWithId.length - 1].id + 1,
+                            day: '',
+                            time: { start: '', end: '' },
+                        }])
                     }}
                 />
             </VStack>

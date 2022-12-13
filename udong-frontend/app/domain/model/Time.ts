@@ -9,7 +9,7 @@ export interface WeekdayTime extends BaseTime {
     type: SchedulingPostType.DAYS
     repeatStart: string
     repeatEnd: string
-    weekday: string
+    weekday: number
 }
 
 export interface DayTime extends BaseTime {

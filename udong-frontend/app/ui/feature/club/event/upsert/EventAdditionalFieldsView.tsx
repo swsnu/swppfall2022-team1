@@ -4,18 +4,23 @@ import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongRadioButton } from '../../../../components/UdongRadioButton'
 import { UdongText } from '../../../../components/UdongText'
+import { DateRangeType } from '../../../shared/DateRangePicker'
 import { EventTimeType } from './create/EventCreateContainer'
-import { dayTimeWithIdType, EventDateSchedule } from './EventDateSchedule'
-import { EventDaySchedule } from './EventDaySchedule'
+import { DayTimeWithIdType, EventDateSchedule } from './EventDateSchedule'
+import { EventDaySchedule, WeekdayTimeWithIdType } from './EventDaySchedule'
 
 interface EventAdditionalFieldsViewProps {
     eventTimeType: EventTimeType
     setEventTimeType: Dispatch<SetStateAction<EventTimeType>>
-    dayTimesWithId: Array<dayTimeWithIdType>
-    setdayTimesWithId: Dispatch<SetStateAction<Array<dayTimeWithIdType>>>
+    weekdayRange: DateRangeType
+    setWeekdayRange: Dispatch<SetStateAction<DateRangeType>>
+    weekdayTimesWithId: Array<WeekdayTimeWithIdType>
+    setWeekdayTimesWithId: Dispatch<SetStateAction<Array<WeekdayTimeWithIdType>>>
+    dayTimesWithId: Array<DayTimeWithIdType>
+    setDayTimesWithId: Dispatch<SetStateAction<Array<DayTimeWithIdType>>>
 }
 
-export const EventAdditionalFieldsView = ({ eventTimeType, setEventTimeType, dayTimes, setDayTimes, dayTimesWithId, setdayTimesWithId }: EventAdditionalFieldsViewProps) => {
+export const EventAdditionalFieldsView = ({ eventTimeType, setEventTimeType, weekdayRange, setWeekdayRange, weekdayTimesWithId, setWeekdayTimesWithId, dayTimesWithId, setDayTimesWithId }: EventAdditionalFieldsViewProps) => {
     return <VStack>
         <HStack
             alignItems={'center'}
@@ -46,13 +51,15 @@ export const EventAdditionalFieldsView = ({ eventTimeType, setEventTimeType, day
         {
             eventTimeType === 'days' ?
                 <EventDaySchedule
-                    dayTimes={dayTimes}
-                    setDayTimes={setDayTimes}
+                    weekdayRange={weekdayRange}
+                    setWeekdayRange={setWeekdayRange}
+                    weekdayTimesWithId={weekdayTimesWithId}
+                    setWeekdayTimesWithId={setWeekdayTimesWithId}
                 />
                 : eventTimeType === 'dates' ?
                     <EventDateSchedule
                         dayTimesWithId={dayTimesWithId}
-                        setdayTimesWithId={setdayTimesWithId}
+                        setDayTimesWithId={setDayTimesWithId}
                     /> : null
         }
         <Spacer height={20}/>

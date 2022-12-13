@@ -85,24 +85,20 @@ export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps 
                             start: startTime, end: endTime,
                         }]
                 } else {
-                    for (let j = 0; j < 7; j++){
-                        if (time.weekday.charAt(j) === '1'){
-                            const newTimes = getDatesOfDay(j, time)
-                            newTimes.forEach((newTime) => {
-                                const startTime = new Date(newTime.startDate)
-                                startTime.setTime(startTime.getTime() + 1000 * 60 * 30 * newTime.startTime)
-                                const endTime = new Date(newTime.endDate)
-                                endTime.setTime(endTime.getTime() + 1000 * 60 * 30 * newTime.endTime)
-                                coloredEvents = [...coloredEvents,
-                                    {
-                                        id: `${i}`, calendarId: '0', title: event.name, body: `${event.id}`,
-                                        backgroundColor: randomPrimaryColor(seed), borderColor: 'rgba(0,0,0,0)',
-                                        color: seed % 2 ? 'white' : 'black',
-                                        start: startTime, end: endTime,
-                                    }]
-                            })
-                        }
-                    }
+                    const newTimes = getDatesOfDay(time)
+                    newTimes.forEach((newTime) => {
+                        const startTime = new Date(newTime.startDate)
+                        startTime.setTime(startTime.getTime() + 1000 * 60 * 30 * newTime.startTime)
+                        const endTime = new Date(newTime.endDate)
+                        endTime.setTime(endTime.getTime() + 1000 * 60 * 30 * newTime.endTime)
+                        coloredEvents = [...coloredEvents,
+                            {
+                                id: `${i}`, calendarId: '0', title: event.name, body: `${event.id}`,
+                                backgroundColor: randomPrimaryColor(seed), borderColor: 'rgba(0,0,0,0)',
+                                color: seed % 2 ? 'white' : 'black',
+                                start: startTime, end: endTime,
+                            }]
+                    })
                 }
             },
             )

@@ -11,7 +11,7 @@ import IcPlus from '/app/ui/icons/IcPlus.png'
 import { SpecificDatePicker } from '../../../shared/SpecificDatePicker'
 import { SpecificTimePicker } from '../../../shared/SpecificTimePicker'
 
-export interface dayTimeWithIdType {
+export interface DayTimeWithIdType {
     id: number
     start: {
         date: string //YYYY-MM-DD
@@ -24,11 +24,11 @@ export interface dayTimeWithIdType {
 }
 
 interface EventDateScheduleProps {
-    dayTimesWithId: Array<dayTimeWithIdType>
-    setdayTimesWithId: Dispatch<SetStateAction<Array<dayTimeWithIdType>>>
+    dayTimesWithId: Array<DayTimeWithIdType>
+    setDayTimesWithId: Dispatch<SetStateAction<Array<DayTimeWithIdType>>>
 }
 
-export const EventDateSchedule = ({ dayTimesWithId, setdayTimesWithId }: EventDateScheduleProps) => {
+export const EventDateSchedule = ({ dayTimesWithId, setDayTimesWithId }: EventDateScheduleProps) => {
     const handleStartDateChange = (id: number, newDate: string) => {
         const newDateTimes = dayTimesWithId.map((target) => {
             if (target.id === id){
@@ -37,7 +37,7 @@ export const EventDateSchedule = ({ dayTimesWithId, setdayTimesWithId }: EventDa
                 return target
             }
         })
-        setdayTimesWithId(newDateTimes)
+        setDayTimesWithId(newDateTimes)
     }
 
     const handleStartTimeChange = (id: number, newTime: string) => {
@@ -48,7 +48,7 @@ export const EventDateSchedule = ({ dayTimesWithId, setdayTimesWithId }: EventDa
                 return target
             }
         })
-        setdayTimesWithId(newDateTimes)
+        setDayTimesWithId(newDateTimes)
     }
 
     const handleEndDateChange = (id: number, newDate: string) => {
@@ -59,7 +59,7 @@ export const EventDateSchedule = ({ dayTimesWithId, setdayTimesWithId }: EventDa
                 return target
             }
         })
-        setdayTimesWithId(newDateTimes)
+        setDayTimesWithId(newDateTimes)
     }
 
     const handleEndTimeChange = (id: number, newTime: string) => {
@@ -70,7 +70,7 @@ export const EventDateSchedule = ({ dayTimesWithId, setdayTimesWithId }: EventDa
                 return target
             }
         })
-        setdayTimesWithId(newDateTimes)
+        setDayTimesWithId(newDateTimes)
     }
 
     return <VStack
@@ -122,7 +122,7 @@ export const EventDateSchedule = ({ dayTimesWithId, setdayTimesWithId }: EventDa
                                 width={15}
                                 onClick={() => {
                                     const newDateTimes = dayTimesWithId.filter((target) => (target.id !== dateTime.id))
-                                    setdayTimesWithId(newDateTimes)}
+                                    setDayTimesWithId(newDateTimes)}
                                 }
                             />}
                     </HStack>
@@ -133,7 +133,7 @@ export const EventDateSchedule = ({ dayTimesWithId, setdayTimesWithId }: EventDa
                         height={15}
                         width={15}
                         onClick={() => {
-                            setdayTimesWithId([...dayTimesWithId, { id: dayTimesWithId[dayTimesWithId.length - 1].id + 1,
+                            setDayTimesWithId([...dayTimesWithId, { id: dayTimesWithId[dayTimesWithId.length - 1].id + 1,
                                 start: { date: '', time: '' }, end: { date: '', time: '' } }])
                         }}
                     />}
