@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {Dispatch, SetStateAction, useState} from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
@@ -11,6 +11,7 @@ import IcPlus from '/app/ui/icons/IcPlus.png'
 import IcClose from '/app/ui/icons/IcClose.png'
 
 import { TimeRangePicker, TimeRangeType } from '../../../shared/TimeRangePicker'
+import {DayTime, WeekdayTime} from '../../../../../domain/model/Time'
 
 interface DayTimeType {
     id: number
@@ -19,11 +20,12 @@ interface DayTimeType {
 }
 
 interface EventDayScheduleProps {
-    isEdit: boolean
+    dayTimes: Array<WeekdayTime>
+    setDayTimes: Dispatch<SetStateAction<Array<WeekdayTime>>>
 }
 
-export const EventDaySchedule = ({ isEdit }: EventDayScheduleProps) => {
-    const [date, setDate] = useState<DateRangeType>(isEdit ? { start: '2019-03-25', end: '2019-03-26' } : { start: '', end: '' })
+export const EventDaySchedule = ({ dayTimes, setDayTimes }: EventDayScheduleProps) => {
+    const [date, setDate] = useState<DateRangeType>({ start: '2019-03-25', end: '2019-03-26' } : { start: '', end: '' })
     const [dayTimes, setDayTimes] = useState<DayTimeType[]>(isEdit ?
         [{ id: 0, day: '화' as DAYS, time: { start: '03:30', end: '06:00' } }]
         : [{ id: 0, day: '', time: { start: '', end: '' } }])

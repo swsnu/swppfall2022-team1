@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongRadioButton } from '../../../../components/UdongRadioButton'
 import { UdongText } from '../../../../components/UdongText'
-import { EventDateSchedule } from './EventDateSchedule'
+import { EventTimeType } from './create/EventCreateContainer'
+import { dayTimeWithIdType, EventDateSchedule } from './EventDateSchedule'
 import { EventDaySchedule } from './EventDaySchedule'
 
-type SchedulingTimeType = 'days' | 'dates' | 'notAssigned'
-
 interface EventAdditionalFieldsViewProps {
-    isEdit: boolean
+    eventTimeType: EventTimeType
+    setEventTimeType: Dispatch<SetStateAction<EventTimeType>>
+    dayTimesWithId: Array<dayTimeWithIdType>
+    setdayTimesWithId: Dispatch<SetStateAction<Array<dayTimeWithIdType>>>
 }
 
-export const EventAdditionalFieldsView = ({ isEdit }: EventAdditionalFieldsViewProps) => {
-    const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingTimeType>('days')
-
+export const EventAdditionalFieldsView = ({ eventTimeType, setEventTimeType, dayTimes, setDayTimes, dayTimesWithId, setdayTimesWithId }: EventAdditionalFieldsViewProps) => {
     return <VStack>
         <HStack
             alignItems={'center'}
@@ -26,26 +26,34 @@ export const EventAdditionalFieldsView = ({ isEdit }: EventAdditionalFieldsViewP
             <Spacer width={30}/>
             <UdongRadioButton
                 text={'요일'}
-                checked={schedulingTimeType === 'days'}
-                onCheck={() => setSchedulingTimeType('days')}
+                checked={eventTimeType === 'days'}
+                onCheck={() => setEventTimeType('days')}
             />
             <Spacer width={30}/>
             <UdongRadioButton
                 text={'날짜'}
-                checked={schedulingTimeType === 'dates'}
-                onCheck={() => setSchedulingTimeType('dates')}
+                checked={eventTimeType === 'dates'}
+                onCheck={() => setEventTimeType('dates')}
             />
             <Spacer width={30}/>
             <UdongRadioButton
                 text={'지정안함'}
-                checked={schedulingTimeType === 'notAssigned'}
-                onCheck={() => setSchedulingTimeType('notAssigned')}
+                checked={eventTimeType === 'notAssigned'}
+                onCheck={() => setEventTimeType('notAssigned')}
             />
         </HStack>
         <Spacer height={30}/>
         {
-            schedulingTimeType === 'days' ? <EventDaySchedule isEdit={isEdit} />
-                : schedulingTimeType === 'dates' ? <EventDateSchedule isEdit={isEdit} /> : null
+            eventTimeType === 'days' ?
+                <EventDaySchedule
+                    dayTimes={dayTimes}
+                    setDayTimes={setDayTimes}
+                />
+                : eventTimeType === 'dates' ?
+                    <EventDateSchedule
+                        dayTimesWithId={dayTimesWithId}
+                        setdayTimesWithId={setdayTimesWithId}
+                    /> : null
         }
         <Spacer height={20}/>
     </VStack>

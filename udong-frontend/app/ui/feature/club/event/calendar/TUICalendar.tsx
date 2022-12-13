@@ -5,7 +5,7 @@ import '@toast-ui/calendar/dist/toastui-calendar.css'
 
 import { ClubEvent } from '../../../../../domain/model/ClubEvent'
 import { SchedulingPostType } from '../../../../../domain/model/SchedulingPostType'
-import { getDatesOfDay } from '../../../../../utility/getDatesofDay'
+import { getDatesOfDay } from '../../../../../utility/eventDateUtils'
 import { UdongColors } from '../../../../theme/ColorPalette'
 
 const calendars = [
@@ -73,24 +73,32 @@ export const Calender = ( { events, calendarRef, onClickEvent } : CalenderProps 
             event.times.forEach((time) => {
                 const seed = ((new Date(event.createdAt)).getTime() / 17) % 100
                 if (time.type === SchedulingPostType.DATES){
+                    const startTime = new Date(time.startDate)
+                    startTime.setTime(startTime.getTime() + 1000 * 60 * 30 * time.startTime)
+                    const endTime = new Date(time.endDate)
+                    endTime.setTime(endTime.getTime() + 1000 * 60 * 30 * time.endTime)
                     coloredEvents = [...coloredEvents,
                         {
                             id: `${i}`, calendarId: '0', title: event.name, body: `${event.id}`,
                             backgroundColor: randomPrimaryColor(seed), borderColor: 'rgba(0,0,0,0)',
                             color: seed % 2 ? 'white' : 'black',
-                            start: new Date(time.startDate), end: new Date(time.endDate),
+                            start: startTime, end: endTime,
                         }]
                 } else {
                     for (let j = 0; j < 7; j++){
                         if (time.weekday.charAt(j) === '1'){
                             const newTimes = getDatesOfDay(j, time)
                             newTimes.forEach((newTime) => {
+                                const startTime = new Date(newTime.startDate)
+                                startTime.setTime(startTime.getTime() + 1000 * 60 * 30 * newTime.startTime)
+                                const endTime = new Date(newTime.endDate)
+                                endTime.setTime(endTime.getTime() + 1000 * 60 * 30 * newTime.endTime)
                                 coloredEvents = [...coloredEvents,
                                     {
                                         id: `${i}`, calendarId: '0', title: event.name, body: `${event.id}`,
                                         backgroundColor: randomPrimaryColor(seed), borderColor: 'rgba(0,0,0,0)',
                                         color: seed % 2 ? 'white' : 'black',
-                                        start: new Date(newTime.startDate), end: new Date(newTime.endDate),
+                                        start: startTime, end: endTime,
                                     }]
                             })
                         }
