@@ -333,7 +333,7 @@ class SchedulingViewSet(_SchedulingGenericViewSet):
     def me(self, request: Request, pk: Any) -> Response:
         try:
             availableTime = AvailableTime.objects.get(
-                Q(scheduling_id=pk) & Q(user_id=request.user.id)
+                Q(scheduling=self.get_object()) & Q(user_id=request.user.id)
             )
         except AvailableTime.DoesNotExist:
             return Response(None)
