@@ -51,6 +51,11 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
         dispatch(enrollmentActions.closeEnrollment(postId))
     }, [dispatch, postId])
 
+    const handleGetEnrolledUsers = useCallback(() => {
+        setShowEnrolledUsers(true)
+        dispatch(enrollmentActions.getEnrollmentUsers(postId))
+    }, [postId, dispatch])
+
     return <VStack>
         <Spacer height={30}/>
 
@@ -66,7 +71,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
             >
                 <UdongButton
                     style={'fill'}
-                    onClick={() => setShowEnrolledUsers(true)}
+                    onClick={handleGetEnrolledUsers}
                 >
                     현황 보기
                 </UdongButton>
@@ -87,7 +92,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
                 style={{ marginRight: 'auto' }}
                 justifyContent={'end'}
             >
-                {showEnrollButton &&
+                {isOpen && !hasSuccessfullyClosed &&
                     <UdongButton
                         style={'line'}
                         onClick={handleCloseEnrollment}
