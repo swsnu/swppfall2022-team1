@@ -1,7 +1,9 @@
 import { useCallback, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import { ClubUser } from '../../../domain/model/ClubUser'
-import { RoleType } from '../../../domain/model/RoleType'
+import { AppDispatch } from '../../../domain/store'
+import { clubActions } from '../../../domain/store/club/ClubSlice'
 import { useDebouncedSearch } from '../../../utility/useDebouncedSearch'
 import { Spacer } from '../../components/Spacer'
 import { VStack } from '../../components/Stack'
@@ -11,22 +13,24 @@ import { UserItem } from './UserItem'
 
 interface SearchMembersViewProps {
     members: Array<ClubUser>
+    clubId: number
 }
 
 export const SearchMembersView = (props: SearchMembersViewProps) => {
-    const { members } = props
+    const { members, clubId } = props
+    const dispatch = useDispatch<AppDispatch>()
 
     const [showMemberProfile, setShowMemberProfile] = useState(false)
-    const [selectedMember, setSelectedMember] = useState<ClubUser | undefined>(undefined)
+
     const searchRef = useRef<HTMLInputElement | undefined>(null)
     const [searchValue, setSearchValue] = useState('')
     const [keyword, setKeyword] = useState('')
     useDebouncedSearch(searchValue, setKeyword, 300)
 
     const handleMemberClick = useCallback((user: ClubUser) => {
-        setSelectedMember(user)
+        dispatch(clubActions.setSelectedMember(user))
         setShowMemberProfile(true)
-    }, [])
+    }, [dispatch])
 
     return <VStack>
         <UdongSearchBar
@@ -60,10 +64,9 @@ export const SearchMembersView = (props: SearchMembersViewProps) => {
         </VStack>
 
         <ClubMemberProfileView
+            clubId={clubId}
             isOpen={showMemberProfile}
             setIsOpen={setShowMemberProfile}
-            memberId={selectedMember?.user.id ?? -1}
-            isAdmin={selectedMember?.role === RoleType.ADMIN}
         />
 
     </VStack>

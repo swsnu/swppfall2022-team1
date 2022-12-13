@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
@@ -17,6 +17,7 @@ export interface ClubState {
     selectedClub?: Club
     myClubs: Array<Club>
     members: Array<ClubUser>
+    selectedMember?: ClubUser
     errors: ClubErrorType
 }
 
@@ -149,6 +150,9 @@ const clubSlice = createSlice({
         resetErrors: (state) => {
             state.errors = {}
         },
+        setSelectedMember: (state, action: PayloadAction<ClubUser>) => {
+            state.selectedMember = action.payload
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getMyClubs.fulfilled, (state, action) => {
@@ -187,7 +191,13 @@ const clubSlice = createSlice({
         builder.addCase(deleteClub.rejected, (state, action) => {
             state.errors.deleteError = action.payload
         })
+        builder.addCase(changeMemberRole.fulfilled, (state, action) => {
+            if (state.selectedMember && action.payload) {
+                state.selectedMember = { ...state.selectedMember, role: action.payload.role }
+            }
+        })
         builder.addCase(changeMemberRole.rejected, (state, action) => {
+            state.selectedMember = undefined
             state.errors.changeMemberRoleError = action.payload
         })
     },

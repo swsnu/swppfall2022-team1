@@ -1,8 +1,10 @@
 import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { RoleType } from '../../../../domain/model/RoleType'
 import { AppDispatch } from '../../../../domain/store'
-import { userSelector } from '../../../../domain/store/user/UserSelector'
+import { clubSelector } from '../../../../domain/store/club/ClubSelector'
+import { clubActions } from '../../../../domain/store/club/ClubSlice'
 import { userActions } from '../../../../domain/store/user/UserSlice'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
@@ -15,24 +17,32 @@ import { UdongColors } from '../../../theme/ColorPalette'
 import { ProfileView } from '../../shared/ProfileView'
 
 interface ClubMemberProfileViewProps {
+    clubId: number
     isOpen: boolean
     setIsOpen: (open: boolean) => void
-    memberId: number
-    isAdmin: boolean
 }
 
 export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
-    const { isOpen, setIsOpen, memberId, isAdmin } = props
+    const { clubId, isOpen, setIsOpen } = props
     const dispatch = useDispatch<AppDispatch>()
-    const user = useSelector(userSelector.selectedUser)
+
+    const member = useSelector(clubSelector.selectedMember)
 
     useEffect(() => {
-        dispatch(userActions.getUser(memberId))
-    }, [dispatch, memberId])
+        if (member) {
+            dispatch(userActions.getUser(member.user.id))
+        }
+    }, [dispatch, member])
+
+    const handleChangeMemberRole = useCallback(() => {
+        if (member) {
+            dispatch(clubActions.changeMemberRole({ clubId, userId: member.user.id }))
+        }
+    }, [dispatch, clubId, member])
 
     const renderAssignMemberButton = useCallback(() => {
         return <HStack
-            onClick={() => {return}}
+            onClick={handleChangeMemberRole}
             paddingVertical={30}
         >
             <UdongText
@@ -42,10 +52,10 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
                 일반 멤버로 전환
             </UdongText>
         </HStack>
-    }, [])
+    }, [handleChangeMemberRole])
 
     const renderAssignAdminButton = useCallback(() => {
-        return <HStack onClick={() => {return}}>
+        return <HStack onClick={handleChangeMemberRole}>
             <UdongText
                 style={'ListContentS'}
                 color={UdongColors.GrayNormal}
@@ -53,7 +63,7 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
                 관리자로 전환
             </UdongText>
         </HStack>
-    }, [])
+    }, [handleChangeMemberRole])
 
     const renderRemoveMemberButton = useCallback(() => {
         return <HStack onClick={() => {return}}>
@@ -67,7 +77,7 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
     }, [])
 
     const renderBottomButtons = useCallback(() => {
-        if (isAdmin) {
+        if (member?.role === RoleType.ADMIN) {
             return renderAssignMemberButton()
         } else {
             return <HStack paddingVertical={30}>
@@ -76,13 +86,13 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
                 {renderRemoveMemberButton()}
             </HStack>
         }
-    }, [isAdmin, renderAssignAdminButton, renderRemoveMemberButton, renderAssignMemberButton])
+    }, [member, renderAssignAdminButton, renderRemoveMemberButton, renderAssignMemberButton])
 
     return <UdongModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
     >
-        {!user ?
+        {!member ?
             <VStack height={530}>
                 <UdongLoader/>
             </VStack>
@@ -114,8 +124,8 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
                 <Spacer height={90}/>
 
                 <ProfileView
-                    name={user.name}
-                    showAdminBadge={isAdmin}
+                    name={member.user.name}
+                    showAdminBadge={member.role === RoleType.ADMIN}
                     bottomItem={renderBottomButtons()}
                 />
             </VStack>}
