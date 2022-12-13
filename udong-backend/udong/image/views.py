@@ -54,7 +54,7 @@ class ImageViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         url = self.generate_presigned_url(
             "get_object",
-            {"Bucket": env("BUCKET_NAME"), "Key": request.GET["key"]},
+            {"Bucket": env("BUCKET_NAME"), "Key": key},
         )
         if url is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
