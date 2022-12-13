@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import { BoardPost, PostDisplayType } from '../../../../domain/model/BoardPost'
 import { PostType } from '../../../../domain/model/PostType'
 import { dummyUserMe } from '../../../../domain/model/User'
+import { tagReducer, TagState } from '../../../../domain/store/tag/TagSlice'
 import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { PostItem } from '../PostItem'
 
@@ -25,6 +26,14 @@ const dummyPost: BoardPost = {
     createdAt: '',
 }
 
+const stubTagInitialState: TagState = {
+    tags: [],
+    createPostTags: [],
+    errors: {},
+    selectedUserIds: [],
+    selectedTag: { users: [], id: 1, name: '', isDefault: true, createdAt: '', updatedAt: '' },
+}
+
 const stubInitialState: UserState = {
     isAdmin: false,
     selectedUser: dummyUserMe,
@@ -32,8 +41,8 @@ const stubInitialState: UserState = {
 }
 
 const mockStore = configureStore({
-    reducer: { user: userReducer },
-    preloadedState: { user: stubInitialState },
+    reducer: { user: userReducer, tag: tagReducer },
+    preloadedState: { user: stubInitialState, tag: stubTagInitialState },
 })
 
 describe('<PostItem/>', () => {
