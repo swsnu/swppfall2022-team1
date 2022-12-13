@@ -114,7 +114,12 @@ export const toWeekdayTimeWithIdFormatter = (id: number, weekdayTime: WeekdayTim
         },
     }
 }
-export const toWeekdayRangeFormatter = () => {return}
+export const toWeekdayRangeFormatter = (weekdayTime: WeekdayTime): DateRangeType => {
+    return {
+        start: weekdayTime.repeatStart,
+        end: weekdayTime.repeatEnd,
+    }
+}
 
 const dayToNum = (day: DAYS|'') => {
     switch (day) {
