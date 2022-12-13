@@ -18,8 +18,16 @@ export const SchedulingAPI = (() => {
         )
     }
 
+    async function participateInScheduling(postId: string, time: boolean[][]): Promise<void> {
+        return await axiosConfig.post(
+            `api/schedule/${postId}/participate/`,
+            { time: boolToStr(time) },
+        )
+    }
+
     return Object.freeze({
         getSchedulingStatus,
         closeScheduling,
+        participateInScheduling,
     })
 })()
