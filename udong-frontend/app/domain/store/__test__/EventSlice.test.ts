@@ -27,6 +27,7 @@ describe('event reducer', () => {
     const fakeEvent : EventState = {
         selectedEvent: fakeEvent1,
         events: [fakeEvent1, fakeEvent2],
+        errors: {},
     }
 
     beforeAll(() => {

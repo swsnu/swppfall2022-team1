@@ -21,6 +21,7 @@ const stubPostInitialState: PostState = {
     feedPosts: [],
     clubPosts: [],
     errors: {},
+    eventPosts: [],
 }
 
 const stubTagInitialState: TagState = {
