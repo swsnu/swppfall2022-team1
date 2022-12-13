@@ -49,6 +49,8 @@ class ImageViewSet(viewsets.ViewSet):
     )
     @action(detail=False, methods=["GET"])
     def download(self, request: Request) -> Response:
+        if "key" not in request.GET:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         url = self.generate_presigned_url(
             "get_object",
             {"Bucket": env("BUCKET_NAME"), "Key": request.GET["key"]},
