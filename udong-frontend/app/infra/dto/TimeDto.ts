@@ -6,7 +6,7 @@ export interface TimeDto {
     end_date: string
     repeat_start?: string
     repeat_end?: string
-    weekday?: string
+    weekday?: number
     start_time: number
     end_time: number
     created_at: string
