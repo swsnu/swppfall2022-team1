@@ -7,7 +7,6 @@ import { User } from '../../../model/User'
 export interface EnrollmentState {
     selectedEnrollment?: Enrollment
     selectedEnrollmentUsers?: Array<User>
-    isParticipating?: boolean
     myEnrollmentStatus?: boolean
 }
 
@@ -65,10 +64,10 @@ const enrollmentSlice = createSlice({
             state.selectedEnrollment = undefined
         })
         builder.addCase(participateInEnrollment.fulfilled, (state) => {
-            state.isParticipating = true
+            state.myEnrollmentStatus = true
         })
         builder.addCase(participateInEnrollment.rejected, (state) => {
-            state.isParticipating = false
+            state.myEnrollmentStatus = false
         })
         builder.addCase(getMyEnrollmentStatus.fulfilled, (state, action) => {
             if (action.payload) {
