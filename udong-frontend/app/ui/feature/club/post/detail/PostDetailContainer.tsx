@@ -138,7 +138,7 @@ export const PostDetailContainer = () => {
                 style={'GeneralContent'}
                 whiteSpace={'pre-line'}
             >
-                {post.content}
+                {<div dangerouslySetInnerHTML={{ __html: post.content }} />}
             </UdongText>
         </VStack>
 
