@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
+import { EventAPI } from '../../../infra/api/EventAPI'
 import { PostAPI } from '../../../infra/api/PostAPI'
 import { BoardPost } from '../../model/BoardPost'
 import { CreatePost } from '../../model/CreatePost'
@@ -14,11 +15,13 @@ export interface PostState {
     createPostError?: PostCreateAPIErrorType
     feedPosts: Array<BoardPost>
     clubPosts: Array<BoardPost>
+    eventPosts: Array<BoardPost>
 }
 
 const initialState: PostState = {
     feedPosts: [],
     clubPosts: [],
+    eventPosts: [],
 }
 
 export const getFeedPosts = createAsyncThunk(
@@ -39,6 +42,13 @@ export const getPost = createAsyncThunk(
     'post/getPost',
     async (postId: string) => {
         return PostAPI.getPost(postId)
+    },
+)
+
+export const getEventPosts = createAsyncThunk(
+    `post/getEventPosts`,
+    async (eventId : number) => {
+        return EventAPI.getEventPosts(eventId)
     },
 )
 
@@ -87,6 +97,9 @@ const postSlice = createSlice({
         builder.addCase(getClubPosts.fulfilled, (state, action) => {
             state.clubPosts = action.payload
         })
+        builder.addCase(getEventPosts.fulfilled, (state, action) => {
+            state.eventPosts = action.payload
+        })
         builder.addCase(getPost.fulfilled, (state, action) => {
             state.selectedPost = action.payload
             state.createdPostId = undefined
@@ -107,6 +120,7 @@ export const postActions = {
     ...postSlice.actions,
     getFeedPosts,
     getClubPosts,
+    getEventPosts,
     getPost,
     createPost,
 }
