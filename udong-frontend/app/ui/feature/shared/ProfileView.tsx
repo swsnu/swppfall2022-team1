@@ -121,8 +121,10 @@ export const ProfileView = (props: ProfileViewProps) => {
                 {onRefresh &&
                     <UdongImage
                         src={refresh.src}
+                        clickable={true} 
                         height={18}
                         width={18}
+                        onClick={onRefresh}
                     />
                 }
             </HStack>

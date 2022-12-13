@@ -102,8 +102,17 @@ export const ClubAPI = (() => {
         return response.data.map(clubTagTransformer.fromDto)
     }
 
-    function createClubTag(clubId: number, tagName: string, userIds: number[]): Promise<void> {
-        return axiosConfig.post(`/api/club/${clubId}/tag/`, { name: tagName, user_list: userIds })
+    async function createClubTag(clubId: number, tagName: string, userIds: number[]): Promise<ClubTag> {
+        const response = await axiosConfig.post<ClubTagDto>(
+            `/api/club/${clubId}/tag/`,
+            { name: tagName, user_list: userIds },
+        )
+        return clubTagTransformer.fromDto(response.data)
+    }
+
+    async function refreshClubCode(clubId: number): Promise<Club> {
+        const response = await axiosConfig.put<ClubDto>(`/api/club/${clubId}/code/`)
+        return clubTransformer.fromDto(response.data)
     }
 
     return Object.freeze({
@@ -124,5 +133,6 @@ export const ClubAPI = (() => {
         createClubEvent,
         getClubTags,
         createClubTag,
+        refreshClubCode,
     })
 })()

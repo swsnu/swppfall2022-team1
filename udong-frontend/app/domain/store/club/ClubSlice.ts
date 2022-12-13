@@ -200,6 +200,13 @@ export const createClubTag = createAsyncThunk(
     },
 )
 
+export const refreshClubCode = createAsyncThunk(
+    'club/refreshCode',
+    async (clubId: number) => {
+        return await ClubAPI.refreshClubCode(clubId)
+    },
+)
+
 const clubSlice = createSlice({
     name: 'club',
     initialState,
@@ -280,6 +287,12 @@ const clubSlice = createSlice({
         builder.addCase(leaveClub.rejected, (state, action) => {
             state.errors.leaveClubError = action.payload
         })
+        builder.addCase(refreshClubCode.fulfilled, (state, action) => {
+            const club = action.payload
+            if(state.selectedClub) {
+                state.selectedClub.code = club.code
+            }
+        })
     },
 })
 
@@ -296,5 +309,6 @@ export const clubActions = {
     changeMemberRole,
     removeClubMember,
     leaveClub,
+    refreshClubCode,
 }
 export const clubReducer = clubSlice.reducer

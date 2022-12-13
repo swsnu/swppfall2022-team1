@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 
 import { BoardPost, PostDisplayType } from '../../../../domain/model/BoardPost'
@@ -43,13 +44,17 @@ describe('<PostItem/>', () => {
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
 
+        const client = new QueryClient()
+
         render(
-            <Provider store={mockStore}>
-                <PostItem
-                    clubId={1}
-                    post={dummyPost}
-                />
-            </Provider>,
+            <QueryClientProvider client={client}>
+                <Provider store={mockStore}>
+                    <PostItem
+                        clubId={1}
+                        post={dummyPost}
+                    />
+                </Provider>
+            </QueryClientProvider>,
         )
         const component = screen.getByText('겨울 공연 중요 공지!')
         fireEvent.click(component)
@@ -57,13 +62,17 @@ describe('<PostItem/>', () => {
     })
 
     it ('should handle on click tag', () => {
+        const client = new QueryClient()
+
         render(
-            <Provider store={mockStore}>
-                <PostItem
-                    clubId={1}
-                    post={dummyPost}
-                />
-            </Provider>,
+            <QueryClientProvider client={client}>
+                <Provider store={mockStore}>
+                    <PostItem
+                        clubId={1}
+                        post={dummyPost}
+                    />
+                </Provider>
+            </QueryClientProvider>,
         )
         const component = screen.getByText('2022년 겨울 공연 1팀')
         fireEvent.click(component)

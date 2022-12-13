@@ -2,9 +2,9 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 import React from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { Club } from '../../../../../domain/model/Club'
-import img from '../../../../icons/IcDong.png'
 import { ClubItem } from '../ClubItem'
 
 const dummyClub: Club = {
@@ -16,10 +16,16 @@ const dummyClub: Club = {
 
 describe('<ClubItem/>', () => {
     it('renders club item', () => {
-        render(<ClubItem
-            imageSrc={img.src}
-            club={dummyClub}
-        />)
+        const client = new QueryClient()
+
+        render(
+            <QueryClientProvider client={client}>
+                <ClubItem
+                    imageKey={dummyClub.image ?? ''}
+                    club={dummyClub}
+                />
+            </QueryClientProvider>,
+        )
         const text = screen.getAllByText('단풍')
         expect(text).toBeDefined()
     })
@@ -30,11 +36,16 @@ describe('<ClubItem/>', () => {
             query: { clubId: 1 },
             push: (url: string) => mockPush(url),
         } as unknown as NextRouter))
+        const client = new QueryClient()
 
-        render(<ClubItem
-            imageSrc={img.src}
-            club={dummyClub}
-        />)
+        render(
+            <QueryClientProvider client={client}>
+                <ClubItem
+                    imageKey={dummyClub.image ?? ''}
+                    club={dummyClub}
+                />
+            </QueryClientProvider>,
+        )
         const text = screen.getByText('단풍')
         fireEvent.click(text)
         expect(mockPush).toHaveBeenCalledWith('/club/1')
