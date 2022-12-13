@@ -226,6 +226,15 @@ const clubSlice = createSlice({
             if (state.selectedMember && action.payload) {
                 state.selectedMember = { ...state.selectedMember, role: action.payload.role }
             }
+            state.members = state.members.map(member => {
+                if (member.user.id === action.payload?.user.id) {
+                    return {
+                        ...member,
+                        role: action.payload?.role,
+                    }
+                }
+                return member
+            })
         })
         builder.addCase(changeMemberRole.rejected, (state, action) => {
             state.selectedMember = undefined
