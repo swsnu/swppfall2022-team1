@@ -12,6 +12,7 @@ export interface ClubErrorType {
     deleteError?: APIErrorType
     changeMemberRoleError?: APIErrorType
     removeMemberError?: APIErrorType
+    leaveClubError?: APIErrorType
 }
 
 export interface ClubState {
@@ -90,9 +91,29 @@ export const editClub =
         },
     )
 
-export const leaveClub = createAsyncThunk(
+export const leaveClub = createAsyncThunk<void, number, { rejectValue: APIErrorType }>(
     'club/leaveClub',
-    async () => { return },
+    async (clubId: number, { rejectWithValue }) => {
+        try {
+            return await ClubAPI.leaveClub(clubId)
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                const errorType = APIError.getErrorType(e.response?.status)
+                let message: string = errorType.message
+
+                if (errorType.errorCode === 403) {
+                    message = '유일한 관리자는 동아리를 탈퇴할 수 없습니다.'
+                } else if (errorType.errorCode === 404) {
+                    message = '동아리에 가입되지 않았습니다.'
+                }
+
+                return rejectWithValue({
+                    ...errorType,
+                    message,
+                })
+            }
+        }
+    },
 )
 
 export const deleteClub = createAsyncThunk<void, number, { rejectValue: APIErrorType }>(
@@ -239,6 +260,12 @@ const clubSlice = createSlice({
             state.selectedMember = undefined
             state.errors.removeMemberError = action.payload
         })
+        builder.addCase(leaveClub.fulfilled, (state) => {
+            state.selectedClub = undefined
+        })
+        builder.addCase(leaveClub.rejected, (state, action) => {
+            state.errors.leaveClubError = action.payload
+        })
     },
 })
 
@@ -254,5 +281,6 @@ export const clubActions = {
     deleteClub,
     changeMemberRole,
     removeClubMember,
+    leaveClub,
 }
 export const clubReducer = clubSlice.reducer

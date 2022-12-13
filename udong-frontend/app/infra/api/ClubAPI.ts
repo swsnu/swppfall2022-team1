@@ -58,6 +58,10 @@ export const ClubAPI = (() => {
         return response.data.map(clubUserTransformer.fromDto)
     }
 
+    async function leaveClub(clubId: number): Promise<void> {
+        return await axiosConfig.delete(`/api/club/${clubId}/user/`)
+    }
+
     async function getMyClubProfile(clubId: number): Promise<ClubUser> {
         const response = await axiosConfig.get<ClubUserDto>(`/api/club/${clubId}/user/me/`)
         return clubUserTransformer.fromDto(response.data)
@@ -110,6 +114,7 @@ export const ClubAPI = (() => {
         editClub,
         deleteClub,
         getClubMembers,
+        leaveClub,
         getMyClubProfile,
         removeClubMember,
         changeClubMemberRole,
