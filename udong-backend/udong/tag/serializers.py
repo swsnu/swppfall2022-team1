@@ -1,11 +1,11 @@
 from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 from drf_yasg.utils import swagger_serializer_method
-from club.models import Club
+from user.models import User
 from tag.models import Tag, UserTag
 from common.utils import myIntListComparison
 from user.serializers import UserSerializer
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 
 class TagPostSerializer(serializers.ModelSerializer[Tag]):
@@ -22,6 +22,7 @@ class TagPostSerializer(serializers.ModelSerializer[Tag]):
 
 class ClubTagSerializer(serializers.ModelSerializer[Tag]):
     name = serializers.CharField(max_length=255)
+    user_list = serializers.ListField(child=serializers.IntegerField(), write_only=True)
     is_default = serializers.BooleanField(read_only=True, default=False)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
@@ -31,13 +32,25 @@ class ClubTagSerializer(serializers.ModelSerializer[Tag]):
         fields = (
             "id",
             "name",
+            "user_list",
             "is_default",
             "created_at",
             "updated_at",
         )
 
     def create(self, validated_data: Dict[str, Any]) -> Tag:
-        return Tag.objects.create(**validated_data, club=self.context["club"])
+        tag_data = validated_data.copy()
+        user_list = tag_data.pop("user_list")
+        tag = Tag.objects.create(**tag_data, club=self.context["club"])
+        for user_id in user_list:
+            UserTag.objects.create(user_id=user_id, tag=tag)
+        return tag
+
+    def validate_user_list(self, value: List[int]) -> List[int]:
+        user_cnt = User.objects.filter(id__in=value).count()
+        if user_cnt != len(value):
+            raise serializers.ValidationError("Invalid user_list")
+        return value
 
 
 class TagUserSerializer(serializers.ModelSerializer[Tag]):
