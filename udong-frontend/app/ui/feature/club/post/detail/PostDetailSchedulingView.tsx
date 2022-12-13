@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
 import { clubActions } from '../../../../../domain/store/club/ClubSlice'
 import { schedulingActions } from '../../../../../domain/store/post/scheduling/SchedulingSlice'
+import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { getDay, new2dArray } from '../../../../../utility/functions'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
@@ -44,6 +46,7 @@ export const PostDetailSchedulingView = () => {
     const data = useData()
     const { schedulingStatus, myId } = data
     const myTimeTable = data.myTimeTable ?? new2dArray(7, 48, false)
+    const isAdmin = useSelector(userSelector.isAdmin)
 
     useEffect(() => {
         if(schedulingStatus) {
@@ -129,11 +132,11 @@ export const PostDetailSchedulingView = () => {
                 일정 제출하기
             </UdongButton>
         </HStack>
-        <UdongButton
+        {isAdmin && <UdongButton
             style={'line'}
             onClick={() => router.push(`/club/${clubId}/post/${postId}/close`)}
         >
             마감하기
-        </UdongButton>
+        </UdongButton>}
     </VStack>
 }
