@@ -155,10 +155,7 @@ class ClubViewSet(_GenericClubViewSet):
                 return Response(status=status.HTTP_403_FORBIDDEN)
             else:
                 user_club.delete()
-                default_tag = Tag.objects.get(Q(club_id=pk) & Q(is_default=True))
-                UserTag.objects.filter(
-                    Q(user=request.user) & Q(tag=default_tag)
-                ).delete()
+                UserTag.objects.filter(Q(user_id=request.user.id)).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             raise MethodNotAllowed(
@@ -330,8 +327,7 @@ class ClubUserViewSet(_GenericClubUserViewSet):
         if user_club.auth == "A":
             return Response(status=status.HTTP_400_BAD_REQUEST)
         user_club.delete()
-        default_tag = Tag.objects.get(Q(club_id=club_id) & Q(is_default=True))
-        UserTag.objects.filter(Q(user=user_id) & Q(tag=default_tag)).delete()
+        UserTag.objects.filter(user=user_id).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @swagger_auto_schema(
