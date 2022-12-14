@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { PostType } from '../../../../../domain/model/PostType'
 import { AppDispatch } from '../../../../../domain/store'
+import { eventActions } from '../../../../../domain/store/event/EventSlice'
 import { postSelector } from '../../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../../domain/store/post/PostSlice'
 import { userSelector } from '../../../../../domain/store/user/UserSelector'
@@ -64,6 +65,10 @@ export const PostDetailContainer = () => {
             dispatch(postActions.getPost(postId))
         }
     }, [postId, dispatch, clubId])
+
+    useEffect(() => {
+        dispatch(eventActions.resetSelectedEvent())
+    }, [dispatch])
 
     const handleDelete = useCallback(async () => {
         setShowDeleteModal(false)
