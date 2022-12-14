@@ -58,6 +58,7 @@ export const SearchMembersView = (props: SearchMembersViewProps) => {
                         name={member.user.name}
                         isMe={false}
                         isAdmin={false}
+                        imageKey={member.user.imageUrl}
                     />
                 </VStack>
             })}
