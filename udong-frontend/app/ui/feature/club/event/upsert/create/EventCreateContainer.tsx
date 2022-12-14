@@ -47,6 +47,7 @@ export const EventCreateContainer = () => {
 
     useEffect(()=>{
         if (error){
+            toast.dismiss()
             toast.error(error.message)
             setDisabled(false)
             dispatch(eventActions.resetErrors())
@@ -55,6 +56,8 @@ export const EventCreateContainer = () => {
 
     useEffect(()=>{
         if (upsertedEventId){
+            toast.dismiss()
+            toast.success('저장되었습니다.', { duration: 2000 })
             router.push(`/club/${clubId}/event/${upsertedEventId}`)
         }
     }, [clubId, router, upsertedEventId])
@@ -68,9 +71,11 @@ export const EventCreateContainer = () => {
             return
         }
         if (eventTimeType === 'notAssigned'){
+            toast.loading('저장중입니다.')
             dispatch(eventActions.createEvent({ ...eventObject, time: [] }))
         } else if (eventTimeType === 'days'){
             if (checkWeekdayTimesValid(weekdayTimesWithId)){
+                toast.loading('저장중입니다.')
                 dispatch(eventActions.createEvent({
                     ...eventObject,
                     time: weekdayTimesWithId.map((weekdayTimeWithId)=>toWeekdayTimeFormatter(weekdayTimeWithId, weekdayRange)) }))
@@ -80,6 +85,7 @@ export const EventCreateContainer = () => {
             }
         } else {
             if (checkDayTimesValid(dayTimesWithId)){
+                toast.loading('저장중입니다.')
                 dispatch(eventActions.createEvent({ ...eventObject, time: dayTimesWithId.map(toDayTimeFormatter) }))
             } else {
                 toast.error('기간을 올바르게 입력해주세요.')

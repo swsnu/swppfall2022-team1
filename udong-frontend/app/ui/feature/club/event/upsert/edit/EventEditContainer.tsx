@@ -58,6 +58,7 @@ export const EventEditContainer = () => {
 
     useEffect(()=>{
         if (error){
+            toast.dismiss()
             toast.error(error.message)
             setDisabled(false)
             dispatch(eventActions.resetErrors())
@@ -66,6 +67,8 @@ export const EventEditContainer = () => {
 
     useEffect(()=>{
         if (upsertedEventId){
+            toast.dismiss()
+            toast.success('저장되었습니다.', { duration: 2000 })
             router.push(`/club/${clubId}/event/${upsertedEventId}`)
         }
     }, [clubId, router, upsertedEventId])
@@ -107,9 +110,11 @@ export const EventEditContainer = () => {
             return
         }
         if (eventTimeType === 'notAssigned'){
+            toast.loading('저장중입니다.')
             dispatch(eventActions.editEvent({ eventId: event.id, name: title, time: [] } ))
         } else if (eventTimeType === 'days'){
             if (checkWeekdayTimesValid(weekdayTimesWithId)){
+                toast.loading('저장중입니다.')
                 dispatch(eventActions.editEvent({
                     eventId: event.id,
                     name: title,
@@ -120,6 +125,7 @@ export const EventEditContainer = () => {
             }
         } else {
             if (checkDayTimesValid(dayTimesWithId)){
+                toast.loading('저장중입니다.')
                 dispatch(eventActions.editEvent({
                     eventId: event.id,
                     name: title,
