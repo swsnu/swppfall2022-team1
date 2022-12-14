@@ -46,7 +46,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     USERNAME_FIELD: str = "email"
     REQUIRED_FIELDS: List[str] = []
-    image = models.CharField(max_length=40)
+    image = models.CharField(max_length=255)
     time_table = models.TextField()
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
