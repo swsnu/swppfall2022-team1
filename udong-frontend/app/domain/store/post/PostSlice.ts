@@ -87,7 +87,9 @@ export const editPost = createAsyncThunk(
 
 export const deletePost = createAsyncThunk(
     'post/deletePost',
-    async () => { return },
+    async (postId: number) => {
+        return PostAPI.deletePost(postId)
+    },
 )
 
 const postSlice = createSlice({
@@ -121,6 +123,9 @@ const postSlice = createSlice({
             state.createdPostId = undefined
             state.errors.createPostError = action.payload
         })
+        builder.addCase(deletePost.fulfilled, (state) => {
+            state.selectedPost = undefined
+        })
     },
 })
 
@@ -131,5 +136,6 @@ export const postActions = {
     getEventPosts,
     getPost,
     createPost,
+    deletePost,
 }
 export const postReducer = postSlice.reducer

@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import { BoardPost, PostDisplayType } from '../../../../domain/model/BoardPost'
 import { PostType } from '../../../../domain/model/PostType'
 import { dummyUserMe } from '../../../../domain/model/User'
+import { tagReducer, TagState } from '../../../../domain/store/tag/TagSlice'
 import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { PostItem } from '../PostItem'
 
@@ -25,15 +26,24 @@ const dummyPost: BoardPost = {
     createdAt: '',
 }
 
+const stubTagInitialState: TagState = {
+    tags: [],
+    createPostTags: [],
+    errors: {},
+    selectedUserIds: [],
+    selectedTag: { users: [], id: 1, name: '', isDefault: true, createdAt: '', updatedAt: '' },
+}
+
 const stubInitialState: UserState = {
     isAdmin: false,
     selectedUser: dummyUserMe,
     me: { id: 1, name: '', timeTable: [], imageUrl: '', email: '' },
+    errors: {},
 }
 
 const mockStore = configureStore({
-    reducer: { user: userReducer },
-    preloadedState: { user: stubInitialState },
+    reducer: { user: userReducer, tag: tagReducer },
+    preloadedState: { user: stubInitialState, tag: stubTagInitialState },
 })
 
 describe('<PostItem/>', () => {
@@ -58,7 +68,7 @@ describe('<PostItem/>', () => {
         )
         const component = screen.getByText('겨울 공연 중요 공지!')
         fireEvent.click(component)
-        expect(mockPush).toHaveBeenCalledWith('/club/1/post/1/?type=announcement')
+        expect(mockPush).toHaveBeenCalledWith('/club/1/post/1')
     })
 
     it ('should handle on click tag', () => {

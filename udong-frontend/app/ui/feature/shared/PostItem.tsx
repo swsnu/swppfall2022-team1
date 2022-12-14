@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 import { BoardPost } from '../../../domain/model/BoardPost'
 import { PostType } from '../../../domain/model/PostType'
 import { useImage } from '../../../hooks/useImage'
 import { DateTimeFormatter } from '../../../utility/dateTimeFormatter'
-import { getPostTypeQueryParam } from '../../../utility/handleQueryParams'
 import { formatPostItemInfo } from '../../../utility/postItemFormatter'
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
@@ -13,7 +12,6 @@ import { UdongImage } from '../../components/UdongImage'
 import { UdongText } from '../../components/UdongText'
 import { UdongColors } from '../../theme/ColorPalette'
 import { ClickableTag } from './ClickableTag'
-import { UserListModal } from './UserListModal'
 
 const getPostItemTypeText = (type: PostType, closed?: boolean): string => {
     switch (type) {
@@ -36,12 +34,10 @@ interface PostItemProps {
 export const PostItem = (props: PostItemProps) => {
     const { post, clubId, imageKey } = props
     const router = useRouter()
-    const [isMemberListOpen, setIsMemberListOpen] = useState(false)
-    const [currentTag, setCurrentTag] = useState('')
     const imageUrl = useImage(imageKey ?? '')
 
     const handleOnClickPost = useCallback(() => {
-        router.push(`/club/${clubId}/post/${post.id}/?type=${getPostTypeQueryParam(post.type)}`)
+        router.push(`/club/${clubId}/post/${post.id}`)
     }, [router, clubId, post])
 
     return (
@@ -75,12 +71,8 @@ export const PostItem = (props: PostItemProps) => {
                             {post.includedTags?.map((tag, index) => {
                                 return <ClickableTag
                                     key={tag.name + index}
-                                    text={tag.name}
+                                    tag={tag}
                                     isIncluded={true}
-                                    onClick={() => {
-                                        setIsMemberListOpen(true)
-                                        setCurrentTag(tag.name)
-                                    }}
                                 />
                             })}
                         </HStack>
@@ -88,12 +80,8 @@ export const PostItem = (props: PostItemProps) => {
                             {post.excludedTags?.map((tag, index) => {
                                 return <ClickableTag
                                     key={tag.name + index}
-                                    text={tag.name}
+                                    tag={tag}
                                     isIncluded={false}
-                                    onClick={() => {
-                                        setIsMemberListOpen(true)
-                                        setCurrentTag(tag.name)
-                                    }}
                                 />
                             })}
                         </HStack>
@@ -118,14 +106,7 @@ export const PostItem = (props: PostItemProps) => {
                         <UdongText style={'ListContentXS'}>{DateTimeFormatter.formatDateTime(post.createdAt, true)}</UdongText>
                     </HStack>
                 </VStack>
-
             </HStack>
-            <UserListModal
-                users={[]}
-                isOpen={isMemberListOpen}
-                setIsOpen={setIsMemberListOpen}
-                title={currentTag}
-            />
         </VStack>
     )
 }

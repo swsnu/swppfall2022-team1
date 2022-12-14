@@ -21,6 +21,7 @@ const stubClubInitialState: ClubState = {
 const stubUserInitialState: UserState = {
     selectedUser: dummyUserNotMe,
     isAdmin: true,
+    errors: {},
 }
 
 const mockStore = configureStore({

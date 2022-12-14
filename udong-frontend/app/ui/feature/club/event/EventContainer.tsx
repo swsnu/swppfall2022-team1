@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../../../domain/store'
 import { eventSelector } from '../../../../domain/store/event/EventSelector'
 import { eventActions } from '../../../../domain/store/event/EventSlice'
+import { userSelector } from '../../../../domain/store/user/UserSelector'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
@@ -23,6 +24,7 @@ export const EventContainer = (props: EventContainerProps) => {
     const router = useRouter()
     const { isReady } = router
     const { view } = router.query
+    const isAdmin = useSelector(userSelector.isAdmin)
 
     const events = useSelector(eventSelector.events)
 
@@ -61,6 +63,7 @@ export const EventContainer = (props: EventContainerProps) => {
     }
 
     return <VStack paddingHorizontal={16}>
+        {isAdmin &&
         <HStack justifyContent={'end'}>
             <UdongButton
                 style={'line'}
@@ -69,7 +72,7 @@ export const EventContainer = (props: EventContainerProps) => {
             >
                 행사 만들기
             </UdongButton>
-        </HStack>
+        </HStack>}
         <Spacer height={20}/>
         {getCurrentTab()}
         <Spacer height={15}/>

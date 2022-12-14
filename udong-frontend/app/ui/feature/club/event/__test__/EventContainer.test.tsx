@@ -4,7 +4,9 @@ import * as router from 'next/router'
 import { NextRouter } from 'next/router'
 import { Provider } from 'react-redux'
 
+import { dummyUserMe } from '../../../../../domain/model/User'
 import { eventReducer, EventState } from '../../../../../domain/store/event/EventSlice'
+import { userReducer, UserState } from '../../../../../domain/store/user/UserSlice'
 import { EventContainer } from '../EventContainer'
 
 const stubEventInitialState: EventState = {
@@ -12,9 +14,15 @@ const stubEventInitialState: EventState = {
     errors: {},
 }
 
+const stubUserInitialState: UserState = {
+    isAdmin: true,
+    selectedUser: dummyUserMe,
+    errors: {},
+}
+
 export const mockStore = configureStore({
-    reducer: { event: eventReducer },
-    preloadedState: { event: stubEventInitialState },
+    reducer: { event: eventReducer, user: userReducer },
+    preloadedState: { event: stubEventInitialState, user: stubUserInitialState },
 })
 
 jest.mock('next/config', () => () => ({

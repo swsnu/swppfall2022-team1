@@ -8,6 +8,9 @@ import { AppDispatch } from '../../../domain/store'
 import { authSelector } from '../../../domain/store/auth/AuthSelector'
 import { authActions } from '../../../domain/store/auth/AuthSlice'
 import { clubSelector } from '../../../domain/store/club/ClubSelector'
+import { userSelector } from '../../../domain/store/user/UserSelector'
+import { userActions } from '../../../domain/store/user/UserSlice'
+import { useImage } from '../../../hooks/useImage'
 import { HStack } from '../../components/Stack'
 import { UdongImage } from '../../components/UdongImage'
 import { UdongText } from '../../components/UdongText'
@@ -35,6 +38,9 @@ export const Header = ({ type }: HeaderProps) => {
     const isLoggedIn = useSelector(authSelector.isLoggedIn)
     const isLoading = useSelector(authSelector.isLoading)
     const club = useSelector(clubSelector.selectedClub)
+    const userMe = useSelector(userSelector.userMe)
+
+    const profileUrl = useImage(userMe?.imageUrl ?? '')
 
     const handleLogout = useCallback(async () => {
         const response = await dispatch(authActions.logout())
@@ -54,6 +60,10 @@ export const Header = ({ type }: HeaderProps) => {
             router.push('/login')
         }
     }, [isLoggedIn, isLoading]) // eslint-disable-line
+
+    useEffect(() => {
+        dispatch(userActions.getMyProfile())
+    }, [dispatch])
 
     if (type === HEADER_PAGE.NONE) {return null}
 
@@ -107,9 +117,27 @@ export const Header = ({ type }: HeaderProps) => {
                         width={42}
                         justifyContent={'center'}
                     >
-                        {type === HEADER_PAGE.MY_PAGE ?
-                            <CircularProfileIconClicked/>
-                            : <CircularProfileIcon onClick={() => router.push('/mypage')}/>
+                        {
+                            type === HEADER_PAGE.MY_PAGE
+                                ? (
+                                    <UdongImage
+                                        src={profileUrl ?? ''}
+                                        height={42}
+                                        width={42}
+                                        borderRadius={21}
+                                        border={`2px solid ${UdongColors.Primary}`}
+                                    />
+                                ) : (
+                                    <UdongImage
+                                        src={profileUrl ?? ''}
+                                        height={42}
+                                        width={42}
+                                        borderRadius={21}
+                                        border={`2px solid ${UdongColors.GrayBright}`}
+                                        clickable
+                                        onClick={() => router.push('/mypage')}
+                                    />
+                                )
                         }
                     </HStack>
                 </HStack>
@@ -117,22 +145,6 @@ export const Header = ({ type }: HeaderProps) => {
         </HeaderContainer>
     )
 }
-
-const CircularProfileIcon = styled.div({
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: UdongColors.GrayBright,
-    cursor: 'pointer',
-})
-
-const CircularProfileIconClicked = styled.div({
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    backgroundColor: UdongColors.GrayBright,
-    border: `2px solid ${UdongColors.Primary}`,
-})
 
 const HeaderContainer = styled.div({
     position: 'sticky',

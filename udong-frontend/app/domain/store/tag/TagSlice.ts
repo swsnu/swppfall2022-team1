@@ -144,6 +144,7 @@ const tagSlice = createSlice({
                 if (tag.id === action.payload?.id) {
                     return {
                         ...tag,
+                        users: action.payload ? action.payload.users : tag.users,
                         name: action.payload ? action.payload.name : tag.name,
                     }
                 }

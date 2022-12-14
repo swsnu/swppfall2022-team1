@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CreateScheduling } from '../../../../../../domain/model/CreatePost'
 import { PostType } from '../../../../../../domain/model/PostType'
 import { AppDispatch } from '../../../../../../domain/store'
+import { eventSelector } from '../../../../../../domain/store/event/EventSelector'
 import { postSelector } from '../../../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../../../domain/store/post/PostSlice'
 import { tagSelector } from '../../../../../../domain/store/tag/TagSelector'
@@ -45,15 +46,25 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
     const newPostId = useSelector(postSelector.createdPostId)
     const error = useSelector(postSelector.errors).createPostError
     const selectedTagIds = useSelector(tagSelector.createPostTags).map(tag => tag.id)
+    const selectedEventId = useSelector(eventSelector.createPostEvent)?.id
 
     const [title, setTitle] = useState<string>('')
     const [contents, setContents] = useState<string>('')
     const [scheduling, setScheduling] = useState<CreateScheduling | undefined>(undefined)
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
 
+    const setInitialTags = useCallback(async () => {
+        if (clubId) {
+            const response = await dispatch(tagActions.getTags(parseInt(clubId)))
+            if (response.type === `${tagActions.getTags.typePrefix}/fulfilled`) {
+                dispatch(tagActions.resetCreatePostTags())
+            }
+        }
+    }, [dispatch, clubId])
+
     useEffect(() => {
-        dispatch(tagActions.resetCreatePostTags())
-    }, [dispatch])
+        setInitialTags()
+    }, [setInitialTags])
 
     useEffect(() => {
         if (error) {
@@ -74,6 +85,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
                 clubId: parseInt(clubId),
                 post: {
                     tagIdList: selectedTagIds,
+                    eventId: selectedEventId,
                     title,
                     content: contents,
                     type: postType,
@@ -81,7 +93,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
                 },
             }))
         }
-    }, [clubId, contents, dispatch, postType, title, scheduling, selectedTagIds])
+    }, [clubId, selectedEventId, contents, dispatch, postType, title, scheduling, selectedTagIds])
 
     const handleCloseErrorModal = useCallback(() => {
         setIsErrorModalOpen(false)

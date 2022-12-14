@@ -1,12 +1,13 @@
 import DOMPurify from 'dompurify'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { PostType } from '../../../../../domain/model/PostType'
 import { AppDispatch } from '../../../../../domain/store'
 import { postSelector } from '../../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../../domain/store/post/PostSlice'
+import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { DateTimeFormatter } from '../../../../../utility/dateTimeFormatter'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
@@ -43,6 +44,7 @@ export const PostDetailContainer = () => {
     const clubId = convertQueryParamToString(rawClubId)
     const postId = convertQueryParamToString(rawPostId)
     const routeFrom = convertQueryParamToString(from)
+    const isAdmin = useSelector(userSelector.isAdmin)
 
     const post = useSelector(postSelector.selectedPost)
 
@@ -62,6 +64,14 @@ export const PostDetailContainer = () => {
         }
     }, [postId, dispatch])
 
+    const handleDelete = useCallback(async () => {
+        setShowDeleteModal(false)
+        const response = await dispatch(postActions.deletePost(+postId))
+        if (response.type === `${postActions.deletePost.typePrefix}/fulfilled`) {
+            router.push(`/club/${clubId}`)
+        }
+    }, [dispatch, clubId, postId, router])
+
     if (!post) {
         return null
     }
@@ -71,12 +81,12 @@ export const PostDetailContainer = () => {
             title={post.title}
             onGoBack={() => routeFrom === 'create' ? router.push(`/club/${clubId}`) : router.back()}
             subtitle={getSubtitle(postType)}
-            rightButtons={<>
+            rightButtons={isAdmin && <>
                 <UdongButton
                     style={'line'}
                     color={UdongColors.Primary}
                     height={40}
-                    onClick={() => router.push(`/club/${clubId}/post/${postId}/edit/?type=${postType}`)}
+                    onClick={() => router.push(`/club/${clubId}/post/${postId}/edit`)}
                 >
                     수정하기
                 </UdongButton>
@@ -91,7 +101,8 @@ export const PostDetailContainer = () => {
                 >
                     삭제하기
                 </UdongButton>
-            </>}
+            </>
+            }
         />
         <Spacer height={45}/>
 
@@ -111,9 +122,8 @@ export const PostDetailContainer = () => {
                     {post.includedTags?.map((tag, index) => {
                         return <ClickableTag
                             key={`${tag.name}` + index}
-                            text={tag.name}
+                            tag={tag}
                             isIncluded={true}
-                            onClick={() => {return}}
                         />
                     })}
                 </HStack>
@@ -121,9 +131,8 @@ export const PostDetailContainer = () => {
                     {post.excludedTags?.map((tag, index) => {
                         return <ClickableTag
                             key={tag.name + index}
-                            text={tag.name}
+                            tag={tag}
                             isIncluded={false}
-                            onClick={() => {return}}
                         />
                     })}
                 </HStack>
@@ -172,7 +181,7 @@ export const PostDetailContainer = () => {
             warningText={'경고 문구'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
-            onClickDelete={() => {return}}
+            onClickDelete={handleDelete}
         />
     </VStack>
 }

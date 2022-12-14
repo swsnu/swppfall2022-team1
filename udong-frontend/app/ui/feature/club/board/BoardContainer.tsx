@@ -5,7 +5,6 @@ import { AppDispatch } from '../../../../domain/store'
 import { postSelector } from '../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../domain/store/post/PostSlice'
 import { userSelector } from '../../../../domain/store/user/UserSelector'
-import { userActions } from '../../../../domain/store/user/UserSlice'
 import { useDebouncedSearch } from '../../../../utility/useDebouncedSearch'
 import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
@@ -39,7 +38,6 @@ export const BoardContainer = (props: BoardContainerProps) => {
 
     useEffect(() => {
         dispatch(postActions.getClubPosts(clubId))
-        dispatch(userActions.getMyClubProfile(clubId))
         setTimeout(() => setLoading(false), 600)
     }, [dispatch, clubId])
 

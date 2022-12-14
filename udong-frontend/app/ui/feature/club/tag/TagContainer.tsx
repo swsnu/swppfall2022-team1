@@ -122,7 +122,11 @@ export const TagContainer = (props: TagContainerProps) => {
             <HStack justifyContent={'end'}>
                 <UdongButton
                     style={'line'}
-                    onClick={() => {setShowUpsertModal(true); setIsEditMode(false)}}
+                    onClick={() => {
+                        dispatch(tagActions.setSelectedTag(undefined))
+                        setShowUpsertModal(true)
+                        setIsEditMode(false)
+                    }}
                 >
                     태그 추가하기
                 </UdongButton>

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 
 import { dummyUserMe } from '../../../../domain/model/User'
@@ -10,6 +11,7 @@ import { MyProfileView } from '../MyProfileView'
 const stubUserInitialState: UserState = {
     isAdmin: false,
     selectedUser: dummyUserMe,
+    errors: {},
 }
 
 const mockStore = configureStore({
@@ -24,11 +26,15 @@ jest.mock('next/config', () => () => ({
 }))
 
 test('renders MyPage', async () => {
+    const client = new QueryClient()
+
     await act(async () => {
         render(
-            <Provider store={mockStore}>
-                <MyProfileView me={dummyUserMe}/>
-            </Provider>,
+            <QueryClientProvider client={client}>
+                <Provider store={mockStore}>
+                    <MyProfileView me={dummyUserMe}/>
+                </Provider>,
+            </QueryClientProvider>,
         )
     })
     const quit = screen.getByText(/탈퇴하기/)

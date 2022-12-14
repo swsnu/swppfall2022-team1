@@ -38,9 +38,10 @@ const stubCommentInitialState: CommentState = {
 }
 
 const stubUserInitialState: UserState = {
-    isAdmin: false,
+    isAdmin: true,
     selectedUser: dummyUserMe,
     me: dummyUserMe,
+    errors: {},
 }
 
 const mockStore = configureStore({

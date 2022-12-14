@@ -169,16 +169,20 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
 
     @swagger_serializer_method(serializer_or_field=TagPostSerializer(many=True))
     def get_include_tag(self, post: Post) -> ReturnDict:
-        post_tag_list = post.post_tag_set.select_related("tag").filter(
-            tag__tag_user_set__user__id__contains=self.context["id"]
+        post_tag_list = (
+            post.post_tag_set.select_related("tag")
+            .filter(tag__tag_user_set__user__id__contains=self.context["id"])
+            .distinct()
         )
         tags = list(map(lambda post_tag: post_tag.tag, post_tag_list))
         return TagPostSerializer(tags, many=True).data
 
     @swagger_serializer_method(serializer_or_field=TagPostSerializer(many=True))
     def get_exclude_tag(self, post: Post) -> ReturnDict:
-        post_tag_list = post.post_tag_set.select_related("tag").filter(
-            ~Q(tag__tag_user_set__user__id__contains=self.context["id"])
+        post_tag_list = (
+            post.post_tag_set.select_related("tag")
+            .filter(~Q(tag__tag_user_set__user__id__contains=self.context["id"]))
+            .distinct()
         )
         tags = list(map(lambda post_tag: post_tag.tag, post_tag_list))
         return TagPostSerializer(tags, many=True).data
@@ -233,9 +237,12 @@ class PostBoardSerializer(serializers.ModelSerializer[Post]):
             for id in add_list:
                 PostTag.objects.create(post=instance, tag_id=id)
 
-        event_id = validated_data.pop("event_id", None)
-        if event_id is not None and instance.event_id != event_id:
-            instance.event = get_object_or_404(Event, id=event_id)
+        if "event_id" in validated_data:
+            event_id = validated_data.pop("event_id")
+            if event_id is None:
+                instance.event = None
+            if instance.event_id != event_id:
+                instance.event = get_object_or_404(Event, id=event_id)
 
         if "title" in validated_data:
             instance.title = validated_data["title"]

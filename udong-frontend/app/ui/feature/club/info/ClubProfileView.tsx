@@ -17,6 +17,7 @@ import { UdongFloatingContainer } from '../../../components/UdongFloatingContain
 import { UdongText } from '../../../components/UdongText'
 import { UdongColors } from '../../../theme/ColorPalette'
 import { DeleteModal } from '../../shared/DeleteModal'
+import { LeaveModal } from '../../shared/LeaveModal'
 import { ProfileView } from '../../shared/ProfileView'
 
 const getErrorMessage = (errors: ClubErrorType): string => {
@@ -46,6 +47,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
 
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false)
 
     useEffect(() => {
         dispatch(userActions.getMyClubProfile(id))
@@ -79,6 +81,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
         if (response.type === `${clubActions.leaveClub.typePrefix}/fulfilled`) {
             router.push(`/`)
         }
+        setIsLeaveModalOpen(false)
     }, [dispatch, router, id])
 
     const handleCloseErrorModal = useCallback(() => {
@@ -87,7 +90,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
     }, [dispatch])
 
     const renderLeaveClubButton = useCallback(() => {
-        return <HStack onClick={handleLeaveClub}>
+        return <HStack onClick={() => setIsLeaveModalOpen(true)}>
             <UdongText
                 style={'ListContentS'}
                 color={UdongColors.GrayNormal}
@@ -123,6 +126,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
         <Spacer height={90}/>
 
         <ProfileView
+            clubId={id}
             name={name}
             code={code}
             showCameraButton={isAdmin}
@@ -151,6 +155,13 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
             isOpen={isDeleteModalOpen}
             setIsOpen={setIsDeleteModalOpen}
             onClickDelete={handleDeleteClub}
+        />
+
+        <LeaveModal
+            leaveObjectText={club.name}
+            isOpen={isLeaveModalOpen}
+            setIsOpen={setIsLeaveModalOpen}
+            onClickLeave={handleLeaveClub}
         />
     </UdongFloatingContainer>
 }

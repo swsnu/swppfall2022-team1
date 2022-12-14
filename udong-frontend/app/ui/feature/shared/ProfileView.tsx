@@ -1,7 +1,12 @@
 import styled from '@emotion/styled'
 import { ReactNode, useCallback, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import { useDispatch } from 'react-redux'
 
+import { AppDispatch } from '../../../domain/store'
+import { clubActions } from '../../../domain/store/club/ClubSlice'
+import { userActions } from '../../../domain/store/user/UserSlice'
+import { ImageAPI } from '../../../infra/api/ImageAPI'
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
 import { UdongChip } from '../../components/UdongChip'
@@ -17,10 +22,13 @@ import refresh from '../../icons/IcRefresh.png'
 import { UdongColors } from '../../theme/ColorPalette'
 
 interface ProfileViewProps {
+    clubId?: number
+    userId?: number
     name: string
     code?: string
     email?: string
     image?: string
+    timeTable?: boolean[][]
     showCameraButton?: boolean
     onClickEditNameButton?: (name: string) => void
     onRefresh?: () => void
@@ -30,10 +38,13 @@ interface ProfileViewProps {
 
 export const ProfileView = (props: ProfileViewProps) => {
     const {
+        clubId = undefined,
+        userId = undefined,
         name,
         code,
         email,
         image,
+        timeTable = undefined,
         showCameraButton = false,
         onClickEditNameButton,
         onRefresh,
@@ -44,6 +55,7 @@ export const ProfileView = (props: ProfileViewProps) => {
     const [changedName, setChangedName] = useState(name)
 
     const nameRef = useRef<HTMLInputElement | undefined>(null)
+    const dispatch = useDispatch<AppDispatch>()
 
     const handleEditNickname = useCallback(() => {
         if (!isNameInputVisible) {
@@ -67,18 +79,57 @@ export const ProfileView = (props: ProfileViewProps) => {
                 height={200}
                 width={200}
             />
-            {showCameraButton &&
-                <UdongImage
-                    src={camera.src}
-                    height={50}
-                    width={50}
-                    style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        right: 0,
-                    }}
-                />
-            }
+            {showCameraButton && (
+                <>
+                    <label htmlFor='upload-image'>
+                        <UdongImage
+                            src={camera.src}
+                            height={50}
+                            width={50}
+                            clickable={true}
+                            style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                right: 0,
+                            }}
+                        />
+                    </label>
+                    <input
+                        id='upload-image'
+                        type={'file'}
+                        accept={'image/*'}
+                        onChange={async (e) => {
+                            const file = e.target.files?.item(0)
+                            if (!file || !e.target.validity.valid) {return}
+                            if (file.size >= 10485760)
+                            {alert('파일 크기가 너무 큽니다.')}
+                            try {
+                                const newImage = await ImageAPI.getUploadUrl(file.name)
+                                await ImageAPI.uploadImage(newImage.url, file) 
+                                if(clubId) {
+                                    dispatch(clubActions.editClub({
+                                        clubId: clubId,
+                                        club: { id: clubId, name: name, code: code ?? '', image: newImage.key },
+                                    }))
+                                }
+                                if(userId) {
+                                    dispatch(userActions.editMyProfile({
+                                        id: userId, 
+                                        name: name, 
+                                        email: email ?? '', 
+                                        imageUrl: newImage.key, 
+                                        timeTable: timeTable ?? [],
+                                    }))
+                                }
+                            } catch {
+                                alert('파일을 업로드 할 수 없습니다')
+                            }
+                            
+                        }}
+                        style={{ display: 'none' }}
+                    />
+                </>
+            )}
         </BackgroundCircle>
 
         <Spacer height={15}/>
@@ -99,6 +150,7 @@ export const ProfileView = (props: ProfileViewProps) => {
                     height={17}
                     width={17}
                     style={{ marginLeft: 8 }}
+                    clickable={true}
                     onClick={handleEditNickname}
                 />
             }

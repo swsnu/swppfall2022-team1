@@ -9,6 +9,7 @@ import { eventSelector } from '../../../../../domain/store/event/EventSelector'
 import { deleteEvent, eventActions } from '../../../../../domain/store/event/EventSlice'
 import { postSelector } from '../../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../../domain/store/post/PostSlice'
+import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { timeToStr } from '../../../../../utility/functions'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
 import { Spacer } from '../../../../components/Spacer'
@@ -28,6 +29,7 @@ export const EventDetailContainer = () => {
     const eventId = parseInt(convertQueryParamToString(rawEventId))
     const clubId = parseInt(convertQueryParamToString(rawClubId))
     const dispatch = useDispatch<AppDispatch>()
+    const isAdmin = useSelector(userSelector.isAdmin)
 
     const event = useSelector(eventSelector.selectedEvent)
     const eventPosts = useSelector(postSelector.eventPosts)
@@ -54,7 +56,7 @@ export const EventDetailContainer = () => {
         <UdongHeader
             title={event.name}
             onGoBack={() => router.back()}
-            rightButtons={<>
+            rightButtons={isAdmin && <>
                 <UdongButton
                     style={'line'}
                     color={UdongColors.Primary}

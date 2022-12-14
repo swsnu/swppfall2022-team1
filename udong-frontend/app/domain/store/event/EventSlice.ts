@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
@@ -16,6 +16,7 @@ export interface EventState {
     selectedEvent?: ClubEvent
     upsertedEventId?: number
     events: Array<ClubEvent>
+    createPostEvent?: ClubEvent
     errors: EventErrorType
 }
 
@@ -98,6 +99,9 @@ const eventSlice = createSlice({
         },
         resetUpserted: (state) => {
             state.upsertedEventId = undefined
+        },
+        setCreatePostEvent: (state, action: PayloadAction<ClubEvent | undefined>) => {
+            state.createPostEvent = action.payload
         },
     },
     extraReducers: (builder) => {

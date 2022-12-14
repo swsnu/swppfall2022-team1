@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 
 import { dummyUserMe } from '../../../../../../domain/model/User'
+import { eventReducer, EventState } from '../../../../../../domain/store/event/EventSlice'
 import { postReducer, PostState } from '../../../../../../domain/store/post/PostSlice'
 import { tagReducer, TagState } from '../../../../../../domain/store/tag/TagSlice'
 import { userReducer, UserState } from '../../../../../../domain/store/user/UserSlice'
@@ -27,11 +28,24 @@ const stubUserInitialState: UserState = {
     isAdmin: false,
     selectedUser: dummyUserMe,
     me: dummyUserMe,
+    errors: {},
+}
+
+const stubEventInitialState: EventState = {
+    events: [],
+    selectedEvent: {
+        id: 1,
+        name: 'event name',
+        createdAt: '',
+        updatedAt: '',
+        times: [],
+    },
+    errors: {},
 }
 
 const mockStore = configureStore({
-    reducer: { post: postReducer, tag: tagReducer, user: userReducer },
-    preloadedState: { post: stubPostInitialState, tag: stubTagInitialState, user: stubUserInitialState },
+    reducer: { post: postReducer, tag: tagReducer, user: userReducer, event: eventReducer },
+    preloadedState: { post: stubPostInitialState, tag: stubTagInitialState, user: stubUserInitialState, event: stubEventInitialState },
 })
 
 describe('<PostAdditionalInputsView />', () => {
