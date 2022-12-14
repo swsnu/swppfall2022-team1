@@ -16,6 +16,7 @@ import { CLUB_TAB } from '../ClubTabView'
 const stubUserInitialState: UserState = {
     isAdmin: false,
     selectedUser: dummyUserMe,
+    errors: {},
 }
 
 const stubPostInitialState: PostState = {

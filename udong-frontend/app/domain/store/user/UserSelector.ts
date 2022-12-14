@@ -19,8 +19,14 @@ const isAdmin = createSelector(
     state => state.isAdmin,
 )
 
+const errors = createSelector(
+    userState,
+    state => state.errors,
+)
+
 export const userSelector = {
     userMe,
     selectedUser,
     isAdmin,
+    errors,
 }

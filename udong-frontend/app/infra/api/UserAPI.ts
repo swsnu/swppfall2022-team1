@@ -16,7 +16,10 @@ export const UserAPI = (() => {
         )
         return userTransformer.fromDto(response.data)
     }
-    function deleteAccount() { return }
+
+    async function deleteAccount(): Promise<void> {
+        return await axiosConfig.delete(`/api/user/me/`)
+    }
 
     async function getUser(userId: number): Promise<User> {
         const response = await axiosConfig.get<UserDto>(`/api/user/${userId}/`)

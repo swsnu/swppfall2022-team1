@@ -13,6 +13,7 @@ import { InfoContainer } from '../InfoContainer'
 const stubUserInitialState: UserState = {
     isAdmin: false,
     selectedUser: dummyUserMe,
+    errors: {},
 }
 
 const stubClubInitialState: ClubState = {

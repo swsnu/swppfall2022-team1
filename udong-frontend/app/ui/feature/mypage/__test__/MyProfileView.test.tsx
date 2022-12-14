@@ -10,6 +10,7 @@ import { MyProfileView } from '../MyProfileView'
 const stubUserInitialState: UserState = {
     isAdmin: false,
     selectedUser: dummyUserMe,
+    errors: {},
 }
 
 const mockStore = configureStore({

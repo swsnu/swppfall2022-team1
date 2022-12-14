@@ -28,6 +28,7 @@ const stubInitialState: TagState = {
 }
 
 const stubUserInitialState: UserState = {
+    errors: {},
     isAdmin: true,
     me: {
         id: 1,

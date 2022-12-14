@@ -19,6 +19,7 @@ const stubUserInitialState: UserState = {
     isAdmin: true,
     selectedUser: dummyUserMe,
     me: dummyUserMe,
+    errors: {},
 }
 
 const mockStore = configureStore({

@@ -1,18 +1,26 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { UserAPI } from '../../../infra/api/UserAPI'
 import { RoleType } from '../../model/RoleType'
 import { User } from '../../model/User'
+import { APIError, APIErrorType } from '../ErrorHandler'
+
+export interface UserErrorType {
+    deleteAccountError?: APIErrorType
+}
 
 export interface UserState {
     me?: User
     selectedUser?: User
     isAdmin: boolean
+    errors: UserErrorType
 }
 
 const initialState: UserState = {
     isAdmin: false,
+    errors: {},
 }
 
 export const getMyProfile = createAsyncThunk(
@@ -36,9 +44,26 @@ export const editMyProfile = createAsyncThunk(
     },
 )
 
-export const deleteAccount = createAsyncThunk(
+export const deleteAccount = createAsyncThunk<void, undefined, { rejectValue: APIErrorType }>(
     'user/deleteAccount',
-    async () => { return },
+    async (_, { rejectWithValue }) => {
+        try {
+            return await UserAPI.deleteAccount()
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                const errorType = APIError.getErrorType(e.response?.status)
+                let message: string = errorType.message
+
+                if (errorType.errorCode === 403) {
+                    message = '관리자는 계정을 삭제할 수 없습니다.'
+                }
+                return rejectWithValue({
+                    ...errorType,
+                    message,
+                })
+            }
+        }
+    },
 )
 
 export const getUser = createAsyncThunk(
@@ -51,7 +76,11 @@ export const getUser = createAsyncThunk(
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        resetErrors: (state) => {
+            state.errors = {}
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(getUser.fulfilled, (state, action) => {
             state.selectedUser = action.payload
@@ -65,6 +94,9 @@ const userSlice = createSlice({
         builder.addCase(getMyClubProfile.fulfilled, (state, action) => {
             state.isAdmin = action.payload.role === RoleType.ADMIN
         })
+        builder.addCase(deleteAccount.rejected, (state, action) => {
+            state.errors.deleteAccountError = action.payload
+        })
     },
 })
 
@@ -74,5 +106,6 @@ export const userActions = {
     getMyProfile,
     editMyProfile,
     getMyClubProfile,
+    deleteAccount,
 }
 export const userReducer = userSlice.reducer
