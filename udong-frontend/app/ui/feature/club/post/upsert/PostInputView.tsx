@@ -35,7 +35,7 @@ export const PostInputView = (props: IProps) => {
                 [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // header
                 ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'], // tool formula: optional
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }], // list, indent
-                ['link', 'image', 'video'],
+                ['link'],
                 [{ 'align': [] }, { 'color': [] }, { 'background': [] }],
                 ['clean'], // clear toolbar setting
             ],
@@ -48,7 +48,7 @@ export const PostInputView = (props: IProps) => {
         'header',
         'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', 'formula',
         'list', 'bullet', 'indent',
-        'link', 'image', 'video',
+        'link',
         'align', 'color', 'background',
     ]
 

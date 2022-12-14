@@ -8,6 +8,7 @@ import { AppDispatch } from '../../../domain/store'
 import { authSelector } from '../../../domain/store/auth/AuthSelector'
 import { authActions } from '../../../domain/store/auth/AuthSlice'
 import { clubSelector } from '../../../domain/store/club/ClubSelector'
+import { clubActions } from '../../../domain/store/club/ClubSlice'
 import { userSelector } from '../../../domain/store/user/UserSelector'
 import { userActions } from '../../../domain/store/user/UserSlice'
 import { useImage } from '../../../hooks/useImage'
@@ -19,6 +20,7 @@ import { UdongColors } from '../../theme/ColorPalette'
 
 interface HeaderProps {
     type: HeaderPageType
+    clubId: number
 }
 
 export type HeaderPageType = HEADER_PAGE
@@ -30,7 +32,7 @@ export enum HEADER_PAGE {
     CLUB,
 }
 
-export const Header = ({ type }: HeaderProps) => {
+export const Header = ({ type, clubId }: HeaderProps) => {
     const router = useRouter()
     const dispatch = useDispatch<AppDispatch>()
     const { status } = useSession()
@@ -62,8 +64,12 @@ export const Header = ({ type }: HeaderProps) => {
     }, [isLoggedIn, isLoading]) // eslint-disable-line
 
     useEffect(() => {
+        dispatch(clubActions.getClub(clubId))
+    }, [clubId, dispatch])
+
+    useEffect(()=>{
         dispatch(userActions.getMyProfile())
-    }, [dispatch])
+    }, [dispatch, club])
 
     if (type === HEADER_PAGE.NONE) {return null}
 

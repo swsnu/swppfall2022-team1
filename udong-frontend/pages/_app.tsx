@@ -42,6 +42,11 @@ const findHeaderType = (url: string) => {
     }
 }
 
+const findHeaderClubId = (url: string) => {
+    const m = url.match(/^[/]club[/](\d+).*/)
+    return m ? parseInt(m[1]) : 0
+}
+
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter()
     const client = useMemo(() => { return new QueryClient() }, [])
@@ -54,6 +59,7 @@ export default function App({ Component, pageProps }: AppProps) {
                         <Toaster/>
                         <Header
                             type={findHeaderType(router.pathname)}
+                            clubId={findHeaderClubId(router.pathname)}
                         />
                         <Component {...pageProps} />
                     </VStack>
