@@ -5,6 +5,8 @@ from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
+from rest_framework.permissions import IsAuthenticated
+from common.permissions import IsAdmin
 from event.models import Event
 from post.models import Post
 from event.serializers import ClubEventSerializer
@@ -36,6 +38,16 @@ class EventViewSet(_GenericViewSet):
         return Response(self.get_serializer(self.get_object()).data)
 
     def update(self, request: Request, pk: Any) -> Response:
+        club = self.get_object().club
+
+        obj_permission = IsAdmin()
+        if not obj_permission.has_object_permission(request, self, club):
+            self.permission_denied(
+                request,
+                message=getattr(obj_permission, "message", None),
+                code=getattr(obj_permission, "code", None),
+            )
+
         event = self.get_object()
         serializer = self.get_serializer(event, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -43,6 +55,16 @@ class EventViewSet(_GenericViewSet):
         return Response(serializer.data)
 
     def destroy(self, request: Request, pk: Any) -> Response:
+        club = self.get_object().club
+
+        obj_permission = IsAdmin()
+        if not obj_permission.has_object_permission(request, self, club):
+            self.permission_denied(
+                request,
+                message=getattr(obj_permission, "message", None),
+                code=getattr(obj_permission, "code", None),
+            )
+
         event = self.get_object()
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
