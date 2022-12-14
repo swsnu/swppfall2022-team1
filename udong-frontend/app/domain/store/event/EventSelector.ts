@@ -14,7 +14,13 @@ const events = createSelector(
     state => state.events,
 )
 
+const createPostEvent = createSelector(
+    eventState,
+    state => state.createPostEvent,
+)
+
 export const eventSelector = {
     selectedEvent,
     events,
+    createPostEvent,
 }
