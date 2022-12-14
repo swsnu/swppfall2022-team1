@@ -57,9 +57,10 @@ export const LoginContainer = () => {
             <Spacer height={50}/>
             <UdongImage
                 src={login.src}
-                height={80}
-                width={300}
+                height={95}
+                width={304}
                 onClick={() => signIn('google', { redirect: false })}
+                clickable
             />
         </VStack>
     }
