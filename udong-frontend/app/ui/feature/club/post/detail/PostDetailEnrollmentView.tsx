@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../../../domain/store'
@@ -7,19 +8,18 @@ import { enrollmentActions } from '../../../../../domain/store/post/enrollment/E
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongButton } from '../../../../components/UdongButton'
-import { UdongCloseButton } from '../../../../components/UdongCloseButton'
-import { UdongModal } from '../../../../components/UdongModal'
-import { UdongText } from '../../../../components/UdongText'
 import { UdongColors } from '../../../../theme/ColorPalette'
 import { UserListModal } from '../../../shared/UserListModal'
+import { PostCloseModal } from './__test__/PostCloseModal'
 
 interface PostDetailEnrollmentViewProps {
     postId: number
+    clubId: number
     isOpen: boolean
 }
 
 export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) => {
-    const { postId, isOpen } = props
+    const { postId, clubId, isOpen } = props
     const dispatch = useDispatch<AppDispatch>()
 
     const users = useSelector(enrollmentSelector.selectedEnrollmentUsers)
@@ -34,22 +34,23 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
         dispatch(enrollmentActions.resetSelectedEnrollment())
         dispatch(enrollmentActions.getEnrollmentUsers(postId))
         dispatch(enrollmentActions.getMyEnrollmentStatus(postId))
-    }, [dispatch, postId])
+    }, [dispatch, postId, isClosedModalOpen])
 
     const handleEnroll = useCallback(() => {
-        if (isEnrolled) {
-            dispatch(enrollmentActions.unparticipateInEnrollment(postId))
+        if (!isOpen || hasSuccessfullyClosed){
+            toast.error('마감된 인원 모집글입니다.')
         } else {
-            dispatch(enrollmentActions.participateInEnrollment(postId))
+            if (isEnrolled) {
+                dispatch(enrollmentActions.unparticipateInEnrollment(postId))
+            } else {
+                dispatch(enrollmentActions.participateInEnrollment(postId))
+            }
         }
-        if (!isOpen || hasSuccessfullyClosed) {
-            setIsClosedModalOpen(true)
-        }
-    }, [dispatch, postId, isOpen, hasSuccessfullyClosed, isEnrolled])
+    }, [isOpen, hasSuccessfullyClosed, isEnrolled, dispatch, postId])
 
     const handleCloseEnrollment = useCallback(() => {
-        dispatch(enrollmentActions.closeEnrollment(postId))
-    }, [dispatch, postId])
+        setIsClosedModalOpen(true)
+    }, [])
 
     const handleGetEnrolledUsers = useCallback(() => {
         setShowEnrolledUsers(true)
@@ -83,7 +84,7 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
                     color={showEnrollButton ? UdongColors.Primary : UdongColors.GrayNormal}
                     onClick={handleEnroll}
                 >
-                    {showEnrollButton ? `지원하기` : `지원 취소하기`}
+                    {isOpen && !hasSuccessfullyClosed ? (!isEnrolled ? `지원하기` : `지원 취소하기`) : '지원 마감'}
                 </UdongButton>
             </HStack>
 
@@ -111,20 +112,14 @@ export const PostDetailEnrollmentView = (props: PostDetailEnrollmentViewProps) =
                 title={'모집 현황'}
             />
         }
-
-        <UdongModal
-            isOpen={isClosedModalOpen}
-            setIsOpen={setIsClosedModalOpen}
-        >
-            <VStack
-                width={'100%'}
-                alignItems={'center'}
-            >
-                <UdongCloseButton setIsOpen={setIsClosedModalOpen}/>
-                <Spacer height={100}/>
-                <UdongText style={'GeneralTitle'}>이미 마감되었습니다.</UdongText>
-                <Spacer height={150}/>
-            </VStack>
-        </UdongModal>
+        {isClosedModalOpen &&
+            <PostCloseModal
+                postId={postId}
+                clubId={clubId}
+                users={users ?? []}
+                isOpen={isClosedModalOpen}
+                setIsOpen={setIsClosedModalOpen}
+            />
+        }
     </VStack>
 }

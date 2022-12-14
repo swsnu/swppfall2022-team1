@@ -26,6 +26,7 @@ describe('<PostDetailEnrollmentView/>', () => {
             render(
                 <Provider store={mockStore}>
                     <PostDetailEnrollmentView
+                        clubId={1}
                         postId={2}
                         isOpen={true}
                     />

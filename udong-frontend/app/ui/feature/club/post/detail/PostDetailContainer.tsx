@@ -155,6 +155,7 @@ export const PostDetailContainer = () => {
 
         {postType === PostType.ENROLLMENT && <PostDetailEnrollmentView
             postId={post.id}
+            clubId={parseInt(clubId)}
             isOpen={!post.closed}
         />}
 
