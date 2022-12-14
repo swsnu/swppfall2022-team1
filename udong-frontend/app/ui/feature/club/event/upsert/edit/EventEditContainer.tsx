@@ -7,10 +7,8 @@ import { ClubEvent } from '../../../../../../domain/model/ClubEvent'
 import { SchedulingPostType } from '../../../../../../domain/model/SchedulingPostType'
 import { DayTime, WeekdayTime } from '../../../../../../domain/model/Time'
 import { AppDispatch } from '../../../../../../domain/store'
-import { clubSelector } from '../../../../../../domain/store/club/ClubSelector'
 import { eventSelector } from '../../../../../../domain/store/event/EventSelector'
 import { eventActions } from '../../../../../../domain/store/event/EventSlice'
-import { userSelector } from '../../../../../../domain/store/user/UserSelector'
 import {
     checkDayTimesValid,
     checkWeekdayTimesValid,
@@ -41,8 +39,6 @@ export const EventEditContainer = () => {
     const clubId = parseInt(convertQueryParamToString(rawCLubId))
     const error = useSelector(eventSelector.errors).createEventError
     const upsertedEventId = useSelector(eventSelector.upsertedEventId)
-    const isAdmin = useSelector(userSelector.isAdmin)
-    const selectedClub = useSelector(clubSelector.selectedClub)
     const [disabled, setDisabled] = useState(false)
     const [title, setTitle] = useState('')
     const [eventTimeType, setEventTimeType] = useState<EventTimeType>('notAssigned')
