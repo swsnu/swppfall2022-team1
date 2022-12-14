@@ -59,10 +59,11 @@ export const PostDetailContainer = () => {
 
     useEffect(() => {
         dispatch(userActions.getMyProfile())
+        dispatch(userActions.getMyClubProfile(+clubId))
         if (postId) {
             dispatch(postActions.getPost(postId))
         }
-    }, [postId, dispatch])
+    }, [postId, dispatch, clubId])
 
     const handleDelete = useCallback(async () => {
         setShowDeleteModal(false)
@@ -79,7 +80,7 @@ export const PostDetailContainer = () => {
     return <VStack paddingHorizontal={16}>
         <UdongHeader
             title={post.title}
-            onGoBack={() => routeFrom === 'create' ? router.push(`/club/${clubId}`) : router.back()}
+            onGoBack={() => routeFrom === 'upsert' ? router.push(`/club/${clubId}`) : router.back()}
             subtitle={getSubtitle(postType)}
             rightButtons={isAdmin && <>
                 <UdongButton

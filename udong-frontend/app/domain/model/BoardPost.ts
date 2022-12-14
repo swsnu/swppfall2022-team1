@@ -21,8 +21,8 @@ export interface BoardPost {
     closed?: boolean
     includedTags?: Array<PostTag>
     excludedTags?: Array<PostTag>
-    createdAt?: string
-    updatedAt?: string
+    createdAt: string
+    updatedAt: string
 }
 
 export enum PostDisplayType {

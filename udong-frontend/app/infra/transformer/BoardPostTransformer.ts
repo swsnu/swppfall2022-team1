@@ -1,5 +1,6 @@
 import { BoardPost, PostDisplayType } from '../../domain/model/BoardPost'
-import { BoardPostDto } from '../dto/BoardPostDto'
+import { BoardPostDto, BoardPostEditDto } from '../dto/BoardPostDto'
+import { clubTransformer } from './ClubTransformer'
 import { enrollmentTransformer } from './EnrollmentTransformer'
 import { eventNameTransformer } from './EventNameTransformer'
 import { postTagTransformer } from './PostTagTransformer'
@@ -11,7 +12,7 @@ const fromDto = (dto: BoardPostDto, displayType: PostDisplayType): BoardPost => 
         displayType,
         id: dto.id,
         author: dto.author,
-        club: dto.club,
+        club: dto.club && clubTransformer.fromDto(dto.club),
         eventName: eventNameTransformer.fromDto(dto.event),
         eventId: dto.event?.id,
         title: dto.title,
@@ -27,6 +28,20 @@ const fromDto = (dto: BoardPostDto, displayType: PostDisplayType): BoardPost => 
     }
 }
 
+const toEditDto = (post: BoardPost, tagIdList: Array<number>): BoardPostEditDto => {
+    return {
+        id: post.id,
+        event: post.eventName,
+        title: post.title,
+        content: post.content,
+        type: postTypeTransformer.toDto(post.type),
+        created_at: post.createdAt,
+        updated_at: post.updatedAt,
+        tag_list: tagIdList,
+    }
+}
+
 export const boardPostTransformer = {
     fromDto,
+    toEditDto,
 }

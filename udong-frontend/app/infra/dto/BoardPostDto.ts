@@ -21,3 +21,5 @@ export interface BoardPostDto {
     created_at: string
     updated_at: string
 }
+
+export type BoardPostEditDto = BoardPostDto & { tag_list: Array<number> }

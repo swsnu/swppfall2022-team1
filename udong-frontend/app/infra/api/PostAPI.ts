@@ -18,7 +18,16 @@ export const PostAPI = (() => {
         const response = await axiosConfig.get<BoardPostDto>(`/api/post/${postId}/`)
         return boardPostTransformer.fromDto(response.data, PostDisplayType.CLUB)
     }
-    function editPost() { return }
+
+    async function editPost(postId: number, post: BoardPost, tagIdList: Array<number>): Promise<BoardPost> {
+        const body = boardPostTransformer.toEditDto(post, tagIdList)
+        const response = await axiosConfig.put<BoardPostDto>(
+            `/api/post/${postId}/`,
+            body,
+        )
+        return boardPostTransformer.fromDto(response.data, PostDisplayType.CLUB)
+    }
+
     async function deletePost(postId: number): Promise<void> {
         return await axiosConfig.delete(`/api/post/${postId}/`)
     }

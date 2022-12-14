@@ -82,7 +82,9 @@ export const createPost =
 
 export const editPost = createAsyncThunk(
     'post/editPost',
-    async () => { return },
+    async ({ postId, post, tagIdList }: { postId: number, post: BoardPost, tagIdList: Array<number> }) => {
+        return PostAPI.editPost(postId, post, tagIdList)
+    },
 )
 
 export const deletePost = createAsyncThunk(
@@ -126,6 +128,9 @@ const postSlice = createSlice({
         builder.addCase(deletePost.fulfilled, (state) => {
             state.selectedPost = undefined
         })
+        builder.addCase(editPost.fulfilled, (state, action) => {
+            state.selectedPost = action.payload
+        })
     },
 })
 
@@ -137,5 +142,6 @@ export const postActions = {
     getPost,
     createPost,
     deletePost,
+    editPost,
 }
 export const postReducer = postSlice.reducer

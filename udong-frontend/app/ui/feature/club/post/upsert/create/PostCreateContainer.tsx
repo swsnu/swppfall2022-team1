@@ -75,7 +75,7 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
     useEffect(() => {
         if (newPostId) {
             dispatch(postActions.resetErrors())
-            router.push(`/club/${clubId}/post/${newPostId}/?from=create`)
+            router.push(`/club/${clubId}/post/${newPostId}/?from=upsert`)
         }
     }, [newPostId, dispatch, router, clubId])
 

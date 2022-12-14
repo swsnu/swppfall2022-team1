@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { EventAPI } from '../../../infra/api/EventAPI'
 import { ClubEvent } from '../../model/ClubEvent'
 import { Time } from '../../model/Time'
-import { APIErrorType } from '../ErrorHandler'
-import { createPost } from '../post/PostSlice'
+import { APIError, APIErrorType } from '../ErrorHandler'
 
 export interface EventErrorType {
     createEventError?: APIErrorType
@@ -37,12 +37,20 @@ export const getEvent = createAsyncThunk(
     },
 )
 
-export const createEvent = createAsyncThunk(
-    'event/createEvent',
-    async ({ clubId, name, time } : { clubId: number, name: string, time: Array<Time> }) => {
-        return await ClubAPI.createClubEvent(clubId, name, time)
-    },
-)
+export const createEvent =
+    createAsyncThunk<ClubEvent | undefined, { clubId: number, name: string, time: Array<Time> }, { rejectValue: APIErrorType }>(
+        'event/createEvent',
+        async ({ clubId, name, time } : { clubId: number, name: string, time: Array<Time> }, { rejectWithValue }) => {
+            try {
+                return await ClubAPI.createClubEvent(clubId, name, time)
+            } catch (e) {
+                if (axios.isAxiosError(e)) {
+                    const errorType = APIError.getErrorType(e.response?.status)
+                    return rejectWithValue(errorType)
+                }
+            }
+        },
+    )
 
 export const editEvent = createAsyncThunk(
     'event/editEvent',
@@ -76,7 +84,7 @@ const eventSlice = createSlice({
         builder.addCase(createEvent.fulfilled, (state, action) => {
             state.selectedEvent = action.payload
         })
-        builder.addCase(createPost.rejected, (state, action) => {
+        builder.addCase(createEvent.rejected, (state, action) => {
             state.selectedEvent = undefined
             state.errors.createEventError = action.payload
         })
