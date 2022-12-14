@@ -7,6 +7,7 @@ import { AppDispatch } from '../../../domain/store'
 import { authActions } from '../../../domain/store/auth/AuthSlice'
 import { userSelector } from '../../../domain/store/user/UserSelector'
 import { userActions } from '../../../domain/store/user/UserSlice'
+import { useImage } from '../../../hooks/useImage'
 import { Spacer } from '../../components/Spacer'
 import { HStack } from '../../components/Stack'
 import { UdongErrorModal } from '../../components/UdongErrorModal'
@@ -22,7 +23,7 @@ interface MyProfileViewProps {
 
 export const MyProfileView = (props: MyProfileViewProps) => {
     const { me } = props
-    const { id, name, email } = me
+    const { id, name, email, imageUrl, timeTable } = me
     const dispatch = useDispatch<AppDispatch>()
 
     const error = useSelector(userSelector.errors).deleteAccountError
@@ -79,9 +80,11 @@ export const MyProfileView = (props: MyProfileViewProps) => {
         <Spacer height={90}/>
 
         <ProfileView
-            id={id}
+            userId={id}
             name={name}
             email={email}
+            image={useImage(imageUrl ?? '')}
+            timeTable={timeTable}
             showCameraButton={true}
             onClickEditNameButton={handleEditNickname}
             bottomItem={
