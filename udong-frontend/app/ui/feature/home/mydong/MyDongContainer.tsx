@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../../../domain/store'
 import { clubSelector } from '../../../../domain/store/club/ClubSelector'
 import { clubActions } from '../../../../domain/store/club/ClubSlice'
+import { Spacer } from '../../../components/Spacer'
 import { VStack } from '../../../components/Stack'
 import { UdongImage } from '../../../components/UdongImage'
 import plus from '../../../icons/IcPlus.png'
@@ -38,14 +39,17 @@ export const MyDongContainer = () => {
 
     return <VStack>
         <ClubGridLayout>
-            <AddClubButton onClick={() => setIsAddModalOpen(true)}>
-                <UdongImage
-                    src={plus.src}
-                    height={30}
-                    width={30}
-                    clickable={true}
-                />
-            </AddClubButton>
+            <VStack>
+                <AddClubButton onClick={() => setIsAddModalOpen(true)}>
+                    <UdongImage
+                        src={plus.src}
+                        height={30}
+                        width={30}
+                        clickable={true}
+                    />
+                </AddClubButton>
+                <Spacer height={50}/>
+            </VStack>
 
             <AddClubModal
                 isOpen={isAddModalOpen}
