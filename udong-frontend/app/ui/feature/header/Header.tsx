@@ -8,6 +8,7 @@ import { AppDispatch } from '../../../domain/store'
 import { authSelector } from '../../../domain/store/auth/AuthSelector'
 import { authActions } from '../../../domain/store/auth/AuthSlice'
 import { clubSelector } from '../../../domain/store/club/ClubSelector'
+import { clubActions } from '../../../domain/store/club/ClubSlice'
 import { userSelector } from '../../../domain/store/user/UserSelector'
 import { userActions } from '../../../domain/store/user/UserSlice'
 import { useImage } from '../../../hooks/useImage'
@@ -19,7 +20,7 @@ import { UdongColors } from '../../theme/ColorPalette'
 
 interface HeaderProps {
     type: HeaderPageType
-    clubId?: number
+    clubId: number
 }
 
 export type HeaderPageType = HEADER_PAGE
@@ -63,8 +64,12 @@ export const Header = ({ type, clubId }: HeaderProps) => {
     }, [isLoggedIn, isLoading]) // eslint-disable-line
 
     useEffect(() => {
+        dispatch(clubActions.getClub(clubId))
+    }, [clubId, dispatch])
+
+    useEffect(()=>{
         dispatch(userActions.getMyProfile())
-    }, [dispatch])
+    }, [dispatch, club])
 
     if (type === HEADER_PAGE.NONE) {return null}
 
@@ -94,7 +99,7 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                         clickable={true}
                     />
                     {type === HEADER_PAGE.CLUB && club &&
-                        <HStack onClick={() => router.push(`/club/${clubId}`)}>
+                        <HStack onClick={() => router.push(`/club/${club.id}`)}>
                             <UdongText
                                 style={'Header'}
                                 color={UdongColors.Primary}

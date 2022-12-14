@@ -34,6 +34,10 @@ export const EventDetailContainer = () => {
     const event = useSelector(eventSelector.selectedEvent)
     const eventPosts = useSelector(postSelector.eventPosts)
 
+    useEffect(()=>{
+        dispatch(eventActions.resetUpserted())
+    }, [dispatch])
+
     useEffect(() => {
         if(eventId) {
             dispatch(eventActions.getEvent(eventId))
