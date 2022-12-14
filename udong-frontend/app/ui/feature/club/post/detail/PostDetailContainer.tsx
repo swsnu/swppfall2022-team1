@@ -120,9 +120,8 @@ export const PostDetailContainer = () => {
                     {post.includedTags?.map((tag, index) => {
                         return <ClickableTag
                             key={`${tag.name}` + index}
-                            text={tag.name}
+                            tag={tag}
                             isIncluded={true}
-                            onClick={() => {return}}
                         />
                     })}
                 </HStack>
@@ -130,9 +129,8 @@ export const PostDetailContainer = () => {
                     {post.excludedTags?.map((tag, index) => {
                         return <ClickableTag
                             key={tag.name + index}
-                            text={tag.name}
+                            tag={tag}
                             isIncluded={false}
-                            onClick={() => {return}}
                         />
                     })}
                 </HStack>
