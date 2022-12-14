@@ -53,9 +53,18 @@ export const PostCreateContainer = (props: PostCreateContainerProps) => {
     const [scheduling, setScheduling] = useState<CreateScheduling | undefined>(undefined)
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
 
+    const setInitialTags = useCallback(async () => {
+        if (clubId) {
+            const response = await dispatch(tagActions.getTags(parseInt(clubId)))
+            if (response.type === `${tagActions.getTags.typePrefix}/fulfilled`) {
+                dispatch(tagActions.resetCreatePostTags())
+            }
+        }
+    }, [dispatch, clubId])
+
     useEffect(() => {
-        dispatch(tagActions.resetCreatePostTags())
-    }, [dispatch])
+        setInitialTags()
+    }, [setInitialTags])
 
     useEffect(() => {
         if (error) {
