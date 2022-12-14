@@ -53,6 +53,7 @@ export const CommentItem = (props: CommentItemProps) => {
                         height={20}
                         width={20}
                         onClick={handleEditComment}
+                        clickable
                     />
                     <Spacer width={10}/>
                     <UdongImage
@@ -60,6 +61,7 @@ export const CommentItem = (props: CommentItemProps) => {
                         height={20}
                         width={20}
                         onClick={() => onClickDelete(id)}
+                        clickable
                     />
                 </HStack>
             }

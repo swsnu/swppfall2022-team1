@@ -76,6 +76,7 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
                 height={24}
                 width={24}
                 onClick={handleCommentSubmit}
+                clickable
             />
         </HStack>
 
