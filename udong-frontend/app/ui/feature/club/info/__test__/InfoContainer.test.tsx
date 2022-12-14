@@ -25,6 +25,8 @@ const stubClubInitialState: ClubState = {
         name: '',
         code: '',
         image: '',
+        createdAt: '',
+        updatedAt: '',
     },
 }
 

@@ -14,6 +14,8 @@ const testClub: Club = {
     name: '',
     image: '',
     code: '',
+    createdAt: '',
+    updatedAt: '',
 }
 
 const stubClubInitialState: ClubState = {

@@ -8,8 +8,8 @@ import { RoleType } from '../../model/RoleType'
 import { clubReducer, ClubState, getClub, getClubMembers, getMyClubs } from '../club/ClubSlice'
 import { fakeUser1, fakeUser2, fakeUserDto1, fakeUserDto2 } from './UserSlice.test'
 
-export const fakeClub1: Club = { id: 1, name: '단풍', code: '1234', image: '' }
-export const fakeClub2: Club = { id: 2, name: '은행', code: '4321', image: '' }
+export const fakeClub1: Club = { id: 1, name: '단풍', code: '1234', image: '', createdAt: '', updatedAt: '' }
+export const fakeClub2: Club = { id: 2, name: '은행', code: '4321', image: '', createdAt: '', updatedAt: '' }
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {

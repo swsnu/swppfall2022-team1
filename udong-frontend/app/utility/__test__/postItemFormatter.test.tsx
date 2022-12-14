@@ -13,6 +13,8 @@ describe('postItemFormatter', () => {
             title: '',
             content: '',
             type: PostType.ANNOUNCEMENT,
+            createdAt: '',
+            updatedAt: '',
         })
         if (element) {
             render(element)

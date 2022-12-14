@@ -10,7 +10,7 @@ import { PostType } from '../../model/PostType'
 import { getClubPosts, postReducer, PostState } from '../post/PostSlice'
 
 const fakeListItemPost1: BoardPost = { displayType: PostDisplayType.CLUB, id: 1, author: '',
-    title: '', content: '', type: PostType.ANNOUNCEMENT }
+    title: '', content: '', type: PostType.ANNOUNCEMENT, createdAt: '', updatedAt: '' }
 const fakeBoardPost1: BoardPost = { displayType: PostDisplayType.CLUB, id: 1, title: '', content: '', type: PostType.ANNOUNCEMENT,
     eventName: { id: 1, name: '' }, closed: undefined, createdAt: '', excludedTags: undefined, includedTags: undefined, updatedAt: '',
     eventId: 1 }
