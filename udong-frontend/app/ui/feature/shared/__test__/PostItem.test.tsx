@@ -67,7 +67,7 @@ describe('<PostItem/>', () => {
         )
         const component = screen.getByText('겨울 공연 중요 공지!')
         fireEvent.click(component)
-        expect(mockPush).toHaveBeenCalledWith('/club/1/post/1/?type=announcement')
+        expect(mockPush).toHaveBeenCalledWith('/club/1/post/1')
     })
 
     it ('should handle on click tag', () => {
