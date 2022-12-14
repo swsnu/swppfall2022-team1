@@ -95,7 +95,7 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
 
         <DeleteModal
             deleteObjectText={'댓글'}
-            warningText={'경고 문구'}
+            warningText={'해당 댓글은 영구적으로 삭제됩니다.'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
             onClickDelete={handleConfirmCommentDelete}
