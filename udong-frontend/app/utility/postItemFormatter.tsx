@@ -8,7 +8,7 @@ export const formatPostItemInfo = (
 ) => {
     if (post.displayType === PostDisplayType.FEED) {
         const { club, eventName } = post
-        return <HStack>
+        return <HStack alignItems={'center'}>
             <UdongText style={'ListContentUnderscore'}>{club?.name}</UdongText>
             {eventName &&
                 <HStack>
@@ -21,7 +21,7 @@ export const formatPostItemInfo = (
                     <UdongText style={'ListContentUnderscore'}>{eventName.name}</UdongText>
                 </HStack>
             }
-            <Spacer width={30}/>
+            <Spacer width={20}/>
         </HStack>
     }
 
@@ -30,9 +30,9 @@ export const formatPostItemInfo = (
         if (!eventName) {
             return null
         }
-        return <HStack>
+        return <HStack alignItems={'center'}>
             <UdongText style={'ListContentUnderscore'}>{eventName.name}</UdongText>
-            <Spacer width={30}/>
+            <Spacer width={20}/>
         </HStack>
     }
 
