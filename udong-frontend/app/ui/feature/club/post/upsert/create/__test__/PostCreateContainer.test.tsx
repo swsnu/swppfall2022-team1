@@ -5,6 +5,7 @@ import { NextRouter } from 'next/router'
 import { Provider } from 'react-redux'
 
 import { PostType } from '../../../../../../../domain/model/PostType'
+import { eventReducer, EventState } from '../../../../../../../domain/store/event/EventSlice'
 import { postReducer, PostState } from '../../../../../../../domain/store/post/PostSlice'
 import { tagReducer, TagState } from '../../../../../../../domain/store/tag/TagSlice'
 import { PostCreateContainer } from '../PostCreateContainer'
@@ -31,9 +32,21 @@ const stubTagInitialState: TagState = {
     selectedUserIds: [],
 }
 
+const stubEventInitialState: EventState = {
+    events: [],
+    selectedEvent: {
+        id: 1,
+        name: 'event name',
+        createdAt: '',
+        updatedAt: '',
+        times: [],
+    },
+    errors: {},
+}
+
 const mockStore = configureStore({
-    reducer: { post: postReducer, tag: tagReducer },
-    preloadedState: { post: stubPostInitialState, tag: stubTagInitialState },
+    reducer: { post: postReducer, tag: tagReducer, event: eventReducer },
+    preloadedState: { post: stubPostInitialState, tag: stubTagInitialState, event: stubEventInitialState },
 })
 
 describe('<PostCreateContainer/>', () => {
