@@ -14,6 +14,7 @@ export interface EventErrorType {
 
 export interface EventState {
     selectedEvent?: ClubEvent
+    upsertedEventId?: number
     events: Array<ClubEvent>
     errors: EventErrorType
 }
@@ -95,6 +96,9 @@ const eventSlice = createSlice({
         resetErrors: (state)=>{
             state.errors = {}
         },
+        resetUpserted: (state) => {
+            state.upsertedEventId = undefined
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getEvents.fulfilled, (state, action) => {
@@ -105,6 +109,7 @@ const eventSlice = createSlice({
         })
         builder.addCase(createEvent.fulfilled, (state, action) => {
             state.selectedEvent = action.payload
+            state.upsertedEventId = action.payload?.id
         })
         builder.addCase(createEvent.rejected, (state, action) => {
             state.selectedEvent = undefined
@@ -112,6 +117,7 @@ const eventSlice = createSlice({
         })
         builder.addCase(editEvent.fulfilled, (state, action) => {
             state.selectedEvent = action.payload
+            state.upsertedEventId = action.payload?.id
         })
         builder.addCase(editEvent.rejected, (state, action) => {
             state.errors.editEventError = action.payload

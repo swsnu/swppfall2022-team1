@@ -19,8 +19,14 @@ const errors = createSelector(
     state => state.errors,
 )
 
+const upsertedEventId = createSelector(
+    eventState,
+    state => state.upsertedEventId,
+)
+
 export const eventSelector = {
     selectedEvent,
     events,
     errors,
+    upsertedEventId,
 }

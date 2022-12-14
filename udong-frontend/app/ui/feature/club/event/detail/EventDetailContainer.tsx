@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { SchedulingPostType } from '../../../../../domain/model/SchedulingPostType'
 import { AppDispatch } from '../../../../../domain/store'
@@ -32,6 +31,10 @@ export const EventDetailContainer = () => {
 
     const event = useSelector(eventSelector.selectedEvent)
     const eventPosts = useSelector(postSelector.eventPosts)
+
+    useEffect(()=>{
+        dispatch(eventActions.resetUpserted())
+    }, [dispatch])
 
     useEffect(() => {
         if(eventId) {

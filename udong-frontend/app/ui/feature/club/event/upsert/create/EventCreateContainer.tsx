@@ -29,6 +29,8 @@ export const EventCreateContainer = () => {
     const router = useRouter()
     const dispatch = useDispatch<AppDispatch>()
     const error = useSelector(eventSelector.errors).createEventError
+    const upsertedEventId = useSelector(eventSelector.upsertedEventId)
+    const [disabled, setDisabled] = useState(false)
     const [title, setTitle] = useState<string>('')
     const { clubId: rawClubId } = router.query
     const clubId = convertQueryParamToString(rawClubId)
@@ -46,14 +48,23 @@ export const EventCreateContainer = () => {
     useEffect(()=>{
         if (error){
             toast.error(error.message)
+            setDisabled(false)
             dispatch(eventActions.resetErrors())
         }
     }, [dispatch, error])
 
+    useEffect(()=>{
+        if (upsertedEventId){
+            router.push(`/club/${clubId}/event/${upsertedEventId}`)
+        }
+    }, [clubId, router, upsertedEventId])
+
     const handleCreateEvent = useCallback(() => {
+        setDisabled(true)
         const eventObject = { clubId: parseInt(clubId), name: title }
         if (title.length === 0){
             toast.error('행사 이름을 입력해주세요')
+            setDisabled(false)
             return
         }
         if (eventTimeType === 'notAssigned'){
@@ -65,12 +76,14 @@ export const EventCreateContainer = () => {
                     time: weekdayTimesWithId.map((weekdayTimeWithId)=>toWeekdayTimeFormatter(weekdayTimeWithId, weekdayRange)) }))
             } else {
                 toast.error('시간을 올바르게 입력해주세요.')
+                setDisabled(false)
             }
         } else {
             if (checkDayTimesValid(dayTimesWithId)){
                 dispatch(eventActions.createEvent({ ...eventObject, time: dayTimesWithId.map(toDayTimeFormatter) }))
             } else {
                 toast.error('기간을 올바르게 입력해주세요.')
+                setDisabled(false)
             }
         }
     }, [clubId, dispatch, title, weekdayTimesWithId, weekdayRange, dayTimesWithId, eventTimeType])
@@ -85,6 +98,7 @@ export const EventCreateContainer = () => {
                     color={UdongColors.Primary}
                     height={40}
                     onClick={handleCreateEvent}
+                    disabled={disabled}
                 >
                     저장하기
                 </UdongButton>

@@ -7,8 +7,10 @@ import { ClubEvent } from '../../../../../../domain/model/ClubEvent'
 import { SchedulingPostType } from '../../../../../../domain/model/SchedulingPostType'
 import { DayTime, WeekdayTime } from '../../../../../../domain/model/Time'
 import { AppDispatch } from '../../../../../../domain/store'
+import { clubSelector } from '../../../../../../domain/store/club/ClubSelector'
 import { eventSelector } from '../../../../../../domain/store/event/EventSelector'
 import { eventActions } from '../../../../../../domain/store/event/EventSlice'
+import { userSelector } from '../../../../../../domain/store/user/UserSelector'
 import {
     checkDayTimesValid,
     checkWeekdayTimesValid,
@@ -33,9 +35,15 @@ import { EventInputView } from '../EventInputView'
 export const EventEditContainer = () => {
     const router = useRouter()
     const dispatch = useDispatch<AppDispatch>()
-    const { eventId: rawEventId } = router.query
+    const { clubId: rawCLubId, eventId: rawEventId } = router.query
     const eventId = parseInt(convertQueryParamToString(rawEventId))
     const event: ClubEvent|undefined = useSelector(eventSelector.selectedEvent)
+    const clubId = parseInt(convertQueryParamToString(rawCLubId))
+    const error = useSelector(eventSelector.errors).createEventError
+    const upsertedEventId = useSelector(eventSelector.upsertedEventId)
+    const isAdmin = useSelector(userSelector.isAdmin)
+    const selectedClub = useSelector(clubSelector.selectedClub)
+    const [disabled, setDisabled] = useState(false)
     const [title, setTitle] = useState('')
     const [eventTimeType, setEventTimeType] = useState<EventTimeType>('notAssigned')
     const [weekdayRange, setWeekdayRange] = useState<DateRangeType>({ start: '', end: '' })
@@ -47,6 +55,20 @@ export const EventEditContainer = () => {
         id: 0,
         start: { date: '', time: '' },
         end: { date: '', time: '' } }])
+
+    useEffect(()=>{
+        if (error){
+            toast.error(error.message)
+            setDisabled(false)
+            dispatch(eventActions.resetErrors())
+        }
+    }, [dispatch, error])
+
+    useEffect(()=>{
+        if (upsertedEventId){
+            router.push(`/club/${clubId}/event/${upsertedEventId}`)
+        }
+    }, [clubId, router, upsertedEventId])
 
     useEffect(()=>{
         if (eventId){
@@ -73,12 +95,15 @@ export const EventEditContainer = () => {
     }, [event])
 
     const handleEditEvent = useCallback(() => {
+        setDisabled(true)
         if (!event){
             toast.error('오류가 발생했습니다')
+            setDisabled(false)
             return
         }
         if (title.length === 0){
             toast.error('행사 이름을 입력해주세요')
+            setDisabled(false)
             return
         }
         if (eventTimeType === 'notAssigned'){
@@ -91,6 +116,7 @@ export const EventEditContainer = () => {
                     time: weekdayTimesWithId.map((weekdayTimeWithId)=>toWeekdayTimeFormatter(weekdayTimeWithId, weekdayRange)) }))
             } else {
                 toast.error('시간을 올바르게 입력해주세요.')
+                setDisabled(false)
             }
         } else {
             if (checkDayTimesValid(dayTimesWithId)){
@@ -100,6 +126,7 @@ export const EventEditContainer = () => {
                     time: dayTimesWithId.map(toDayTimeFormatter) }))
             } else {
                 toast.error('기간을 올바르게 입력해주세요.')
+                setDisabled(false)
             }
         }
     }, [dispatch, title, event, weekdayTimesWithId, weekdayRange, dayTimesWithId, eventTimeType])
@@ -114,6 +141,7 @@ export const EventEditContainer = () => {
                     color={UdongColors.Primary}
                     height={40}
                     onClick={handleEditEvent}
+                    disabled={disabled}
                 >
                     저장하기
                 </UdongButton>
