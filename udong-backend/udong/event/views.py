@@ -17,8 +17,12 @@ from post.serializers import PostBoardSerializer
 
 if TYPE_CHECKING:
     _GenericViewSet = viewsets.GenericViewSet[Event]
+    from rest_framework.permissions import _SupportsHasPermission
+
+    _SupportsHasPermissionType = list[_SupportsHasPermission]
 else:
     _GenericViewSet = viewsets.GenericViewSet
+    _SupportsHasPermissionType = list
 
 _MT_co = TypeVar("_MT_co", bound=Model, covariant=True)
 
@@ -26,6 +30,11 @@ _MT_co = TypeVar("_MT_co", bound=Model, covariant=True)
 class EventViewSet(_GenericViewSet):
     queryset = Event.objects.all()
     serializer_class = ClubEventSerializer
+
+    def get_permissions(self) -> _SupportsHasPermissionType:
+        if self.action in ("update", "destroy"):
+            return [IsAuthenticated(), IsAdmin()]
+        return super().get_permissions()
 
     def get_serializer_class(self) -> type[BaseSerializer[_MT_co]]:
         if self.action in ("retrieve", "update", "destroy"):
