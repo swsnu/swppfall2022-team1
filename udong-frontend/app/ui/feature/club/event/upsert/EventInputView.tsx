@@ -21,6 +21,7 @@ export const EventInputView = ({ title, setTitle } : EventInputViewProps) => {
                 onChange={(e) => {setTitle(e.target.value)}}
                 style={{
                     outline: UdongColors.GrayBright,
+                    backgroundColor: UdongColors.White,
                     border: `1px solid ${UdongColors.GrayNormal}`,
                     fontFamily: 'sans-serif',
                     fontSize: 14,
