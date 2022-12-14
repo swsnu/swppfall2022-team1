@@ -22,7 +22,7 @@ export const LoginContainer = () => {
 
     const handleLogin = useCallback(async (email: string, token: string, name: string ) => {
         const response = await dispatch(authActions.login({ email, token, name }))
-        if (response.type === `${authActions.logout.typePrefix}/rejected`) {
+        if (response.type === `${authActions.login.typePrefix}/rejected`) {
             signOut({ redirect: false })
         }
     }, [dispatch])
