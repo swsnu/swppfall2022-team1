@@ -6,8 +6,10 @@ import { Provider } from 'react-redux'
 
 import { PostDisplayType } from '../../../../../../domain/model/BoardPost'
 import { PostType } from '../../../../../../domain/model/PostType'
+import { dummyUserMe } from '../../../../../../domain/model/User'
 import { eventReducer, EventState } from '../../../../../../domain/store/event/EventSlice'
 import { postReducer, PostState } from '../../../../../../domain/store/post/PostSlice'
+import { userReducer, UserState } from '../../../../../../domain/store/user/UserSlice'
 import { EventDetailContainer } from '../EventDetailContainer'
 
 const eventInitialState: EventState = {
@@ -40,9 +42,15 @@ const postInitialState: PostState = {
     eventPosts: [],
 }
 
+const stubUserInitialState: UserState = {
+    isAdmin: true,
+    selectedUser: dummyUserMe,
+    me: dummyUserMe,
+}
+
 export const mockStore = configureStore({
-    reducer: { event: eventReducer, post: postReducer },
-    preloadedState: { event: eventInitialState, post: postInitialState },
+    reducer: { event: eventReducer, post: postReducer, user: userReducer },
+    preloadedState: { event: eventInitialState, post: postInitialState, user: stubUserInitialState },
 })
 
 jest.mock('next/config', () => () => ({
