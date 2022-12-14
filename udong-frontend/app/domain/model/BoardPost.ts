@@ -12,7 +12,7 @@ export interface BoardPost {
     author?: string
     club?: Club
     eventName?: EventName
-    eventId?: number
+    eventId?: number | null
     title: string
     content: string
     type: PostType
@@ -21,8 +21,8 @@ export interface BoardPost {
     closed?: boolean
     includedTags?: Array<PostTag>
     excludedTags?: Array<PostTag>
-    createdAt?: string
-    updatedAt?: string
+    createdAt: string
+    updatedAt: string
 }
 
 export enum PostDisplayType {

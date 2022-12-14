@@ -13,6 +13,8 @@ import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { PostItem } from '../PostItem'
 
 const dummyPost: BoardPost = {
+    createdAt: '',
+    updatedAt: '',
     displayType: PostDisplayType.CLUB,
     id: 1,
     eventName: {
@@ -23,7 +25,6 @@ const dummyPost: BoardPost = {
     content: '',
     type: PostType.ANNOUNCEMENT,
     includedTags: [{ id: 1, name: '2022년 겨울 공연 1팀', createdAt: '', updatedAt: '', isDefault: false }],
-    createdAt: '',
 }
 
 const stubTagInitialState: TagState = {

@@ -12,6 +12,8 @@ const dummyClub: Club = {
     name: '단풍',
     code: '',
     image: '',
+    createdAt: '',
+    updatedAt: '',
 }
 
 describe('<ClubItem/>', () => {

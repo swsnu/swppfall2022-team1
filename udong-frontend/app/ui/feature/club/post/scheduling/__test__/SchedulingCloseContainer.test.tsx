@@ -59,6 +59,8 @@ const postInitialState: PostState = {
             id: 1,
             name: 'event',
         },
+        createdAt: '',
+        updatedAt: '',
     },
     feedPosts: [],
     clubPosts: [],

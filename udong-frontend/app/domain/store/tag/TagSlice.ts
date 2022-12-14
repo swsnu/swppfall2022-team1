@@ -102,6 +102,9 @@ const tagSlice = createSlice({
         resetCreatePostTags: (state) => {
             state.createPostTags = state.tags.filter(tag => tag.isDefault)
         },
+        setCreatePostTags: (state, action: PayloadAction<Array<Tag>>) => {
+            state.createPostTags = action.payload
+        },
         toggleCreatePostTagSelection: (state, action: PayloadAction<Tag>) => {
             const tag = action.payload
             const temp = state.createPostTags

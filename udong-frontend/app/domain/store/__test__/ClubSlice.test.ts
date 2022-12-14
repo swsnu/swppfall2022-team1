@@ -3,13 +3,12 @@ import { AnyAction } from 'redux'
 import { ThunkMiddleware } from 'redux-thunk'
 
 import { axiosConfig } from '../../../infra/global'
-import { Club } from '../../model/Club'
 import { RoleType } from '../../model/RoleType'
 import { clubReducer, ClubState, getClub, getClubMembers, getMyClubs } from '../club/ClubSlice'
 import { fakeUser1, fakeUser2, fakeUserDto1, fakeUserDto2 } from './UserSlice.test'
 
-export const fakeClub1: Club = { id: 1, name: '단풍', code: '1234', image: '' }
-export const fakeClub2: Club = { id: 2, name: '은행', code: '4321', image: '' }
+export const fakeClub1 = { id: 1, name: '단풍', code: '1234', image: '' }
+export const fakeClub2 = { id: 2, name: '은행', code: '4321', image: '' }
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
@@ -31,7 +30,7 @@ const fakeClubDto = {
     errors: {},
 }
 
-const fakeClub: ClubState = {
+const fakeClub = {
     selectedClub: fakeClub1,
     myClubs: [fakeClub1, fakeClub2],
     members: [{

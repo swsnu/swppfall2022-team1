@@ -23,6 +23,8 @@ const dummyPost: BoardPost = {
         id: 1,
         name: 'event',
     },
+    createdAt: '',
+    updatedAt: '',
 }
 
 const stubPostInitialState: PostState = {

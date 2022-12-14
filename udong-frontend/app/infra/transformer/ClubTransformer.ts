@@ -7,6 +7,16 @@ const fromDto = (dto: ClubDto): Club => {
         name: dto.name,
         image: dto.image,
         code: dto.code,
+        createdAt: dto.created_at,
+        updatedAt: dto.updated_at,
+    }
+}
+
+const toDto = (club: Club): ClubDto => {
+    return {
+        ...club,
+        created_at: club.createdAt,
+        updated_at: club.updatedAt,
     }
 }
 
@@ -19,5 +29,6 @@ const toEditDto = (club: Club): ClubEditDto => {
 
 export const clubTransformer = {
     fromDto,
+    toDto,
     toEditDto,
 }

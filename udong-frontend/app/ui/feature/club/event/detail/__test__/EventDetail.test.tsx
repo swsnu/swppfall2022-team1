@@ -35,6 +35,8 @@ const postInitialState: PostState = {
             id: 1,
             name: 'event',
         },
+        createdAt: '',
+        updatedAt: '',
     },
     feedPosts: [],
     clubPosts: [],
@@ -43,6 +45,7 @@ const postInitialState: PostState = {
 }
 
 const stubUserInitialState: UserState = {
+    errors: {},
     isAdmin: true,
     selectedUser: dummyUserMe,
     me: dummyUserMe,

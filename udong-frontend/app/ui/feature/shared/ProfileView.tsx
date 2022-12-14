@@ -105,26 +105,28 @@ export const ProfileView = (props: ProfileViewProps) => {
                             {alert('파일 크기가 너무 큽니다.')}
                             try {
                                 const newImage = await ImageAPI.getUploadUrl(file.name)
-                                await ImageAPI.uploadImage(newImage.url, file) 
+                                await ImageAPI.uploadImage(newImage.url, file)
                                 if(clubId) {
                                     dispatch(clubActions.editClub({
                                         clubId: clubId,
-                                        club: { id: clubId, name: name, code: code ?? '', image: newImage.key },
+                                        club: {
+                                            id: clubId, name: name, code: code ?? '', image: newImage.key, createdAt: '', updatedAt: '',
+                                        },
                                     }))
                                 }
                                 if(userId) {
                                     dispatch(userActions.editMyProfile({
-                                        id: userId, 
-                                        name: name, 
-                                        email: email ?? '', 
-                                        imageUrl: newImage.key, 
+                                        id: userId,
+                                        name: name,
+                                        email: email ?? '',
+                                        imageUrl: newImage.key,
                                         timeTable: timeTable ?? [],
                                     }))
                                 }
                             } catch {
                                 alert('파일을 업로드 할 수 없습니다')
                             }
-                            
+
                         }}
                         style={{ display: 'none' }}
                     />
@@ -177,7 +179,7 @@ export const ProfileView = (props: ProfileViewProps) => {
                 {onRefresh &&
                     <UdongImage
                         src={refresh.src}
-                        clickable={true} 
+                        clickable={true}
                         height={18}
                         width={18}
                         onClick={onRefresh}
