@@ -99,11 +99,11 @@ export const ProfileView = (props: ProfileViewProps) => {
                             if (file.size >= 10485760)
                             {alert('파일 크기가 너무 큽니다.')}
                             try {
-                                const image = await ImageAPI.getUploadUrl(file.name)
-                                ImageAPI.uploadImage(image.url, file) 
+                                const newImage = await ImageAPI.getUploadUrl(file.name)
+                                await ImageAPI.uploadImage(newImage.url, file) 
                                 dispatch(clubActions.editClub({
                                     clubId: id,
-                                    club: { id: id, name: name, code: code ?? '', image: image.key },
+                                    club: { id: id, name: name, code: code ?? '', image: newImage.key },
                                 }))
                             } catch {
                                 alert('파일을 업로드 할 수 없습니다')
