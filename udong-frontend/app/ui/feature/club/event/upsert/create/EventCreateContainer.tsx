@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../../../../domain/store'
+import { eventSelector } from '../../../../../../domain/store/event/EventSelector'
 import { eventActions } from '../../../../../../domain/store/event/EventSlice'
 import {
     checkDayTimesValid,
@@ -27,6 +28,7 @@ export type EventTimeType = 'days' | 'dates' | 'notAssigned'
 export const EventCreateContainer = () => {
     const router = useRouter()
     const dispatch = useDispatch<AppDispatch>()
+    const error = useSelector(eventSelector.errors).createEventError
     const [title, setTitle] = useState<string>('')
     const { clubId: rawClubId } = router.query
     const clubId = convertQueryParamToString(rawClubId)
@@ -40,6 +42,13 @@ export const EventCreateContainer = () => {
         id: 0,
         start: { date: '', time: '' },
         end: { date: '', time: '' } }])
+
+    useEffect(()=>{
+        if (error){
+            toast.error(error.message)
+            dispatch(eventActions.resetErrors())
+        }
+    }, [dispatch, error])
 
     const handleCreateEvent = useCallback(() => {
         const eventObject = { clubId: parseInt(clubId), name: title }

@@ -1,14 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { EventAPI } from '../../../infra/api/EventAPI'
 import { ClubEvent } from '../../model/ClubEvent'
 import { Time } from '../../model/Time'
-import { APIErrorType } from '../ErrorHandler'
-import { createPost } from '../post/PostSlice'
+import { APIError, APIErrorType } from '../ErrorHandler'
 
 export interface EventErrorType {
     createEventError?: APIErrorType
+    editEventError?: APIErrorType
 }
 
 export interface EventState {
@@ -36,19 +37,49 @@ export const getEvent = createAsyncThunk(
     },
 )
 
-export const createEvent = createAsyncThunk(
-    'event/createEvent',
-    async ({ clubId, name, time } : { clubId: number, name: string, time: Array<Time> }) => {
-        return await ClubAPI.createClubEvent(clubId, name, time)
-    },
-)
+export const createEvent = createAsyncThunk<ClubEvent | undefined,
+    { clubId: number, name: string, time: Array<Time> }, { rejectValue: APIErrorType }>(
+        'event/createEvent',
+        async ({ clubId, name, time } : { clubId: number, name: string, time: Array<Time> }, { rejectWithValue }) => {
+            try{
+                return await ClubAPI.createClubEvent(clubId, name, time)
+            } catch (e) {
+                if (axios.isAxiosError(e)) {
+                    const errorType = APIError.getErrorType(e.response?.status)
+                    let message: string = errorType.message
+                    if (errorType.errorCode === 400) {
+                        message = '모든 필드를 알맞게 입력해주세요.'
+                    }
+                    return rejectWithValue({
+                        ...errorType,
+                        message,
+                    })
+                }
+            }
+        },
+    )
 
-export const editEvent = createAsyncThunk(
-    'event/editEvent',
-    async ({ eventId, name, time }: { eventId: number, name: string | null, time: Time[] | null }) => {
-        return await EventAPI.editEvent(eventId, name, time)
-    },
-)
+export const editEvent = createAsyncThunk<ClubEvent | undefined,
+    { eventId: number, name: string, time: Array<Time> }, { rejectValue: APIErrorType }>(
+        'event/editEvent',
+        async ({ eventId, name, time } : { eventId: number, name: string, time: Array<Time> }, { rejectWithValue }) => {
+            try{
+                return await EventAPI.editEvent(eventId, name, time)
+            } catch (e) {
+                if (axios.isAxiosError(e)) {
+                    const errorType = APIError.getErrorType(e.response?.status)
+                    let message: string = errorType.message
+                    if (errorType.errorCode === 400) {
+                        message = '모든 필드를 알맞게 입력해주세요.'
+                    }
+                    return rejectWithValue({
+                        ...errorType,
+                        message,
+                    })
+                }
+            }
+        },
+    )
 
 export const deleteEvent = createAsyncThunk(
     'event/deleteEvent',
@@ -60,7 +91,11 @@ export const deleteEvent = createAsyncThunk(
 const eventSlice = createSlice({
     name: 'event',
     initialState,
-    reducers: {},
+    reducers: {
+        resetErrors: (state)=>{
+            state.errors = {}
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(getEvents.fulfilled, (state, action) => {
             state.events = action.payload
@@ -71,9 +106,15 @@ const eventSlice = createSlice({
         builder.addCase(createEvent.fulfilled, (state, action) => {
             state.selectedEvent = action.payload
         })
-        builder.addCase(createPost.rejected, (state, action) => {
+        builder.addCase(createEvent.rejected, (state, action) => {
             state.selectedEvent = undefined
             state.errors.createEventError = action.payload
+        })
+        builder.addCase(editEvent.fulfilled, (state, action) => {
+            state.selectedEvent = action.payload
+        })
+        builder.addCase(editEvent.rejected, (state, action) => {
+            state.errors.editEventError = action.payload
         })
     },
 })

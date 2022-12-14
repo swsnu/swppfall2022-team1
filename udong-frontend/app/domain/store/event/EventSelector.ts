@@ -14,7 +14,13 @@ const events = createSelector(
     state => state.events,
 )
 
+const errors = createSelector(
+    eventState,
+    state => state.errors,
+)
+
 export const eventSelector = {
     selectedEvent,
     events,
+    errors,
 }
