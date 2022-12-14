@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../domain/store'
 import { clubActions } from '../../../domain/store/club/ClubSlice'
+import { userActions } from '../../../domain/store/user/UserSlice'
 import { convertQueryParamToString } from '../../../utility/handleQueryParams'
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
@@ -25,7 +26,10 @@ export const ClubContainer = (props: ClubContainerProps) => {
     const clubId = parseInt(convertQueryParamToString(rawClubId))
 
     useEffect(() => {
-        dispatch(clubActions.getClub(clubId))
+        if (clubId){
+            dispatch(clubActions.getClub(clubId))
+            dispatch(userActions.getMyClubProfile(clubId))
+        }
     }, [clubId, dispatch])
 
     const handleCurrentTab = useCallback((selectedTab: ClubTabType) => {

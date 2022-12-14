@@ -14,6 +14,16 @@ const events = createSelector(
     state => state.events,
 )
 
+const errors = createSelector(
+    eventState,
+    state => state.errors,
+)
+
+const upsertedEventId = createSelector(
+    eventState,
+    state => state.upsertedEventId,
+)
+
 const createPostEvent = createSelector(
     eventState,
     state => state.createPostEvent,
@@ -22,5 +32,7 @@ const createPostEvent = createSelector(
 export const eventSelector = {
     selectedEvent,
     events,
+    errors,
+    upsertedEventId,
     createPostEvent,
 }

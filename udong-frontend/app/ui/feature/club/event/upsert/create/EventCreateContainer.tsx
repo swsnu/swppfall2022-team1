@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch } from '../../../../../../domain/store'
+import { eventSelector } from '../../../../../../domain/store/event/EventSelector'
 import { eventActions } from '../../../../../../domain/store/event/EventSlice'
 import {
     checkDayTimesValid,
@@ -27,6 +28,9 @@ export type EventTimeType = 'days' | 'dates' | 'notAssigned'
 export const EventCreateContainer = () => {
     const router = useRouter()
     const dispatch = useDispatch<AppDispatch>()
+    const error = useSelector(eventSelector.errors).createEventError
+    const upsertedEventId = useSelector(eventSelector.upsertedEventId)
+    const [disabled, setDisabled] = useState(false)
     const [title, setTitle] = useState<string>('')
     const { clubId: rawClubId } = router.query
     const clubId = convertQueryParamToString(rawClubId)
@@ -41,27 +45,51 @@ export const EventCreateContainer = () => {
         start: { date: '', time: '' },
         end: { date: '', time: '' } }])
 
+    useEffect(()=>{
+        if (error){
+            toast.dismiss()
+            toast.error(error.message)
+            setDisabled(false)
+            dispatch(eventActions.resetErrors())
+        }
+    }, [dispatch, error])
+
+    useEffect(()=>{
+        if (upsertedEventId){
+            toast.dismiss()
+            toast.success('저장되었습니다.', { duration: 2000 })
+            router.push(`/club/${clubId}/event/${upsertedEventId}`)
+        }
+    }, [clubId, router, upsertedEventId])
+
     const handleCreateEvent = useCallback(() => {
+        setDisabled(true)
         const eventObject = { clubId: parseInt(clubId), name: title }
         if (title.length === 0){
             toast.error('행사 이름을 입력해주세요')
+            setDisabled(false)
             return
         }
         if (eventTimeType === 'notAssigned'){
+            toast.loading('저장중입니다.')
             dispatch(eventActions.createEvent({ ...eventObject, time: [] }))
         } else if (eventTimeType === 'days'){
             if (checkWeekdayTimesValid(weekdayTimesWithId)){
+                toast.loading('저장중입니다.')
                 dispatch(eventActions.createEvent({
                     ...eventObject,
                     time: weekdayTimesWithId.map((weekdayTimeWithId)=>toWeekdayTimeFormatter(weekdayTimeWithId, weekdayRange)) }))
             } else {
                 toast.error('시간을 올바르게 입력해주세요.')
+                setDisabled(false)
             }
         } else {
             if (checkDayTimesValid(dayTimesWithId)){
+                toast.loading('저장중입니다.')
                 dispatch(eventActions.createEvent({ ...eventObject, time: dayTimesWithId.map(toDayTimeFormatter) }))
             } else {
                 toast.error('기간을 올바르게 입력해주세요.')
+                setDisabled(false)
             }
         }
     }, [clubId, dispatch, title, weekdayTimesWithId, weekdayRange, dayTimesWithId, eventTimeType])
@@ -76,6 +104,7 @@ export const EventCreateContainer = () => {
                     color={UdongColors.Primary}
                     height={40}
                     onClick={handleCreateEvent}
+                    disabled={disabled}
                 >
                     저장하기
                 </UdongButton>
