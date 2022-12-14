@@ -83,6 +83,7 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
         {comments.map((comment) => {
             return <CommentItem
                 key={`${comment.user.name}` + `${comment.id}`}
+                imageKey={comment.user.imageUrl}
                 id={comment.id}
                 name={comment.user.name}
                 content={comment.content}
