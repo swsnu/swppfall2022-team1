@@ -67,7 +67,7 @@ class ImageViewSet(viewsets.ViewSet):
         responses={200: "presigned url", 400: "Can't upload"},
     )
     @action(detail=False, methods=["GET"])
-    def upload(self, request: Request) -> Response:
+    def upload(self, request: Request) -> JsonResponse | Response:
         filename: str = request.GET.get("file", "")
         if not filename:
             return Response(status=status.HTTP_400_BAD_REQUEST)
