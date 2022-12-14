@@ -38,6 +38,7 @@ const toEditDto = (post: BoardPost, tagIdList: Array<number>): BoardPostEditDto 
         created_at: post.createdAt,
         updated_at: post.updatedAt,
         tag_list: tagIdList,
+        event_id: post.eventId,
     }
 }
 

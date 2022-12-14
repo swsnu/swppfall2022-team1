@@ -86,12 +86,13 @@ export const PostEditContainer = () => {
                     title,
                     content: contents,
                     eventName: createPostEvent,
-                    eventId: createPostEvent?.id ?? undefined,
+                    eventId: createPostEvent?.id === undefined ? null : createPostEvent.id,
                 },
                 tagIdList: createPostTagIds,
             }))
             if (response.type === `${postActions.editPost.typePrefix}/fulfilled`) {
                 router.push(`/club/${clubId}/post/${postId}/?from=upsert`)
+                dispatch(eventActions.resetSelectedEvent())
             }
         }
     }, [dispatch, createPostEvent, createPostTagIds, post, router, clubId, postId, contents, title])

@@ -12,7 +12,7 @@ export interface BoardPost {
     author?: string
     club?: Club
     eventName?: EventName
-    eventId?: number
+    eventId?: number | null
     title: string
     content: string
     type: PostType

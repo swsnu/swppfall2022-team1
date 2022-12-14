@@ -73,6 +73,9 @@ const eventSlice = createSlice({
         setCreatePostEvent: (state, action: PayloadAction<ClubEvent | undefined>) => {
             state.createPostEvent = action.payload
         },
+        resetSelectedEvent: (state) => {
+            state.selectedEvent = undefined
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getEvents.fulfilled, (state, action) => {

@@ -22,4 +22,4 @@ export interface BoardPostDto {
     updated_at: string
 }
 
-export type BoardPostEditDto = BoardPostDto & { tag_list: Array<number> }
+export type BoardPostEditDto = BoardPostDto & { tag_list: Array<number> } & { event_id?: number | null }
