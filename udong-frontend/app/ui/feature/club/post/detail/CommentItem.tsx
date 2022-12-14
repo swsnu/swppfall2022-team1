@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
 import { useCallback, useRef, useState } from 'react'
 
+import { useImage } from '../../../../../hooks/useImage'
 import { Spacer } from '../../../../components/Spacer'
 import { HStack, VStack } from '../../../../components/Stack'
 import { UdongImage } from '../../../../components/UdongImage'
@@ -9,7 +9,6 @@ import { UdongTextField } from '../../../../components/UdongTextField'
 import check from '../../../../icons/IcCheck.png'
 import edit from '../../../../icons/IcPencil.png'
 import del from '../../../../icons/IcTrash.png'
-import { UdongColors } from '../../../../theme/ColorPalette'
 
 interface CommentItemProps {
     id: number
@@ -18,10 +17,11 @@ interface CommentItemProps {
     isAuthor?: boolean
     onClickDelete: (commentId: number) => void
     onSubmitEditedComment: (commentId: number, content: string) => void
+    imageKey: string
 }
 
 export const CommentItem = (props: CommentItemProps) => {
-    const { id, name, content, isAuthor = false, onClickDelete, onSubmitEditedComment } = props
+    const { id, name, content, isAuthor = false, onClickDelete, onSubmitEditedComment, imageKey } = props
     const inputRef = useRef<HTMLInputElement | undefined>(null)
     const [isInputVisible, setIsInputVisible] = useState(false)
     const [changedComment, setChangedComment] = useState('')
@@ -35,13 +35,18 @@ export const CommentItem = (props: CommentItemProps) => {
         }
     }, [isInputVisible, onSubmitEditedComment, changedComment, id])
 
+    const imageUrl = useImage(imageKey)
+
     return <VStack>
         <Spacer height={20}/>
 
         <HStack justifyContent={'space-between'}>
             <HStack alignItems={'center'}>
-                <CircularProfileIcon/>
-                <Spacer width={20}/>
+                <UdongImage
+                    src={imageUrl ?? ''}
+                    height={40}
+                    width={40}
+                />
                 <UdongText style={'GeneralContent'}>{name}</UdongText>
             </HStack>
 
@@ -53,6 +58,7 @@ export const CommentItem = (props: CommentItemProps) => {
                         height={20}
                         width={20}
                         onClick={handleEditComment}
+                        clickable
                     />
                     <Spacer width={10}/>
                     <UdongImage
@@ -60,6 +66,7 @@ export const CommentItem = (props: CommentItemProps) => {
                         height={20}
                         width={20}
                         onClick={() => onClickDelete(id)}
+                        clickable
                     />
                 </HStack>
             }
@@ -78,10 +85,3 @@ export const CommentItem = (props: CommentItemProps) => {
         }
     </VStack>
 }
-
-const CircularProfileIcon = styled.div({
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: UdongColors.GrayBright,
-})

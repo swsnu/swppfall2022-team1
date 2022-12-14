@@ -53,6 +53,7 @@ export const useData = () => {
         name: user.name,
         isMe: user.id === myId,
         isAdmin: role === RoleType.ADMIN,
+        imageKey: user.imageUrl,
     }))
 
     const participatedUserIds = schedulingStatus.availableTime.map(({ user }) => user.id)

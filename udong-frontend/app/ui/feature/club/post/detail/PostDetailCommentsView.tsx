@@ -76,12 +76,14 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
                 height={24}
                 width={24}
                 onClick={handleCommentSubmit}
+                clickable
             />
         </HStack>
 
         {comments.map((comment) => {
             return <CommentItem
                 key={`${comment.user.name}` + `${comment.id}`}
+                imageKey={comment.user.imageUrl}
                 id={comment.id}
                 name={comment.user.name}
                 content={comment.content}
@@ -95,7 +97,7 @@ export const PostDetailCommentsView = (props: PostDetailCommentsViewProps) => {
 
         <DeleteModal
             deleteObjectText={'댓글'}
-            warningText={'경고 문구'}
+            warningText={'해당 댓글은 영구적으로 삭제됩니다.'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
             onClickDelete={handleConfirmCommentDelete}

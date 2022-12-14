@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { fireEvent, render, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 
 import { ClubUser } from '../../../../domain/model/ClubUser'
@@ -42,13 +43,16 @@ jest.mock('next/config', () => () => ({
 
 describe('<SearchMembersView/>', () => {
     it ('should render search members view and hanlde on click', () => {
+        const client = new QueryClient
         render(
-            <Provider store={mockStore}>
-                <SearchMembersView
-                    clubId={1}
-                    members={dummyMembers}
-                />
-            </Provider>,
+            <QueryClientProvider client={client}>
+                <Provider store={mockStore}>
+                    <SearchMembersView
+                        clubId={1}
+                        members={dummyMembers}
+                    />
+                </Provider>
+            </QueryClientProvider>,
         )
         const component = screen.getAllByText('이유빈')[0]
         fireEvent.click(component)

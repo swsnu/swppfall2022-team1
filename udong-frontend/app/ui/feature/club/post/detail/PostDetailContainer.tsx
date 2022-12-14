@@ -84,7 +84,7 @@ export const PostDetailContainer = () => {
                     style={'line'}
                     color={UdongColors.Primary}
                     height={40}
-                    onClick={() => router.push(`/club/${clubId}/post/${postId}/edit/?type=${postType}`)}
+                    onClick={() => router.push(`/club/${clubId}/post/${postId}/edit`)}
                 >
                     수정하기
                 </UdongButton>

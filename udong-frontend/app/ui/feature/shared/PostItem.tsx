@@ -5,7 +5,6 @@ import { BoardPost } from '../../../domain/model/BoardPost'
 import { PostType } from '../../../domain/model/PostType'
 import { useImage } from '../../../hooks/useImage'
 import { DateTimeFormatter } from '../../../utility/dateTimeFormatter'
-import { getPostTypeQueryParam } from '../../../utility/handleQueryParams'
 import { formatPostItemInfo } from '../../../utility/postItemFormatter'
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
@@ -38,7 +37,7 @@ export const PostItem = (props: PostItemProps) => {
     const imageUrl = useImage(imageKey ?? '')
 
     const handleOnClickPost = useCallback(() => {
-        router.push(`/club/${clubId}/post/${post.id}/?type=${getPostTypeQueryParam(post.type)}`)
+        router.push(`/club/${clubId}/post/${post.id}`)
     }, [router, clubId, post])
 
     return (

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 
+import { useImage } from '../../../hooks/useImage'
 import { Spacer } from '../../components/Spacer'
 import { HStack } from '../../components/Stack'
 import { UdongChip } from '../../components/UdongChip'
@@ -15,10 +16,26 @@ interface UserItemProps {
     isAdmin?: boolean
     onRemoveUser?: (userId: number) => void
     small?: boolean
+    imageKey: string
+    imageClickable?: boolean
+    textClickable?: boolean
 }
 
 export const UserItem = (props: UserItemProps) => {
-    const { id, name, isMe = false, isAdmin = false, onRemoveUser, small = false } = props
+    const {
+        id,
+        name,
+        isMe = false,
+        isAdmin = false,
+        onRemoveUser,
+        small = false,
+        imageKey,
+        imageClickable = false,
+        textClickable = true,
+    } = props
+
+    const imageUrl = useImage(imageKey ?? '')
+
     return <HStack
         alignItems={'center'}
         justifyContent={'space-between'}
@@ -26,14 +43,25 @@ export const UserItem = (props: UserItemProps) => {
         paddingVertical={5}
     >
         <HStack alignItems={'center'}>
-            <CircularProfileIcon
-                style={small ? { width: 30, height: 30 } : {}}
-            />
+            {
+                imageKey ? (
+                    <UdongImage
+                        src={imageUrl ?? ''}
+                        height={30}
+                        width={30}
+                        clickable={imageClickable}
+                    />
+                ) : (
+                    <CircularProfileIcon
+                        style={small ? { width: 30, height: 30 } : {}}
+                    />
+                )
+            }
             <Spacer width={10}/>
 
             <UdongText
                 style={'GeneralContent'}
-                cursor={'pointer'}
+                cursor={textClickable ? 'pointer' : 'deafult'}
             >{name}</UdongText>
 
             {isMe &&
@@ -66,7 +94,7 @@ export const UserItem = (props: UserItemProps) => {
                 src={remove.src}
                 height={10}
                 width={10}
-                clickable={true}
+                clickable
             />
         }
     </HStack>
