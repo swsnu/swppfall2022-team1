@@ -22,7 +22,7 @@ interface MyProfileViewProps {
 
 export const MyProfileView = (props: MyProfileViewProps) => {
     const { me } = props
-    const { name, email } = me
+    const { id, name, email } = me
     const dispatch = useDispatch<AppDispatch>()
 
     const error = useSelector(userSelector.errors).deleteAccountError
@@ -79,6 +79,7 @@ export const MyProfileView = (props: MyProfileViewProps) => {
         <Spacer height={90}/>
 
         <ProfileView
+            id={id}
             name={name}
             email={email}
             showCameraButton={true}

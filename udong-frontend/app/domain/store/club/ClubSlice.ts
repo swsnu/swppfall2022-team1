@@ -249,6 +249,9 @@ const clubSlice = createSlice({
             state.errors.registerError = action.payload
             state.selectedClub = undefined
         })
+        builder.addCase(editClub.fulfilled, (state, action) => {
+            state.selectedClub = action.payload
+        })
         builder.addCase(editClub.rejected, (state, action) => {
             state.errors.editError = action.payload
         })

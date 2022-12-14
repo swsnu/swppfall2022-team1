@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http.response import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -11,6 +12,7 @@ from datetime import datetime
 import os
 import environ  # type: ignore[import]
 import boto3
+import re
 
 # Create your views here.
 
@@ -65,12 +67,16 @@ class ImageViewSet(viewsets.ViewSet):
         responses={200: "presigned url", 400: "Can't upload"},
     )
     @action(detail=False, methods=["GET"])
-    def upload(self, request: Request) -> Response:
-        key: str = datetime.now().isoformat() + "_" + request.GET["file"]
+    def upload(self, request: Request) -> JsonResponse | Response:
+        filename: str = request.GET.get("file", "")
+        if not filename:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        key: str = datetime.now().isoformat() + "_" + re.sub("[^\w\d_-]", "", filename)
         url = self.generate_presigned_url(
             "put_object",
             {"Bucket": env("BUCKET_NAME"), "Key": key},
         )
         if url is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        return Response(url)
+        return JsonResponse({"url": url, "key": key})

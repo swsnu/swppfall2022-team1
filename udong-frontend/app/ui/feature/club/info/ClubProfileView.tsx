@@ -126,6 +126,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
         <Spacer height={90}/>
 
         <ProfileView
+            id={id}
             name={name}
             code={code}
             showCameraButton={isAdmin}
