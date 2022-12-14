@@ -151,7 +151,7 @@ export const ClubProfileView = (props: ClubProfileViewProps) => {
 
         <DeleteModal
             deleteObjectText={'동아리'}
-            warningText={'경고 문구'}
+            warningText={`동아리 ${name}에 속한 글, 행사 등이 영구적으로 삭제됩니다`}
             isOpen={isDeleteModalOpen}
             setIsOpen={setIsDeleteModalOpen}
             onClickDelete={handleDeleteClub}

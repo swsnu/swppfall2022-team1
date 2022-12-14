@@ -176,7 +176,7 @@ export const PostDetailContainer = () => {
 
         <DeleteModal
             deleteObjectText={'게시글'}
-            warningText={'경고 문구'}
+            warningText={'해당 게시글과 댓글 등이 영구적으로 삭제됩니다'}
             isOpen={showDeleteModal}
             setIsOpen={setShowDeleteModal}
             onClickDelete={handleDelete}
