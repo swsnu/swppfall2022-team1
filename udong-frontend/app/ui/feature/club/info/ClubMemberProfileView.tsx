@@ -156,6 +156,7 @@ export const ClubMemberProfileView = (props: ClubMemberProfileViewProps) => {
             <Spacer height={90}/>
 
             <ProfileView
+                id={clubId}
                 name={member.user.name}
                 showAdminBadge={member.role === RoleType.ADMIN}
                 bottomItem={renderBottomButtons()}
