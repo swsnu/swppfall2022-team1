@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { ClubAPI } from '../../../infra/api/ClubAPI'
 import { EventAPI } from '../../../infra/api/EventAPI'
@@ -14,6 +14,7 @@ export interface EventErrorType {
 export interface EventState {
     selectedEvent?: ClubEvent
     events: Array<ClubEvent>
+    createPostEvent?: ClubEvent
     errors: EventErrorType
 }
 
@@ -60,7 +61,11 @@ export const deleteEvent = createAsyncThunk(
 const eventSlice = createSlice({
     name: 'event',
     initialState,
-    reducers: {},
+    reducers: {
+        setCreatePostEvent: (state, action: PayloadAction<ClubEvent | undefined>) => {
+            state.createPostEvent = action.payload
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(getEvents.fulfilled, (state, action) => {
             state.events = action.payload

@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CreateScheduling } from '../../../../../domain/model/CreatePost'
 import { SchedulingPostType } from '../../../../../domain/model/SchedulingPostType'
 import { AppDispatch } from '../../../../../domain/store'
+import { eventSelector } from '../../../../../domain/store/event/EventSelector'
+import { eventActions } from '../../../../../domain/store/event/EventSlice'
 import { tagSelector } from '../../../../../domain/store/tag/TagSelector'
 import { tagActions } from '../../../../../domain/store/tag/TagSlice'
 import { userSelector } from '../../../../../domain/store/user/UserSelector'
@@ -19,6 +21,7 @@ import { UdongColors } from '../../../../theme/ColorPalette'
 import { DateRangeType } from '../../../shared/DateRangePicker'
 import { TimeRangeType } from '../../../shared/TimeRangePicker'
 import { AdditionalInputItem } from './AdditionalInputItem'
+import { EventListModal } from './EventListModal'
 import { DateRangeTypeWithId, PostDateSchedule } from './PostDateSchedule'
 import { DAYS, PostDaySchedule } from './PostDaySchedule'
 import { TagListModal } from './TagListModal'
@@ -36,7 +39,9 @@ export const PostAdditionalInputsView = (props: PostAdditionalFieldsViewProps) =
 
     const userMe = useSelector(userSelector.userMe)
     const tags = useSelector(tagSelector.tags)
+    const events = useSelector(eventSelector.events)
     const selectedTags = useSelector(tagSelector.createPostTags)
+    const selectedEvent = useSelector(eventSelector.createPostEvent)
 
     const [schedulingTimeType, setSchedulingTimeType] = useState<SchedulingPostType>(SchedulingPostType.DAYS)
     const [timeRange, setTimeRange] = useState<TimeRangeType>(isEdit ? { start: '16:30', end: '18:00' } : { start: '', end: '' })
@@ -46,6 +51,7 @@ export const PostAdditionalInputsView = (props: PostAdditionalFieldsViewProps) =
         { id: 1, start: '2022-11-06', end: '2022-11-08' }] : [{ id: 0, start: '', end: '' }])
 
     const [isTagListModalOpen, setIsTagListModalOpen] = useState(false)
+    const [isEventListModalOpen, setIsEventListModalOpen] = useState(false)
 
     useEffect(() => {
         const scheduling: CreateScheduling = {
@@ -65,6 +71,11 @@ export const PostAdditionalInputsView = (props: PostAdditionalFieldsViewProps) =
         dispatch(tagActions.getTags(clubId))
     }, [dispatch, clubId])
 
+    const handleAddEvent = useCallback(() => {
+        setIsEventListModalOpen(true)
+        dispatch(eventActions.getEvents(clubId))
+    }, [dispatch, clubId])
+
     return <VStack>
         <HStack
             alignItems={'center'}
@@ -74,17 +85,14 @@ export const PostAdditionalInputsView = (props: PostAdditionalFieldsViewProps) =
             <HStack alignItems={'center'}>
                 <UdongText style={'GeneralTitle'}>행사</UdongText>
                 <Spacer width={70}/>
-                {[].map((item, index) => {
-                    return <AdditionalInputItem
-                        key={item + index}
-                        item={<UdongText style={'ListContentUnderscore'}>교촌 허니콤보 먹고 싶다</UdongText>}
-                        onRemove={() => {return}}
-                    />
-                })}
+                {selectedEvent && <AdditionalInputItem
+                    item={<UdongText style={'ListContentUnderscore'}>{selectedEvent.name}</UdongText>}
+                    onRemove={() => {dispatch(eventActions.setCreatePostEvent(undefined))}}
+                />}
             </HStack>
 
             <VStack
-                onClick={() => {return}}
+                onClick={handleAddEvent}
                 style={{ padding: '7px 0 7px 10px' }}
             >
                 <UdongImage
@@ -195,6 +203,11 @@ export const PostAdditionalInputsView = (props: PostAdditionalFieldsViewProps) =
             isOpen={isTagListModalOpen}
             setIsOpen={setIsTagListModalOpen}
             tags={tags}
+        />
+        <EventListModal
+            isOpen={isEventListModalOpen}
+            setIsOpen={setIsEventListModalOpen}
+            events={events}
         />
     </VStack>
 }
