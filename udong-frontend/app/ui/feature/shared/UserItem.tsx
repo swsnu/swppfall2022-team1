@@ -16,11 +16,12 @@ interface UserItemProps {
     isAdmin?: boolean
     onRemoveUser?: (userId: number) => void
     small?: boolean
-    imageKey?: string
+    imageKey: string
+    imageClickable?: boolean
 }
 
 export const UserItem = (props: UserItemProps) => {
-    const { id, name, isMe = false, isAdmin = false, onRemoveUser, small = false, imageKey } = props
+    const { id, name, isMe = false, isAdmin = false, onRemoveUser, small = false, imageKey, imageClickable = false } = props
 
     const imageUrl = useImage(imageKey ?? '')
 
@@ -37,7 +38,7 @@ export const UserItem = (props: UserItemProps) => {
                         src={imageUrl ?? ''}
                         height={30}
                         width={30}
-                        clickable
+                        clickable={imageClickable}
                     />
                 ) : (
                     <CircularProfileIcon
@@ -82,7 +83,7 @@ export const UserItem = (props: UserItemProps) => {
                 src={remove.src}
                 height={10}
                 width={10}
-                clickable={true}
+                clickable
             />
         }
     </HStack>

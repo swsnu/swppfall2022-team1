@@ -168,7 +168,11 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
                                 key={`${member}/${index}`}
                                 onClick={() => handleSelectUser(member.user.id)}
                             >
-                                <UserItem name={member.user.name}/>
+                                <UserItem
+                                    name={member.user.name}
+                                    imageKey={member.user.imageUrl}
+                                    imageClickable
+                                />
                             </VStack>
                         })}
                     </VStack>
@@ -202,6 +206,8 @@ export const TagUpsertModal = (props: TagUpsertModalProps) => {
                                 key={`${member.user}/${index}`}
                                 id={member.user.id}
                                 onRemoveUser={handleDeselectUser}
+                                imageKey={member.user.imageUrl}
+                                imageClickable
                             />
                         })}
                     </VStack>

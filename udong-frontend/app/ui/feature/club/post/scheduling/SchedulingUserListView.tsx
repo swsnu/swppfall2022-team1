@@ -7,6 +7,7 @@ export type UserType = {
   name: string
   isMe: boolean
   isAdmin: boolean
+  imageKey: string
 }
 
 interface SchedulingUserSingleListViewProps {
