@@ -16,7 +16,6 @@ import { UdongColors } from '../../theme/ColorPalette'
 
 interface HeaderProps {
     type: HeaderPageType
-    clubId?: number
 }
 
 export type HeaderPageType = HEADER_PAGE
@@ -28,7 +27,7 @@ export enum HEADER_PAGE {
     CLUB,
 }
 
-export const Header = ({ type, clubId }: HeaderProps) => {
+export const Header = ({ type }: HeaderProps) => {
     const router = useRouter()
     const dispatch = useDispatch<AppDispatch>()
     const { status } = useSession()
@@ -84,7 +83,7 @@ export const Header = ({ type, clubId }: HeaderProps) => {
                         clickable={true}
                     />
                     {type === HEADER_PAGE.CLUB && club &&
-                        <HStack onClick={() => router.push(`/club/${clubId}`)}>
+                        <HStack onClick={() => router.push(`/club/${club.id}`)}>
                             <UdongText
                                 style={'Header'}
                                 color={UdongColors.Primary}

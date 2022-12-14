@@ -54,7 +54,6 @@ export default function App({ Component, pageProps }: AppProps) {
                         <Toaster/>
                         <Header
                             type={findHeaderType(router.pathname)}
-                            clubId={1}
                         />
                         <Component {...pageProps} />
                     </VStack>
