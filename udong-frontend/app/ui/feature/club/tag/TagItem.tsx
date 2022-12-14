@@ -43,6 +43,7 @@ export const TagItem = (props: TagItemProps) => {
                 style={'fill'}
                 onClick={() => {return}}
                 text={name}
+                clickable
             />
 
             <HStack>
@@ -108,6 +109,7 @@ export const DefaultTagItem = () => {
                 style={'fill'}
                 onClick={() => {return}}
                 text={'전체'}
+                clickable
             />
 
             <HStack>
