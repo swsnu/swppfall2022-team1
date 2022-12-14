@@ -70,7 +70,7 @@ export const mockStore = configureStore({
     preloadedState: {
         scheduling: schedulingInitialState,
         club: clubInitialState,
-        user: { me: dummyUserMe, isAdmin: true },
+        user: { me: dummyUserMe, isAdmin: true, errors: {} },
         post: postInitialState,
     },
 })

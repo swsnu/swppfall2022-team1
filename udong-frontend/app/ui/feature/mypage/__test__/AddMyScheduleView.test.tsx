@@ -11,6 +11,7 @@ import { AddMyScheduleView } from '../AddMyScheduleView'
 const stubUserInitialState: UserState = {
     selectedUser: dummyUserMe,
     isAdmin: false,
+    errors: {},
 }
 
 const mockStore = configureStore({

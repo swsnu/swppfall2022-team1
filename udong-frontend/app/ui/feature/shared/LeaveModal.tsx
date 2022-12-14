@@ -32,7 +32,7 @@ export const LeaveModal = (props: LeaveModalProps) => {
             >
                 <UdongText style={'GeneralTitle'}>{`${leaveObjectText} 탈퇴`}</UdongText>
                 <Spacer height={30}/>
-                <UdongText style={'GeneralContent'}>{`정말 ${leaveObjectText}를 탈퇴하시겠습니까?`}</UdongText>
+                <UdongText style={'GeneralContent'}>{`정말 ${leaveObjectText}을(를) 탈퇴하시겠습니까?`}</UdongText>
                 <Spacer height={5}/>
 
                 <Spacer height={35}/>

@@ -7,6 +7,7 @@ import { userReducer, UserState } from '../../../../domain/store/user/UserSlice'
 import { UserListModal } from '../UserListModal'
 
 const stubInitialState: UserState = {
+    errors: {},
     isAdmin: false,
     selectedUser: dummyUserMe,
     me: { id: 1, name: '', timeTable: [], imageUrl: '', email: '' },
