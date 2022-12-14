@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { SchedulingPostType } from '../../../../../domain/model/SchedulingPostType'
 import { Time } from '../../../../../domain/model/Time'
@@ -85,7 +84,7 @@ export const SchedulingCloseModal = (props: UdongModalProps) => {
                     }
                     return res
                 }).reduce((x, y) => x.concat(y), [])
-                dispatch(eventActions.editEvent({ eventId: post.eventId, name: null, time: eventTimes }))
+                dispatch(eventActions.editEvent({ eventId: post.eventId, name: '', time: eventTimes }))
             }
             router.push(`/club/${clubId}/post/${postId}`)
         }
