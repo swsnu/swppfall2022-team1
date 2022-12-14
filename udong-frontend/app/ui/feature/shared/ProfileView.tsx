@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../domain/store'
 import { clubActions } from '../../../domain/store/club/ClubSlice'
+import { userActions } from '../../../domain/store/user/UserSlice'
 import { ImageAPI } from '../../../infra/api/ImageAPI'
 import { Spacer } from '../../components/Spacer'
 import { HStack, VStack } from '../../components/Stack'
@@ -21,11 +22,13 @@ import refresh from '../../icons/IcRefresh.png'
 import { UdongColors } from '../../theme/ColorPalette'
 
 interface ProfileViewProps {
-    id: number
+    clubId?: number
+    userId?: number
     name: string
     code?: string
     email?: string
     image?: string
+    timeTable?: boolean[][]
     showCameraButton?: boolean
     onClickEditNameButton?: (name: string) => void
     onRefresh?: () => void
@@ -35,11 +38,13 @@ interface ProfileViewProps {
 
 export const ProfileView = (props: ProfileViewProps) => {
     const {
-        id,
+        clubId = undefined,
+        userId = undefined,
         name,
         code,
         email,
         image,
+        timeTable = undefined,
         showCameraButton = false,
         onClickEditNameButton,
         onRefresh,
@@ -101,10 +106,21 @@ export const ProfileView = (props: ProfileViewProps) => {
                             try {
                                 const newImage = await ImageAPI.getUploadUrl(file.name)
                                 await ImageAPI.uploadImage(newImage.url, file) 
-                                dispatch(clubActions.editClub({
-                                    clubId: id,
-                                    club: { id: id, name: name, code: code ?? '', image: newImage.key },
-                                }))
+                                if(clubId) {
+                                    dispatch(clubActions.editClub({
+                                        clubId: clubId,
+                                        club: { id: clubId, name: name, code: code ?? '', image: newImage.key },
+                                    }))
+                                }
+                                if(userId) {
+                                    dispatch(userActions.editMyProfile({
+                                        id: userId, 
+                                        name: name, 
+                                        email: email ?? '', 
+                                        imageUrl: newImage.key, 
+                                        timeTable: timeTable ?? [],
+                                    }))
+                                }
                             } catch {
                                 alert('파일을 업로드 할 수 없습니다')
                             }
