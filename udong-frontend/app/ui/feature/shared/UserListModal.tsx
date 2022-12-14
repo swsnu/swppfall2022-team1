@@ -87,6 +87,7 @@ export const UserListModal = (props: UserListModalProps) => {
                             name={user.name}
                             key={`${user}/${index}`}
                             imageKey={user.imageUrl}
+                            textClickable={false}
                         />
                     })}
                 </VStack>

@@ -18,10 +18,21 @@ interface UserItemProps {
     small?: boolean
     imageKey: string
     imageClickable?: boolean
+    textClickable?: boolean
 }
 
 export const UserItem = (props: UserItemProps) => {
-    const { id, name, isMe = false, isAdmin = false, onRemoveUser, small = false, imageKey, imageClickable = false } = props
+    const {
+        id,
+        name,
+        isMe = false,
+        isAdmin = false,
+        onRemoveUser,
+        small = false,
+        imageKey,
+        imageClickable = false,
+        textClickable = true,
+    } = props
 
     const imageUrl = useImage(imageKey ?? '')
 
@@ -50,7 +61,7 @@ export const UserItem = (props: UserItemProps) => {
 
             <UdongText
                 style={'GeneralContent'}
-                cursor={'pointer'}
+                cursor={textClickable ? 'pointer' : 'deafult'}
             >{name}</UdongText>
 
             {isMe &&
