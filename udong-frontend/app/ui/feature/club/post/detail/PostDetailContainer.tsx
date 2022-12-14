@@ -7,6 +7,7 @@ import { PostType } from '../../../../../domain/model/PostType'
 import { AppDispatch } from '../../../../../domain/store'
 import { postSelector } from '../../../../../domain/store/post/PostSelector'
 import { postActions } from '../../../../../domain/store/post/PostSlice'
+import { userSelector } from '../../../../../domain/store/user/UserSelector'
 import { userActions } from '../../../../../domain/store/user/UserSlice'
 import { DateTimeFormatter } from '../../../../../utility/dateTimeFormatter'
 import { convertQueryParamToString } from '../../../../../utility/handleQueryParams'
@@ -43,6 +44,7 @@ export const PostDetailContainer = () => {
     const clubId = convertQueryParamToString(rawClubId)
     const postId = convertQueryParamToString(rawPostId)
     const routeFrom = convertQueryParamToString(from)
+    const isAdmin = useSelector(userSelector.isAdmin)
 
     const post = useSelector(postSelector.selectedPost)
 
@@ -79,7 +81,7 @@ export const PostDetailContainer = () => {
             title={post.title}
             onGoBack={() => routeFrom === 'create' ? router.push(`/club/${clubId}`) : router.back()}
             subtitle={getSubtitle(postType)}
-            rightButtons={<>
+            rightButtons={isAdmin && <>
                 <UdongButton
                     style={'line'}
                     color={UdongColors.Primary}
