@@ -10,11 +10,28 @@ import { createTag, deleteTag, editTag, getTag, getTags, tagReducer, TagState } 
 import { fakeUser1, fakeUser2, fakeUserDto1, fakeUserDto2 } from './UserSlice.test'
 
 export const fakeTag1: Tag = { id: 1, name: 'tag1', users: [fakeUser1, fakeUser2], createdAt: '', updatedAt: '', isDefault: false }
-export const fakeTagDto1: TagUserDto = { id: 1, name: 'tag1', users: [fakeUserDto1, fakeUserDto2], created_at: '', updated_at: '', is_default: false }
+export const fakeTagDto1: TagUserDto = {
+    id: 1,
+    name: 'tag1',
+    users: [fakeUserDto1, fakeUserDto2],
+    created_at: '',
+    updated_at: '',
+    is_default: false }
 export const fakeClubTag1: Tag = { id: 1, name: 'tag1', createdAt: '', updatedAt: '', users: [fakeUser1, fakeUser2], isDefault: false }
-export const fakeClubTagDto1: TagUserDto = { id: 1, name: 'tag1', created_at: '', updated_at: '', users: [fakeUserDto1, fakeUserDto2], is_default: false }
+export const fakeClubTagDto1: TagUserDto = {
+    id: 1, name: 'tag1',
+    created_at: '',
+    updated_at: '',
+    users: [fakeUserDto1, fakeUserDto2],
+    is_default: false }
 export const fakeClubTag2: Tag = { id: 2, name: 'tag2', createdAt: '', updatedAt: '', users: [fakeUser1, fakeUser2], isDefault: false }
-export const fakeClubTagDto2: TagUserDto = { id: 2, name: 'tag2', created_at: '', updated_at: '', users: [fakeUserDto1, fakeUserDto2], is_default: false }
+export const fakeClubTagDto2: TagUserDto = {
+    id: 2,
+    name: 'tag2',
+    created_at: '',
+    updated_at: '',
+    users: [fakeUserDto1, fakeUserDto2],
+    is_default: false }
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
