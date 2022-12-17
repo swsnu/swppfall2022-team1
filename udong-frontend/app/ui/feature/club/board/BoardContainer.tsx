@@ -10,7 +10,6 @@ import { Spacer } from '../../../components/Spacer'
 import { HStack, VStack } from '../../../components/Stack'
 import { UdongButton } from '../../../components/UdongButton'
 import { UdongEmtpyContainer } from '../../../components/UdongEmtpyContainer'
-import { UdongLoader } from '../../../components/UdongLoader'
 import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { PostItem } from '../../shared/PostItem'
 import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
@@ -27,8 +26,6 @@ export const BoardContainer = (props: BoardContainerProps) => {
     const boardPosts = useSelector(postSelector.clubPosts)
     const isAdmin = useSelector(userSelector.isAdmin)
 
-    const [loading, setLoading] = useState(true)
-
     const [searchValue, setSearchValue] = useState('')
     const [keyword, setKeyword] = useState('')
     const [showPostCreateModal, setShowPostCreateModal] = useState(false)
@@ -38,7 +35,6 @@ export const BoardContainer = (props: BoardContainerProps) => {
 
     useEffect(() => {
         dispatch(postActions.getClubPosts(clubId))
-        setTimeout(() => setLoading(false), 600)
     }, [dispatch, clubId])
 
     return <VStack>
@@ -62,7 +58,7 @@ export const BoardContainer = (props: BoardContainerProps) => {
             }}
         />
         <Spacer height={8}/>
-        {loading ? <UdongLoader height={400}/> :
+        {
             <VStack>
                 {boardPosts.length === 0 ?
                     <UdongEmtpyContainer emptyObject={'게시글'}/>

@@ -7,7 +7,6 @@ import { postActions } from '../../../../domain/store/post/PostSlice'
 import { useDebouncedSearch } from '../../../../utility/useDebouncedSearch'
 import { Spacer } from '../../../components/Spacer'
 import { VStack } from '../../../components/Stack'
-import { UdongLoader } from '../../../components/UdongLoader'
 import { UdongSearchBar } from '../../../components/UdongSearchBar'
 import { PostItem } from '../../shared/PostItem'
 import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
@@ -15,7 +14,6 @@ import { ScrollToTopButton } from '../../shared/ScrollToTopButton'
 export const FeedContainer = () => {
     const dispatch = useDispatch<AppDispatch>()
     const posts = useSelector(postSelector.feedPosts)
-    const [loading, setLoading] = useState(true)
     const searchRef = useRef<HTMLInputElement | undefined>(null)
     const [searchValue, setSearchValue] = useState('')
     const [keyword, setKeyword] = useState('')
@@ -23,7 +21,6 @@ export const FeedContainer = () => {
 
     useEffect(() => {
         dispatch(postActions.getFeedPosts())
-        setTimeout(() => setLoading(false), 600)
     }, [dispatch])
 
     return <VStack>
@@ -37,7 +34,7 @@ export const FeedContainer = () => {
 
         <ScrollToTopButton/>
 
-        {loading ? <UdongLoader height={500}/> :
+        {
             <VStack>
                 <>
                     {posts.filter((post)=>{return post.title.includes(keyword) || post.content.includes(keyword)}).map((post) => {
