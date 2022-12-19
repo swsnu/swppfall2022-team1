@@ -4,7 +4,8 @@ import { userTransformer } from './UserTransformer'
 
 const fromDto = (dto: TagUserDto): Tag => {
     return {
-        ...dto,
+        id: dto.id,
+        name: dto.name,
         isDefault: dto.is_default,
         users: dto.users.map(userTransformer.fromDto),
         createdAt: dto.created_at,
